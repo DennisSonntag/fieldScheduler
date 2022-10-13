@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	.my-gradient {
+		background: rgb(0, 0, 0);
+		background: linear-gradient(45deg, rgba(0, 0, 0, 1) 0%, rgba(73, 73, 73, 1) 100%);
+	}
+
+	.my-shadow {
+		box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.75);
+	}
+}
