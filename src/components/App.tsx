@@ -4,21 +4,28 @@ import Calendar from "./Calender";
 
 const App = () => {
 	const csvData = [
-		["firstname", "lastname", "email"],
-		["Ahmed", "Tomi", "ah@smthing.co.com"],
-		["Raed", "Labes", "rl@smthing.co.com"],
-		["Yezzi", "Min l3b", "ymin@cocococo.com"],
+		[
+			"Home Team",
+			"Visitor Team",
+			"Start Date (MM/DD/YYYY)",
+			"Start Time (HH:MM AA)",
+			"Duration (minutes)",
+			"Details",
+			"Show Details",
+			"League Name",
+			"Practice Type (Shared or Full)",
+			"Schedule Name",
+			"Venue",
+		],
 	];
 
-	const months = [1, 2, 3, 4, 5, 6];
+	const months = [ 2, 3, 4, 5];
 
 	const events: { [index: number]: number[] } = {
-		1: [6, 12, 28],
-		2: [],
-		3: [17, 20],
-		4: [],
-		5: [],
-		6: [],
+		2: [ 15, 16, 17],
+		3: [18, 20],
+		4: [ 6, 17, 27],
+		5: [ 8, 21, 30],
 	};
 
 	const teams: { [index: number]: string } = {
@@ -76,7 +83,7 @@ const App = () => {
 						</div>
 						<div className="overflow-auto w-full h-[calc(100%-3rem)]">
 							{Object.keys(teams).map(team => {
-								let teamIndex= Number(team);
+								let teamIndex = Number(team);
 								return (
 									<div className="w-fit h-fit px-6 py-2 bg-white ml-6 my-6 text-center shadow-xl rounded-md hover:scale-125">
 										{teams[teamIndex]} {team}
@@ -87,7 +94,7 @@ const App = () => {
 					</div>
 
 					<div className="w-full h-full flex flex-col">
-						<section className="h-fit w-fit relative grid grid-cols-3 grid-rows-2 gap-20 p-2 m-auto inset-0">
+						<section className="h-fit w-fit relative grid grid-cols-2 grid-rows-2 gap-20 p-2 m-auto inset-0">
 							{months.map(month => (
 								<Calendar events={events[month]} month={month} />
 							))}

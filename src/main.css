@@ -8,10 +8,59 @@
 		background: linear-gradient(45deg, rgba(0, 0, 0, 1) 0%, rgba(73, 73, 73, 1) 100%);
 	}
 
+	.field::after {
+		content: "";
+		position: relative;
+		display: block;
+		height: 4px;
+		width: 100%;
+		background-color: purple;
+		transform: scaleX(0);
+		transform-origin: 0%;
+		transition: transform 500ms ease;
+		top: 2px;
+	}
+	.input {
+		outline: none;
+		border: none;
+		overflow: hidden;
+		margin: 0;
+		width: 100%;
+		padding: 0.25rem 0;
+		background: none;
+		color: white;
+		font-size: 1.2em;
+		font-weight: bold;
+		transition: border 500ms;
+	}
+
+	.field:focus-within {
+		border-color: transparent;
+	}
+
+	.field:focus-within::after {
+		transform: scaleX(1);
+	}
+
+	.label {
+		color: white;
+		position: absolute;
+		transform: translateY(0.5rem);
+		transform-origin: 0%;
+		transition: transform 400ms;
+	}
+
+	.field:focus-within .label, .input:not(:placeholder-shown) + .label {
+		transform: scale(0.8) translateY(-1.5rem);
+	}
+
 	.my-shadow {
 		box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.75);
 	}
-	.grid-rows-7{
+	.grid-rows-7 {
 		grid-template-columns: repeat(7, minmax(0, 1fr));
+	}
+	.bot-dash {
+		border-bottom: 2px dashed white;
 	}
 }

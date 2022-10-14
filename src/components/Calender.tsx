@@ -28,12 +28,41 @@ const Calendar = (props: any) => {
 		lastDays.push(i);
 	}
 
-	const events = props.events
-	console.log(events[0])
+	const events = props.events;
+	console.log(events[0]);
+
+	let currentWeekEnds: number[] = [];
+	let nextWeekEnds: number[] = [];
+	let prevWeekEnds: number[] = [];
+
+	for (let i = 1; i <= daysInMonth; i++) {
+		//looping through days in month
+		let newDate = new Date(year, month, i);
+		if (newDate.getDay() == 0 || newDate.getDay() == 6) {
+			//if Sunday
+			currentWeekEnds.push(i);
+		}
+	}
+	for (let i = 1; i <= daysInMonth; i++) {
+		//looping through days in month
+		let newDate = new Date(year + 1, month, i);
+		if (newDate.getDay() == 0 || newDate.getDay() == 6) {
+			//if Sunday
+			nextWeekEnds.push(i);
+		}
+	}
+	for (let i = 1; i <= daysInMonth; i++) {
+		//looping through days in month
+		let newDate = new Date(year, month - 1, i);
+		if (newDate.getDay() == 0 || newDate.getDay() == 6) {
+			//if Sunday
+			prevWeekEnds.push(i);
+		}
+	}
 
 	const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	const weekDays = ["S", "M", "T", "W", "T", "F", "S"];
-	let index = 0
+	let index = 0;
 	return (
 		<>
 			<main className="bg-gray-800 w-fit h-fit p-2 rounded-lg">
@@ -51,10 +80,12 @@ const Calendar = (props: any) => {
 
 					{days.map(day => {
 						let style = "";
-						
+						if (currentWeekEnds.includes(day)) {
+							style = "text-gray-500 opacity-50";
+						}
 						if (events[index] == day) {
-							style = "text-red-700";
-							index++
+							style = "text-green-500 font-bold";
+							index++;
 						}
 						return <div className={style}> {day}</div>;
 					})}
