@@ -64,7 +64,7 @@ const App = () => {
 				{/* title bar */}
 				<section className="flex justify-around p-2 gap-2 bg-gray-700">
 					<div className="w-1/2 h-10 relative bg-white rounded-md shadow-lg">
-						<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Teams</h1>
+						<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Filters</h1>
 					</div>
 					<div className="w-full h-10 relative bg-white rounded-md shadow-lg">
 						<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Schedule</h1>
@@ -93,15 +93,15 @@ const App = () => {
 						</div>
 					</div>
 
-					<div className="w-full h-full flex flex-col">
-						<section className="h-fit w-fit relative grid grid-cols-2 grid-rows-2 gap-20 p-2 m-auto inset-0">
+					<div className="w-full h-full flex flex-col overflow-auto">
+						<section className="h-fit w-fit relative grid grid-cols-2 grid-rows-2 gap-10 p-2 m-auto inset-0">
 							{months.map(month => (
-								<Calendar events={events[month]} month={month} />
+								<Calendar events={events[month]} month={month}/>
 							))}
 						</section>
 
 						<section className="w-full h-[10%] grid place-content-center">
-							<button className="w-fit h-fit p-2 rounded-lg bg-white hover:scale-110 active:scale-90 duration-75 ease-in-out">
+							<button className="w-fit h-fit p-2 m-2 rounded-lg bg-white hover:scale-110 active:scale-90 duration-75 ease-in-out">
 								<CSVLink filename={"test.csv"} data={csvData}>
 									Download csv
 								</CSVLink>

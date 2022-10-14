@@ -66,28 +66,27 @@ const Calendar = (props: any) => {
 	return (
 		<>
 			<main className="bg-gray-800 w-fit h-fit p-2 rounded-lg">
-				<h1 className="text-center text-2xl font-bold">{months[month]}</h1>
-				<div className="flex justify-around mb-2">
-					{weekDays.map(day => (
-						<div>{day}</div>
-					))}
-				</div>
+				<h1 className="text-center text-lg font-bold">{months[month]}</h1>
 
-				<div className="grid grid-cols-7 grid-rows-6 text-center gap-2">
+				<div className="grid grid-cols-7 grid-rows-7 text-center text-xs">
+						{weekDays.map(day => (
+							<div className="w-8 h-8 text-center">{day}</div>
+						))}
 					{firstDays.map(day => (
 						<div> </div>
 					))}
 
 					{days.map(day => {
-						let style = "";
 						if (currentWeekEnds.includes(day)) {
-							style = "text-gray-500 opacity-50";
+							return <div className={"text-gray-500 -500 relative w-8 h-8 cursor-pointer"}> <p className=" absolute m-auto w-fit h-fit inset-0 text-gray-500 ">{day}</p></div>;
 						}
 						if (events[index] == day) {
-							style = "text-green-500 font-bold";
 							index++;
+							return <div className={"relative w-8 h-8 bg-blue-500 rounded-full cursor-pointer"}> <p className="absolute inset-0 m-auto text-white w-fit h-fit font-bold ">{day}</p></div>;
+						} else {
+
+							return <div className={"text-black relative w-8 h-8 cursor-pointer hoverDay"}> <p className=" absolute m-auto w-fit h-fit inset-0 ">{day}</p></div>;
 						}
-						return <div className={style}> {day}</div>;
 					})}
 
 					{lastDays.map(day => (
