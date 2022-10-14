@@ -5,7 +5,7 @@
 @layer base {
 	.my-gradient {
 		background: rgb(0, 0, 0);
-		background: linear-gradient(45deg, rgba(0, 0, 0, 1) 0%, rgba(73, 73, 73, 1) 100%);
+		background: linear-gradient(45deg, rgba(0, 0, 0, 1) 0%, rgba(52, 50, 50, 1) 100%);
 	}
 
 	.field::after {
@@ -50,7 +50,8 @@
 		transition: transform 400ms;
 	}
 
-	.field:focus-within .label, .input:not(:placeholder-shown) + .label {
+	.field:focus-within .label,
+	.input:not(:placeholder-shown) + .label {
 		transform: scale(0.8) translateY(-1.5rem);
 	}
 
@@ -68,10 +69,9 @@
 		border-bottom: 2px dashed white;
 	}
 
-	.hoverDay:hover{
+	.hoverDay:hover {
 		color: white;
 		background-color: blue;
 		border-radius: 99999px;
-
 	}
 }

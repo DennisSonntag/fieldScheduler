@@ -65,12 +65,12 @@ const Calendar = (props: any) => {
 	let index = 0;
 	return (
 		<>
-			<main className="bg-gray-800 w-fit h-fit p-2 rounded-lg">
-				<h1 className="text-center text-lg font-bold">{months[month]}</h1>
+			<main className="bg-gray-800 w-fit h-fit p-2 rounded-lg shadow-2xl">
+				<h1 className="text-center text-lg font-bold text-white">{months[month]}</h1>
 
 				<div className="grid grid-cols-7 grid-rows-7 text-center text-xs">
 						{weekDays.map(day => (
-							<div className="w-8 h-8 text-center">{day}</div>
+							<div className="w-8 h-8 text-center text-white">{day}</div>
 						))}
 					{firstDays.map(day => (
 						<div> </div>
@@ -85,7 +85,7 @@ const Calendar = (props: any) => {
 							return <div className={"relative w-8 h-8 bg-blue-500 rounded-full cursor-pointer"}> <p className="absolute inset-0 m-auto text-white w-fit h-fit font-bold ">{day}</p></div>;
 						} else {
 
-							return <div className={"text-black relative w-8 h-8 cursor-pointer hoverDay"}> <p className=" absolute m-auto w-fit h-fit inset-0 ">{day}</p></div>;
+							return <div className={"text-white relative w-8 h-8 cursor-pointer hoverDay"}> <p className=" absolute m-auto w-fit h-fit inset-0 ">{day}</p></div>;
 						}
 					})}
 
