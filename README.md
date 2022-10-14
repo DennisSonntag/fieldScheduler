@@ -6,4 +6,13 @@
 ![basics](./public/Screenshot2.png)
 
 
-I will add more info later
+# ToDo list
+- Cal section full screen
+- Web Dev simple filter select component
+- Setup filters
+- FireBase Login
+- Sengrid forgot password
+- FireBase DataBase
+- Calendar more reactive
+- BEtter responsiveness
+- Admin pane 
