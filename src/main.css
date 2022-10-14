@@ -11,4 +11,7 @@
 	.my-shadow {
 		box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.75);
 	}
+	.grid-rows-7{
+		grid-template-columns: repeat(7, minmax(0, 1fr));
+	}
 }

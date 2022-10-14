@@ -1,7 +1,6 @@
 import { CSVLink } from "react-csv";
-import { useState } from "react";
-import Cal from "./Calender";
 import Btn from "./Btn";
+import Calendar from "./Calender";
 
 const App = () => {
 	const csvData = [
@@ -11,11 +10,18 @@ const App = () => {
 		["Yezzi", "Min l3b", "ymin@cocococo.com"],
 	];
 
-	const [divActive, setDivActive] = useState(false);
-	const [startDate, setStartDate] = useState(null);
 	const months = [1, 2, 3, 4, 5, 6];
 
-	const teams = {
+	const events: { [index: number]: number[] } = {
+		1: [6, 12, 28],
+		2: [],
+		3: [17, 20],
+		4: [],
+		5: [],
+		6: [],
+	};
+
+	const teams: { [index: number]: string } = {
 		1: "team",
 		2: "team",
 		3: "team",
@@ -32,6 +38,11 @@ const App = () => {
 
 	return (
 		<>
+			<a href="/">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-6 h-6 absolute top-2 right-2 hover:scale-125 active:scale-90">
+					<path d="M160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96C43 32 0 75 0 128V384c0 53 43 96 96 96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H96c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32h64zM504.5 273.4c4.8-4.5 7.5-10.8 7.5-17.4s-2.7-12.9-7.5-17.4l-144-136c-7-6.6-17.2-8.4-26-4.6s-14.5 12.5-14.5 22v72H192c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32H320v72c0 9.6 5.7 18.2 14.5 22s19 2 26-4.6l144-136z" />
+				</svg>
+			</a>
 			<main className="w-full h-full rounded-xl shadow-2xl ">
 				<nav className="flex w-full h-10">
 					<div className=" bg-gray-700 w-full h-full grid justify-center relative rounded-tl-xl rounded-tr-xl">
@@ -64,20 +75,21 @@ const App = () => {
 							<Btn title="Jr/Sr" />
 						</div>
 						<div className="overflow-auto w-full h-[calc(100%-3rem)]">
-							{Object.keys(teams).map(team => (
-								<div className="w-fit h-fit px-6 py-2 bg-white ml-6 my-6 text-center shadow-xl rounded-md hover:scale-125">
-									<a href="/Login">
-										{teams[team]} {team}
-									</a>
-								</div>
-							))}
+							{Object.keys(teams).map(team => {
+								let teamIndex= Number(team);
+								return (
+									<div className="w-fit h-fit px-6 py-2 bg-white ml-6 my-6 text-center shadow-xl rounded-md hover:scale-125">
+										{teams[teamIndex]} {team}
+									</div>
+								);
+							})}
 						</div>
 					</div>
 
-					<div className="w-full h-full   flex flex-col">
-						<section className="h-5/6 w-full relative grid  grid-cols-3 grid-rows-2 p-2 gap-2">
+					<div className="w-full h-full flex flex-col">
+						<section className="h-fit w-fit relative grid grid-cols-3 grid-rows-2 gap-20 p-2 m-auto inset-0">
 							{months.map(month => (
-								<Cal month={month} />
+								<Calendar events={events[month]} month={month} />
 							))}
 						</section>
 
@@ -95,12 +107,12 @@ const App = () => {
 							<h1 className="text-center">Season Start/End</h1>
 							<div className="flex justify-around">
 								<p>Start</p>
-								{/* <DatePicker onChange={(arg: any) => setStartDate(arg)} value={startDate} /> */}
+								<input type="text" />
 							</div>
 
 							<div className="flex justify-around">
 								<p>End</p>
-								{/* <DatePicker onChange={(arg: any) => setStartDate(arg)} value={startDate} /> */}
+								<input type="text" />
 							</div>
 						</div>
 
@@ -108,7 +120,7 @@ const App = () => {
 							<h1 className="text-center">Breaks/Holidays</h1>
 							<div className="flex justify-around">
 								<p>Event</p>
-								{/* <DatePicker onChange={(arg: any) => setStartDate(arg)} value={startDate} /> */}
+								<input type="text" />
 							</div>
 						</div>
 					</div>

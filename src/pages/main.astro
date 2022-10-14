@@ -1,12 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Login from "../components/Login";
+import App from "../components/App";
 import Bg from "../components/Bg";
 import "../main.css";
 ---
 
-<Layout title="Field Schedulr">
+<Layout title="Field Scheduler">
 	<Bg>
-		<Login client:load />
+		<App client:load />
 	</Bg>
 </Layout>
