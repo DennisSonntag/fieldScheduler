@@ -1,4 +1,4 @@
-import { v4 as uuid } from "uuid";
+import { uuid } from "uuidv4";
 
 const Calendar = (props: any) => {
 	const year = 2022;

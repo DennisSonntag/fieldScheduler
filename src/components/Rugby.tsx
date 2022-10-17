@@ -1,7 +1,7 @@
 import Btn from "./Btn";
 import Calendar from "./Calender";
 import { CSVLink } from "react-csv";
-import { v4 as uuid } from 'uuid';
+import { uuid } from "uuidv4";
 
 const Main = () => {
 	const csvData = [
@@ -80,7 +80,7 @@ const Main = () => {
 
 					<section className="w-full h-[10%] grid place-content-center">
 						<button className="w-fit h-fit p-2 m-2 rounded-lg bg-white hover:scale-110 active:scale-90 duration-75 ease-in-out">
-							<CSVLink  filename={"test.csv"} data={csvData}>
+							<CSVLink filename={"test.csv"} data={csvData}>
 								Download csv
 							</CSVLink>
 						</button>
