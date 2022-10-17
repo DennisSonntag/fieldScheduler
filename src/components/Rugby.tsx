@@ -1,6 +1,7 @@
 import Btn from "./Btn";
 import Calendar from "./Calender";
 import { CSVLink } from "react-csv";
+import { v4 as uuid } from 'uuid';
 
 const Main = () => {
 	const csvData = [
@@ -29,7 +30,7 @@ const Main = () => {
 	};
 
 	const teams: { [index: number]: string } = {
-		1: "Tadf",
+		1: "Team",
 		2: "Team",
 		3: "Team",
 		4: "Team",
@@ -59,7 +60,7 @@ const Main = () => {
 					<div className="translate-y-12 overflow-auto w-full h-[calc(100%-7rem)]">
 						{Object.keys(teams).map(team => {
 							return (
-								<div className="w-fit h-fit px-6 py-2 bg-white ml-6 my-6 text-center shadow-xl rounded-md hover:scale-125">
+								<div key={uuid()} className="w-fit h-fit px-6 py-2 bg-white ml-6 my-6 text-center shadow-xl rounded-md hover:scale-125">
 									{teams[Number(team)]} {team}
 								</div>
 							);
@@ -73,13 +74,13 @@ const Main = () => {
 					</div>
 					<section className="h-fit w-fit relative grid grid-cols-2 grid-rows-2 gap-10 p-2 m-auto inset-0 translate-y-6">
 						{months.map(month => (
-							<Calendar events={events[month]} month={month} />
+							<Calendar key={uuid()} events={events[month]} month={month} />
 						))}
 					</section>
 
 					<section className="w-full h-[10%] grid place-content-center">
 						<button className="w-fit h-fit p-2 m-2 rounded-lg bg-white hover:scale-110 active:scale-90 duration-75 ease-in-out">
-							<CSVLink filename={"test.csv"} data={csvData}>
+							<CSVLink  filename={"test.csv"} data={csvData}>
 								Download csv
 							</CSVLink>
 						</button>

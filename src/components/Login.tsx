@@ -4,16 +4,14 @@ import auth from "./auth";
 
 const Login = () => {
 	const [user, setUser] = useState(null);
-	const login = () => {
-		signInWithEmailAndPassword(auth, email, password)
-			.then(userCredential => {
-				const user = userCredential.user;
-				setUser(user);
-			})
-			.catch(error => {
-				const errorCode = error.code;
-				const errorMessage = error.message;
-			});
+	const login = async () => {
+		try {
+			const user = await signInWithEmailAndPassword(auth, email, password);
+			setUser(user.user);
+		} catch (error) {
+			const errorCode = error.code;
+			const errorMessage = error.message;
+		}
 	};
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
