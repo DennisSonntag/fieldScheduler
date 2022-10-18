@@ -1,5 +1,3 @@
-import { uuid } from "uuidv4";
-
 const Calendar = (props: any) => {
 	const year = 2022;
 	const month = props.month;
@@ -31,6 +29,7 @@ const Calendar = (props: any) => {
 	}
 
 	const events = props.events;
+	console.log(events[0]);
 
 	let currentWeekEnds: number[] = [];
 	let nextWeekEnds: number[] = [];
@@ -70,47 +69,28 @@ const Calendar = (props: any) => {
 				<h1 className="text-center text-lg font-bold text-white">{months[month]}</h1>
 
 				<div className="grid grid-cols-7 grid-rows-7 text-center text-xs">
-					{weekDays.map(day => (
-						<div key={uuid()} className="w-8 h-8 text-center text-white">
-							{day}
-						</div>
-					))}
+						{weekDays.map(day => (
+							<div className="w-8 h-8 text-center text-white">{day}</div>
+						))}
 					{firstDays.map(day => (
-						<div key={uuid()}> </div>
+						<div> </div>
 					))}
 
 					{days.map(day => {
 						if (currentWeekEnds.includes(day)) {
-							return (
-								<div key={uuid()} className={"text-gray-500 -500 relative w-8 h-8 cursor-pointer"}>
-									<p key={uuid()} className=" absolute m-auto w-fit h-fit inset-0 text-gray-500 ">
-										{day}
-									</p>
-								</div>
-							);
+							return <div className={"text-gray-500 -500 relative w-8 h-8 cursor-pointer"}> <p className=" absolute m-auto w-fit h-fit inset-0 text-gray-500 ">{day}</p></div>;
 						}
 						if (events[index] == day) {
 							index++;
-							return (
-								<div key={uuid()} className={"relative w-7 h-7 bg-blue-500 rounded-full cursor-pointer"}>
-									<p key={uuid()} className="absolute inset-0 m-auto text-white w-fit h-fit font-bold ">
-										{day}
-									</p>
-								</div>
-							);
+							return <div className={"relative w-8 h-8 bg-blue-500 rounded-full cursor-pointer"}> <p className="absolute inset-0 m-auto text-white w-fit h-fit font-bold ">{day}</p></div>;
 						} else {
-							return (
-								<div key={uuid()} className={"text-white relative w-8 h-8 cursor-pointer hoverDay"}>
-									<p key={uuid()} className=" absolute m-auto w-fit h-fit inset-0 ">
-										{day}
-									</p>
-								</div>
-							);
+
+							return <div className={"text-white relative w-8 h-8 cursor-pointer hoverDay"}> <p className=" absolute m-auto w-fit h-fit inset-0 ">{day}</p></div>;
 						}
 					})}
 
 					{lastDays.map(day => (
-						<div key={uuid()}> </div>
+						<div> </div>
 					))}
 				</div>
 			</main>

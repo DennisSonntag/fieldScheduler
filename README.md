@@ -8,11 +8,12 @@
 
 # ToDo list
 - Cal section full screen
+- Cal multiple views (day, week, month, season, ext.)
 - Web Dev simple filter select component
 - Setup filters
-- FireBase Login
-- Sengrid forgot password
+- Add forgot password button
+- Invalid login info 
 - FireBase DataBase
-- Calendar more reactive
-- BEtter responsiveness
 - Admin pane 
+- Change both panes as slide outs
+- Daisy ui Maybe
