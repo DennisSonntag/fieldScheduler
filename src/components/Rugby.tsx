@@ -1,9 +1,11 @@
 import Btn from "./Btn";
 import Calendar from "./Calender";
 import { CSVLink } from "react-csv";
+import { v4 as uuid } from "uuid";
+import Sport from "./Sport";
 
 const Main = () => {
-const csvData = [
+	const csvData = [
 		[
 			"Home Team",
 			"Visitor Team",
@@ -44,75 +46,70 @@ const csvData = [
 	};
 
 	return (
-
-			<main className="w-full h-full rounded-xl shadow-2xl ">
-				<section className="flex w-full h-[calc(100%-6rem)] bg-gray-700 rounded-bl-xl rounded-br-xl">
-					<div className="w-1/2 h-full  rounded-bl-xl opacity-40 hover:opacity-100 duration-150 ease-in-out relative ">
-						<div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-white rounded-md shadow-lg mt-2">
-							<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Filters</h1>
-						</div>
-
-						<div className="pt-14 flex w-ful h-10 justify-around">
-							<Btn title="Div n" />
-							<Btn title="School" />
-							<Btn title="Jr/Sr" />
-						</div>
-						<div className="translate-y-12 overflow-auto w-full h-[calc(100%-7rem)]">
-							{Object.keys(teams).map(team => {
-								return (
-									<div className="w-fit h-fit px-6 py-2 bg-white ml-6 my-6 text-center shadow-xl rounded-md hover:scale-125">
-										{teams[Number(team)]} {team}
-									</div>
-								);
-							})}
-						</div>
+		<Sport>
+			<div className="w-1/2 h-full rounded-bl-xl opacity-40 hover:opacity-100 duration-150 ease-in-out relative flex flex-col">
+				<div className="w-full h-16 p-3">
+					<div className="w-full h-full relative bg-white rounded-md shadow-lg">
+						<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Filters</h1>
 					</div>
+				</div>
 
-					<div className="w-full h-full flex flex-col overflow-auto opacity-40 hover:opacity-100 duration-150 ease-in-out relative">
-						<div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-white rounded-md shadow-lg mt-2">
-							<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Schedule</h1>
+				<div className="flex w-ful h-10 justify-around">
+					<Btn title="Div n" />
+					<Btn title="School" />
+					<Btn title="Jr/Sr" />
+				</div>
+				<div className=" w-full h-[calc(100%-6rem)] overflow-y-auto flex flex-col gap-4 p-2">
+					{Object.keys(teams).map(team => (
+						<div key={uuid()} className="w-fit h-fit px-6 py-2 bg-white text-center shadow-xl rounded-md hover:scale-125">
+							{teams[Number(team)]} {team}
 						</div>
-						<section className="h-fit w-fit relative grid grid-cols-2 grid-rows-2 gap-10 p-2 m-auto inset-0 translate-y-6">
-							{months.map(month => (
-								<Calendar events={events[month]} month={month} />
-							))}
-						</section>
+					))}
+				</div>
+			</div>
 
-						<section className="w-full h-[10%] grid place-content-center">
-							<button className="w-fit h-fit p-2 m-2 rounded-lg bg-white hover:scale-110 active:scale-90 duration-75 ease-in-out">
-								<CSVLink filename={"test.csv"} data={csvData}>
-									Download csv
-								</CSVLink>
-							</button>
-						</section>
-					</div>
-
-					<div className="w-1/2 h-full  rounded-bl-xl opacity-40 hover:opacity-100 duration-150 ease-in-out relative">
-						<div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-white rounded-md shadow-lg mt-2">
-							<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Add/Edit Events</h1>
-						</div>
-						<div className="w-full h-full py-6 translate-y-8">
-							<h1 className="text-center">Season Start/End</h1>
-							<div className="flex justify-around">
-								<p>Start</p>
-								<input type="text" />
-							</div>
-
-							<div className="flex justify-around">
-								<p>End</p>
-								<input type="text" />
-							</div>
-							<h1 className="text-center">Breaks/Holidays</h1>
-							<div className="flex justify-around">
-								<p>Event</p>
-								<input type="text" />
-							</div>
-						</div>
-					</div>
+			<div className="w-full h-full flex flex-col overflow-auto opacity-40 hover:opacity-100 duration-150 ease-in-out relative">
+				<div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-white rounded-md shadow-lg mt-2">
+					<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Schedule</h1>
+				</div>
+				<section className="h-fit w-fit relative grid grid-cols-2 grid-rows-2 gap-10 p-2 m-auto inset-0 translate-y-6">
+					{months.map(month => (
+						<Calendar key={uuid()} events={events[month]} month={month} />
+					))}
 				</section>
-			</main>
 
-	)
+				<section className="w-full h-[10%] grid place-content-center">
+					<button className="w-fit h-fit p-2 m-2 rounded-lg bg-white hover:scale-110 active:scale-90 duration-75 ease-in-out">
+						<CSVLink filename={"test.csv"} data={csvData}>
+							Download csv
+						</CSVLink>
+					</button>
+				</section>
+			</div>
 
-}
-export default Main
+			<div className="w-1/2 h-full  rounded-bl-xl opacity-40 hover:opacity-100 duration-150 ease-in-out relative">
+				<div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-white rounded-md shadow-lg mt-2">
+					<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Add/Edit Events</h1>
+				</div>
+				<div className="w-full h-full py-6 translate-y-8">
+					<h1 className="text-center">Season Start/End</h1>
+					<div className="flex justify-around">
+						<p>Start</p>
+						<input type="text" />
+					</div>
+
+					<div className="flex justify-around">
+						<p>End</p>
+						<input type="text" />
+					</div>
+					<h1 className="text-center">Breaks/Holidays</h1>
+					<div className="flex justify-around">
+						<p>Event</p>
+						<input type="text" />
+					</div>
+				</div>
+			</div>
+		</Sport>
+	);
+};
+export default Main;
