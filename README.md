@@ -13,3 +13,7 @@
 - Invalid login info 
 - FireBase DataBase
 - Admin pane 
+- Date picker (events pane)
+- school and division specific events 
+- add teams 
+- compare soccer and rugby schedules
