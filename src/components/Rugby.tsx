@@ -81,7 +81,7 @@ const Main = () => {
 				</div>
 			</section>
 
-			<SideBtn setState={setLeftOpen} state={leftOpen} sign="-130%" deg="180deg" deg1="0deg"/>
+			<SideBtn setState={setLeftOpen} state={leftOpen} side={false}/>
 
 			<section className="w-full h-full flex flex-col overflow-auto hover-fade relative">
 				<div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-white rounded-md shadow-lg mt-2">
@@ -112,7 +112,7 @@ const Main = () => {
 				</div>
 			</section>
 
-			<SideBtn setState={setRightOpen} state={rightOpen} sign="130%" deg="0deg" deg1="180deg"/>
+			<SideBtn setState={setRightOpen} state={rightOpen} side={true}/>
 
 			<section className={rightOpen ? "w-1/2 h-full rounded-bl-xl relative hover-fade overflow-hidden" : "w-0 h-full rounded-bl-xl relative hover-fade translate-x-full overflow-hidden"}>
 				<div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-white rounded-md shadow-lg mt-2">
