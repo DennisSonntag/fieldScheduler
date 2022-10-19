@@ -5,7 +5,8 @@
 @layer base {
 	.my-gradient {
 		background: rgb(0, 0, 0);
-		background: linear-gradient(45deg, rgba(0, 0, 0, 1) 0%, rgba(52, 50, 50, 1) 100%);
+		/* background: linear-gradient(45deg, rgba(0, 0, 0, 1) 0%, rgba(52, 50, 50, 1) 100%); */
+		background: linear-gradient(45deg, #0f172a 0%, #64748b 100%);
 	}
 
 	.field::after {
@@ -71,8 +72,10 @@
 
 	.hoverDay:hover {
 		color: white;
-		background-color: blue;
+		/* background-color: blue; */
 		border-radius: 99999px;
+		background-color: #1e40af;
+		/* font-weight: bold; */
 	}
 
 	.hover-fade {

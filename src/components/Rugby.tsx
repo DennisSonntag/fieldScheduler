@@ -4,6 +4,8 @@ import { CSVLink } from "react-csv";
 import { v4 as uuid } from "uuid";
 import Sport from "./Sport";
 import { useState } from "react";
+import download from "../../assets/svg/download.svg";
+import SideBtn from "./SideBtn";
 
 const Main = () => {
 	const csvData = [
@@ -46,13 +48,19 @@ const Main = () => {
 		12: "Team",
 	};
 
-
-	const [rightOpen, setRightOpen] = useState(false)
-	const [leftOpen, setLeftOpen] = useState(false)
+	const [rightOpen, setRightOpen] = useState(false);
+	const [leftOpen, setLeftOpen] = useState(false);
+	const [hover, setHover] = useState(false);
 
 	return (
 		<Sport>
-			<section className={leftOpen ? "w-1/2 h-full rounded-bl-xl hover-fade relative flex flex-col overflow-hidden" : "w-0 h-full rounded-bl-xl hover-fade relative flex flex-col translate-x-[-100%] overflow-hidden"}>
+			<section
+				className={
+					leftOpen
+						? "w-1/2 h-full rounded-bl-xl hover-fade relative flex flex-col overflow-hidden"
+						: "w-0 h-full rounded-bl-xl hover-fade relative flex flex-col translate-x-[-100%] overflow-hidden"
+				}
+			>
 				<div className="w-full h-16 p-3">
 					<div className="w-full h-full relative bg-white rounded-md shadow-lg">
 						<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Filters</h1>
@@ -73,10 +81,7 @@ const Main = () => {
 				</div>
 			</section>
 
-			<section className="pt-4 hover-fade">
-				<button onClick={()=> setLeftOpen(!leftOpen)} className=" w-8 h-8 bg-white rounded-md shadow-lg hover:scale-110 active:scale-95">{leftOpen ? "X" : "O"}</button>
-				{/* <button onClick={()=> alert("hello")} className=" w-8 h-8 bg-white rounded-md shadow-lg hover:scale-110 active:scale-95">{leftOpen ? "X" : "O"}</button> */}
-			</section>
+			<SideBtn setState={setLeftOpen} state={leftOpen} sign="-130%" deg="180deg" deg1="0deg"/>
 
 			<section className="w-full h-full flex flex-col overflow-auto hover-fade relative">
 				<div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-white rounded-md shadow-lg mt-2">
@@ -84,24 +89,32 @@ const Main = () => {
 				</div>
 				<section className="h-fit w-fit relative grid grid-cols-2 grid-rows-2 gap-10 p-2 m-auto inset-0 translate-y-6">
 					{months.map(month => (
-						<Calendar  key={uuid()} events={events[month]} month={month} />
+						<Calendar key={uuid()} events={events[month]} month={month} />
 					))}
 				</section>
 
-				<section className="w-full h-[10%] grid place-content-center">
-					<button className="w-fit h-fit p-2 m-2 rounded-lg bg-white hover:scale-110 active:scale-90 duration-75 ease-in-out">
-						<CSVLink filename={"test.csv"} data={csvData}>
-							Download csv
-						</CSVLink>
-					</button>
-				</section>
+				<div className="w-full h-[10%] grid place-content-center">
+					<CSVLink filename={"test.csv"} data={csvData}>
+						<button
+							onMouseEnter={() => setHover(true)}
+							onMouseLeave={() => setHover(false)}
+							className={
+								hover
+									? "pl-2 w-[9.5rem] h-14  m-2 rounded-lg bg-white active:scale-90 duration-75 ease-in-out flex items-center overflow-hidden"
+									: "overflow-hidden w-[3rem] p-2 h-14   m-2 rounded-lg bg-white hover:scale-110 active:scale-90 duration-75 ease-in-out flex items-center"
+							}
+						>
+							<img src={download} alt="" srcSet="" className="w-8 h-8 " />
+
+							<p className={hover ? "w-fit h-fit whitespace-nowrap duration-300" : "duration-300 whitespace-nowrap w-fit h-fit translate-x-[-150%]"}>Download Csv</p>
+						</button>
+					</CSVLink>
+				</div>
 			</section>
 
-			<section className="pt-4 hover-fade">
-				<button onClick={()=> setRightOpen(!rightOpen)} className=" w-8 h-8 bg-white rounded-md shadow-lg hover:scale-110 active:scale-95">{rightOpen ? "X" : "O"}</button>
-			</section>
+			<SideBtn setState={setRightOpen} state={rightOpen} sign="130%" deg="0deg" deg1="180deg"/>
 
-			<section className={rightOpen ? "w-1/2 h-full rounded-bl-xl relative hover-fade overflow-hidden": "w-0 h-full rounded-bl-xl relative hover-fade translate-x-full overflow-hidden"}>
+			<section className={rightOpen ? "w-1/2 h-full rounded-bl-xl relative hover-fade overflow-hidden" : "w-0 h-full rounded-bl-xl relative hover-fade translate-x-full overflow-hidden"}>
 				<div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-white rounded-md shadow-lg mt-2">
 					<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Add/Edit Events</h1>
 				</div>

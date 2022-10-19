@@ -64,7 +64,7 @@ const Calendar = (props: any) => {
 
 				{firstDays.map(day => (
 					<div key={uuid()} className={"text-black relative w-8 h-8 cursor-pointer"}>
-						<p className=" absolute m-auto w-fit h-fit inset-0 ">{day}</p>
+						<p className=" absolute m-auto w-fit h-fit inset-0 "></p>
 					</div>
 				))}
 
@@ -97,7 +97,7 @@ const Calendar = (props: any) => {
 
 				{lastDays.map(day => (
 					<div key={uuid()} className="text-black relative w-7 h-7 cursor-pointer">
-						<p className=" absolute m-auto w-fit h-fit inset-0 ">{day}</p>
+						<p className=" absolute m-auto w-fit h-fit inset-0 "></p>
 					</div>
 				))}
 			</div>
