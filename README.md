@@ -1,10 +1,8 @@
 # Welcome to🏉📚[Rugby/Soccer Field Booker](https://fieldbooker.netlify.app)
 
-
 ![basics](./public/Screenshot.png)
 ![basics](./public/Screenshot2.png)
 ![basics](./public/Screenshot3.png)
-
 
 # ToDo list
 - Cal section full screen
@@ -15,5 +13,3 @@
 - Invalid login info 
 - FireBase DataBase
 - Admin pane 
-- Change both panes as slide outs
-- Daisy ui Maybe

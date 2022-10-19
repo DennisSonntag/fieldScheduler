@@ -74,4 +74,13 @@
 		background-color: blue;
 		border-radius: 99999px;
 	}
+
+	.hover-fade {
+		opacity: 40%;
+		transition: all 150ms ease-in-out;
+	}
+
+	.hover-fade:hover{
+		opacity: 100%;
+	}
 }

@@ -3,6 +3,7 @@ import Calendar from "./Calender";
 import { CSVLink } from "react-csv";
 import { v4 as uuid } from "uuid";
 import Sport from "./Sport";
+import { useState } from "react";
 
 const Main = () => {
 	const csvData = [
@@ -45,9 +46,13 @@ const Main = () => {
 		12: "Team",
 	};
 
+
+	const [rightOpen, setRightOpen] = useState(false)
+	const [leftOpen, setLeftOpen] = useState(false)
+
 	return (
 		<Sport>
-			<div className="w-1/2 h-full rounded-bl-xl opacity-40 hover:opacity-100 duration-150 ease-in-out relative flex flex-col">
+			<section className={leftOpen ? "w-1/2 h-full rounded-bl-xl hover-fade relative flex flex-col overflow-hidden" : "w-0 h-full rounded-bl-xl hover-fade relative flex flex-col translate-x-[-100%] overflow-hidden"}>
 				<div className="w-full h-16 p-3">
 					<div className="w-full h-full relative bg-white rounded-md shadow-lg">
 						<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Filters</h1>
@@ -66,15 +71,20 @@ const Main = () => {
 						</div>
 					))}
 				</div>
-			</div>
+			</section>
 
-			<div className="w-full h-full flex flex-col overflow-auto opacity-40 hover:opacity-100 duration-150 ease-in-out relative">
+			<section className="pt-4 hover-fade">
+				<button onClick={()=> setLeftOpen(!leftOpen)} className=" w-8 h-8 bg-white rounded-md shadow-lg hover:scale-110 active:scale-95">{leftOpen ? "X" : "O"}</button>
+				{/* <button onClick={()=> alert("hello")} className=" w-8 h-8 bg-white rounded-md shadow-lg hover:scale-110 active:scale-95">{leftOpen ? "X" : "O"}</button> */}
+			</section>
+
+			<section className="w-full h-full flex flex-col overflow-auto hover-fade relative">
 				<div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-white rounded-md shadow-lg mt-2">
 					<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Schedule</h1>
 				</div>
 				<section className="h-fit w-fit relative grid grid-cols-2 grid-rows-2 gap-10 p-2 m-auto inset-0 translate-y-6">
 					{months.map(month => (
-						<Calendar key={uuid()} events={events[month]} month={month} />
+						<Calendar  key={uuid()} events={events[month]} month={month} />
 					))}
 				</section>
 
@@ -85,9 +95,13 @@ const Main = () => {
 						</CSVLink>
 					</button>
 				</section>
-			</div>
+			</section>
 
-			<div className="w-1/2 h-full  rounded-bl-xl opacity-40 hover:opacity-100 duration-150 ease-in-out relative">
+			<section className="pt-4 hover-fade">
+				<button onClick={()=> setRightOpen(!rightOpen)} className=" w-8 h-8 bg-white rounded-md shadow-lg hover:scale-110 active:scale-95">{rightOpen ? "X" : "O"}</button>
+			</section>
+
+			<section className={rightOpen ? "w-1/2 h-full rounded-bl-xl relative hover-fade overflow-hidden": "w-0 h-full rounded-bl-xl relative hover-fade translate-x-full overflow-hidden"}>
 				<div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-white rounded-md shadow-lg mt-2">
 					<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Add/Edit Events</h1>
 				</div>
@@ -108,7 +122,7 @@ const Main = () => {
 						<input type="text" />
 					</div>
 				</div>
-			</div>
+			</section>
 		</Sport>
 	);
 };
