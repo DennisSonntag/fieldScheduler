@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import { signInWithEmailAndPassword, sendPasswordResetEmail, User } from "firebase/auth";
 import { useEffect, useRef, useState } from "react";
 import auth from "./auth";
@@ -42,18 +41,6 @@ const Login = () => {
 		}
 	}, [user]);
 
-	// const forgotPassword =  async () => {
-	// 		try {
-	// 			await sendPasswordResetEmail(auth, "sonntagdennis8@gmail.com")
-	// 			alert("Email Sent")
-
-	// 		} catch (error) {
-	// 			const errorCode = error.code;
-	// 			const errorMessage = error.message;
-	// 			alert("Error")
-
-	// 		}
-	// };
 	const forgotPassword = () => {
 		alert("add modal here");
 		// try {

@@ -6,6 +6,7 @@ import Sport from "./Sport";
 import { useState } from "react";
 import download from "../../assets/svg/download.svg";
 import SideBtn from "./SideBtn";
+import  Select, { SelectOption }  from "./Select";
 
 const Main = () => {
 	const csvData = [
@@ -49,13 +50,34 @@ const Main = () => {
 	};
 
 	const [rightOpen, setRightOpen] = useState(false);
-	const [leftOpen, setLeftOpen] = useState(false);
+	const [leftOpen, setLeftOpen] = useState(true);
 
 	// const [rightOpen, setRightOpen] = useState(true);
 	// const [leftOpen, setLeftOpen] = useState(true);
 
 	const [hover, setHover] = useState(false);
 
+	const divisions = [
+		{ label: "Div 1", value: 1 },
+		{ label: "Div 2", value: 2 },
+		{ label: "Div 3", value: 3 },
+	];
+
+	const schools = [
+		{ label: "Churchill", value: 1 },
+		{ label: "Bowless", value: 2 },
+		{ label: "Other schools", value: 3 },
+	];
+	
+	const seniorities = [
+		{ label: "Senior", value: 1 },
+		{ label: "Junior", value: 2 },
+	];
+
+
+	const [divSelect, setDivSelect] = useState([])
+	const [schoolSelect, setSchoolSelect] = useState([])
+	const [senioritySelect, setSenioritySelect] = useState([])
 	return (
 		<Sport>
 			<section
@@ -72,10 +94,15 @@ const Main = () => {
 				</div>
 
 				<div className="flex w-ful h-10 justify-around">
-					<Btn title="Div n" />
-					<Btn title="School" />
-					<Btn title="Jr/Sr" />
+					<Select multiple options={divisions} title="Div n" selected={divSelect} onChange={(o: any) => setDivSelect(o)} />
+					<Select multiple options={schools} title="School" selected={schoolSelect} onChange={(o: any) => setSchoolSelect(o)} />
+					<Select multiple options={seniorities} title="Sr/Jr" selected={senioritySelect} onChange={(o: any) => setSenioritySelect(o)} />
 				</div>
+
+				<div className="w-full h-10 my-2 shrink-0">{divSelect.map((val:SelectOption) => val.label)}</div>
+				<div className="w-full h-10 my-2 shrink-0">{schoolSelect.map((val:SelectOption) => val.label)}</div>
+				<div className="w-full h-10 my-2 shrink-0">{senioritySelect.map((val:SelectOption) => val.label)}</div>
+
 				<div className=" w-full h-[calc(100%-6rem)] overflow-y-auto flex flex-col gap-4 p-2">
 					{Object.keys(teams).map(team => (
 						<div key={uuid()} className="w-fit h-fit px-6 py-2 bg-white text-center shadow-xl rounded-md hover:scale-125">
@@ -92,9 +119,6 @@ const Main = () => {
 					<div className="w-full h-full relative bg-white rounded-md shadow-lg">
 						<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Schedule</h1>
 					</div>
-					{/* <div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-white rounded-md shadow-lg mt-2">
-						<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Schedule</h1>
-					</div> */}
 				</section>
 
 				<section className="h-full w-full  grid my-col-2 auto-rows-auto gap-4 p-8 place-content-center justify-evenly overflow-hidden">

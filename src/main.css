@@ -92,10 +92,8 @@
 
 	.hoverDay:hover {
 		color: white;
-		/* background-color: blue; */
 		border-radius: 99999px;
 		background-color: #1e40af;
-		/* font-weight: bold; */
 	}
 
 	.hover-fade {
@@ -106,4 +104,39 @@
 	.hover-fade:hover {
 		opacity: 100%;
 	}
+
+
+	.top-calc {
+		top: calc(100% + 0.25em);
+	}
+
+	.option-badge {
+		display: flex;
+		align-items: center;
+		border: 0.05em solid #777;
+		border-radius: 0.25em;
+		padding: 0.15em 0.25em;
+		gap: 0.25em;
+		cursor: pointer;
+		background: none;
+		outline: none;
+	}
+
+	.option-badge:hover,
+	.option-badge:focus {
+		background-color: hsl(0, 100%, 90%);
+		border-color: hsl(0, 100%, 50%);
+	}
+
+	.option-badge:hover > .remove-btn,
+	.option-badge:focus > .remove-btn {
+		color: hsl(0, 100%, 50%);
+	}
+
+	.option-badge > .remove-btn {
+		font-size: 1.25em;
+		color: #777;
+	}
+
+
 }

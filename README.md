@@ -9,7 +9,11 @@
 - Cal section full screen
 - Cal multiple views (day, week, month, season, ext.)
 - Web Dev simple filter select component
-- Setup filters
+- Dropdown no duplicate  
+- indicate selected
+- show valid teams
+- team colors
+- no overflow team section
 - Forgot password modal popup
 - Forgot password template email
 - FireBase DataBase (store schedule)
