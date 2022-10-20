@@ -3,15 +3,18 @@
 ![basics](./assets/images/screenshot.png)
 ![basics](./assets/images/screenshot1.png)
 ![basics](./assets/images/screenshot2.png)
+![basics](./assets/images/screenshot3.png)
 
 # ToDo list
 - Cal section full screen
 - Cal multiple views (day, week, month, season, ext.)
 - Web Dev simple filter select component
 - Setup filters
-- Add forgot password button
-- Invalid login info 
-- FireBase DataBase
+- Forgot password modal popup
+- Forgot password template email
+- FireBase DataBase (store schedule)
+- games already happened
+- calendar event hover effect
 - Admin pane 
 - Date picker (events pane)
 - school and division specific events 

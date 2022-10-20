@@ -50,6 +50,10 @@ const Main = () => {
 
 	const [rightOpen, setRightOpen] = useState(false);
 	const [leftOpen, setLeftOpen] = useState(false);
+
+	// const [rightOpen, setRightOpen] = useState(true);
+	// const [leftOpen, setLeftOpen] = useState(true);
+
 	const [hover, setHover] = useState(false);
 
 	return (
@@ -61,7 +65,7 @@ const Main = () => {
 						: "w-0 h-full rounded-bl-xl hover-fade relative flex flex-col translate-x-[-100%] overflow-hidden"
 				}
 			>
-				<div className="w-full h-16 p-3">
+				<div className="w-full h-16 p-3 ">
 					<div className="w-full h-full relative bg-white rounded-md shadow-lg">
 						<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Filters</h1>
 					</div>
@@ -81,19 +85,25 @@ const Main = () => {
 				</div>
 			</section>
 
-			<SideBtn setState={setLeftOpen} state={leftOpen} side={false}/>
+			<SideBtn setState={setLeftOpen} state={leftOpen} side={false} />
 
 			<section className="w-full h-full flex flex-col overflow-auto hover-fade relative">
-				<div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-white rounded-md shadow-lg mt-2">
-					<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Schedule</h1>
-				</div>
-				<section className="h-fit w-fit relative grid grid-cols-2 grid-rows-2 gap-10 p-2 m-auto inset-0 translate-y-6">
+				<section className="w-full h-16 p-3">
+					<div className="w-full h-full relative bg-white rounded-md shadow-lg">
+						<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Schedule</h1>
+					</div>
+					{/* <div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-white rounded-md shadow-lg mt-2">
+						<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Schedule</h1>
+					</div> */}
+				</section>
+
+				<section className="h-full w-full  grid my-col-2 auto-rows-auto gap-4 p-8 place-content-center justify-evenly overflow-hidden">
 					{months.map(month => (
 						<Calendar key={uuid()} events={events[month]} month={month} />
 					))}
 				</section>
 
-				<div className="w-full h-[10%] grid place-content-center">
+				<div className="w-full h-[10%] grid place-content-center ">
 					<CSVLink filename={"test.csv"} data={csvData}>
 						<button
 							onMouseEnter={() => setHover(true)}
@@ -112,7 +122,7 @@ const Main = () => {
 				</div>
 			</section>
 
-			<SideBtn setState={setRightOpen} state={rightOpen} side={true}/>
+			<SideBtn setState={setRightOpen} state={rightOpen} side={true} />
 
 			<section className={rightOpen ? "w-1/2 h-full rounded-bl-xl relative hover-fade overflow-hidden" : "w-0 h-full rounded-bl-xl relative hover-fade translate-x-full overflow-hidden"}>
 				<div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-white rounded-md shadow-lg mt-2">

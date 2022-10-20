@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { v4 as uuid } from "uuid";
 
 const Calendar = (props: any) => {
@@ -52,18 +53,26 @@ const Calendar = (props: any) => {
 	const weekDays = ["S", "M", "T", "W", "T", "F", "S"];
 	let index = 0;
 
+	const [active, setActive] = useState(false);
+
+	let style = `${active ? "bg-red-500": "neo-800"} w-full aspect-square  p-2 rounded-lg  hover:scale-110 duration-150 ease-in-out m-auto`;
+
+	const handleClick = () => {
+		setActive(prev => !prev)
+	}
+
 	return (
-		<main className="bg-gray-800 w-fit h-fit p-2 rounded-lg shadow-2xl hover:scale-110 duration-150 ease-in-out">
+		<main onClick={handleClick} className={style}>
 			<h1 className="text-center text-lg font-bold text-white">{months[month]}</h1>
-			<div className="grid grid-cols-7 grid-rows-7 text-center text-xs">
+			<div className="grid grid-cols-7 grid-rows-7 text-center text-md h-full">
 				{weekDays.map(day => (
-					<div key={uuid()} className="w-8 h-8 text-center text-white">
+					<div key={uuid()} className="w-full h-full text-center text-white">
 						{day}
 					</div>
 				))}
 
 				{firstDays.map(day => (
-					<div key={uuid()} className={"text-black relative w-8 h-8 cursor-pointer"}>
+					<div key={uuid()} className={"text-black relative w-full h-full cursor-pointer"}>
 						<p className=" absolute m-auto w-fit h-fit inset-0 "></p>
 					</div>
 				))}
@@ -72,7 +81,7 @@ const Calendar = (props: any) => {
 					if (currentWeekEnds.includes(day)) {
 						// weekends
 						return (
-							<div key={uuid()} className={"text-gray-500 -500 relative w-8 h-8 cursor-pointer"}>
+							<div key={uuid()} className={"text-gray-500 relative w-full h-full cursor-pointer"}>
 								<p className=" absolute m-auto w-fit h-fit inset-0 text-gray-500 ">{day}</p>
 							</div>
 						);
@@ -81,14 +90,14 @@ const Calendar = (props: any) => {
 						index++;
 						// days with events
 						return (
-							<div key={uuid()} className="relative w-7 h-7 bg-blue-500 rounded-full cursor-pointer">
+							<div key={uuid()} className="relative w-11/12 h-11/12 aspect-square bg-blue-500 rounded-full cursor-pointer">
 								<p className="absolute inset-0 m-auto text-white w-fit h-fit font-bold ">{day}</p>
 							</div>
 						);
 					} else {
 						// normal weekdays
 						return (
-							<div key={uuid()} className="text-white relative w-7 h-7 cursor-pointer hoverDay">
+							<div key={uuid()} className="text-white relative w-11/12 h-11/12 aspect-square cursor-pointer hoverDay">
 								<p className=" absolute m-auto w-fit h-fit inset-0 ">{day}</p>
 							</div>
 						);
@@ -96,7 +105,7 @@ const Calendar = (props: any) => {
 				})}
 
 				{lastDays.map(day => (
-					<div key={uuid()} className="text-black relative w-7 h-7 cursor-pointer">
+					<div key={uuid()} className="text-black relative w-full h-full cursor-pointer">
 						<p className=" absolute m-auto w-fit h-fit inset-0 "></p>
 					</div>
 				))}

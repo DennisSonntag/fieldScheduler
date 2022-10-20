@@ -8,15 +8,11 @@ const App = () => {
 	const [rugbyActive, setRugbyActive] = useState(true);
 	const [soccerActive, setSoccerActive] = useState(false);
 
-	const setRugby = () => {
-		setRugbyActive(prev => true);
-		setSoccerActive(prev => false);
+	const setSport = () => {
+		setRugbyActive(prev => !prev);
+		setSoccerActive(prev => !prev);
 	};
 
-	const setSoccer = () => {
-		setRugbyActive(prev => false);
-		setSoccerActive(prev => true);
-	};
 
 	return (
 		<>
@@ -27,8 +23,8 @@ const App = () => {
 			</a>
 			<div className="w-[calc(100%-4rem)] h-[calc(100%-4rem)] absolute inset-0 m-auto ">
 				<nav className="flex w-full h-16 p-2 gap-2 box-border">
-					<Sport sport="Rugby" thing={rugbyActive} click={setRugby} />
-					<Sport sport="Soccer" thing={soccerActive} click={setSoccer} />
+					<Sport sport="Rugby" thing={rugbyActive} click={setSport} />
+					<Sport sport="Soccer" thing={soccerActive} click={setSport} />
 				</nav>
 				{rugbyActive ? <Rugby /> : <Soccer />}
 			</div>

@@ -15,7 +15,7 @@
 		display: block;
 		height: 4px;
 		width: 100%;
-		background-color: purple;
+		background-color: #3a4972;
 		transform: scaleX(0);
 		transform-origin: 0%;
 		transition: transform 500ms ease;
@@ -33,6 +33,13 @@
 		font-size: 1.2em;
 		font-weight: bold;
 		transition: border 500ms;
+	}
+	.my-size {
+		font-size: 8rem;
+	}
+
+	.my-col-2 {
+		grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
 	}
 
 	.field:focus-within {
@@ -59,6 +66,19 @@
 	.my-shadow {
 		box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.75);
 	}
+
+	
+	.neo-700 {
+		box-shadow: 0px 0px 28px 2px rgba(30, 41, 59, 0.8);
+		background: linear-gradient(145deg, #3b4657, #323b49);
+	}
+
+	.neo-800{
+		background: linear-gradient(145deg, hsl(215, 28%, 20%), hsl(215, 28%, 15%));
+		/* background: linear-gradient(145deg, #3b4657, #323b49); */
+		box-shadow: 0px 0px 27px -1px rgba(31, 41, 55,0.75);
+	}
+
 	.grid-cols-7 {
 		grid-template-columns: repeat(7, minmax(0, 1fr));
 	}
@@ -83,7 +103,7 @@
 		transition: all 150ms ease-in-out;
 	}
 
-	.hover-fade:hover{
+	.hover-fade:hover {
 		opacity: 100%;
 	}
 }
