@@ -1,8 +1,9 @@
 import { useState } from "react";
+
 import Rugby from "./Rugby";
 import Soccer from "./Soccer";
 import SportSelect from "./SportSelect";
-import compare from "../../assets/svg/compare.svg";
+// import compare from "../../assets/svg/compare.svg";
 
 const App = () => {
 	// false == rugby, true == soccer

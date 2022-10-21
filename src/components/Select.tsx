@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+
 import caret from "../../assets/svg/caret.svg"
 
 export type SelectOption = {

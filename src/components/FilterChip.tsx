@@ -1,5 +1,6 @@
-import type { SelectOption } from "./Select";
 import { v4 as uuid } from "uuid";
+
+import type { SelectOption } from "./Select";
 
 const FilterChip = ({options}:any) => {
 	return (
