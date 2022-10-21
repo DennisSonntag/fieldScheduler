@@ -10,7 +10,7 @@ module.exports = {
 			black: "#000000",
 			red:"#d81515",
 			white:"#ffffff",
-			blue: "#1e40af"
+			blue: "#0284c7"
 		},
 		extend: {},
 	},
