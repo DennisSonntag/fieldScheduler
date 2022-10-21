@@ -55,14 +55,13 @@ const Calendar = (props: any) => {
 
 	const [active, setActive] = useState(false);
 
-	let style = `${active ? "bg-red-500": "neo-800"} w-full aspect-square  p-2 rounded-lg  hover:scale-110 duration-150 ease-in-out m-auto`;
 
 	const handleClick = () => {
 		setActive(prev => !prev)
 	}
 
 	return (
-		<main onClick={handleClick} className={style}>
+		<main onClick={handleClick} className={`${active  ?"bg-red": "neo-800"} w-full aspect-square  p-2 rounded-lg shadow-2xl hover:scale-110 duration-150 ease-in-out m-auto`}>
 			<h1 className="text-center text-lg font-bold text-white">{months[month]}</h1>
 			<div className="grid grid-cols-7 grid-rows-7 text-center text-md h-full">
 				{weekDays.map(day => (
@@ -90,7 +89,7 @@ const Calendar = (props: any) => {
 						index++;
 						// days with events
 						return (
-							<div key={uuid()} className="relative w-11/12 h-11/12 aspect-square bg-blue-500 rounded-full cursor-pointer">
+							<div key={uuid()} className="relative w-11/12 h-11/12 aspect-square bg-blue rounded-full cursor-pointer">
 								<p className="absolute inset-0 m-auto text-white w-fit h-fit font-bold ">{day}</p>
 							</div>
 						);

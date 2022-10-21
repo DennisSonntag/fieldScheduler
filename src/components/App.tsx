@@ -1,7 +1,8 @@
 import { useState } from "react";
 import Rugby from "./Rugby";
 import Soccer from "./Soccer";
-import Sport from "./SportSelect";
+import SportSelect from "./SportSelect";
+import compare from "../../assets/svg/compare.svg";
 
 const App = () => {
 	// false == rugby, true == soccer
@@ -13,7 +14,6 @@ const App = () => {
 		setSoccerActive(prev => !prev);
 	};
 
-
 	return (
 		<>
 			<a href="/">
@@ -21,13 +21,14 @@ const App = () => {
 					<path d="M160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96C43 32 0 75 0 128V384c0 53 43 96 96 96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H96c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32h64zM504.5 273.4c4.8-4.5 7.5-10.8 7.5-17.4s-2.7-12.9-7.5-17.4l-144-136c-7-6.6-17.2-8.4-26-4.6s-14.5 12.5-14.5 22v72H192c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32H320v72c0 9.6 5.7 18.2 14.5 22s19 2 26-4.6l144-136z" />
 				</svg>
 			</a>
-			<div className="w-[calc(100%-4rem)] h-[calc(100%-4rem)] absolute inset-0 m-auto ">
-				<nav className="flex w-full h-16 p-2 gap-2 box-border">
-					<Sport sport="Rugby" thing={rugbyActive} click={setSport} />
-					<Sport sport="Soccer" thing={soccerActive} click={setSport} />
-				</nav>
-				{rugbyActive ? <Rugby /> : <Soccer />}
-			</div>
+			<nav className="z-50 flex w-fit inset-x-0 mx-auto h-fit box-border absolute top-0">
+				<SportSelect sport="Rugby" thing={rugbyActive} click={setSport} />
+				<SportSelect sport="Soccer" thing={soccerActive} click={setSport} />
+				{/* <button className="w-fit rounded-full bg-gray-700 border-[0.15rem] border-gray-900 absolute inset-x-0 mx-auto top-8">
+					<img className="w-8 h-8" src={compare} alt="" srcSet="" />
+				</button> */}
+			</nav>
+			{rugbyActive ? <Rugby /> : <Soccer />}
 		</>
 	);
 };

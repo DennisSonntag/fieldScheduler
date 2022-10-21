@@ -4,12 +4,12 @@
 ![basics](./assets/images/screenshot1.png)
 ![basics](./assets/images/screenshot2.png)
 ![basics](./assets/images/screenshot3.png)
+![basics](./assets/images/screenshot4.png)
 
 # ToDo list
 - Cal section full screen
 - Cal multiple views (day, week, month, season, ext.)
 - Web Dev simple filter select component
-- Dropdown no duplicate  
 - indicate selected
 - show valid teams
 - team colors

@@ -4,9 +4,7 @@
 
 @layer base {
 	.my-gradient {
-		background: rgb(0, 0, 0);
-		/* background: linear-gradient(45deg, rgba(0, 0, 0, 1) 0%, rgba(52, 50, 50, 1) 100%); */
-		background: linear-gradient(45deg, #0f172a 0%, #64748b 100%);
+		background: linear-gradient(45deg, hsl(221, 39%, 10%) 0%, hsl(215, 28%, 25%) 100%);
 	}
 
 	.field::after {
@@ -76,7 +74,7 @@
 	.neo-800{
 		background: linear-gradient(145deg, hsl(215, 28%, 20%), hsl(215, 28%, 15%));
 		/* background: linear-gradient(145deg, #3b4657, #323b49); */
-		box-shadow: 0px 0px 27px -1px rgba(31, 41, 55,0.75);
+		/* box-shadow: 0px 0px 27px -1px rgba(31, 41, 55,0.75); */
 	}
 
 	.grid-cols-7 {

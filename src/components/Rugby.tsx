@@ -1,12 +1,12 @@
-import Btn from "./Btn";
 import Calendar from "./Calender";
 import { CSVLink } from "react-csv";
 import { v4 as uuid } from "uuid";
 import Sport from "./Sport";
-import { useState } from "react";
+import {  useState } from "react";
 import download from "../../assets/svg/download.svg";
 import SideBtn from "./SideBtn";
-import  Select, { SelectOption }  from "./Select";
+import Select  from "./Select";
+import FilterChip from "./FilterChip";
 
 const Main = () => {
 	const csvData = [
@@ -68,16 +68,16 @@ const Main = () => {
 		{ label: "Bowless", value: 2 },
 		{ label: "Other schools", value: 3 },
 	];
-	
+
 	const seniorities = [
 		{ label: "Senior", value: 1 },
 		{ label: "Junior", value: 2 },
 	];
 
+	const [divSelect, setDivSelect] = useState([]);
+	const [schoolSelect, setSchoolSelect] = useState([]);
+	const [senioritySelect, setSenioritySelect] = useState([]);
 
-	const [divSelect, setDivSelect] = useState([])
-	const [schoolSelect, setSchoolSelect] = useState([])
-	const [senioritySelect, setSenioritySelect] = useState([])
 	return (
 		<Sport>
 			<section
@@ -88,24 +88,24 @@ const Main = () => {
 				}
 			>
 				<div className="w-full h-16 p-3 ">
-					<div className="w-full h-full relative bg-white rounded-md shadow-lg">
+					<div className="w-full h-full relative bg-light rounded-md shadow-lg">
 						<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Filters</h1>
 					</div>
 				</div>
 
 				<div className="flex w-ful h-10 justify-around">
-					<Select multiple options={divisions} title="Div n" selected={divSelect} onChange={(o: any) => setDivSelect(o)} />
-					<Select multiple options={schools} title="School" selected={schoolSelect} onChange={(o: any) => setSchoolSelect(o)} />
-					<Select multiple options={seniorities} title="Sr/Jr" selected={senioritySelect} onChange={(o: any) => setSenioritySelect(o)} />
+					<Select multiple options={divisions} title="Div n" selected={divSelect} setSelected={(o: any) => setDivSelect(o)} />
+					<Select multiple options={schools} title="School" selected={schoolSelect} setSelected={(o: any) => setSchoolSelect(o)} />
+					<Select multiple options={seniorities} title="Sr/Jr" selected={senioritySelect} setSelected={(o: any) => setSenioritySelect(o)} />
 				</div>
 
-				<div className="w-full h-10 my-2 shrink-0">{divSelect.map((val:SelectOption) => val.label)}</div>
-				<div className="w-full h-10 my-2 shrink-0">{schoolSelect.map((val:SelectOption) => val.label)}</div>
-				<div className="w-full h-10 my-2 shrink-0">{senioritySelect.map((val:SelectOption) => val.label)}</div>
+				<FilterChip options={divSelect}/>
+				<FilterChip options={schoolSelect}/>
+				<FilterChip options={senioritySelect}/>
 
-				<div className=" w-full h-[calc(100%-6rem)] overflow-y-auto flex flex-col gap-4 p-2">
+				<div className=" w-full h-[calc(100%-6rem)] overflow-y-hidden grid grid-cols-4 gap-4 p-2">
 					{Object.keys(teams).map(team => (
-						<div key={uuid()} className="w-fit h-fit px-6 py-2 bg-white text-center shadow-xl rounded-md hover:scale-125">
+						<div key={uuid()} className="w-fit h-fit px-6 py-2 bg-light text-center shadow-xl rounded-md hover:scale-125">
 							{teams[Number(team)]} {team}
 						</div>
 					))}
@@ -114,9 +114,9 @@ const Main = () => {
 
 			<SideBtn setState={setLeftOpen} state={leftOpen} side={false} />
 
-			<section className="w-full h-full flex flex-col overflow-auto hover-fade relative">
+			<section className="w-full h-full flex flex-col overflow-hidden hover-fade relative">
 				<section className="w-full h-16 p-3">
-					<div className="w-full h-full relative bg-white rounded-md shadow-lg">
+					<div className="w-full h-full relative bg-light rounded-md shadow-lg">
 						<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Schedule</h1>
 					</div>
 				</section>
@@ -128,14 +128,14 @@ const Main = () => {
 				</section>
 
 				<div className="w-full h-[10%] grid place-content-center ">
-					<CSVLink filename={"test.csv"} data={csvData}>
+					<CSVLink filename={"test.csv"} data={csvData} >
 						<button
 							onMouseEnter={() => setHover(true)}
 							onMouseLeave={() => setHover(false)}
 							className={
 								hover
-									? "pl-2 w-[9.5rem] h-14  m-2 rounded-lg bg-white active:scale-90 duration-75 ease-in-out flex items-center overflow-hidden"
-									: "overflow-hidden w-[3rem] p-2 h-14   m-2 rounded-lg bg-white hover:scale-110 active:scale-90 duration-75 ease-in-out flex items-center"
+									? "pl-2 w-[9.5rem] h-14  m-2 rounded-lg bg-light active:scale-90 duration-75 ease-in-out flex items-center overflow-hidden"
+									: "overflow-hidden w-[3rem] p-2 h-14   m-2 rounded-lg bg-light hover:scale-110 active:scale-90 duration-75 ease-in-out flex items-center"
 							}
 						>
 							<img src={download} alt="" srcSet="" className="w-8 h-8 " />
@@ -149,7 +149,7 @@ const Main = () => {
 			<SideBtn setState={setRightOpen} state={rightOpen} side={true} />
 
 			<section className={rightOpen ? "w-1/2 h-full rounded-bl-xl relative hover-fade overflow-hidden" : "w-0 h-full rounded-bl-xl relative hover-fade translate-x-full overflow-hidden"}>
-				<div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-white rounded-md shadow-lg mt-2">
+				<div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-light rounded-md shadow-lg mt-2">
 					<h1 className="font-bold absolute w-fit h-fit inset-0 m-auto">Add/Edit Events</h1>
 				</div>
 				<div className="w-full h-full py-6 translate-y-8">

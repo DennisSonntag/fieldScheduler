@@ -1,51 +1,33 @@
 import { useEffect, useRef, useState } from "react";
-
+import caret from "../../assets/svg/caret.svg"
 
 export type SelectOption = {
 	label: string;
 	value: string;
 };
 
-// type MultipleSelectProps = {
-// 	multiple: true;
-// 	value: string;
-// 	onChange: (value: SelectOption[]) => void;
-// };
-
-// type SingleSelectProps = {
-// 	multiple?: false;
-// 	value?: string;
-// 	onChange: (value: SelectOption | undefined) => void;
-// };
-
-// type SelectProps = {
-// 	options: SelectOption[];
-// } & (SingleSelectProps | MultipleSelectProps);
-
-const Select = ({ multiple, title, onChange, options, selected }:any)=> {
+const Select = ({ multiple, title, setSelected, options, selected }: any) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [highlightedIndex, setHighlightedIndex] = useState(0);
 	const containerRef = useRef<HTMLDivElement>(null);
 
-	const clearOptions = () =>{
-		multiple ? onChange([]) : onChange(undefined);
-	}
+	const clearOptions = () => {
+		multiple ? setSelected([]) : setSelected(undefined);
+	};
 
-	const selectOption = (option:SelectOption) => {
+	const selectOption = (option: SelectOption) => {
 		if (multiple) {
-			if (selected.includes(option)) {
-				onChange((prev:SelectOption[]) => prev.push(option));
-			} else {
-				onChange([...selected, option]);
+			if (!selected.map((elm: any) => elm.label).includes(option.label)) {
+				setSelected([...selected, option]);
 			}
 		} else {
-			if (option !== selected) onChange(option);
+			if (option !== selected) setSelected(option);
 		}
-	}
+	};
 
-	const isOptionSelected = (option:SelectOption) => {
-		return multiple ? selected.includes(option) : option === selected;
-	}
+	const isOptionSelected = (option: SelectOption) => {
+		return multiple ? selected.map((elm: any) => elm.value).includes(option.value) : option === selected;
+	};
 
 	useEffect(() => {
 		if (isOpen) setHighlightedIndex(0);
@@ -91,7 +73,7 @@ const Select = ({ multiple, title, onChange, options, selected }:any)=> {
 			onBlur={() => setIsOpen(false)}
 			onClick={() => setIsOpen(prev => !prev)}
 			tabIndex={0}
-			className="bg-white relative w-fit min-w-[1.5em]  flex items-center gap-[0.5em] p-[0.5em] rounded-lg outline-none focus:border-blue-400"
+			className="bg-light relative w-fit min-w-[1.5em]  flex items-center gap-[0.5em] p-[0.5em] rounded-md shadow-lg outline-none focus:border-blue-400"
 		>
 			<p>{title}</p>
 			<button
@@ -104,9 +86,14 @@ const Select = ({ multiple, title, onChange, options, selected }:any)=> {
 				&times;
 			</button>
 			<div className="bg-gray-500 self-stretch w-[0.05em]"></div>
-			<div className="translate-x-0 translate-y-1/4 border-solid border-transparent border-[0.25em] border-t-gray-500"></div>
-			<ul className={` absolute m-0 p-0 list-none ${isOpen ? "block" : "hidden"} max-h-[15em] overflow-y-auto border-solid border-[0.05em] border-gray-400 rounded-[0.25em] w-full left-0 top-calc bg-white z-50` }>
-				{options.map((option:SelectOption, index:number) => (
+			<img src={caret} alt="" className="w-4 h-4" />
+			{/* <div className="translate-x-0 translate-y-1/4 border-solid border-transparent border-[0.25em] border-t-gray-500"></div> */}
+			<ul
+				className={` absolute m-0 p-0 list-none ${
+					isOpen ? "block" : "hidden"
+				} max-h-[15em] overflow-y-auto border-solid border-[0.05em] border-gray-400 rounded-[0.25em] w-full left-0 top-calc bg-light z-50`}
+			>
+				{options.map((option: SelectOption, index: number) => (
 					<li
 						onClick={e => {
 							e.stopPropagation();
@@ -123,7 +110,6 @@ const Select = ({ multiple, title, onChange, options, selected }:any)=> {
 			</ul>
 		</div>
 	);
-}
+};
 
-
-export default Select
+export default Select;
