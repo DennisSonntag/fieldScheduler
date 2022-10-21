@@ -40,7 +40,7 @@ const months = [2, 3, 4, 5];
 				</div>
 			</section>
 
-			<section className="grid w-full h-full gap-4 p-8 overflow-hidden my-col-2 auto-rows-auto place-content-center justify-evenly">
+			<section className="grid w-full h-full gap-4 p-8 overflow-hidden my-col-2 auto-rows-auto place-content-center justify-evenly duration-300 ease-in-out">
 				{months.map(month => (
 					<Calendar key={uuid()} events={events[month]} month={month} />
 				))}

@@ -41,7 +41,7 @@ const Left = ({ leftOpen }: any) => {
 	};
 
 	return (
-		<section className={` ${leftOpen ? "w-1/2" : "w-0 translate-x-[-100%]"} h-full rounded-bl-xl relative hover-fade overflow-hidden`}>
+		<section className={` ${leftOpen ? "w-1/2" : "w-0 translate-x-[-100%]"} h-full rounded-bl-xl relative hover-fade overflow-hidden duration-200 ease-in-out`}>
 			<div className="w-full h-16 p-3 ">
 				<div className="relative w-full h-full rounded-md shadow-lg bg-light">
 					<h1 className="absolute inset-0 m-auto font-bold w-fit h-fit">Filters</h1>

@@ -7,8 +7,8 @@ import Left from "./Left";
 import Right from "./Right";
 
 const Main = () => {
-	const [rightOpen, setRightOpen] = useState(false);
 	const [leftOpen, setLeftOpen] = useState(true);
+	const [rightOpen, setRightOpen] = useState(false);
 
 	return (
 		<Sport>

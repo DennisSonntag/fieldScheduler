@@ -24,3 +24,4 @@
 - school and division specific events 
 - add teams 
 - compare soccer and rugby schedules
+- animate chips on enter
