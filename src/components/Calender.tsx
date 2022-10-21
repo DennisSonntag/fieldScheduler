@@ -62,8 +62,8 @@ const Calendar = (props: any) => {
 
 	return (
 		<main onClick={handleClick} className={`${active  ?"bg-red": "neo-800"} w-full aspect-square  p-2 rounded-lg shadow-2xl hover:scale-110 duration-150 ease-in-out m-auto`}>
-			<h1 className="text-center text-lg font-bold text-white">{months[month]}</h1>
-			<div className="grid grid-cols-7 grid-rows-7 text-center text-md h-full">
+			<h1 className="text-lg font-bold text-center text-white">{months[month]}</h1>
+			<div className="grid h-full grid-cols-7 text-center grid-rows-7 text-md">
 				{weekDays.map(day => (
 					<div key={uuid()} className="w-full h-full text-center text-white">
 						{day}
@@ -72,7 +72,7 @@ const Calendar = (props: any) => {
 
 				{firstDays.map(day => (
 					<div key={uuid()} className={"text-black relative w-full h-full cursor-pointer"}>
-						<p className=" absolute m-auto w-fit h-fit inset-0 "></p>
+						<p className="absolute inset-0 m-auto w-fit h-fit"></p>
 					</div>
 				))}
 
@@ -81,7 +81,7 @@ const Calendar = (props: any) => {
 						// weekends
 						return (
 							<div key={uuid()} className={"text-gray-500 relative w-full h-full cursor-pointer"}>
-								<p className=" absolute m-auto w-fit h-fit inset-0 text-gray-500 ">{day}</p>
+								<p className="absolute inset-0 m-auto text-gray-500 w-fit h-fit">{day}</p>
 							</div>
 						);
 					}
@@ -89,23 +89,23 @@ const Calendar = (props: any) => {
 						index++;
 						// days with events
 						return (
-							<div key={uuid()} className="relative w-11/12 h-11/12 aspect-square bg-blue rounded-full cursor-pointer">
-								<p className="absolute inset-0 m-auto text-white w-fit h-fit font-bold ">{day}</p>
+							<div key={uuid()} className="relative w-11/12 rounded-full cursor-pointer h-11/12 aspect-square bg-blue">
+								<p className="absolute inset-0 m-auto font-bold text-white w-fit h-fit ">{day}</p>
 							</div>
 						);
 					} else {
 						// normal weekdays
 						return (
-							<div key={uuid()} className="text-white relative w-11/12 h-11/12 aspect-square cursor-pointer hoverDay">
-								<p className=" absolute m-auto w-fit h-fit inset-0 ">{day}</p>
+							<div key={uuid()} className="relative w-11/12 text-white cursor-pointer h-11/12 aspect-square hoverDay">
+								<p className="absolute inset-0 m-auto w-fit h-fit">{day}</p>
 							</div>
 						);
 					}
 				})}
 
 				{lastDays.map(day => (
-					<div key={uuid()} className="text-black relative w-full h-full cursor-pointer">
-						<p className=" absolute m-auto w-fit h-fit inset-0 "></p>
+					<div key={uuid()} className="relative w-full h-full text-black cursor-pointer">
+						<p className="absolute inset-0 m-auto w-fit h-fit"></p>
 					</div>
 				))}
 			</div>

@@ -57,24 +57,24 @@ const Login = () => {
 
 	return (
 		<>
-			<div className="w-fit h-fit rounded-xl neo-700 inset-0 m-auto absolute p-16 flex flex-col">
-				<h1 className="text-white w-fit h-fit absolute inset-x-0 mx-auto font-bold text-2xl text-center">Sign In</h1>
-				<div className="w-full mt-16 my-auto mb-4 relative flex flex-col bot-dash field">
-					<input ref={emailRef} autoComplete="off" placeholder=" " type="text" id="username" className="w-52 h-8 rounded-md outline-0 border-0 overflow-hidden input  text-white" />
+			<div className="absolute inset-0 flex flex-col p-16 m-auto w-fit h-fit rounded-xl neo-700">
+				<h1 className="absolute inset-x-0 mx-auto text-2xl font-bold text-center text-white w-fit h-fit">Sign In</h1>
+				<div className="relative flex flex-col w-full my-auto mt-16 mb-4 bot-dash field">
+					<input ref={emailRef} autoComplete="off" placeholder=" " type="text" id="username" className="h-8 overflow-hidden text-white border-0 rounded-md w-52 outline-0 input" />
 					<label htmlFor="username" className="text-lg text-white label">
 						Username
 					</label>
 				</div>
 
-				<div className="w-full mt-16 my-auto mb-4  relative flex flex-col bot-dash field">
-					<input ref={passwordRef} placeholder=" " type="password" id="password" className="w-52 h-8 rounded-md outline-0 border-0 overflow-hidden  input text-white" />
+				<div className="relative flex flex-col w-full my-auto mt-16 mb-4 bot-dash field">
+					<input ref={passwordRef} placeholder=" " type="password" id="password" className="h-8 overflow-hidden text-white border-0 rounded-md w-52 outline-0 input" />
 					<label htmlFor="password" className="text-lg text-white label">
 						Password
 					</label>
 				</div>
 
 				<div className="flex flex-col items-center gap-2">
-					<button onClick={forgotPassword} className="underline text-blue-500 hover:text-blue-300">
+					<button onClick={forgotPassword} className="text-blue-500 underline hover:text-blue-300">
 						Forgot Password
 					</button>
 					<p className={`text-red-500 font-bold text-center w-fit h-fit duration-75 ${error !== 0 ? "opacity-100" : "opacity-0"}`}>{errorContent}</p>
