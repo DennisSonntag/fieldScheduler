@@ -98,7 +98,7 @@ const Select = ({ multiple, title, setSelected, options, selected }: any) => {
 			<ul
 				className={` absolute m-0 p-0 list-none ${
 					isOpen ? "opacity-100" : "opacity-0"
-				} max-h-[15em] overflow-y-auto rounded-[0.25em] w-full left-0 top-calc bg-light z-50 duration-300 ease-in-out`} 
+				} max-h-[15em] overflow-y-auto rounded-[0.25em] w-full  left-0 top-calc bg-light duration-300 ease-in-out`} 
 			>
 				{options.map((option: SelectOption, index: number) => (
 					<li

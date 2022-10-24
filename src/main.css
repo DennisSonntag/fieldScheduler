@@ -129,9 +129,30 @@
 	.option-badge:focus > .remove-btn {
 		color: hsl(0, 100%, 50%);
 	}
+	.idk {
+		z-index: 5;
+	}
+	.die {
+		z-index: 6;
+
+	}
 
 	.option-badge > .remove-btn {
 		font-size: 1.25em;
 		color: #777;
+	}
+
+	.slide-in{
+		animation: slide 0.2s ease-in-out forwards;
+	}
+
+	@keyframes slide {
+		0% {
+			transform: translateX(30rem);
+		}
+
+		100% {
+			transform: translateX(0rem);
+		}
 	}
 }

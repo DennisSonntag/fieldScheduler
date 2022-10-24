@@ -41,7 +41,7 @@ const Left = ({ leftOpen }: any) => {
 	};
 
 	return (
-		<section className={` ${leftOpen ? "w-1/2" : "w-0 translate-x-[-100%]"} h-full rounded-bl-xl relative hover-fade overflow-hidden duration-200 ease-in-out`}>
+		<section className={` ${leftOpen ? "w-1/2" : "w-0 translate-x-[-100%]"} overflow-x-hidden relative h-full rounded-bl-xl  hover-fade  duration-200 ease-in-out flex flex-col`}>
 			<div className="w-full h-16 p-3 ">
 				<div className="relative w-full h-full rounded-md shadow-lg bg-light">
 					<h1 className="absolute inset-0 m-auto font-bold w-fit h-fit">Filters</h1>
@@ -54,11 +54,11 @@ const Left = ({ leftOpen }: any) => {
 				<Select multiple options={seniorities} title="Sr/Jr" selected={senioritySelect} setSelected={(o: any) => setSenioritySelect(o)} />
 			</div>
 
-			<FilterChip options={divSelect} />
-			<FilterChip options={schoolSelect} />
-			<FilterChip options={senioritySelect} />
+			<FilterChip options={divisions} selected={divSelect} />
+			<FilterChip options={schools} selected={schoolSelect} />
+			<FilterChip options={seniorities} selected={senioritySelect} />
 
-			<div className=" w-full h-[calc(100%-6rem)] overflow-y-hidden grid grid-cols-4 gap-4 p-2">
+			<div className=" flex-grow grid grid-cols-4 gap-4 p-2 ">
 				{Object.keys(teams).map(team => (
 					<div key={uuid()} className="px-6 py-2 text-center rounded-md shadow-xl w-fit h-fit bg-light hover:scale-125">
 						{teams[Number(team)]} {team}
