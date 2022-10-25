@@ -137,13 +137,18 @@
 
 	}
 
+	.smooth {
+		transition: all 75ms ease-in-out;
+	}
+
 	.option-badge > .remove-btn {
 		font-size: 1.25em;
 		color: #777;
 	}
 
 	.slide-in{
-		animation: slide 0.2s ease-in-out forwards;
+		/* animation: slide 0.2s ease-in-out forwards; */
+		transform: translateX(0rem);
 	}
 
 	@keyframes slide {

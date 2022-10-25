@@ -48,7 +48,7 @@ const Left = ({ leftOpen }: any) => {
 				</div>
 			</div>
 
-			<div className="flex justify-around h-10 w-ful">
+			<div className="flex justify-around h-10 w-full ">
 				<Select multiple options={divisions} title="Div n" selected={divSelect} setSelected={(o: any) => setDivSelect(o)} />
 				<Select multiple options={schools} title="School" selected={schoolSelect} setSelected={(o: any) => setSchoolSelect(o)} />
 				<Select multiple options={seniorities} title="Sr/Jr" selected={senioritySelect} setSelected={(o: any) => setSenioritySelect(o)} />
@@ -58,7 +58,7 @@ const Left = ({ leftOpen }: any) => {
 			<FilterChip options={schools} selected={schoolSelect} />
 			<FilterChip options={seniorities} selected={senioritySelect} />
 
-			<div className=" flex-grow grid grid-cols-4 gap-4 p-2 ">
+			<div className=" flex-grow grid grid-cols-4 gap-4 p-2">
 				{Object.keys(teams).map(team => (
 					<div key={uuid()} className="px-6 py-2 text-center rounded-md shadow-xl w-fit h-fit bg-light hover:scale-125">
 						{teams[Number(team)]} {team}
