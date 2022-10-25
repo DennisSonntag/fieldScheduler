@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
 
-const Calendar = (props: any) => {
+const Calendar = ({ month, events,tw }: any) => {
 	const year = 2022;
-	const month = props.month;
 	const date = new Date(year, month);
 
 	const firstDayIndex = date.getDay() - 1;
@@ -55,13 +54,12 @@ const Calendar = (props: any) => {
 
 	const [active, setActive] = useState(false);
 
-
 	const handleClick = () => {
-		setActive(prev => !prev)
-	}
+		setActive(prev => !prev);
+	};
 
 	return (
-		<main onClick={handleClick} className={`${active  ?"bg-red": "neo-800"} w-full aspect-square  p-2 rounded-lg shadow-2xl hover:scale-110 duration-150 ease-in-out m-auto`}>
+		<main onClick={handleClick} className={` ${active ? "bg-red" : tw ? tw : `neo-800`} w-full aspect-square  p-2 rounded-lg shadow-2xl hover:scale-110 duration-150 ease-in-out m-auto ${tw}`}>
 			<h1 className="text-lg font-bold text-center text-white">{months[month]}</h1>
 			<div className="grid h-full grid-cols-7 text-center grid-rows-7 text-md">
 				{weekDays.map(day => (
@@ -85,7 +83,7 @@ const Calendar = (props: any) => {
 							</div>
 						);
 					}
-					if (props.events[index] == day) {
+					if (events[index] == day) {
 						index++;
 						// days with events
 						return (

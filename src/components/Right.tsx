@@ -1,25 +1,20 @@
 import DatePicker from "./DatePicker";
+import Title from "./Title";
 
 const Left = ({ rightOpen }: any) => {
 	return (
-		<section className={` ${rightOpen ? "w-1/2 " : "w-0 translate-x-full"} h-full relative hover-fade overflow-hidden duration-200 ease-in-out`}>
-			<div className="w-[95%] h-10 absolute inset-x-0 mx-auto bg-light rounded-md shadow-lg mt-2">
-				<h1 className="absolute inset-0 m-auto font-bold w-fit h-fit">Add/Edit Events</h1>
-			</div>
-			<div className="w-full h-full py-6 translate-y-8">
+		<section className={` ${rightOpen ? "w-1/2 " : "w-0 translate-x-full"} gap-2 h-full relative items-center flex flex-col hover-fade overflow-hidden duration-200 ease-in-out`}>
+			<Title text="Add/Edit Events"/>
 
-				<h1 className="text-center">Season Start/End</h1>
-				<div className="flex justify-around">
-					<DatePicker word="sus"/>
-				</div>
-				<div className="flex justify-around">
-					<DatePicker word="sus"/>
-				</div>
+			<div className="relative gap-2  flex-grow flex flex-col  items-center w-full">
+				<h1 className="text-center py-2 px-8 rounded-md shadow-xl bg-light font-bold text-md">Season Start/End</h1>
+				<DatePicker word="sus" />
+				<DatePicker word="sus" />
 
-				<h1 className="text-center">Breaks/Holidays</h1>
-				<div className="flex justify-around">
-					<DatePicker word="sus"/>
-				</div>
+				<div className="h-10"></div>
+
+				<h1 className="text-center py-2 px-8 rounded-md shadow-xl bg-light font-bold text-md">Breaks/Holidays</h1>
+				<DatePicker word="sus" />
 			</div>
 		</section>
 	);

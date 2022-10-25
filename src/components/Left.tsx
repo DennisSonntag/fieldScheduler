@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import FilterChip from "./FilterChip";
 import Select from "./Select";
+import Title from "./Title";
 
 const Left = ({ leftOpen }: any) => {
 	const divisions = [
@@ -43,9 +44,7 @@ const Left = ({ leftOpen }: any) => {
 	return (
 		<section className={` ${leftOpen ? "w-1/2" : "w-0 translate-x-[-100%]"} overflow-x-hidden relative h-full rounded-bl-xl  hover-fade  duration-200 ease-in-out flex flex-col`}>
 			<div className="w-full h-16 p-3 ">
-				<div className="relative w-full h-full rounded-md shadow-lg bg-light">
-					<h1 className="absolute inset-0 m-auto font-bold w-fit h-fit">Filters</h1>
-				</div>
+				<Title text="Filters"/>
 			</div>
 
 			<div className="flex justify-around h-10 w-full ">
@@ -58,9 +57,9 @@ const Left = ({ leftOpen }: any) => {
 			<FilterChip options={schools} selected={schoolSelect} />
 			<FilterChip options={seniorities} selected={senioritySelect} />
 
-			<div className=" flex-grow grid grid-cols-4 gap-4 p-2">
+			<div className=" flex-grow grid grid-cols-3 gap-4 p-2">
 				{Object.keys(teams).map(team => (
-					<div key={uuid()} className="px-6 py-2 text-center rounded-md shadow-xl w-fit h-fit bg-light hover:scale-125">
+					<div key={uuid()} className="p-2 truncate text-center rounded-md shadow-xl w-fit h-fit bg-light hover:scale-125">
 						{teams[Number(team)]} {team}
 					</div>
 				))}
