@@ -1,10 +1,16 @@
 {
 	"extends": "astro/tsconfigs/strict",
 	"compilerOptions": {
+		"useUnknownInCatchVariables": false,
 		"baseUrl": ".",
 		"paths": {
 			"@components/*": ["src/components/*"],
-			"@layouts/*": ["src/layouts/*"]
+			"@img/*": ["src/assets/images/*"],
+			"@index/*": ["src/pages/index/*"],
+			"@main/*": ["src/pages/main/*"],
+			"@layouts/*": ["src/layouts/*"],
+			"@svg/*": ["src/assets/svg/*"],
+			"@assets/*": ["src/assets/*"]
 		}
 	}
 }

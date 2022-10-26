@@ -1,12 +1,12 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import App from "../components/App";
-import Bg from "../components/Bg";
-import "../main.css";
+import Layout from "@layouts/Layout.astro";
+import App from "@components/App";
+import Main from "@main/Main";
+import "@assets/main.css";
 ---
 
 <Layout title="Scheduler">
-	<Bg>
-		<App client:load />
-	</Bg>
+	<App client:load>
+		<Main client:load/>
+	</App>
 </Layout>

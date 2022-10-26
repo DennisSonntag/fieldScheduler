@@ -7,7 +7,7 @@ import download from "../../assets/svg/download.svg";
 import Title from "./Title";
 
 const Middle = () => {
-const months = [2, 3, 4, 5];
+	const months = [2, 3, 4, 5];
 	const csvData = [
 		[
 			"Home Team",
@@ -33,10 +33,9 @@ const months = [2, 3, 4, 5];
 
 	const [hover, setHover] = useState(false);
 	return (
-
 		<section className="relative flex flex-col w-full h-full overflow-hidden hover-fade">
 			<section className="w-full h-16 p-3">
-				<Title text="Schedule"/>
+				<Title text="Schedule" />
 			</section>
 
 			<section className="grid w-full h-full gap-4 p-8 overflow-hidden my-col-2 auto-rows-auto place-content-center justify-evenly duration-300 ease-in-out">
