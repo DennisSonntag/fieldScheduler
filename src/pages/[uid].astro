@@ -1,0 +1,22 @@
+---
+import Layout from '@layouts/Layout.astro';
+import MainPage from '@components/MainPage';
+import '@assets/main.css';
+
+// export async function getStaticPaths() {
+// 	const posts = [
+// 		{ uid: 'eR5X2SxtiucUtXaxwhLDYEcnxf32', user: 'sonntagdennis8@gmail.com', title: 'Main' },
+// 		{ uid: 'mOaNDR9Wl9RnVZFVa4oKNXapkZi1', user: 'email@email.com', title: 'Main' },
+// 	];
+// 	return posts.map(post => {
+// 		return {
+// 			params: { uid: post.uid },
+// 			props: { post },
+// 		};
+// 	});
+// }
+---
+
+<Layout title= "Scheduler">
+	<MainPage client:load />
+</Layout>

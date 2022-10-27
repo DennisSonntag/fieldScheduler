@@ -15,8 +15,9 @@
 	"plugins": ["react", "@typescript-eslint"],
 	"rules": {
 		"jsx-a11y/label-has-associated-control": "off",
-		"react/jsx-one-expression-per-line": "off",
 		"react/function-component-definition": "off",
+		"react/jsx-one-expression-per-line": "off",
+		"linebreak-style": ["error","windows" ],
 		"react-hooks/exhaustive-deps": "off",
 		"@typescript-eslint/indent": "off",
 		"react/jsx-indent-props": "off",
@@ -28,6 +29,6 @@
 		"no-plusplus": "off",
 		"no-tabs": "off",
 		"max-len": "off",
-		"indent": "off"
+		"indent": "off",
 	}
 }

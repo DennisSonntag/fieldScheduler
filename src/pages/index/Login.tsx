@@ -34,7 +34,7 @@ const Login = () => {
 
 	useEffect(() => {
 		if (user) {
-			window.location.href = '/main';
+			window.location.href = user?.uid;
 		}
 	}, [user]);
 
@@ -50,7 +50,7 @@ const Login = () => {
 	};
 
 	return (
-		<div className="absolute inset-0 flex flex-col p-16 m-auto w-fit h-fit rounded-xl neo-700">
+		<div className="absolute inset-0 flex flex-col m-auto w-fit h-fit ">
 			<h1 className="absolute inset-x-0 mx-auto text-2xl font-bold text-center text-white w-fit h-fit">Sign In</h1>
 			<div className="relative flex flex-col w-full my-auto mt-16 mb-4 bot-dash field">
 				<input ref={emailRef} autoComplete="off" placeholder=" " type="text" id="email" className="h-8 overflow-hidden text-white border-0 rounded-md w-52 outline-0 input" />
@@ -67,17 +67,17 @@ const Login = () => {
 			</div>
 
 			<div className="flex flex-col items-center gap-2">
-				<button type="button" onClick={forgotPassword} className="text-blue-500 underline hover:text-blue-300">
+				<button type="button" onClick={forgotPassword} className="text-blue underline hover:text-blue-300">
 					Forgot Password
 				</button>
-				<p className={`text-red-500 font-bold text-center w-fit h-fit duration-75 ${error !== 0 ? 'opacity-100' : 'opacity-0'}`}>{errorContent}</p>
+				<p className={`text-red font-bold text-center w-fit h-fit duration-75 ${error !== 0 ? 'opacity-100' : 'opacity-0'}`}>{errorContent}</p>
 				<button
 					type="button"
 					onClick={login}
 					// className={`${
 					// 	error === 1 ? "bg-red-500" : `${error === 2 ? "bg-green-500" : `${error === 3 ? "bg-blue-500" : "bg-gray-500"}`}`
 					// }  p-2 rounded-sm shadow-lg absolute inset-x-0 mx-auto w-fit duration-75 hover:scale-125 active:scale-90`}
-					className={`${error !== 0 ? 'bg-red-500' : 'bg-gray-500'}  p-2 rounded-sm shadow-lg w-fit duration-75 hover:scale-125 active:scale-90`}
+					className={`${error !== 0 ? 'bg-red' : 'bg-mid'}  p-2 rounded-sm shadow-lg w-fit duration-75 hover:scale-125 active:scale-90`}
 				>
 					Login
 				</button>
