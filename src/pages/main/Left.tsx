@@ -50,6 +50,7 @@ const Left = ({ leftOpen }: any) => {
 				<Title text="Filters" />
 			</div>
 
+
 			<div className="flex justify-around h-10 w-full ">
 				<Select multiple options={divisions} title="Div n" selected={divSelect} setSelected={(o: any) => setDivSelect(o)} />
 				<Select multiple options={schools} title="School" selected={schoolSelect} setSelected={(o: any) => setSchoolSelect(o)} />
