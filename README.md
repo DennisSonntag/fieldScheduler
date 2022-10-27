@@ -7,6 +7,12 @@
 ![basics](./src/assets/images/screenshot1.png)
 
 # ToDo list
+
+- Convert as much as possible to astro to remove maximum js
+- Use nanostores instead of react context
+- Persist login auth
+
+
 - Cal section full screen
 - Cal multiple views (day, week, month, season, ext.)
 - indicate selected

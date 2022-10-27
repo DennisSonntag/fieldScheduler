@@ -33,7 +33,7 @@ const Main = () => {
 			<nav className="box-border absolute inset-x-0 top-0 z-50 m-2 flex mx-auto w-fit h-fit gap-2">
 				<SportSelect sport="Rugby" state={rugbyActive} click={setRugby} />
 				<SportSelect sport="Soccer" state={soccerActive} click={setSoccer} />
-				<button type="button" className={`${theme ? 'bg-dark' : 'bg-light'} w-10 h-10 smooth hover:scale-110 active:scale-90 outline-none select-none rounded-full border-[0.3rem] duration-500 ease-in-out ${theme ? 'border-topLight' : 'border-topDark'} absolute inset-x-0 mx-auto top-4`}>
+				<button type="button" className={`${theme ? 'bg-dark' : 'bg-light'} w-10 h-10 smooth hover:scale-110 active:scale-90 outline-none select-none rounded-full border-[0.3rem] duration-100 ease-in-out ${theme ? 'border-topLight' : 'border-topDark'} absolute inset-x-0 mx-auto top-4`}>
 					<img className="w-4 h-4 inset-0 m-auto " src={compare} alt="" srcSet="" />
 				</button>
 			</nav>
