@@ -1,15 +1,14 @@
-import { useState } from "react";
-import { v4 as uuid } from "uuid";
+import { Theme } from '@components/App';
+import { useContext, useState } from 'react';
+import { v4 as uuid } from 'uuid';
 
-const Calendar = ({ month, events,tw }: any) => {
+const Calendar = ({ month, events, tw }: any) => {
 	const year = 2022;
 	const date = new Date(year, month);
 
 	const firstDayIndex = date.getDay() - 1;
 
-	const getDaysInMonth = (year: number, month: number) => {
-		return new Date(year, month, 0).getDate();
-	};
+	const getDaysInMonth = (yearArg: number, monthArg: number) => new Date(yearArg, monthArg, 0).getDate();
 
 	let lastDay = getDaysInMonth(year, month);
 	const daysInMonth = getDaysInMonth(year, month + 1);
@@ -33,13 +32,15 @@ const Calendar = ({ month, events,tw }: any) => {
 		lastDays.push(i);
 	}
 
-	let currentWeekEnds: number[] = [];
+	const currentWeekEnds: number[] = [];
 	// let nextWeekEnds: number[] = [];
 	// let prevWeekEnds: number[] = [];
 
-	const dayThing = (year: number, i: number, arr: number[]) => {
-		let nextDate = new Date(year, month, i);
-		nextDate.getDay() == 0 || nextDate.getDay() == 6 ? arr.push(i) : null;
+	const dayThing = (yearArg: number, i: number, arr: number[]) => {
+		const nextDate = new Date(yearArg, month, i);
+		if (nextDate.getDay() === 0 || nextDate.getDay() === 6) {
+			arr.push(i);
+		}
 	};
 
 	for (let i = 1; i <= daysInMonth; i++) {
@@ -48,8 +49,8 @@ const Calendar = ({ month, events,tw }: any) => {
 		// dayThing(year - 1, i, prevWeekEnds);
 	}
 
-	const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-	const weekDays = ["S", "M", "T", "W", "T", "F", "S"];
+	const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 	let index = 0;
 
 	const [active, setActive] = useState(false);
@@ -58,8 +59,10 @@ const Calendar = ({ month, events,tw }: any) => {
 		setActive(prev => !prev);
 	};
 
+	const theme = useContext(Theme);
+
 	return (
-		<main onClick={handleClick} className={` ${active ? "bg-red" : tw ? tw : `neo-800`} w-full aspect-square  p-2 rounded-lg shadow-2xl hover:scale-110 duration-150 ease-in-out m-auto ${tw}`}>
+		<button type="button" onClick={handleClick} className={` ${active ? 'bg-red' : tw || (theme ? 'neo-dark' : 'neo-light')} w-full aspect-square  p-2 rounded-lg shadow-2xl hover:scale-110 duration-150 ease-in-out m-auto ${tw}`}>
 			<h1 className="text-lg font-bold text-center text-white">{months[month]}</h1>
 			<div className="grid h-full grid-cols-7 text-center grid-rows-7 text-md">
 				{weekDays.map(day => (
@@ -68,9 +71,9 @@ const Calendar = ({ month, events,tw }: any) => {
 					</div>
 				))}
 
-				{firstDays.map(day => (
-					<div key={uuid()} className={"text-black relative w-full h-full cursor-pointer"}>
-						<p className="absolute inset-0 m-auto w-fit h-fit"></p>
+				{firstDays.map(() => (
+					<div key={uuid()} className="text-black relative w-full h-full cursor-pointer">
+						<p className="absolute inset-0 m-auto w-fit h-fit"> </p>
 					</div>
 				))}
 
@@ -78,12 +81,12 @@ const Calendar = ({ month, events,tw }: any) => {
 					if (currentWeekEnds.includes(day)) {
 						// weekends
 						return (
-							<div key={uuid()} className={"text-gray-500 relative w-full h-full cursor-pointer"}>
+							<div key={uuid()} className="text-gray-500 relative w-full h-full cursor-pointer">
 								<p className="absolute inset-0 m-auto text-gray-500 w-fit h-fit">{day}</p>
 							</div>
 						);
 					}
-					if (events[index] == day) {
+					if (events[index] === day) {
 						index++;
 						// days with events
 						return (
@@ -91,23 +94,22 @@ const Calendar = ({ month, events,tw }: any) => {
 								<p className="absolute inset-0 m-auto font-bold text-white w-fit h-fit ">{day}</p>
 							</div>
 						);
-					} else {
-						// normal weekdays
-						return (
-							<div key={uuid()} className="relative w-11/12 text-white cursor-pointer h-11/12 aspect-square hoverDay">
-								<p className="absolute inset-0 m-auto w-fit h-fit">{day}</p>
-							</div>
-						);
 					}
+					// normal weekdays
+					return (
+						<div key={uuid()} className="relative w-11/12 text-white cursor-pointer h-11/12 aspect-square hoverDay">
+							<p className="absolute inset-0 m-auto w-fit h-fit">{day}</p>
+						</div>
+					);
 				})}
 
-				{lastDays.map(day => (
+				{lastDays.map(() => (
 					<div key={uuid()} className="relative w-full h-full text-black cursor-pointer">
-						<p className="absolute inset-0 m-auto w-fit h-fit"></p>
+						<p className="absolute inset-0 m-auto w-fit h-fit"> </p>
 					</div>
 				))}
 			</div>
-		</main>
+		</button>
 	);
 };
 

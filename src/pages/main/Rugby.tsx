@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import Sport from "./Sport";
-import SideBtn from "./SideBtn";
-import Middle from "./Middle";
-import Left from "./Left";
-import Right from "./Right";
+import Sport from './Sport';
+import SideBtn from './SideBtn';
+import Middle from './Middle';
+import Left from './Left';
+import Right from './Right';
 
-const Main = () => {
+const Rugby = () => {
 	// const [leftOpen, setLeftOpen] = useState(true);
 	// const [rightOpen, setRightOpen] = useState(false);
 
-	
-	const [leftOpen, setLeftOpen] = useState(false);
+	// const [leftOpen, setLeftOpen] = useState(false);
+	// const [rightOpen, setRightOpen] = useState(true);
+
+	const [leftOpen, setLeftOpen] = useState(true);
 	const [rightOpen, setRightOpen] = useState(true);
 
 	return (
@@ -22,10 +24,10 @@ const Main = () => {
 
 			<Middle />
 
-			<SideBtn setState={setRightOpen} state={rightOpen} side={true} />
+			<SideBtn setState={setRightOpen} state={rightOpen} side />
 
 			<Right rightOpen={rightOpen} />
 		</Sport>
 	);
 };
-export default Main;
+export default Rugby;

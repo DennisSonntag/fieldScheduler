@@ -3,9 +3,14 @@
 @tailwind utilities;
 
 @layer base {
+	.gradient-tall {
+		background: rgb(16, 22, 35);
+		background: linear-gradient(0deg, rgba(16, 22, 35, 1) 0%, rgba(46, 61, 82, 1) 50%, rgba(62, 87, 128, 1) 50%, rgba(108, 135, 172, 1) 100%);
+		background-size: 100vw 200vh;
+	}
 
-	.my-gradient {
-		background: linear-gradient(45deg, hsl(221, 39%, 10%) 0%, hsl(215, 28%, 25%) 100%);
+	.gradient-move {
+		background-position: 0% 100%;
 	}
 
 	.field::after {
@@ -66,17 +71,15 @@
 		box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.75);
 	}
 
-	.neo-700 {
-		box-shadow: 0px 0px 28px 2px rgba(30, 41, 59, 0.8);
-		background: linear-gradient(145deg, #3b4657, #323b49);
+	.neo-dark {
+		background: linear-gradient(145deg, hsl(215, 28%, 20%), hsl(215, 28%, 15%));
 	}
 
-	.neo-800 {
-		background: linear-gradient(145deg, hsl(215, 28%, 20%), hsl(215, 28%, 15%));
-		/* background: linear-gradient(145deg, #3b4657, #323b49); */
-		/* box-shadow: 0px 0px 27px -1px rgba(31, 41, 55,0.75); */
+	.neo-light {
+		background: linear-gradient(145deg, hsl(215, 28%, 40%), hsl(215, 28%, 30%));
 	}
-		.grid-cols-7 {
+
+	.grid-cols-7 {
 		grid-template-columns: repeat(7, minmax(0, 1fr));
 	}
 
@@ -106,8 +109,6 @@
 		top: calc(100% + 0.25em);
 	}
 
-
-
 	.option-badge {
 		display: flex;
 		align-items: center;
@@ -130,13 +131,6 @@
 	.option-badge:focus > .remove-btn {
 		color: hsl(0, 100%, 50%);
 	}
-	.idk {
-		z-index: 5;
-	}
-	.die {
-		z-index: 6;
-
-	}
 
 	.smooth {
 		transition: all 75ms ease-in-out;
@@ -147,7 +141,7 @@
 		color: #777;
 	}
 
-	.slide-in{
+	.slide-in {
 		/* animation: slide 0.2s ease-in-out forwards; */
 		transform: translateX(0rem);
 	}

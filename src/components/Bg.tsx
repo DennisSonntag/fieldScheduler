@@ -1,17 +1,2 @@
-import { useContext } from "react";
-import { ThemeProvider, useTheme, useThemeUpdate } from "./ThemeProvider";
-
-
-const Bg = ({ children }: any) => {
-	const darkTheme = useTheme()
-
-	return (
-		<>
-			<ThemeProvider>
-				<div className={`box-border w-screen h-screen m-0 ${darkTheme ? "bg-white" : "my-gradient"} smooth`}> {children}</div>
-			</ThemeProvider>
-		</>
-	);
-};
-
+const Bg = ({ children, theme }: any) => <div className={`absolute box-border w-screen h-screen m-0 gradient-tall ${theme ? '' : 'gradient-move'}  ease-in-out duration-500`}> {children}</div>;
 export default Bg;

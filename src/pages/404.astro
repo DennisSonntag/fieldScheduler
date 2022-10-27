@@ -1,12 +1,9 @@
 ---
-import Layout from "@layouts/Layout.astro";
-import Bg from "@components/Bg";
-import NotFound from "@components/NotFound";
-import "@assets/main.css";
+import Layout from '@layouts/Layout.astro';
+import NotFound from '@components/NotFound';
+import '@assets/main.css';
 ---
 
 <Layout title="Login">
-	<Bg>
-		<NotFound/>
-	</Bg>
+	<NotFound client:load />
 </Layout>

@@ -1,12 +1,9 @@
 ---
-import Layout from "@layouts/Layout.astro";
-import Login from "@index/Login";
-import Bg from "@components/Bg";
-import "@assets/main.css";
+import Layout from '@layouts/Layout.astro';
+import LoginPage from '@components/LoginPage';
+import '@assets/main.css';
 ---
 
 <Layout title="Login">
-	<Bg>
-		<Login client:load />
-	</Bg>
+	<LoginPage client:load />
 </Layout>

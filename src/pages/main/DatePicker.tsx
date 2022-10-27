@@ -1,13 +1,13 @@
-import { useState } from "react";
-import dateIcon from "@svg/date.svg";
-import Calendar from "./Calender";
+import { useState } from 'react';
 
-const DatePicker = ({ word }: any) => {
+import dateIcon from '@svg/date.svg';
+import Calendar from './Calender';
+
+const DatePicker = () => {
 	const date = new Date();
-	let dd = date.getDate();
-	let mm = date.getMonth() + 1;
-
-	let yyyy = date.getFullYear();
+	const dd = date.getDate();
+	const mm = date.getMonth() + 1;
+	const yyyy = date.getFullYear();
 
 	const [open, setOpen] = useState(false);
 	return (
@@ -16,11 +16,12 @@ const DatePicker = ({ word }: any) => {
 				<p className="w-fit h-fit">
 					{dd}/{mm}/{yyyy}
 				</p>
-				<img onClick={() => setOpen(prev => !prev)} src={dateIcon} alt="" className="w-8 h-8 active:scale-90 hover:scale-110 smooth cursor-pointer" />
+				<button type="button" onClick={() => setOpen(prev => !prev)} className="w-8 h-8 active:scale-90 hover:scale-110 smooth cursor-pointer outline-none select-none" aria-label="Save">
+					<img src={dateIcon} alt="" className="outline-none select-none" />
+				</button>
 			</div>
 			{open ? <Calendar tw="bg-re" events={[]} month={9} /> : null}
 		</>
 	);
 };
-
 export default DatePicker;

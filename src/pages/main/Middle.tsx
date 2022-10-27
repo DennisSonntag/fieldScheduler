@@ -1,28 +1,11 @@
-import { CSVLink } from "react-csv";
-import { useState } from "react";
-import { v4 as uuid } from "uuid";
+import { v4 as uuid } from 'uuid';
 
-import Calendar from "./Calender";
-import download from "../../assets/svg/download.svg";
-import Title from "./Title";
+import Calendar from './Calender';
+import Title from './Title';
+import Download from './Download';
 
 const Middle = () => {
 	const months = [2, 3, 4, 5];
-	const csvData = [
-		[
-			"Home Team",
-			"Visitor Team",
-			"Start Date (MM/DD/YYYY)",
-			"Start Time (HH:MM AA)",
-			"Duration (minutes)",
-			"Details",
-			"Show Details",
-			"League Name",
-			"Practice Type (Shared or Full)",
-			"Schedule Name",
-			"Venue",
-		],
-	];
 
 	const events: { [index: number]: number[] } = {
 		2: [15, 16, 17],
@@ -31,7 +14,6 @@ const Middle = () => {
 		5: [8, 21, 30],
 	};
 
-	const [hover, setHover] = useState(false);
 	return (
 		<section className="relative flex flex-col w-full h-full overflow-hidden hover-fade">
 			<section className="w-full h-16 p-3">
@@ -45,20 +27,9 @@ const Middle = () => {
 			</section>
 
 			<div className="w-full h-[10%] grid place-content-center ">
-				<CSVLink filename={"test.csv"} data={csvData}>
-					<button
-						onMouseEnter={() => setHover(true)}
-						onMouseLeave={() => setHover(false)}
-						className={`overflow-hidden ${hover ? "w-[9.5rem]" : "w-[3rem] hover:scale-110"} p-2 h-14 m-2 rounded-lg bg-light active:scale-90 duration-75 ease-in-out flex items-center`}
-					>
-						<img src={download} alt="" srcSet="" className="w-8 h-8 " />
-
-						<p className={`duration-300 whitespace-nowrap w-fit h-fit ${hover ? "" : "translate-x-[-150%]"}`}>Download Csv</p>
-					</button>
-				</CSVLink>
+				<Download />
 			</div>
 		</section>
 	);
 };
-
 export default Middle;
