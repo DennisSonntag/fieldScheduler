@@ -5,6 +5,7 @@ import SideBtn from './SideBtn';
 import Middle from './Middle';
 import Left from './Left';
 import Right from './Right';
+import data from "@assets/data.json"
 
 const Rugby = () => {
 	// const [leftOpen, setLeftOpen] = useState(true);
@@ -22,7 +23,7 @@ const Rugby = () => {
 
 			<SideBtn setState={setLeftOpen} state={leftOpen} side={false} />
 
-			<Middle />
+			<Middle title="Rugby Schedule" events={data.rugbyEvents}/>
 
 			<SideBtn setState={setRightOpen} state={rightOpen} side />
 

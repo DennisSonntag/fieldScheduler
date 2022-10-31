@@ -4,20 +4,16 @@ import Calendar from './Calender';
 import Title from './Title';
 import Download from './Download';
 
-const Middle = () => {
-	const months = [2, 3, 4, 5];
+import data from "@assets/data.json"
 
-	const events: { [index: number]: number[] } = {
-		2: [15, 16, 17],
-		3: [18, 20],
-		4: [6, 17, 27],
-		5: [8, 21, 30],
-	};
+const Middle = ({title, events}: any) => {
+	const months = data.months
+
 
 	return (
 		<section className="relative flex flex-col w-full h-full overflow-hidden hover-fade">
 			<section className="w-full h-16 p-3">
-				<Title text="Schedule" />
+				<Title text={title} />
 			</section>
 
 			<section className="grid w-full h-full gap-4 p-8 overflow-hidden my-col-2 auto-rows-auto place-content-center justify-evenly duration-300 ease-in-out">
