@@ -60,7 +60,7 @@ const Calendar = ({ month, events }: any) => {
 			<h1 className="text-lg font-bold text-center text-white">{months[month]}</h1>
 			<div className="grid h-full grid-cols-7 text-center grid-rows-7 text-md">
 				{weekDays.map(day => (
-					<div key={uuid()} className="w-full h-full text-center text-white">
+					<div key={uuid()} className={`w-full h-full text-center ${theme ? 'text-white' : 'text-black'} `}>
 						{day}
 					</div>
 				))}
@@ -75,7 +75,7 @@ const Calendar = ({ month, events }: any) => {
 					if (currentWeekEnds.includes(day)) {
 						// weekends
 						return (
-							<div key={uuid()} className="text-gray-500 relative w-full h-full cursor-pointer">
+							<div key={uuid()} className={`text-gray-500 relative w-full h-full cursor-pointer ${theme ? 'text-black' : 'text-white'}`}>
 								<p className="absolute inset-0 m-auto text-gray-500 w-fit h-fit">{day}</p>
 							</div>
 						);
@@ -85,20 +85,20 @@ const Calendar = ({ month, events }: any) => {
 						// days with events
 						return (
 							<div key={uuid()} className="relative w-11/12 rounded-full cursor-pointer h-11/12 aspect-square bg-blue">
-								<p className="absolute inset-0 m-auto font-bold text-white w-fit h-fit ">{day}</p>
+								<p className={`absolute inset-0 m-auto font-bold ${theme ? 'text-white' : 'text-black'} w-fit h-fit `}>{day}</p>
 							</div>
 						);
 					}
 					// normal weekdays
 					return (
-						<div key={uuid()} className="relative w-11/12 text-white cursor-pointer h-11/12 aspect-square hoverDay">
+						<div key={uuid()} className={`relative w-11/12 ${theme ? 'text-white' : 'text-black'} cursor-pointer h-11/12 aspect-square hoverDay`}>
 							<p className="absolute inset-0 m-auto w-fit h-fit">{day}</p>
 						</div>
 					);
 				})}
 
 				{lastDays.map(() => (
-					<div key={uuid()} className="relative w-full h-full text-black cursor-pointer">
+					<div key={uuid()} className={`relative w-full h-full ${theme ? 'text-black' : 'text-white'} cursor-pointer`}>
 						<p className="absolute inset-0 m-auto w-fit h-fit"> </p>
 					</div>
 				))}
