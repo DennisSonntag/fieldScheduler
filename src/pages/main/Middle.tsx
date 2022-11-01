@@ -12,17 +12,33 @@ import Calendar from './Calender';
 import Title from './Title';
 import Download from './Download';
 import ViewBtn from './ViewBtn';
+import WeekCaret from './WeekCaret';
 
 const Middle = ({ title, events }: any) => {
 	const { months } = data.rugby;
 
-	const [active, setActive] = useState(1);
+	const [active, setActive] = useState(3);
 
 	const setIcon = () => {
 		if (active === 4) {
 			setActive(0);
 		}
 		setActive(prev => (prev += 1));
+	};
+
+	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+	const [week, setWeek] = useState(8);
+
+	const inc = () => {
+		if (week + 1 <= 52) {
+			setWeek(prev => (prev += 1));
+		}
+	};
+
+	const dec = () => {
+		if (week - 1 >= 1) {
+			setWeek(prev => (prev -= 1));
+		}
 	};
 
 	return (
@@ -36,17 +52,34 @@ const Middle = ({ title, events }: any) => {
 					<>
 						<ViewBtn setIcon={setIcon} icon={seasonIcon} text="Season" />
 						{months.map(month => (
-							<Calendar key={uuid()} events={events[month]} month={month} />
+							<Calendar key={uuid()} events={events[month]} month={month} hover />
 						))}
 					</>
 				) : null}
 				{active === 2 ? (
 					<>
 						<ViewBtn setIcon={setIcon} icon={monthIcon} text="Month" />
-						<Calendar key={uuid()} events={events[2]} month={2} />
+						<Calendar key={uuid()} events={events[2]} month={2} max />
 					</>
 				) : null}
-				{active === 3 ? <ViewBtn setIcon={setIcon} icon={weekIcon} text="Week" /> : null}
+				{active === 3 ? (
+					<>
+						<ViewBtn setIcon={setIcon} icon={weekIcon} text="Week" />
+						<div className="w-full h-48 bg-mid flex relative">
+							<h1 className="font-bold text-[2rem] text-white w-fit h-fit absolute inset-x-0 mx-auto top-[-5rem]">Week {week}</h1>
+							<WeekCaret func={inc} top />
+							{weekDays.map(day => (
+								<>
+									<div className="bg-red w-full h-fit flex justify-around">
+										<p>{day}</p>
+									</div>
+									<div className="h-full w-auto bg-green border-black border"></div>
+								</>
+							))}
+							<WeekCaret func={dec} />
+						</div>
+					</>
+				) : null}
 				{active === 4 ? <ViewBtn setIcon={setIcon} icon={dayIcon} text="Day" /> : null}
 			</section>
 

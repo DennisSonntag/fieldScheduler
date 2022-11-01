@@ -2,7 +2,7 @@ import { Theme } from '@components/App';
 import { useContext } from 'react';
 import { v4 as uuid } from 'uuid';
 
-const Calendar = ({ month, events }: any) => {
+const Calendar = ({ month, events, hover, max }: any) => {
 	const year = 2022;
 	const date = new Date(year, month);
 
@@ -56,7 +56,7 @@ const Calendar = ({ month, events }: any) => {
 	const theme = useContext(Theme);
 
 	return (
-		<button type="button" className={` ${theme ? 'neo-dark' : 'neo-light'} w-full aspect-square  p-2 rounded-lg shadow-2xl hover:scale-110 duration-150 ease-in-out m-auto`}>
+		<button type="button" className={` ${theme ? 'neo-dark' : 'neo-light'} ${max ? 'h-full' : 'w-full'} aspect-square  p-2 rounded-lg shadow-2xl ${hover ? 'hover:scale-110' : null}  duration-150 ease-in-out m-auto`}>
 			<h1 className="text-lg font-bold text-center text-white">{months[month]}</h1>
 			<div className="grid h-full grid-cols-7 text-center grid-rows-7 text-md">
 				{weekDays.map(day => (

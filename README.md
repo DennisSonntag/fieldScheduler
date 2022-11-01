@@ -7,14 +7,14 @@
 ![basics](./src/assets/images/screenshot1.png)
 
 # ToDo list
-
-- Convert as much as possible to astro to remove maximum js
-- Use nanostores instead of react context
 - Persist login auth
+- Persist dark mode
 
 
+- fix filter chip overlay issue
 - Cal section full screen
 - Cal multiple views (day, week, month, season, ext.)
+
 - indicate selected
 - show valid teams
 - team colors
@@ -29,4 +29,8 @@
 - school and division specific events 
 - add teams 
 - compare soccer and rugby schedules
-- fix filter chip overlay issue
+
+
+
+- Convert as much as possible to astro to remove maximum js
+- Use nanostores instead of react context
