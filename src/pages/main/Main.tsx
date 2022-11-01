@@ -19,7 +19,7 @@ const Main = () => {
 		const rugby = localStorage.getItem('rugby') === 'true';
 		const soccer = localStorage.getItem('soccer') === 'true';
 		const compare = localStorage.getItem('compare') === 'true';
-		if (rugby !== null && soccer !== null && compare !== null) {
+		if (rugby !== undefined) {
 			setActivePage([rugby, soccer, compare]);
 		}
 	}, []);

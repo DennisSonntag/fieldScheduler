@@ -3,6 +3,20 @@
 @tailwind utilities;
 
 @layer base {
+	.no-move {
+		user-drag: none;
+		-webkit-user-drag: none;
+		user-select: none;
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+
+		-webkit-user-select: none; /* Safari */
+		-moz-user-select: none; /* Firefox */
+		-ms-user-select: none; /* IE10+/Edge */
+		user-select: none; /* Standard */
+	}
+
 	.gradient-tall {
 		background: rgb(16, 22, 35);
 		background: linear-gradient(0deg, rgba(16, 22, 35, 1) 0%, rgba(46, 61, 82, 1) 50%, rgba(62, 87, 128, 1) 50%, rgba(108, 135, 172, 1) 100%);
@@ -14,7 +28,7 @@
 	}
 
 	.field::after {
-		content: "";
+		content: '';
 		position: relative;
 		display: block;
 		height: 4px;
@@ -108,8 +122,6 @@
 	.top-calc {
 		top: calc(100% + 0.25em);
 	}
-
-	
 
 	.option-badge {
 		display: flex;

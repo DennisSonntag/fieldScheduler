@@ -24,6 +24,8 @@
 		"object-curly-newline": "off",
 		"react-in-jsx-scope": "off",
 		"react/jsx-indent": "off",
+		"no-return-assign": "off",
+		"no-param-reassign": "off",
 		"arrow-parens": "off",
 		"default-case": "off",
 		"no-plusplus": "off",
