@@ -17,7 +17,7 @@
 		"jsx-a11y/label-has-associated-control": "off",
 		"react/function-component-definition": "off",
 		"react/jsx-one-expression-per-line": "off",
-		"linebreak-style": ["error", "unix"],
+		"linebreak-style": ["off", "windows"],
 		"react-hooks/exhaustive-deps": "off",
 		"@typescript-eslint/indent": "off",
 		"react/jsx-indent-props": "off",

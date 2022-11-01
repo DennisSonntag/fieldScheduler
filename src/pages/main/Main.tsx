@@ -42,7 +42,7 @@ const Main = () => {
 			<nav className="box-border absolute inset-x-0 top-0 z-50 m-2 flex mx-auto w-fit h-fit gap-2">
 				<SportSelect sport="Rugby" state={rugbyActive} click={setRugby} />
 				<SportSelect sport="Soccer" state={soccerActive} click={setSoccer} />
-				<button onClick={setCompare} type="button" className={`${compareActive ? `${theme ? 'bg-dark' : 'bg-light'}` : 'bg-mid'} w-10 h-10 smooth hover:scale-110 active:scale-90 outline-none select-none rounded-full border-[0.3rem] duration-100 ease-in-out ${theme ? 'border-topLight' : 'border-topDark'} absolute inset-x-0 mx-auto top-4`}>
+				<button title="Compare Schedules" onClick={setCompare} type="button" className={`${compareActive ? `${theme ? 'bg-dark' : 'bg-light'}` : 'bg-mid'} w-10 h-10 smooth hover:scale-110 active:scale-90 outline-none select-none rounded-full border-[0.3rem] duration-100 ease-in-out ${theme ? 'border-topLight' : 'border-topDark'} absolute inset-x-0 mx-auto top-4`}>
 					<svg className={`w-4 h-4 inset-0 m-auto ${compareActive ? `${theme ? 'fill-white' : 'fill-black'}` : 'fill-light'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
 						<path d="M422.6 278.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L434.7 176H64c-17.7 0-32-14.3-32-32s14.3-32 32-32H434.7L377.4 54.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l112 112c12.5 12.5 12.5 32.8 0 45.3l-112 112zm-269.3 224l-112-112c-12.5-12.5-12.5-32.8 0-45.3l112-112c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3L141.3 336H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H141.3l57.4 57.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0z" />
 					</svg>
