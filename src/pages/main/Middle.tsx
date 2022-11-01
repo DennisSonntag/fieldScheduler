@@ -1,14 +1,12 @@
 import { v4 as uuid } from 'uuid';
 
+import data from '@assets/data.json';
 import Calendar from './Calender';
 import Title from './Title';
 import Download from './Download';
 
-import data from "@assets/data.json"
-
-const Middle = ({title, events}: any) => {
-	const months = data.months
-
+const Middle = ({ title, events }: any) => {
+	const { months } = data.rugby;
 
 	return (
 		<section className="relative flex flex-col w-full h-full overflow-hidden hover-fade">

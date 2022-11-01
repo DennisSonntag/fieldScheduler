@@ -1,37 +1,34 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { Theme } from '@components/App';
-import compare from '@svg/compare.svg';
 import Rugby from './Rugby';
 import Soccer from './Soccer';
 import SportSelect from './SportSelect';
 import Compare from './Compare';
 
 const Main = () => {
-	// 0 == hidden
-	// 1 == shown 
-	// 2 == compare
-	const [rugbyActive, setRugbyActive] = useState(1);
-	const [soccerActive, setSoccerActive] = useState(0);
-	const [compareActive, setCompareActive] = useState(0);
+	const [[rugbyActive, soccerActive, compareActive], setActivePage] = useState([true, false, false]);
 
-	const setRugby = () => {
-		setRugbyActive(1);
-		setSoccerActive(0);
-		setCompareActive(0)
-	};
+	const setRugby = () => setActivePage([true, false, false]);
 
-	const setSoccer = () => {
-		setRugbyActive(0);
-		setSoccerActive(1);
-		setCompareActive(0)
-	};
+	const setSoccer = () => setActivePage([false, true, false]);
 
-	const setCompare = () => {
-		setRugbyActive(2);
-		setSoccerActive(2);
-		setCompareActive(2)
-	};
+	const setCompare = () => setActivePage([false, false, true]);
+
+	useEffect(() => {
+		const rugby = localStorage.getItem('rugby') === 'true';
+		const soccer = localStorage.getItem('soccer') === 'true';
+		const compare = localStorage.getItem('compare') === 'true';
+		if (rugby !== null && soccer !== null && compare !== null) {
+			setActivePage([rugby, soccer, compare]);
+		}
+	}, []);
+
+	useEffect(() => {
+		localStorage.setItem('rugby', String(rugbyActive));
+		localStorage.setItem('soccer', String(soccerActive));
+		localStorage.setItem('compare', String(compareActive));
+	}, [rugbyActive, soccerActive, compareActive]);
 
 	const theme = useContext(Theme);
 
@@ -45,13 +42,15 @@ const Main = () => {
 			<nav className="box-border absolute inset-x-0 top-0 z-50 m-2 flex mx-auto w-fit h-fit gap-2">
 				<SportSelect sport="Rugby" state={rugbyActive} click={setRugby} />
 				<SportSelect sport="Soccer" state={soccerActive} click={setSoccer} />
-				<button onClick={setCompare} type="button" className={`${compareActive == 2 ?  `${theme ? 'bg-dark' : 'bg-light'}` : 'bg-mid'} w-10 h-10 smooth hover:scale-110 active:scale-90 outline-none select-none rounded-full border-[0.3rem] duration-100 ease-in-out ${theme ? 'border-topLight' : 'border-topDark'} absolute inset-x-0 mx-auto top-4`}>
-					<img className="w-4 h-4 inset-0 m-auto " src={compare} alt="" srcSet="" />
+				<button onClick={setCompare} type="button" className={`${compareActive ? `${theme ? 'bg-dark' : 'bg-light'}` : 'bg-mid'} w-10 h-10 smooth hover:scale-110 active:scale-90 outline-none select-none rounded-full border-[0.3rem] duration-100 ease-in-out ${theme ? 'border-topLight' : 'border-topDark'} absolute inset-x-0 mx-auto top-4`}>
+					<svg className={`w-4 h-4 inset-0 m-auto ${compareActive ? `${theme ? 'fill-white' : 'fill-black'}` : 'fill-light'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+						<path d="M422.6 278.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L434.7 176H64c-17.7 0-32-14.3-32-32s14.3-32 32-32H434.7L377.4 54.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l112 112c12.5 12.5 12.5 32.8 0 45.3l-112 112zm-269.3 224l-112-112c-12.5-12.5-12.5-32.8 0-45.3l112-112c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3L141.3 336H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H141.3l57.4 57.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0z" />
+					</svg>
 				</button>
 			</nav>
-			{rugbyActive == 0 ? <Soccer /> : null}
-			{rugbyActive == 1 ? <Rugby /> : null}
-			{rugbyActive == 2? <Compare /> : null}
+			{rugbyActive ? <Rugby /> : null}
+			{soccerActive ? <Soccer /> : null}
+			{compareActive ? <Compare /> : null}
 		</>
 	);
 };

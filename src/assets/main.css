@@ -109,6 +109,8 @@
 		top: calc(100% + 0.25em);
 	}
 
+	
+
 	.option-badge {
 		display: flex;
 		align-items: center;

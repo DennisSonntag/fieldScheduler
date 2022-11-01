@@ -1,17 +1,66 @@
 {
-	"months": [1,2,3,4],
 
-	"rugbyEvents" : {
-		"2": [15, 16, 17],
-		"3": [18, 20],
-		"4": [6, 17, 27],
-		"5": [8, 21, 30]
+	"divisions": [
+		{ "label": "Div 1", "value": 1 },
+		{ "label": "Div 2", "value": 2 },
+		{ "label": "Div 3", "value": 3 }
+	],
+
+	"schools": [
+		{ "label": "Churchill", "value": 1 },
+		{ "label": "Bowless", "value": 2 },
+		{ "label": "Other schools", "value": 3 }
+	],
+
+	"seniorities": [
+		{ "label": "Senior", "value": 1 },
+		{ "label": "Junior", "value": 2 }
+	],
+
+	"rugby": {
+		"months": [2, 3, 4, 5],
+		"events": {
+			"2": [15, 16, 17],
+			"3": [18, 20],
+			"4": [6, 17, 27],
+			"5": [8, 21, 30]
+		},
+		"teams": {
+			"1": "Team",
+			"2": "Team",
+			"3": "Team",
+			"4": "Team",
+			"5": "Team",
+			"6": "Team",
+			"7": "Team",
+			"8": "Team",
+			"9": "Team",
+			"10": "Team",
+			"11": "Team",
+			"12": "Team"
+		}
 	},
-
-	"soccerEvents" : {
-		"2": [12, 17, 22],
-		"3": [8, 22],
-		"4": [7, 9, 20],
-		"5": [2, 11, 23]
+	"soccer": {
+		"months": [1, 2, 3, 4],
+		"events": {
+			"2": [12, 17, 22],
+			"3": [8, 22],
+			"4": [7, 9, 20],
+			"5": [2, 11, 23]
+		},
+		"teams": {
+			"1": "Team",
+			"2": "Team",
+			"3": "Team",
+			"4": "Team",
+			"5": "Team",
+			"6": "Team",
+			"7": "Team",
+			"8": "Team",
+			"9": "Team",
+			"10": "Team",
+			"11": "Team",
+			"12": "Team"
+		}
 	}
 }

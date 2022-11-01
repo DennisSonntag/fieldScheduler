@@ -1,19 +1,13 @@
-import Calendar from "./Calender";
-import Download from "./Download";
-import Sport from "./Sport"
-import Title from "./Title";
-import { v4 as uuid } from 'uuid';
-import Middle from "./Middle";
-import data from "@assets/data.json"
+import data from '@assets/data.json';
 
-const Compare = () => {
+import Sport from './Sport';
+import Middle from './Middle';
 
-	return (
-		<Sport>
-			<Middle title="Rugby Schedule" events={data.rugbyEvents}/>
-			<Middle title="Soccer Schedule" events={data.soccerEvents}/>
-		</Sport>
-	)
-}
+const Compare = () => (
+	<Sport>
+		<Middle title="Rugby Schedule" events={data.rugby.events} />
+		<Middle title="Soccer Schedule" events={data.soccer.events} />
+	</Sport>
+);
 
-export default Compare
+export default Compare;
