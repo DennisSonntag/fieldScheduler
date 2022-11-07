@@ -73,7 +73,7 @@ const Middle = ({ title, events }: any) => {
 									<div className="bg-red w-full h-fit flex justify-around">
 										<p>{day}</p>
 									</div>
-									<div className="h-full w-auto bg-green border-black border"></div>
+									<div className="h-full w-auto bg-green border-black border" />
 								</>
 							))}
 							<WeekCaret func={dec} />

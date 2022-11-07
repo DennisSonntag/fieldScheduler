@@ -7,8 +7,9 @@
 ![basics](./src/assets/images/screenshot1.png)
 
 # ToDo list
+-Fixed dark mode load fliker animation 
+
 - Persist login auth
-- Persist dark mode
 
 
 - fix filter chip overlay issue
