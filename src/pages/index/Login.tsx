@@ -37,8 +37,12 @@ const Login = () => {
 			window.location.href = '/main';
 		}
 	}, [user]);
+	const dialogRef = useRef(null);
 
 	const forgotPassword = () => {
+		const dialog = dialogRef.current as unknown as HTMLDialogElement;
+		dialog.showModal();
+
 		// try {
 		// 	await sendPasswordResetEmail(auth, "sonntagdennis8@gmail.com")
 		// 	alert("Email Sent")
@@ -70,6 +74,12 @@ const Login = () => {
 				<button type="button" onClick={forgotPassword} className="text-blue underline hover:text-blue-300">
 					Forgot Password
 				</button>
+				<dialog className="h-1/2 aspect-square rounded-lg bg-base shadow-2xl backdrop:bg-black backdrop:opacity-60" ref={dialogRef}>
+					<p className="text-center font-bold text-xl">Forgot Password</p>
+					<button type="button" className="absolute inset-x-0 mx-auto w-fit h-fit p-2 bg-dim rounded-md hover:scale-105 active:scale-95 smooth text-invert bottom-4 no-move">
+						Send Reset Email
+					</button>
+				</dialog>
 				<p className={`text-red h-fit w-fit text-center font-bold duration-75 ${error !== 0 ? 'opacity-100' : 'opacity-0'}`}>{errorContent}</p>
 				<button
 					type="button"

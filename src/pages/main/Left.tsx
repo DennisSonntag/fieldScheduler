@@ -29,7 +29,7 @@ const Left = ({ leftOpen, teams }: any) => {
 			<FilterChip options={schools} selected={schoolSelect} />
 			<FilterChip options={seniorities} selected={senioritySelect} />
 
-			<div className=" grid flex-grow grid-cols-3 gap-4 p-2">
+			<div className=" grid flex-grow grid-cols-3 gap-4 p-2 z-[1]">
 				{Object.keys(teams).map(team => (
 					<div key={uuid()} className="smooth relative h-full w-full cursor-pointer no-move rounded-md bg-base text-stark shadow-xl hover:scale-105 active:scale-90">
 						<p className="absolute inset-0 m-auto h-fit w-fit">

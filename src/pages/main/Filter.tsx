@@ -89,7 +89,7 @@ export const Select = ({ title, setSelected, options, selected }: any) => {
 						}}
 						onMouseEnter={() => setHighlightedIndex(index)}
 						key={option.value}
-						className={`m-2 cursor-pointer  truncate rounded-md  py-[0.5em] text-center ${isOptionSelected(option) ? 'bg-blue-700' : 'bg-base'} ${index === highlightedIndex ? 'bg-blue-300 text-invert' : ''} `}
+							className={`m-2 cursor-pointer z-50 truncate rounded-md  py-[0.5em] text-center ${isOptionSelected(option) ? 'bg-blue-700' : 'bg-base'} ${index === highlightedIndex ? 'bg-blue-300 text-invert' : ''} `}
 					>
 						{option.label}
 					</option>

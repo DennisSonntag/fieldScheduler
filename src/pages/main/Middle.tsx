@@ -61,13 +61,13 @@ const Middle = ({ title, events }: any) => {
 				<ViewBtn setIconState={setIcon} iconNum={active} />
 			</div>
 
-			<section className="my-col-2 relative grid h-auto w-full grow auto-rows-auto place-content-center justify-evenly gap-4 overflow-hidden p-8 duration-300 ease-in-out">
+			<section className="relative h-auto w-full grow overflow-hidden p-8 duration-300 ease-in-out">
 				{active === 0 ? (
-					<>
+					<div className="relative grid h-full w-full auto-rows-auto grid-cols-2 place-content-center justify-evenly gap-4 bg-bug">
 						{months.map(monthParam => (
 							<Calendar key={uuid()} events={events[monthParam]} month={monthParam} hover />
 						))}
-					</>
+					</div>
 				) : null}
 				{active === 1 ? (
 					<div className="absolute inset-0 m-auto flex h-fit w-[30rem] ">
@@ -95,7 +95,7 @@ const Middle = ({ title, events }: any) => {
 						<WeekCaret func={decWeek} />
 					</div>
 				) : null}
-				{active === 3 ? <div className="absolute inset-0 m-auto h-fit w-fit text-2xl text-bug font-bold">Day tbd ...</div> : null}
+				{active === 3 ? <div className="absolute inset-0 m-auto h-fit w-fit text-2xl font-bold text-bug">Day tbd ...</div> : null}
 			</section>
 
 			<div className="grid h-[10%] w-full place-content-center ">

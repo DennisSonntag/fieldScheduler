@@ -3,7 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+	@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital@1&display=swap');
 	:root {
+		font-family: 'Ubuntu', sans-serif;
+
 		/* dark mode */
 		--color-base: #94a3b8;
 		--color-mid: #475569;
