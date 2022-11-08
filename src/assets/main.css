@@ -47,17 +47,33 @@
 
 	.no-move {
 		user-drag: none;
-		-webkit-user-drag: none;
 		user-select: none;
-		-moz-user-select: none;
-		-webkit-user-select: none;
-		-ms-user-select: none;
-
-		-webkit-user-select: none; /* Safari */
-		-moz-user-select: none; /* Firefox */
-		-ms-user-select: none; /* IE10+/Edge */
-		user-select: none; /* Standard */
 	}
+
+	.my-col-2 {
+		grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+	}
+	.my-shadow {
+		box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.75);
+	}
+	.hover-fade {
+		opacity: 40%;
+		transition: all 150ms ease-in-out;
+	}
+
+	.hover-fade:hover {
+		opacity: 100%;
+	}
+
+	.top-calc {
+		top: calc(100% + 0.25em);
+	}
+
+	.smooth {
+		transition: all 75ms ease-in-out;
+	}
+
+	/* ----------- Login section --------------- */
 
 	.field::after {
 		content: '';
@@ -85,10 +101,6 @@
 		transition: border 500ms;
 	}
 
-	.my-col-2 {
-		grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-	}
-
 	.field:focus-within {
 		border-color: transparent;
 	}
@@ -110,28 +122,7 @@
 		transform: scale(0.8) translateY(-1.5rem);
 	}
 
-	.my-shadow {
-		box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.75);
-	}
-
 	.bot-dash {
 		border-bottom: 2px dashed var(--color-invert);
-	}
-
-	.hover-fade {
-		opacity: 40%;
-		transition: all 150ms ease-in-out;
-	}
-
-	.hover-fade:hover {
-		opacity: 100%;
-	}
-
-	.top-calc {
-		top: calc(100% + 0.25em);
-	}
-
-	.smooth {
-		transition: all 75ms ease-in-out;
 	}
 }

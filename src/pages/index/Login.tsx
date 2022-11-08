@@ -34,7 +34,7 @@ const Login = () => {
 
 	useEffect(() => {
 		if (user) {
-			window.location.href = user?.uid;
+			window.location.href = '/main';
 		}
 	}, [user]);
 
