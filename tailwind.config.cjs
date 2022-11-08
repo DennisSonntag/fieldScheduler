@@ -5,7 +5,6 @@ module.exports = {
 	theme: {
 		extend: {
 			backgroundImage: {
-
 				neo: 'var(--color-neo)',
 			},
 			colors: {

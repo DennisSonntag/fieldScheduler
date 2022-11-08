@@ -52,11 +52,11 @@ const Calendar = ({ month, events, hover }: any) => {
 	let index = 0;
 
 	return (
-		<button type="button" className={` m-auto aspect-square w-full relative rounded-lg bg-neo p-2 shadow-2xl duration-150 ease-in-out ${hover ? 'hover:scale-105' : null} `}>
-			<h1 className="text-center text-2xl w-fit h-fit mx-auto my-2 inset-0 font-bold text-invert">{months[month]}</h1>
+		<button type="button" className={` relative m-auto aspect-square w-full rounded-lg bg-neo p-2 shadow-2xl duration-150 ease-in-out ${hover ? 'hover:scale-105' : null} `}>
+			<h1 className="inset-0 mx-auto my-2 h-fit w-fit text-center text-2xl font-bold text-invert">{months[month]}</h1>
 			<div className="grid-rows-7 text-md grid h-full grid-cols-7 text-center">
 				{weekDays.map(day => (
-					<div key={uuid()} className="h-full w-full text-center text-stark font-bold">
+					<div key={uuid()} className="h-full w-full text-center font-bold text-stark">
 						{day}
 					</div>
 				))}
@@ -87,7 +87,7 @@ const Calendar = ({ month, events, hover }: any) => {
 					}
 					// normal weekdays
 					return (
-						<div key={uuid()} className="h-11/12 hover:bg-blue-800 hover:rounded-full hover:text-invert relative aspect-square w-11/12 cursor-pointer text-stark">
+						<div key={uuid()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer text-stark hover:rounded-full hover:bg-blue-800 hover:text-invert">
 							<p className="absolute inset-0 m-auto h-fit w-fit">{day}</p>
 						</div>
 					);

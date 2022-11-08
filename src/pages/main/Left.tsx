@@ -23,14 +23,18 @@ const Left = ({ leftOpen, teams }: any) => {
 				<Filter options={seniorities} title="Sr/Jr" selected={senioritySelect} setSelected={(o: any) => setSenioritySelect(o)} />
 			</div>
 
+			<div className="h-4" />
+
 			<FilterChip options={divisions} selected={divSelect} />
 			<FilterChip options={schools} selected={schoolSelect} />
 			<FilterChip options={seniorities} selected={senioritySelect} />
 
 			<div className=" grid flex-grow grid-cols-3 gap-4 p-2">
 				{Object.keys(teams).map(team => (
-					<div key={uuid()} className="h-fit w-fit truncate rounded-md bg-base p-2 text-center text-stark shadow-xl hover:scale-125">
-						{teams[Number(team)]} {team}
+					<div key={uuid()} className="smooth relative h-full w-full cursor-pointer no-move rounded-md bg-base text-stark shadow-xl hover:scale-105 active:scale-90">
+						<p className="absolute inset-0 m-auto h-fit w-fit">
+							{teams[Number(team)]} {team}
+						</p>
 					</div>
 				))}
 			</div>

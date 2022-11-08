@@ -7,8 +7,8 @@
 
 	"schools": [
 		{ "label": "Churchill", "value": 1 },
-		{ "label": "Bowless", "value": 2 },
-		{ "label": "Other schools", "value": 3 }
+		{ "label": "Bowness", "value": 2 },
+		{ "label": "Thirsk", "value": 3 }
 	],
 
 	"seniorities": [
@@ -17,7 +17,7 @@
 	],
 
 	"rugby": {
-		"template" :  [["Home Team", "Visitor Team", "Start Date (MM/DD/YYYY)", "Start Time (HH:MM AA)", "Duration (minutes)", "Details", "Show Details", "League Name", "Practice Type (Shared or Full)", "Schedule Name", "Venue"]],
+		"template": [["Home Team", "Visitor Team", "Start Date (MM/DD/YYYY)", "Start Time (HH:MM AA)", "Duration (minutes)", "Details", "Show Details", "League Name", "Practice Type (Shared or Full)", "Schedule Name", "Venue"]],
 		"months": [2, 3, 4, 5],
 		"events": {
 			"2": [15, 16, 17],

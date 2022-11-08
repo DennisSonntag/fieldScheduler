@@ -3,11 +3,7 @@ import { useState } from 'react';
 
 import data from '@assets/data.json';
 
-import seasonIcon from '@svg/year.svg';
-import monthIcon from '@svg/calendar.svg';
-import weekIcon from '@svg/week.svg';
 import caret from '@svg/caret.svg';
-import dayIcon from '@svg/day.svg';
 
 import Calendar from './Calender';
 import Title from './Title';
@@ -18,11 +14,12 @@ import WeekCaret from './WeekCaret';
 const Middle = ({ title, events }: any) => {
 	const { months } = data.rugby;
 
-	const [active, setActive] = useState(1);
+	const [active, setActive] = useState(0);
 
 	const setIcon = () => {
-		if (active === 4) {
+		if (active === 3) {
 			setActive(0);
+			return;
 		}
 		setActive(prev => (prev += 1));
 	};
@@ -60,49 +57,45 @@ const Middle = ({ title, events }: any) => {
 			<section className="h-16 w-full p-3">
 				<Title text={title} />
 			</section>
+			<div className="relative h-12 w-full shrink-0 ">
+				<ViewBtn setIconState={setIcon} iconNum={active} />
+			</div>
 
-			<section className="my-col-2 relative grid h-full w-full auto-rows-auto place-content-center justify-evenly gap-4 overflow-hidden p-8 duration-300 ease-in-out">
-				{active === 1 ? (
+			<section className="my-col-2 relative grid h-auto w-full grow auto-rows-auto place-content-center justify-evenly gap-4 overflow-hidden p-8 duration-300 ease-in-out">
+				{active === 0 ? (
 					<>
-						<ViewBtn setIcon={setIcon} icon={seasonIcon} text="Season" />
 						{months.map(monthParam => (
 							<Calendar key={uuid()} events={events[monthParam]} month={monthParam} hover />
 						))}
 					</>
 				) : null}
+				{active === 1 ? (
+					<div className="absolute inset-0 m-auto flex h-fit w-[30rem] ">
+						<button type="button" onClick={decMonth}>
+							<img src={caret} alt="" className="smooth inv-1 h-16 w-16 rotate-90 hover:scale-110 active:scale-95" />
+						</button>
+						<Calendar key={uuid()} events={events[2]} month={month} />
+						<button type="button" onClick={incMonth}>
+							<img src={caret} alt="" className="smooth inv-1 h-16 w-16 rotate-[270deg] hover:scale-110 active:scale-95" />
+						</button>
+					</div>
+				) : null}
 				{active === 2 ? (
-					<>
-						<ViewBtn setIcon={setIcon} icon={monthIcon} text="Month" />
-						<div className="absolute inset-0 m-auto flex h-fit w-[30rem] ">
-							<button type="button" onClick={decMonth}>
-								<img src={caret} alt="" className="smooth inv-1 h-16 w-16 rotate-90 hover:scale-110 active:scale-95" />
-							</button>
-							<Calendar key={uuid()} events={events[2]} month={month} />
-							<button type="button" onClick={incMonth}>
-								<img src={caret} alt="" className="smooth inv-1 h-16 w-16 rotate-[270deg] hover:scale-110 active:scale-95" />
-							</button>
-						</div>
-					</>
+					<div className="relative flex h-48 w-full bg-mid">
+						<h1 className="absolute inset-x-0 top-[-5rem] mx-auto h-fit w-fit text-[2rem] font-bold text-invert">Week {week}</h1>
+						<WeekCaret func={incWeek} top />
+						{weekDays.map(day => (
+							<>
+								<div className="flex h-fit w-full justify-around bg-bug">
+									<p>{day}</p>
+								</div>
+								<div className="h-full w-auto border border-black bg-green-500" />
+							</>
+						))}
+						<WeekCaret func={decWeek} />
+					</div>
 				) : null}
-				{active === 3 ? (
-					<>
-						<ViewBtn setIcon={setIcon} icon={weekIcon} text="Week" />
-						<div className="relative flex h-48 w-full bg-mid">
-							<h1 className="absolute inset-x-0 top-[-5rem] mx-auto h-fit w-fit text-[2rem] font-bold text-invert">Week {week}</h1>
-							<WeekCaret func={incWeek} top />
-							{weekDays.map(day => (
-								<>
-									<div className="flex h-fit w-full justify-around bg-bug">
-										<p>{day}</p>
-									</div>
-									<div className="h-full w-auto border border-black bg-green-500" />
-								</>
-							))}
-							<WeekCaret func={decWeek} />
-						</div>
-					</>
-				) : null}
-				{active === 4 ? <ViewBtn setIcon={setIcon} icon={dayIcon} text="Day" /> : null}
+				{active === 3 ? <div className="absolute inset-0 m-auto h-fit w-fit text-2xl text-bug font-bold">Day tbd ...</div> : null}
 			</section>
 
 			<div className="grid h-[10%] w-full place-content-center ">
