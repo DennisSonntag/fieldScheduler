@@ -1,22 +1,23 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	mode: 'jit',
-	content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
 	theme: {
-		colors: {
-			light: "#94a3b8",
-			mid: "#475569",
-			dark: "#1e293b",
-			black: "#000000",
-			red:"#d81515",
-			white:"#ffffff",
-			blue: "#0284c7",
-			lightblue: "#61bbe8",
-			green : "#00ff00",
-			topDark: "#2A394C",
-			topLight: "#6780A5"
+		extend: {
+			backgroundImage: {
+
+				neo: 'var(--color-neo)',
+			},
+			colors: {
+				base: 'var(--color-base)',
+				mid: 'var(--color-mid)',
+				dim: 'var(--color-dim)',
+				stark: 'var(--color-stark)',
+				invert: 'var(--color-invert)',
+				top: 'var(--color-top)',
+				bug: '#ff0000',
+			},
 		},
-		extend: {},
 	},
 	plugins: [],
 };

@@ -11,9 +11,9 @@ const FilterChip = ({ selected }: any) => {
 	}, [selected]);
 
 	return (
-		<div className={`flex w-full ${empty ? 'h-0' : 'h-10'} gap-4 px-4 my-1 shrink-0 smooth`}>
+		<div className={` flex w-full ${empty ? 'h-0' : 'h-10'} smooth my-1 shrink-0 gap-4 px-4`}>
 			{selected.map((val: any) => (
-				<div key={uuid()} id={val.label} className="px-4 py-2 bg-light idk rounded-full w-fit h-fit smooth">
+				<div key={uuid()} id={val.label} className="smooth h-fit w-fit rounded-full bg-base px-4 py-2 text-stark">
 					{val.label}
 				</div>
 			))}

@@ -1,8 +1,6 @@
-import { Theme } from '@components/App';
-import { useContext } from 'react';
 import { v4 as uuid } from 'uuid';
 
-const Calendar = ({ month, events, hover, max }: any) => {
+const Calendar = ({ month, events, hover }: any) => {
 	const year = 2022;
 	const date = new Date(year, month);
 
@@ -53,21 +51,19 @@ const Calendar = ({ month, events, hover, max }: any) => {
 	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 	let index = 0;
 
-	const theme = useContext(Theme);
-
 	return (
-		<button type="button" className={` ${theme ? 'neo-dark' : 'neo-light'} ${max ? 'h-full' : 'w-full'} aspect-square  p-2 rounded-lg shadow-2xl ${hover ? 'hover:scale-110' : null}  duration-150 ease-in-out m-auto`}>
-			<h1 className="text-lg font-bold text-center text-white">{months[month]}</h1>
-			<div className="grid h-full grid-cols-7 text-center grid-rows-7 text-md">
+		<button type="button" className={` m-auto aspect-square w-full relative rounded-lg bg-neo p-2 shadow-2xl duration-150 ease-in-out ${hover ? 'hover:scale-105' : null} `}>
+			<h1 className="text-center text-2xl w-fit h-fit mx-auto my-2 inset-0 font-bold text-invert">{months[month]}</h1>
+			<div className="grid-rows-7 text-md grid h-full grid-cols-7 text-center">
 				{weekDays.map(day => (
-					<div key={uuid()} className={`w-full h-full text-center ${theme ? 'text-white' : 'text-black'} `}>
+					<div key={uuid()} className="h-full w-full text-center text-stark font-bold">
 						{day}
 					</div>
 				))}
 
 				{firstDays.map(() => (
-					<div key={uuid()} className="text-black relative w-full h-full cursor-pointer">
-						<p className="absolute inset-0 m-auto w-fit h-fit"> </p>
+					<div key={uuid()} className=" relative h-full w-full cursor-pointer">
+						<p className="absolute inset-0 m-auto h-fit w-fit"> </p>
 					</div>
 				))}
 
@@ -75,8 +71,8 @@ const Calendar = ({ month, events, hover, max }: any) => {
 					if (currentWeekEnds.includes(day)) {
 						// weekends
 						return (
-							<div key={uuid()} className={`text-gray-500 relative w-full h-full cursor-pointer ${theme ? 'text-black' : 'text-white'}`}>
-								<p className="absolute inset-0 m-auto text-gray-500 w-fit h-fit">{day}</p>
+							<div key={uuid()} className="relative h-full w-full cursor-pointer text-dim">
+								<p className="absolute inset-0 m-auto h-fit w-fit">{day}</p>
 							</div>
 						);
 					}
@@ -84,22 +80,22 @@ const Calendar = ({ month, events, hover, max }: any) => {
 						index++;
 						// days with events
 						return (
-							<div key={uuid()} className="relative w-11/12 rounded-full cursor-pointer h-11/12 aspect-square bg-blue">
-								<p className={`absolute inset-0 m-auto font-bold ${theme ? 'text-white' : 'text-black'} w-fit h-fit `}>{day}</p>
+							<div key={uuid()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer rounded-full bg-blue-600">
+								<p className="absolute inset-0 m-auto h-fit w-fit font-bold text-invert ">{day}</p>
 							</div>
 						);
 					}
 					// normal weekdays
 					return (
-						<div key={uuid()} className={`relative w-11/12 ${theme ? 'text-white' : 'text-black'} cursor-pointer h-11/12 aspect-square hoverDay`}>
-							<p className="absolute inset-0 m-auto w-fit h-fit">{day}</p>
+						<div key={uuid()} className="h-11/12 hover:bg-blue-800 hover:rounded-full hover:text-invert relative aspect-square w-11/12 cursor-pointer text-stark">
+							<p className="absolute inset-0 m-auto h-fit w-fit">{day}</p>
 						</div>
 					);
 				})}
 
 				{lastDays.map(() => (
-					<div key={uuid()} className={`relative w-full h-full ${theme ? 'text-black' : 'text-white'} cursor-pointer`}>
-						<p className="absolute inset-0 m-auto w-fit h-fit"> </p>
+					<div key={uuid()} className="relative h-full w-full cursor-pointer">
+						<p className="absolute inset-0 m-auto h-fit w-fit"> </p>
 					</div>
 				))}
 			</div>

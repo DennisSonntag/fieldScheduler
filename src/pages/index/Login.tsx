@@ -50,18 +50,18 @@ const Login = () => {
 	};
 
 	return (
-		<div className="absolute inset-0 flex flex-col m-auto w-fit h-fit ">
-			<h1 className="absolute inset-x-0 mx-auto text-2xl font-bold text-center text-white w-fit h-fit">Sign In</h1>
-			<div className="relative flex flex-col w-full my-auto mt-16 mb-4 bot-dash field">
-				<input ref={emailRef} autoComplete="off" placeholder=" " type="text" id="email" className="h-8 overflow-hidden text-white border-0 rounded-md w-52 outline-0 input" />
-				<label htmlFor="email" className="text-lg text-white label">
+		<div className=" absolute inset-0 m-auto flex h-fit w-fit flex-col text-invert">
+			<h1 className="absolute inset-x-0 mx-auto h-fit w-fit text-center text-2xl font-bold ">Sign In</h1>
+			<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
+				<input ref={emailRef} autoComplete="off" placeholder=" " type="text" id="email" className="input h-8 w-52 overflow-hidden rounded-md border-0 outline-0" />
+				<label htmlFor="email" className="label text-lg ">
 					Username
 				</label>
 			</div>
 
-			<div className="relative flex flex-col w-full my-auto mt-16 mb-4 bot-dash field">
-				<input ref={passwordRef} placeholder=" " type="password" id="password" className="h-8 overflow-hidden text-white border-0 rounded-md w-52 outline-0 input" />
-				<label htmlFor="password" className="text-lg text-white label">
+			<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
+				<input ref={passwordRef} placeholder=" " type="password" id="password" className="input h-8 w-52 overflow-hidden rounded-md border-0 outline-0" />
+				<label htmlFor="password" className="label text-lg ">
 					Password
 				</label>
 			</div>
@@ -70,14 +70,14 @@ const Login = () => {
 				<button type="button" onClick={forgotPassword} className="text-blue underline hover:text-blue-300">
 					Forgot Password
 				</button>
-				<p className={`text-red font-bold text-center w-fit h-fit duration-75 ${error !== 0 ? 'opacity-100' : 'opacity-0'}`}>{errorContent}</p>
+				<p className={`text-red h-fit w-fit text-center font-bold duration-75 ${error !== 0 ? 'opacity-100' : 'opacity-0'}`}>{errorContent}</p>
 				<button
 					type="button"
 					onClick={login}
 					// className={`${
 					// 	error === 1 ? "bg-red-500" : `${error === 2 ? "bg-green-500" : `${error === 3 ? "bg-blue-500" : "bg-gray-500"}`}`
 					// }  p-2 rounded-sm shadow-lg absolute inset-x-0 mx-auto w-fit duration-75 hover:scale-125 active:scale-90`}
-					className={`${error !== 0 ? 'bg-red' : 'bg-mid'}  p-2 rounded-sm shadow-lg w-fit duration-75 hover:scale-125 active:scale-90`}
+					className={`${error !== 0 ? 'bg-red-700' : 'bg-dim'}  w-fit rounded-sm p-2 shadow-lg duration-75 hover:scale-125 active:scale-90`}
 				>
 					Login
 				</button>

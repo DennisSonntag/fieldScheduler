@@ -1,5 +1,4 @@
 {
-
 	"divisions": [
 		{ "label": "Div 1", "value": 1 },
 		{ "label": "Div 2", "value": 2 },
@@ -18,6 +17,7 @@
 	],
 
 	"rugby": {
+		"template" :  [["Home Team", "Visitor Team", "Start Date (MM/DD/YYYY)", "Start Time (HH:MM AA)", "Duration (minutes)", "Details", "Show Details", "League Name", "Practice Type (Shared or Full)", "Schedule Name", "Venue"]],
 		"months": [2, 3, 4, 5],
 		"events": {
 			"2": [15, 16, 17],

@@ -3,6 +3,48 @@
 @tailwind utilities;
 
 @layer base {
+	:root {
+		/* dark mode */
+		--color-base: #94a3b8;
+		--color-mid: #475569;
+		--color-dim: #1e293b;
+		--color-stark: #000000;
+		--color-invert: #ffffff;
+		--color-top-light: #6c87ac;
+		--color-top-dark: #2e3d52;
+		--color-top: #2e3d52;
+		--color-neo: linear-gradient(145deg, hsl(215, 28%, 40%), hsl(215, 28%, 30%));
+		--color-svg-1: invert();
+		--color-svg: ;
+		--bg: linear-gradient(0deg, rgba(16, 22, 35, 1) 0%, var(--color-top-dark) 100%);
+	}
+
+	.light {
+		--bg: linear-gradient(0deg, rgba(62, 87, 128, 1) 0%, var(--color-top-light) 100%);
+		--color-svg: invert();
+		--color-svg-1: ;
+		--color-neo: linear-gradient(145deg, hsl(215, 28%, 20%), hsl(215, 28%, 15%));
+		--color-top: #6c87ac;
+		--color-base: #1e293b;
+		--color-mid: #475569;
+		--color-dim: #94a3b8;
+		--color-stark: #ffffff;
+		--color-invert: #000000;
+	}
+
+	.gradient {
+		background: var(--bg);
+		background-size: 100vw 100vh;
+	}
+
+	.inv {
+		filter: var(--color-svg);
+	}
+
+	.inv-1 {
+		filter: var(--color-svg-1);
+	}
+
 	.no-move {
 		user-drag: none;
 		-webkit-user-drag: none;
@@ -15,16 +57,6 @@
 		-moz-user-select: none; /* Firefox */
 		-ms-user-select: none; /* IE10+/Edge */
 		user-select: none; /* Standard */
-	}
-
-	.gradient-tall {
-		background: rgb(16, 22, 35);
-		background: linear-gradient(0deg, rgba(16, 22, 35, 1) 0%, rgba(46, 61, 82, 1) 50%, rgba(62, 87, 128, 1) 50%, rgba(108, 135, 172, 1) 100%);
-		background-size: 100vw 200vh;
-	}
-
-	.gradient-move {
-		background-position: 0% 100%;
 	}
 
 	.field::after {
@@ -47,13 +79,10 @@
 		width: 100%;
 		padding: 0.25rem 0;
 		background: none;
-		color: white;
+		color: var(--color-invert);
 		font-size: 1.2em;
 		font-weight: bold;
 		transition: border 500ms;
-	}
-	.my-size {
-		font-size: 8rem;
 	}
 
 	.my-col-2 {
@@ -69,7 +98,7 @@
 	}
 
 	.label {
-		color: white;
+		color: var(--color-invert);
 		position: absolute;
 		transform: translateY(0.5rem);
 		transform-origin: 0%;
@@ -85,29 +114,8 @@
 		box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.75);
 	}
 
-	.neo-dark {
-		background: linear-gradient(145deg, hsl(215, 28%, 20%), hsl(215, 28%, 15%));
-	}
-
-	.neo-light {
-		background: linear-gradient(145deg, hsl(215, 28%, 40%), hsl(215, 28%, 30%));
-	}
-
-	.grid-cols-7 {
-		grid-template-columns: repeat(7, minmax(0, 1fr));
-	}
-
-	.grid-rows-7 {
-		grid-template-rows: repeat(7, minmax(0, 1fr));
-	}
 	.bot-dash {
-		border-bottom: 2px dashed white;
-	}
-
-	.hoverDay:hover {
-		color: white;
-		border-radius: 99999px;
-		background-color: #1e40af;
+		border-bottom: 2px dashed var(--color-invert);
 	}
 
 	.hover-fade {
@@ -123,50 +131,7 @@
 		top: calc(100% + 0.25em);
 	}
 
-	.option-badge {
-		display: flex;
-		align-items: center;
-		border: 0.05em solid #777;
-		border-radius: 0.25em;
-		padding: 0.15em 0.25em;
-		gap: 0.25em;
-		cursor: pointer;
-		background: none;
-		outline: none;
-	}
-
-	.option-badge:hover,
-	.option-badge:focus {
-		background-color: hsl(0, 100%, 90%);
-		border-color: hsl(0, 100%, 50%);
-	}
-
-	.option-badge:hover > .remove-btn,
-	.option-badge:focus > .remove-btn {
-		color: hsl(0, 100%, 50%);
-	}
-
 	.smooth {
 		transition: all 75ms ease-in-out;
-	}
-
-	.option-badge > .remove-btn {
-		font-size: 1.25em;
-		color: #777;
-	}
-
-	.slide-in {
-		/* animation: slide 0.2s ease-in-out forwards; */
-		transform: translateX(0rem);
-	}
-
-	@keyframes slide {
-		0% {
-			transform: translateX(30rem);
-		}
-
-		100% {
-			transform: translateX(0rem);
-		}
 	}
 }
