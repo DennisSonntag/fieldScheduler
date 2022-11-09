@@ -8,9 +8,9 @@
 		font-family: 'Ubuntu', sans-serif;
 
 		/* dark mode */
-		--color-base: #94a3b8;
-		--color-mid: #475569;
-		--color-dim: #1e293b;
+		--color-base: hsl(215, 20%, 65%);
+		--color-mid: hsl(215, 19%, 30%);
+		--color-dim: hsl(217, 33%, 15%);
 		--color-stark: #000000;
 		--color-invert: #ffffff;
 		--color-top-light: #6c87ac;
