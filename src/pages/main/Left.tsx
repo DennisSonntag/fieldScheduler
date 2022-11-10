@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { divisions, schools, seniorities } from '@assets/data.json';
 import FilterChip from './FilterChip';
-import { Select as Filter } from './Filter';
+import Filter from './Filter';
 import Title from './Title';
 
 const Left = ({ leftOpen, teams }: any) => {
@@ -17,7 +17,7 @@ const Left = ({ leftOpen, teams }: any) => {
 				<Title text="Filters" />
 			</div>
 
-			<div className="flex h-10 w-full justify-around ">
+			<div className="grid auto-rows-auto my-col-3 h-fit w-full gap-2 justify-around items-center">
 				<Filter options={divisions} title="Div n" selected={divSelect} setSelected={(o: any) => setDivSelect(o)} />
 				<Filter options={schools} title="School" selected={schoolSelect} setSelected={(o: any) => setSchoolSelect(o)} />
 				<Filter options={seniorities} title="Sr/Jr" selected={senioritySelect} setSelected={(o: any) => setSenioritySelect(o)} />
@@ -29,10 +29,10 @@ const Left = ({ leftOpen, teams }: any) => {
 			<FilterChip options={schools} selected={schoolSelect} />
 			<FilterChip options={seniorities} selected={senioritySelect} />
 
-			<div className=" grid flex-grow grid-cols-3 gap-4 p-2 z-[1]">
+			<div className=" z-[1] grid grow h-auto grid-cols-3 gap-4 p-2">
 				{Object.keys(teams).map(team => (
-					<div key={uuid()} className="smooth relative h-full w-full cursor-pointer no-move rounded-md bg-base text-stark shadow-xl hover:scale-105 active:scale-90">
-						<p className="absolute inset-0 m-auto h-fit w-fit">
+					<div key={uuid()} className="smooth no-move relative h-full w-full cursor-pointer rounded-md bg-base text-stark shadow-xl hover:scale-105 active:scale-90">
+						<p className="absolute inset-0 m-auto h-fit w-fit text-center">
 							{teams[Number(team)]} {team}
 						</p>
 					</div>

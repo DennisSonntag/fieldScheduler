@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-const Calendar = ({ month, events, hover }: any) => {
+const Calendar = ({ month, events, hover, scale }: any) => {
 	const year = 2022;
 	const date = new Date(year, month);
 
@@ -52,55 +52,56 @@ const Calendar = ({ month, events, hover }: any) => {
 	let index = 0;
 
 	return (
-		<div className="aspect-square h-[80%] bg-base"></div>
-		// <div className={`relative m-auto h-fit rounded-lg bg-neo p-2 shadow-2xl duration-150 ease-in-out ${hover ? 'hover:scale-105' : null} `}>
-		// 	<h1 className="inset-0 mx-auto my-2 h-fit w-fit text-center text-2xl font-bold text-invert">{months[month]}</h1>
-		// 	<div className="grid-rows-7 text-md grid h-full grid-cols-7 text-center">
-		// 		{weekDays.map(day => (
-		// 			<div key={uuid()} className="h-full w-full text-center font-bold text-stark">
-		// 				{day}
-		// 			</div>
-		// 		))}
+		// <div className="relative h-full w-full rounded-lg bg-neo p-2 shadow-2xl duration-150 ease-in-out hover:scale-105">
+		<div className={` aspect-square h-fit w-full rounded-lg bg-neo p-2 shadow-2xl ${hover ? 'hover:scale-110' : null} ${scale ? scale : null}  m-auto duration-150 ease-in-out`}>
+			<h1 className="inset-0 mx-auto my-2 h-fit w-fit text-center text-2xl font-bold text-white">{months[month]}</h1>
+			<div className="grid-rows-7 text-md grid h-full grid-cols-7 text-center">
+				{weekDays.map(day => (
+					<div key={uuid()} className="h-full w-full text-center font-bold text-stark">
+						{day}
+					</div>
+				))}
 
-		// 		{firstDays.map(() => (
-		// 			<div key={uuid()} className=" relative h-full w-full cursor-pointer">
-		// 				<p className="absolute inset-0 m-auto h-fit w-fit"> </p>
-		// 			</div>
-		// 		))}
+				{firstDays.map(() => (
+					<div key={uuid()} className=" relative h-full w-full cursor-pointer">
+						<p className="absolute inset-0 m-auto h-fit w-fit"> </p>
+					</div>
+				))}
 
-		// 		{days.map(day => {
-		// 			if (currentWeekEnds.includes(day)) {
-		// 				// weekends
-		// 				return (
-		// 					<div key={uuid()} className="relative h-full w-full cursor-pointer text-dim">
-		// 						<p className="absolute inset-0 m-auto h-fit w-fit">{day}</p>
-		// 					</div>
-		// 				);
-		// 			}
-		// 			if (events[index] === day) {
-		// 				index++;
-		// 				// days with events
-		// 				return (
-		// 					<div key={uuid()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer rounded-full bg-blue-600">
-		// 						<p className="absolute inset-0 m-auto h-fit w-fit font-bold text-invert ">{day}</p>
-		// 					</div>
-		// 				);
-		// 			}
-		// 			// normal weekdays
-		// 			return (
-		// 				<div key={uuid()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer text-stark hover:rounded-full hover:bg-blue-800 hover:text-invert">
-		// 					<p className="absolute inset-0 m-auto h-fit w-fit">{day}</p>
-		// 				</div>
-		// 			);
-		// 		})}
+				{days.map(day => {
+					if (currentWeekEnds.includes(day)) {
+						// weekends
+						return (
+							<div key={uuid()} className="relative h-full w-full cursor-pointer text-dim">
+								<p className="absolute inset-0 m-auto h-fit w-fit">{day}</p>
+							</div>
+						);
+					}
+					if (events[index] === day) {
+						index++;
+						// days with events
+						return (
+							<div key={uuid()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer rounded-full bg-blue-600">
+								<p className="absolute inset-0 m-auto h-fit w-fit font-bold text-invert ">{day}</p>
+							</div>
+						);
+					}
+					// normal weekdays
+					return (
+						<div key={uuid()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer text-stark hover:rounded-full hover:bg-blue-800 hover:text-invert">
+							<p className="absolute inset-0 m-auto h-fit w-fit">{day}</p>
+						</div>
+					);
+				})}
 
-		// 		{lastDays.map(() => (
-		// 			<div key={uuid()} className="relative h-full w-full cursor-pointer">
-		// 				<p className="absolute inset-0 m-auto h-fit w-fit"> </p>
-		// 			</div>
-		// 		))}
-		// 	</div>
-		// </div>
+				{lastDays.map(() => (
+					<div key={uuid()} className="relative h-full w-full cursor-pointer">
+						<p className="absolute inset-0 m-auto h-fit w-fit"> </p>
+					</div>
+				))}
+			</div>
+		</div>
+		// {/* </div> */}
 	);
 };
 

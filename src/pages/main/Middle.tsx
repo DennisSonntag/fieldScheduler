@@ -14,7 +14,7 @@ import WeekCaret from './WeekCaret';
 const Middle = ({ title, events }: any) => {
 	const { months } = data.rugby;
 
-	const [active, setActive] = useState(0);
+	const [active, setActive] = useState(2);
 
 	const setIcon = () => {
 		if (active === 3) {
@@ -61,27 +61,29 @@ const Middle = ({ title, events }: any) => {
 				<ViewBtn setIconState={setIcon} iconNum={active} />
 			</div>
 
-			<section className="relative h-auto w-full grow overflow-hidden p-8 duration-300 ease-in-out">
+			<section className={`my-col-2 relative grid  h-auto w-full grow auto-rows-auto gap-4 ${active === 0 ? 'overflow-y-auto' : 'overflow-hidden'} p-8 duration-300 ease-in-out `}>
 				{active === 0 ? (
-					<div className="relative grid h-full w-full auto-rows-auto grid-cols-2 place-content-center justify-evenly gap-4 bg-bug">
+					// <div className="my-col-2 relative grid h-full w-full auto-rows-auto place-content-center justify-evenly  gap-4 bg-bug">
+					<>
 						{months.map(monthParam => (
 							<Calendar key={uuid()} events={events[monthParam]} month={monthParam} hover />
 						))}
-					</div>
-				) : null}
+					</>
+				) : // </div>
+				null}
 				{active === 1 ? (
 					<div className="absolute inset-0 m-auto flex h-fit w-[30rem] ">
 						<button type="button" onClick={decMonth}>
 							<img src={caret} alt="" className="smooth inv-1 h-16 w-16 rotate-90 hover:scale-110 active:scale-95" />
 						</button>
-						<Calendar key={uuid()} events={events[2]} month={month} />
+						<Calendar key={uuid()} events={events[2]} month={month} scale="scale-[70%]" />
 						<button type="button" onClick={incMonth}>
 							<img src={caret} alt="" className="smooth inv-1 h-16 w-16 rotate-[270deg] hover:scale-110 active:scale-95" />
 						</button>
 					</div>
 				) : null}
 				{active === 2 ? (
-					<div className="relative flex h-48 w-full bg-mid">
+					<div className="absolute inset-0 m-auto flex h-32 w-full bg-mid">
 						<h1 className="absolute inset-x-0 top-[-5rem] mx-auto h-fit w-fit text-[2rem] font-bold text-invert">Week {week}</h1>
 						<WeekCaret func={incWeek} top />
 						{weekDays.map(day => (
@@ -98,7 +100,7 @@ const Middle = ({ title, events }: any) => {
 				{active === 3 ? <div className="absolute inset-0 m-auto h-fit w-fit text-2xl font-bold text-bug">Day tbd ...</div> : null}
 			</section>
 
-			<div className="grid h-[10%] w-full place-content-center ">
+			<div className="grid h-[20%] w-full place-content-center ">
 				<Download />
 			</div>
 		</section>

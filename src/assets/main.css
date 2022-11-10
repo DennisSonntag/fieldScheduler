@@ -56,6 +56,11 @@
 	.my-col-2 {
 		grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
 	}
+
+	.my-col-3 {
+		grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+	}
+
 	.my-shadow {
 		box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.75);
 	}
