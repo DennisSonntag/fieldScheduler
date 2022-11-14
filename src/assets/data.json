@@ -25,19 +25,109 @@
 			"4": [6, 17, 27],
 			"5": [8, 21, 30]
 		},
-		"teams": {
-			"1": "Team",
-			"2": "Team",
-			"3": "Team",
-			"4": "Team",
-			"5": "Team",
-			"6": "Team",
-			"7": "Team",
-			"8": "Team",
-			"9": "Team",
-			"10": "Team",
-			"11": "Team",
-			"12": "Team"
+		"divisions": {
+			"1": {
+				"sr": {
+					"teams": {
+						"1": "Team",
+						"2": "Team",
+						"3": "Team",
+						"4": "Team",
+						"5": "Team",
+						"6": "Team",
+						"7": "Team",
+						"8": "Team",
+						"9": "Team",
+						"10": "Team",
+						"11": "Team",
+						"12": "Team"
+					}
+				},
+				"jr": {
+					"teams": {
+						"1": "Team",
+						"2": "Team",
+						"3": "Team",
+						"4": "Team",
+						"5": "Team",
+						"6": "Team",
+						"7": "Team",
+						"8": "Team",
+						"9": "Team",
+						"10": "Team",
+						"11": "Team",
+						"12": "Team"
+					}
+				}
+			},
+			"2": {
+				"sr": {
+					"teams": {
+						"1": "Team",
+						"2": "Team",
+						"3": "Team",
+						"4": "Team",
+						"5": "Team",
+						"6": "Team",
+						"7": "Team",
+						"8": "Team",
+						"9": "Team",
+						"10": "Team",
+						"11": "Team",
+						"12": "Team"
+					}
+				},
+				"jr": {
+					"teams": {
+						"1": "Team",
+						"2": "Team",
+						"3": "Team",
+						"4": "Team",
+						"5": "Team",
+						"6": "Team",
+						"7": "Team",
+						"8": "Team",
+						"9": "Team",
+						"10": "Team",
+						"11": "Team",
+						"12": "Team"
+					}
+				}
+			},
+			"3": {
+				"sr": {
+					"teams": {
+						"1": "Team",
+						"2": "Team",
+						"3": "Team",
+						"4": "Team",
+						"5": "Team",
+						"6": "Team",
+						"7": "Team",
+						"8": "Team",
+						"9": "Team",
+						"10": "Team",
+						"11": "Team",
+						"12": "Team"
+					}
+				},
+				"jr": {
+					"teams": {
+						"1": "Team",
+						"2": "Team",
+						"3": "Team",
+						"4": "Team",
+						"5": "Team",
+						"6": "Team",
+						"7": "Team",
+						"8": "Team",
+						"9": "Team",
+						"10": "Team",
+						"11": "Team",
+						"12": "Team"
+					}
+				}
+			}
 		}
 	},
 	"soccer": {
@@ -48,19 +138,109 @@
 			"4": [7, 9, 20],
 			"5": [2, 11, 23]
 		},
-		"teams": {
-			"1": "Team",
-			"2": "Team",
-			"3": "Team",
-			"4": "Team",
-			"5": "Team",
-			"6": "Team",
-			"7": "Team",
-			"8": "Team",
-			"9": "Team",
-			"10": "Team",
-			"11": "Team",
-			"12": "Team"
+		"divisions": {
+			"1": {
+				"sr": {
+					"teams": {
+						"1": "Team",
+						"2": "Team",
+						"3": "Team",
+						"4": "Team",
+						"5": "Team",
+						"6": "Team",
+						"7": "Team",
+						"8": "Team",
+						"9": "Team",
+						"10": "Team",
+						"11": "Team",
+						"12": "Team"
+					}
+				},
+				"jr": {
+					"teams": {
+						"1": "Team",
+						"2": "Team",
+						"3": "Team",
+						"4": "Team",
+						"5": "Team",
+						"6": "Team",
+						"7": "Team",
+						"8": "Team",
+						"9": "Team",
+						"10": "Team",
+						"11": "Team",
+						"12": "Team"
+					}
+				}
+			},
+			"2": {
+				"sr": {
+					"teams": {
+						"1": "Team",
+						"2": "Team",
+						"3": "Team",
+						"4": "Team",
+						"5": "Team",
+						"6": "Team",
+						"7": "Team",
+						"8": "Team",
+						"9": "Team",
+						"10": "Team",
+						"11": "Team",
+						"12": "Team"
+					}
+				},
+				"jr": {
+					"teams": {
+						"1": "Team",
+						"2": "Team",
+						"3": "Team",
+						"4": "Team",
+						"5": "Team",
+						"6": "Team",
+						"7": "Team",
+						"8": "Team",
+						"9": "Team",
+						"10": "Team",
+						"11": "Team",
+						"12": "Team"
+					}
+				}
+			},
+			"3": {
+				"sr": {
+					"teams": {
+						"1": "Team",
+						"2": "Team",
+						"3": "Team",
+						"4": "Team",
+						"5": "Team",
+						"6": "Team",
+						"7": "Team",
+						"8": "Team",
+						"9": "Team",
+						"10": "Team",
+						"11": "Team",
+						"12": "Team"
+					}
+				},
+				"jr": {
+					"teams": {
+						"1": "Team",
+						"2": "Team",
+						"3": "Team",
+						"4": "Team",
+						"5": "Team",
+						"6": "Team",
+						"7": "Team",
+						"8": "Team",
+						"9": "Team",
+						"10": "Team",
+						"11": "Team",
+						"12": "Team"
+					}
+				}
+			}
 		}
 	}
 }

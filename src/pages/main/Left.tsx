@@ -1,12 +1,16 @@
 import { v4 as uuid } from 'uuid';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
-import { divisions, schools, seniorities } from '@assets/data.json';
+import data, { divisions, schools, seniorities } from '@assets/data.json';
 import FilterChip from './FilterChip';
 import Filter from './Filter';
 import Title from './Title';
+import { activePageContext } from './Sport';
 
-const Left = ({ leftOpen, teams }: any) => {
+
+const Left = ({ leftOpen }: any) => {
+	const activePage = useContext(activePageContext)
+	const teams = activePage ? data.rugby.divisions[1].jr.teams : data.soccer.divisions[1].jr.teams;
 	const [divSelect, setDivSelect] = useState([]);
 	const [schoolSelect, setSchoolSelect] = useState([]);
 	const [senioritySelect, setSenioritySelect] = useState([]);

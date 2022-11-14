@@ -1,9 +1,8 @@
 import { useState } from 'react';
 
-import Rugby from './Rugby';
-import Soccer from './Soccer';
 import SportSelect from './SportSelect';
 import Compare from './Compare';
+import Sport from './Sport';
 
 const Main = () => {
 	const [activePage, setActivePage] = useState([true, false, false]);
@@ -32,8 +31,8 @@ const Main = () => {
 					</svg>
 				</button>
 			</nav>
-			{rugbyActive ? <Rugby /> : null}
-			{soccerActive ? <Soccer /> : null}
+			{rugbyActive ? <Sport activePage={activePage} /> : null}
+			{soccerActive ? <Sport activePage={activePage} /> : null}
 			{compareActive ? <Compare /> : null}
 		</>
 	);

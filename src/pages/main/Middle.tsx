@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import data from '@assets/data.json';
 
@@ -10,8 +10,13 @@ import Title from './Title';
 import Download from './Download';
 import ViewBtn from './ViewBtn';
 import WeekCaret from './WeekCaret';
+// eslint-disable-next-line import/no-cycle
+import { activePageContext } from './Sport';
 
-const Middle = ({ title, events }: any) => {
+const Middle = ({ title }: any) => {
+	const activePage = useContext(activePageContext);
+	const events = activePage ? data.rugby.events : data.soccer.events;
+
 	const { months } = data.rugby;
 
 	const [active, setActive] = useState(2);
@@ -63,14 +68,13 @@ const Middle = ({ title, events }: any) => {
 
 			<section className={`my-col-2 relative grid  h-auto w-full grow auto-rows-auto gap-4 ${active === 0 ? 'overflow-y-auto' : 'overflow-hidden'} p-8 duration-300 ease-in-out `}>
 				{active === 0 ? (
-					// <div className="my-col-2 relative grid h-full w-full auto-rows-auto place-content-center justify-evenly  gap-4 bg-bug">
+					// <null className="my-col-2 relative grid h-full w-full auto-rows-auto place-content-center justify-evenly  gap-4 bg-bug">
 					<>
 						{months.map(monthParam => (
 							<Calendar key={uuid()} events={events[monthParam]} month={monthParam} hover />
 						))}
 					</>
-				) : // </div>
-				null}
+				) : null}
 				{active === 1 ? (
 					<div className="absolute inset-0 m-auto flex h-fit w-[30rem] ">
 						<button type="button" onClick={decMonth}>
