@@ -1,6 +1,5 @@
 import { createContext, useState } from 'react';
 
-import data from '@assets/data.json';
 import { arrayIsEqual } from 'src/ts/helperFuncs';
 import SideBtn from './SideBtn';
 import Middle from './Middle';
@@ -12,7 +11,6 @@ export const activePageContext = createContext(null);
 const Sport = ({ activePage }: any) => {
 	const [leftOpen, setLeftOpen] = useState(true);
 	const [rightOpen, setRightOpen] = useState(true);
-
 
 	return (
 		<activePageContext.Provider value={activePage}>

@@ -1,16 +1,15 @@
 import { v4 as uuid } from 'uuid';
 import { useContext, useState } from 'react';
 
-import data, { divisions, schools, seniorities } from '@assets/data.json';
+import { divisions, schools, seniorities } from '@assets/data.json';
 import FilterChip from './FilterChip';
 import Filter from './Filter';
 import Title from './Title';
 import { activePageContext } from './Sport';
 
-
 const Left = ({ leftOpen }: any) => {
-	const activePage = useContext(activePageContext)
-	const teams = activePage ? data.rugby.divisions[1].jr.teams : data.soccer.divisions[1].jr.teams;
+	const activePage = useContext(activePageContext);
+	// const teams = activePage ? data.rugby.divisions[1].jr.teams : data.soccer.divisions[1].jr.teams;
 	const [divSelect, setDivSelect] = useState([]);
 	const [schoolSelect, setSchoolSelect] = useState([]);
 	const [senioritySelect, setSenioritySelect] = useState([]);
@@ -20,10 +19,9 @@ const Left = ({ leftOpen }: any) => {
 			<div className="h-16 w-full p-3 ">
 				<Title text="Filters" />
 			</div>
-
-			<div className="grid auto-rows-auto my-col-3 h-fit w-full gap-2 justify-around items-center">
+			<div className="my-col-3 grid h-fit w-full auto-rows-auto items-center justify-around gap-2">
 				<Filter options={divisions} title="Div n" selected={divSelect} setSelected={(o: any) => setDivSelect(o)} />
-				<Filter options={schools} title="School" selected={schoolSelect} setSelected={(o: any) => setSchoolSelect(o)} />
+				<Filter scroll options={schools} title="School" selected={schoolSelect} setSelected={(o: any) => setSchoolSelect(o)} />
 				<Filter options={seniorities} title="Sr/Jr" selected={senioritySelect} setSelected={(o: any) => setSenioritySelect(o)} />
 			</div>
 
@@ -33,14 +31,14 @@ const Left = ({ leftOpen }: any) => {
 			<FilterChip options={schools} selected={schoolSelect} />
 			<FilterChip options={seniorities} selected={senioritySelect} />
 
-			<div className=" z-[1] grid grow h-auto grid-cols-3 gap-4 p-2">
-				{Object.keys(teams).map(team => (
+			<div className=" z-0 grid h-auto grow grid-cols-3 gap-4 p-2">
+				{/* {Object.keys(teams).map(team => (
 					<div key={uuid()} className="smooth no-move relative h-full w-full cursor-pointer rounded-md bg-base text-stark shadow-xl hover:scale-105 active:scale-90">
 						<p className="absolute inset-0 m-auto h-fit w-fit text-center">
 							{teams[Number(team)]} {team}
 						</p>
 					</div>
-				))}
+				))} */}
 			</div>
 		</section>
 	);

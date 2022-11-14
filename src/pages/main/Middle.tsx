@@ -71,7 +71,7 @@ const Middle = ({ title }: any) => {
 					// <null className="my-col-2 relative grid h-full w-full auto-rows-auto place-content-center justify-evenly  gap-4 bg-bug">
 					<>
 						{months.map(monthParam => (
-							<Calendar key={uuid()} events={events[monthParam]} month={monthParam} hover />
+							<Calendar key={uuid()} events={events[monthParam] as dataType} month={monthParam} hover />
 						))}
 					</>
 				) : null}

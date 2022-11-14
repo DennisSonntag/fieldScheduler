@@ -1,7 +1,7 @@
 {
 	"name": "field_scheduler",
 	"type": "module",
-	"version": "0.5.1",
+	"version": "0.6.1",
 	"private": true,
 	"scripts": {
 		"start": "astro dev",

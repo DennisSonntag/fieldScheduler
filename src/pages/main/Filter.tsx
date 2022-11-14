@@ -7,7 +7,7 @@ export type SelectOption = {
 	value: string;
 };
 
-const Filter = ({ title, setSelected, options, selected }: any) => {
+const Filter = ({ title, setSelected, options, selected, scroll }: any) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [highlightedIndex, setHighlightedIndex] = useState(0);
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -63,7 +63,7 @@ const Filter = ({ title, setSelected, options, selected }: any) => {
 	}, [isOpen, highlightedIndex, options, selectOption]);
 
 	return (
-		<button title="Click to select filters" type="button" onBlur={() => setIsOpen(false)} onClick={() => setIsOpen(prev => !prev)} tabIndex={0} className="relative flex w-fit  shrink-0 select-none items-center  gap-[0.5em] rounded-md bg-base p-[0.5em] text-stark shadow-lg outline-none duration-75 ease-in-out hover:scale-110 focus:border-blue-400">
+		<button title="Click to select filters" type="button" onBlur={() => setIsOpen(false)} onClick={() => setIsOpen(prev => !prev)} tabIndex={0} className={`relative z-[999] flex  w-fit shrink-0 select-none  items-center gap-[0.5em] rounded-md bg-base p-[0.5em] text-stark shadow-lg outline-none duration-75 ease-in-out hover:z-[99999] hover:scale-110 focus:border-blue-400   `}>
 			<p className="whitespace-nowrap">{title}</p>
 			<svg
 				onClick={e => {
@@ -79,7 +79,7 @@ const Filter = ({ title, setSelected, options, selected }: any) => {
 
 			<img src={caret} alt="Filter dropdown caret" className={`h-4 w-4 ${isOpen ? 'rotate-180' : ''} inv duration-75 ease-in-out`} />
 
-			<div className={` absolute m-0  flex list-none flex-col  bg-[rgba(0,0,0,0.5)] p-0 ${isOpen ? `h-[${40 * options.length}px]` : 'h-0'}  top-calc left-0 w-full overflow-y-hidden rounded-[0.25em]  duration-300 ease-in-out `}>
+			<div className={`${scroll ? 'overflow-y-scroll h-[10rem]' : null} absolute m-0 flex list-none flex-col bg-[rgba(0,0,0,0.5)]  p-0 hover:z-50 ${isOpen ? `h-[${40 * options.length}px]` : 'h-0'}  top-calc left-0 z-50 w-full overflow-y-hidden  rounded-[0.25em] duration-300  ease-in-out`}>
 				{options.map((option: SelectOption, index: number) => (
 					<option
 						onClick={e => {
@@ -88,10 +88,10 @@ const Filter = ({ title, setSelected, options, selected }: any) => {
 							setIsOpen(false);
 						}}
 						onMouseEnter={() => setHighlightedIndex(index)}
-						key={option.value}
-						className={`z-50 m-2 cursor-pointer truncate rounded-md  py-[0.5em] text-center ${isOptionSelected(option) ? 'bg-blue-700' : 'bg-base'} ${index === highlightedIndex ? 'bg-blue-300 text-invert' : ''} `}
+						key={option}
+						className={`m-2 cursor-pointer truncate rounded-md  py-[0.5em] text-center ${isOptionSelected(option) ? 'bg-blue-700' : 'bg-base'} ${index === highlightedIndex ? 'bg-blue-300 text-invert' : ''} `}
 					>
-						{option.label}
+						{option}
 					</option>
 				))}
 			</div>
