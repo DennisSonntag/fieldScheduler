@@ -19,7 +19,7 @@ const Middle = ({ title }: any) => {
 
 	const { months } = data.rugby;
 
-	const [active, setActive] = useState(2);
+	const [active, setActive] = useState(0);
 
 	const setIcon = () => {
 		if (active === 3) {

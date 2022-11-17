@@ -9,6 +9,12 @@
 
 # ToDo list
 
+
+## Finish redesign !!!
+## Fix filter Component !!!
+ 
+## Link data base !!!
+
 ## Important
 
 -   Add Dates function

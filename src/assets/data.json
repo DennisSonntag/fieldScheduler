@@ -54,20 +54,20 @@
 		"divisions": {
 			"1": {
 				"sr": {
-					"teams": {
-						"1": "Team",
-						"2": "Team",
-						"3": "Team",
-						"4": "Team",
-						"5": "Team",
-						"6": "Team",
-						"7": "Team",
-						"8": "Team",
-						"9": "Team",
-						"10": "Team",
-						"11": "Team",
-						"12": "Team"
-					}
+					"teams": [
+						{ "name": "Team 1", "div": 1, "sr/jr": "sr" },
+						{ "name": "Team 2", "div": 1, "sr/jr": "sr" },
+						{ "name": "Team 3", "div": 1, "sr/jr": "sr" },
+						{ "name": "Team 4", "div": 1, "sr/jr": "sr" },
+						{ "name": "Team 5", "div": 1, "sr/jr": "sr" },
+						{ "name": "Team 6", "div": 1, "sr/jr": "sr" },
+						{ "name": "Team 7", "div": 1, "sr/jr": "sr" },
+						{ "name": "Team 8", "div": 1, "sr/jr": "sr" },
+						{ "name": "Team 9", "div": 1, "sr/jr": "sr" },
+						{ "name": "Team 10", "div": 1, "sr/jr": "sr" },
+						{ "name": "Team 11", "div": 1, "sr/jr": "sr" },
+						{ "name": "Team 12", "div": 1, "sr/jr": "sr" }
+					]
 				},
 				"jr": {
 					"teams": {

@@ -14,17 +14,12 @@ const Sport = ({ activePage }: any) => {
 
 	return (
 		<activePageContext.Provider value={activePage}>
-			<main className="absolute bottom-0 flex h-[92%] w-full flex-row overflow-hidden ">
-				{/* <img className="absolute inset-0 m-auto rounded-lg shadow-lg" src={gif} alt="" srcSet="" /> */}
+			<main className="absolute flex h-full w-full flex-row overflow-hidden">
 				<Left leftOpen={leftOpen} />
 
 				<SideBtn setState={setLeftOpen} state={leftOpen} side={false} />
 
 				<Middle title={`${arrayIsEqual(activePage, [true, false, false]) ? 'Rugby' : 'Soccer'} Schedule`} />
-
-				<SideBtn setState={setRightOpen} state={rightOpen} side />
-
-				<Right rightOpen={rightOpen} />
 			</main>
 		</activePageContext.Provider>
 	);

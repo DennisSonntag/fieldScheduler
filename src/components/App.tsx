@@ -23,7 +23,7 @@ const App = ({ children }: PropType) => {
 
 	return (
 		<Bg theme={theme}>
-			<button title={`Change to ${theme ? 'dark' : 'light'} mode`} type="button" onClick={toggleTheme} className={`smooth absolute top-4 left-4 h-8 w-8 hover:scale-110 active:scale-90 ${theme ? 'invert' : ''}`}>
+			<button title={`Change to ${theme ? 'dark' : 'light'} mode`} type="button" onClick={toggleTheme} className={`smooth absolute top-2 left-2 h-6 w-6 hover:scale-110 active:scale-90 ${theme ? 'invert' : ''}`}>
 				<img src={theme ? sun : moon} alt="Dark/Light mode toggle button" />
 			</button>
 			{children}

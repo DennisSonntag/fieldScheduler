@@ -63,7 +63,7 @@ const Filter = ({ title, setSelected, options, selected, scroll }: any) => {
 	}, [isOpen, highlightedIndex, options, selectOption]);
 
 	return (
-		<button title="Click to select filters" type="button" onBlur={() => setIsOpen(false)} onClick={() => setIsOpen(prev => !prev)} tabIndex={0} className={`relative z-[999] flex  w-fit shrink-0 select-none  items-center gap-[0.5em] rounded-md bg-base p-[0.5em] text-stark shadow-lg outline-none duration-75 ease-in-out hover:z-[99999] hover:scale-110 focus:border-blue-400   `}>
+		<button title="Click to select filters" type="button" onBlur={() => setIsOpen(false)} onClick={() => setIsOpen(prev => !prev)} tabIndex={0} className="relative z-[999] flex m-auto w-fit shrink-0 select-none  items-center gap-[0.5em] rounded-md bg-base p-[0.5em] text-stark shadow-lg outline-none duration-75 ease-in-out hover:z-[99999] hover:scale-110 focus:border-blue-400   ">
 			<p className="whitespace-nowrap">{title}</p>
 			<svg
 				onClick={e => {
