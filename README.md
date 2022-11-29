@@ -1,11 +1,11 @@
 # Welcome to🏉📚[Rugby/Soccer Field Booker](https://fieldbooker.netlify.app)
 
-![basics](./src/assets/images/screenshot.png)
-![basics](./src/assets/images/screenshot1.png)
-![basics](./src/assets/images/screenshot2.png)
-![basics](./src/assets/images/screenshot3.png)
-![basics](./src/assets/images/screenshot4.png)
-![basics](./src/assets/images/screenshot5.png)
+![basics](./assets/images/screenshot.png)
+![basics](./assets/images/screenshot1.png)
+![basics](./assets/images/screenshot2.png)
+![basics](./assets/images/screenshot3.png)
+![basics](./assets/images/screenshot4.png)
+![basics](./assets/images/screenshot5.png)
 
 # ToDo list
 
