@@ -66,7 +66,7 @@ const Middle = ({ title }: any) => {
 				<ViewBtn setIconState={setIcon} iconNum={active} />
 			</div>
 
-			<section className={`my-col-2 relative grid  h-auto w-full grow auto-rows-auto gap-4 ${active === 0 ? 'overflow-y-auto' : 'overflow-hidden'} p-8 duration-300 ease-in-out `}>
+			<section className={`my-col-2 relative grid  h-auto w-full grow auto-rows-auto gap-4 p-8 duration-300 ease-in-out `}>
 				{active === 0 ? (
 					// <null className="my-col-2 relative grid h-full w-full auto-rows-auto place-content-center justify-evenly  gap-4 bg-bug">
 					<>

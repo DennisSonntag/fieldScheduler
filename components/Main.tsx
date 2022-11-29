@@ -34,10 +34,10 @@ const Main = () => {
 					</button>
 				</nav>
 			</div>
-			<div className="h-auto w-screen grow overflow-hidden">
+			<div className="h-auto w-screen grow">
 				{rugbyActive ? <Sport activePage={activePage} /> : null}
-				{soccerActive ? <Sport activePage={activePage} /> : null}
-				{compareActive ? <Compare /> : null}
+				{/* {soccerActive ? <Sport activePage={activePage} /> : null} */}
+				{/* {compareActive ? <Compare /> : null} */}
 			</div>
 		</div>
 	);

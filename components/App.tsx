@@ -5,7 +5,6 @@ import moon from '@svg/moon.svg';
 import Bg from './Bg';
 import Head from 'next/head';
 import Image from 'next/image';
-import icon from "../assets/svg/icon.svg"
 
 type PropType = {
 	children: ReactNode;
