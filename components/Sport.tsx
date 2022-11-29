@@ -4,7 +4,7 @@ import { arrayIsEqual } from '@ts/helperFuncs';
 import SideBtn from './SideBtn';
 import Middle from './Middle';
 import Left from './Left';
-import Right from './Right';
+import DateInfo from './DateInfo';
 
 export const activePageContext = createContext(null);
 

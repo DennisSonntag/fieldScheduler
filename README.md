@@ -9,14 +9,10 @@
 
 # ToDo list
 
-
-## Finish redesign !!!
-## Fix filter Component !!!
  
-## Link data base !!!
+## Setup Database !!
 
-## Important
-
+### Important
 -   Add Dates function
 -   School and division specific events
 -   Add Team function
@@ -27,7 +23,7 @@
 -   Export schedule to csv
 -   Calendar event hover/click modal
 
-## Less Important
+### Less Important
 
 -   Fix dark mode load flicker animation
 -   Persist login token

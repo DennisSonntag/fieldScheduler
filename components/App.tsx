@@ -5,6 +5,7 @@ import moon from '@svg/moon.svg';
 import Bg from './Bg';
 import Head from 'next/head';
 import Image from 'next/image';
+import icon from "../assets/svg/icon.svg"
 
 type PropType = {
 	children: ReactNode;
@@ -28,7 +29,7 @@ const App = ({ children, title }: PropType) => {
 		<>
 			<Head>
 				<meta name="viewport" content="width=device-width" />
-				<link rel="icon" type="image/svg+xml" href="./src/assets/svg/icon.svg" />
+				<link rel="icon" type="image/svg+xml" href="./icon.svg" />
 				<title> {title} </title>
 			</Head>
 			<Bg theme={theme}>

@@ -1,8 +1,8 @@
 import DatePicker from './DatePicker';
 import Title from './Title';
 
-const Right = ({ rightOpen }: any) => (
-	<section className={` ${rightOpen ? 'w-1/2' : 'w-0 translate-x-[100%]'} hover-fade relative flex h-full  flex-col  overflow-hidden rounded-bl-xl`}>
+const DateInfo = () => (
+	<>
 		<div className="h-16 w-full p-3 ">
 			<Title text="Add/Edit Events" />
 		</div>
@@ -17,6 +17,6 @@ const Right = ({ rightOpen }: any) => (
 			<h1 className="text-md rounded-md bg-base py-2 px-8 text-center font-bold text-stark shadow-xl">Breaks/Holidays</h1>
 			<DatePicker />
 		</div>
-	</section>
+	</>
 );
-export default Right;
+export default DateInfo;
