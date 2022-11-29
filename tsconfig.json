@@ -1,16 +1,30 @@
 {
-	"extends": "astro/tsconfigs/strict",
 	"compilerOptions": {
-		"useUnknownInCatchVariables": false,
+		"target": "es5",
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"allowJs": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"noEmit": true,
+		"esModuleInterop": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"jsx": "preserve",
+		"incremental": true,
 		"baseUrl": ".",
 		"paths": {
-			"@components/*": ["src/components/*"],
-			"@index/*": ["src/pages/index/*"],
-			"@img/*": ["src/assets/images/*"],
-			"@layouts/*": ["src/layouts/*"],
-			"@main/*": ["src/pages/main/*"],
-			"@svg/*": ["src/assets/svg/*"],
-			"@assets/*": ["src/assets/*"]
+			"@components/*": ["components/*"],
+			"@index/*": ["pages/index/*"],
+			"@img/*": ["assets/images/*"],
+			"@main/*": ["pages/main/*"],
+			"@svg/*": ["assets/svg/*"],
+			"@ts/*": ["ts/*"],
+			"@assets/*": ["assets/*"]
 		}
-	}
+	},
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+	"exclude": ["node_modules"]
 }

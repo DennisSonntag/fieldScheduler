@@ -1,6 +1,6 @@
 import { createContext, useState } from 'react';
 
-import { arrayIsEqual } from 'src/ts/helperFuncs';
+import { arrayIsEqual } from '@ts/helperFuncs';
 import SideBtn from './SideBtn';
 import Middle from './Middle';
 import Left from './Left';

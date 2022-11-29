@@ -11,6 +11,7 @@ import ViewBtn from './ViewBtn';
 import WeekCaret from './WeekCaret';
 // eslint-disable-next-line import/no-cycle
 import { activePageContext } from './Sport';
+import Image from 'next/image';
 
 const Middle = ({ title }: any) => {
 	const activePage = useContext(activePageContext);
@@ -70,18 +71,19 @@ const Middle = ({ title }: any) => {
 					// <null className="my-col-2 relative grid h-full w-full auto-rows-auto place-content-center justify-evenly  gap-4 bg-bug">
 					<>
 						{months.map(monthParam => (
-							<Calendar key={monthParam} events={events[monthParam] as dataType} month={monthParam} hover />
+							// @ts-ignore
+							<Calendar key={monthParam} events={events[monthParam]} month={monthParam} hover />
 						))}
 					</>
 				) : null}
 				{active === 1 ? (
 					<div className="absolute inset-0 m-auto flex h-fit w-[30rem] ">
 						<button type="button" onClick={decMonth}>
-							<img src={caret} alt="" className="smooth inv-1 h-16 w-16 rotate-90 hover:scale-110 active:scale-95" />
+							<Image src={caret} alt="" className="smooth inv-1 h-16 w-16 rotate-90 hover:scale-110 active:scale-95" />
 						</button>
 						<Calendar events={events[2]} month={month} scale="scale-[70%]" />
 						<button type="button" onClick={incMonth}>
-							<img src={caret} alt="" className="smooth inv-1 h-16 w-16 rotate-[270deg] hover:scale-110 active:scale-95" />
+							<Image src={caret} alt="" className="smooth inv-1 h-16 w-16 rotate-[270deg] hover:scale-110 active:scale-95" />
 						</button>
 					</div>
 				) : null}

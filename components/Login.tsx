@@ -1,7 +1,7 @@
 import { signInWithEmailAndPassword, User } from 'firebase/auth';
 import { useEffect, useRef, useState } from 'react';
 
-import auth from './auth';
+import auth from '@ts/auth';
 
 const Login = () => {
 	const [user, setUser] = useState<User>();
@@ -18,7 +18,8 @@ const Login = () => {
 			const userRaw = await signInWithEmailAndPassword(auth, email, password.value);
 			setUser(userRaw.user);
 		} catch (errorRaw) {
-			const stringErr = (errorRaw.code as string).split('-')[1];
+			// @ts-ignore
+			const stringErr = (error.code as string).split('-')[1];
 			if (stringErr === 'email') {
 				setError(1);
 				setErrorContent('Invalid Email please try again!!');
