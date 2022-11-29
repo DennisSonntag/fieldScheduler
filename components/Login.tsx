@@ -17,9 +17,9 @@ const Login = () => {
 			const password = passwordRef.current as unknown as HTMLInputElement;
 			const userRaw = await signInWithEmailAndPassword(auth, email, password.value);
 			setUser(userRaw.user);
-		} catch (errorRaw) {
-			// @ts-ignore
-			const stringErr = (error.code as string).split('-')[1];
+		} catch (e) {
+			const error = e as Error;
+			const stringErr = error.message.split('-')[1].slice(0, -2);;
 			if (stringErr === 'email') {
 				setError(1);
 				setErrorContent('Invalid Email please try again!!');
@@ -60,7 +60,7 @@ const Login = () => {
 			<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
 				<input ref={emailRef} autoComplete="off" placeholder=" " type="text" id="email" className="input h-8 w-52 overflow-hidden rounded-md border-0 outline-0" />
 				<label htmlFor="email" className="label text-lg ">
-					Username
+					Email
 				</label>
 			</div>
 
@@ -72,7 +72,7 @@ const Login = () => {
 			</div>
 
 			<div className="flex flex-col items-center gap-2">
-				<button type="button" onClick={forgotPassword} className="text-blue underline hover:text-blue-300">
+				<button type="button" onClick={forgotPassword} className="text-blue underline text-blue-300 hover:text-blue-400">
 					Forgot Password
 				</button>
 				<dialog className="h-1/2 aspect-square rounded-lg bg-base shadow-2xl backdrop:bg-black backdrop:opacity-60" ref={dialogRef}>
@@ -81,14 +81,14 @@ const Login = () => {
 						Send Reset Email
 					</button>
 				</dialog>
-				<p className={`text-red h-fit w-fit text-center font-bold duration-75 ${error !== 0 ? 'opacity-100' : 'opacity-0'}`}>{errorContent}</p>
+				<p className={`text-bug h-fit w-fit text-center font-bold duration-75 ${error !== 0 ? 'opacity-100' : 'opacity-0'}`}>{errorContent}</p>
 				<button
 					type="button"
 					onClick={login}
 					// className={`${
 					// 	error === 1 ? "bg-red-500" : `${error === 2 ? "bg-green-500" : `${error === 3 ? "bg-blue-500" : "bg-gray-500"}`}`
 					// }  p-2 rounded-sm shadow-lg absolute inset-x-0 mx-auto w-fit duration-75 hover:scale-125 active:scale-90`}
-					className={`${error !== 0 ? 'bg-red-700' : 'bg-dim'}  w-fit rounded-sm p-2 shadow-lg duration-75 hover:scale-125 active:scale-90`}
+					className={`${error !== 0 ? 'bg-red-700' : 'bg-mid'}  w-fit rounded-md p-2 shadow-lg duration-75 hover:scale-110 active:scale-90`}
 				>
 					Login
 				</button>

@@ -9,7 +9,6 @@
 
 # ToDo list
 
- 
 ## Setup Database !!
 
 ### Important
@@ -24,7 +23,6 @@
 -   Calendar event hover/click modal
 
 ### Less Important
-
 -   Fix dark mode load flicker animation
 -   Persist login token
 -   Team colors
@@ -32,5 +30,4 @@
 -   Forgot password template email
 -   Fix firebase click login twice to log in
 -   FireBase DataBase (store schedule)
--   Convert as much as possible to astro to remove maximum js
 -   Admin pane

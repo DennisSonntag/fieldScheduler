@@ -1,8 +1,6 @@
 {
-	"divisions": ["Div 1", "Div 2", "Div 3"],
-
 	"schools": [
-		"william-taylor-and-george-wood-learning-centre ",
+		"william-taylor-and-george-wood-learning-centre",
 		"william-aberhart-high-school ",
 		"st-francis-high-school ",
 		"bowness-high-school ",
@@ -51,110 +49,106 @@
 			"4": [6, 17, 27],
 			"5": [8, 21, 30]
 		},
-		"divisions": {
-			"1": {
-				"sr": {
-					"teams": [
-						{ "name": "Team 1", "div": 1, "sr/jr": "sr" },
-						{ "name": "Team 2", "div": 1, "sr/jr": "sr" },
-						{ "name": "Team 3", "div": 1, "sr/jr": "sr" },
-						{ "name": "Team 4", "div": 1, "sr/jr": "sr" },
-						{ "name": "Team 5", "div": 1, "sr/jr": "sr" },
-						{ "name": "Team 6", "div": 1, "sr/jr": "sr" },
-						{ "name": "Team 7", "div": 1, "sr/jr": "sr" },
-						{ "name": "Team 8", "div": 1, "sr/jr": "sr" },
-						{ "name": "Team 9", "div": 1, "sr/jr": "sr" },
-						{ "name": "Team 10", "div": 1, "sr/jr": "sr" },
-						{ "name": "Team 11", "div": 1, "sr/jr": "sr" },
-						{ "name": "Team 12", "div": 1, "sr/jr": "sr" }
-					]
-				},
-				"jr": {
-					"teams": {
-						"1": "Team",
-						"2": "Team",
-						"3": "Team",
-						"4": "Team",
-						"5": "Team",
-						"6": "Team",
-						"7": "Team",
-						"8": "Team",
-						"9": "Team",
-						"10": "Team",
-						"11": "Team",
-						"12": "Team"
-					}
-				}
+		"sr": {
+			"div 1": {
+				"teams": [
+					{ "name": "Team 1", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 2", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 3", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 4", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 5", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 6", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 7", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 8", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 9", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 10", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 11", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 12", "div": 1, "sr/jr": "sr" }
+				]
 			},
-			"2": {
-				"sr": {
-					"teams": {
-						"1": "Team",
-						"2": "Team",
-						"3": "Team",
-						"4": "Team",
-						"5": "Team",
-						"6": "Team",
-						"7": "Team",
-						"8": "Team",
-						"9": "Team",
-						"10": "Team",
-						"11": "Team",
-						"12": "Team"
-					}
-				},
-				"jr": {
-					"teams": {
-						"1": "Team",
-						"2": "Team",
-						"3": "Team",
-						"4": "Team",
-						"5": "Team",
-						"6": "Team",
-						"7": "Team",
-						"8": "Team",
-						"9": "Team",
-						"10": "Team",
-						"11": "Team",
-						"12": "Team"
-					}
-				}
+			"div 2": {
+				"teams": [
+					{ "name": "Team 1", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 2", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 3", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 4", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 5", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 6", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 7", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 8", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 9", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 10", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 11", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 12", "div": 1, "sr/jr": "sr" }
+				]
 			},
-			"3": {
-				"sr": {
-					"teams": {
-						"1": "Team",
-						"2": "Team",
-						"3": "Team",
-						"4": "Team",
-						"5": "Team",
-						"6": "Team",
-						"7": "Team",
-						"8": "Team",
-						"9": "Team",
-						"10": "Team",
-						"11": "Team",
-						"12": "Team"
-					}
-				},
-				"jr": {
-					"teams": {
-						"1": "Team",
-						"2": "Team",
-						"3": "Team",
-						"4": "Team",
-						"5": "Team",
-						"6": "Team",
-						"7": "Team",
-						"8": "Team",
-						"9": "Team",
-						"10": "Team",
-						"11": "Team",
-						"12": "Team"
-					}
-				}
+			"div 3": {
+				"teams": [
+					{ "name": "Team 1", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 2", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 3", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 4", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 5", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 6", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 7", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 8", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 9", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 10", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 11", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 12", "div": 1, "sr/jr": "sr" }
+				]
 			}
-		}
+		},
+		"jr": {
+			"div 1": {
+				"teams": [
+					{ "name": "Team 1", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 2", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 3", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 4", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 5", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 6", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 7", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 8", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 9", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 10", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 11", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 12", "div": 1, "sr/jr": "sr" }
+				]
+			},
+			"div 2": {
+				"teams": [
+					{ "name": "Team 1", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 2", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 3", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 4", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 5", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 6", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 7", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 8", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 9", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 10", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 11", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 12", "div": 1, "sr/jr": "sr" }
+				]
+			},
+			"div 3": {
+				"teams": [
+					{ "name": "Team 1", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 2", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 3", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 4", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 5", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 6", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 7", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 8", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 9", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 10", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 11", "div": 1, "sr/jr": "sr" },
+					{ "name": "Team 12", "div": 1, "sr/jr": "sr" }
+				]
+			}
+		},
 	},
 	"soccer": {
 		"months": [1, 2, 3, 4],
