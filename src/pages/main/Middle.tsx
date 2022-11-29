@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid';
 import { useContext, useState } from 'react';
 
 import data from '@assets/data.json';
@@ -71,7 +70,7 @@ const Middle = ({ title }: any) => {
 					// <null className="my-col-2 relative grid h-full w-full auto-rows-auto place-content-center justify-evenly  gap-4 bg-bug">
 					<>
 						{months.map(monthParam => (
-							<Calendar key={uuid()} events={events[monthParam] as dataType} month={monthParam} hover />
+							<Calendar key={monthParam} events={events[monthParam] as dataType} month={monthParam} hover />
 						))}
 					</>
 				) : null}
@@ -80,7 +79,7 @@ const Middle = ({ title }: any) => {
 						<button type="button" onClick={decMonth}>
 							<img src={caret} alt="" className="smooth inv-1 h-16 w-16 rotate-90 hover:scale-110 active:scale-95" />
 						</button>
-						<Calendar key={uuid()} events={events[2]} month={month} scale="scale-[70%]" />
+						<Calendar events={events[2]} month={month} scale="scale-[70%]" />
 						<button type="button" onClick={incMonth}>
 							<img src={caret} alt="" className="smooth inv-1 h-16 w-16 rotate-[270deg] hover:scale-110 active:scale-95" />
 						</button>
