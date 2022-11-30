@@ -18,8 +18,8 @@ const Login = () => {
 			const userRaw = await signInWithEmailAndPassword(auth, email, password.value);
 			setUser(userRaw.user);
 		} catch (e) {
-			const error = e as Error;
-			const stringErr = error.message.split('-')[1].slice(0, -2);;
+			const rawError = e as Error;
+			const stringErr = rawError.message.split('-')[1].slice(0, -2);
 			if (stringErr === 'email') {
 				setError(1);
 				setErrorContent('Invalid Email please try again!!');

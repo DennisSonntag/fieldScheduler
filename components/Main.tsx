@@ -1,9 +1,8 @@
 import { useState } from 'react';
 
-import SportSelect from './SportSelect';
-import Compare from './Compare';
-import Sport from './Sport';
 import Link from 'next/link';
+import SportSelect from './SportSelect';
+import Sport from './Sport';
 
 const Main = () => {
 	const [activePage, setActivePage] = useState([true, false, false]);

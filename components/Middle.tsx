@@ -4,6 +4,7 @@ import data from '@assets/data.json';
 
 import caret from '@svg/caret.svg';
 
+import Image from 'next/image';
 import Calendar from './Calender';
 import Title from './Title';
 import Download from './Download';
@@ -11,7 +12,6 @@ import ViewBtn from './ViewBtn';
 import WeekCaret from './WeekCaret';
 // eslint-disable-next-line import/no-cycle
 import { activePageContext } from './Sport';
-import Image from 'next/image';
 
 const Middle = ({ title }: any) => {
 	const activePage = useContext(activePageContext);
@@ -66,7 +66,7 @@ const Middle = ({ title }: any) => {
 				<ViewBtn setIconState={setIcon} iconNum={active} />
 			</div>
 
-			<section className={`my-col-2 relative grid  h-auto w-full grow auto-rows-auto gap-4 p-8 duration-300 ease-in-out `}>
+			<section className="my-col-2 relative grid  h-auto w-full grow auto-rows-auto gap-4 p-8 duration-300 ease-in-out ">
 				{active === 0 ? (
 					// <null className="my-col-2 relative grid h-full w-full auto-rows-auto place-content-center justify-evenly  gap-4 bg-bug">
 					<>

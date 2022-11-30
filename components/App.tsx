@@ -2,9 +2,9 @@ import { ReactNode, useEffect, useState } from 'react';
 
 import sun from '@svg/sun.svg';
 import moon from '@svg/moon.svg';
-import Bg from './Bg';
 import Head from 'next/head';
 import Image from 'next/image';
+import Bg from './Bg';
 
 type PropType = {
 	children: ReactNode;

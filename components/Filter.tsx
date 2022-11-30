@@ -23,7 +23,7 @@ const Filter = ({ title, setSelected, options, selected, scroll }: any) => {
 				setSelected([...selected, option]);
 			}
 		},
-		[selected, setSelected]
+		[selected, setSelected],
 	);
 
 	const isOptionSelected = (option: SelectOption) => selected.map((elm: any) => elm.value).includes(option.value);

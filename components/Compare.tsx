@@ -1,6 +1,5 @@
 import data from '@assets/data.json';
 
-import Sport from './Sport';
 import Middle from './Middle';
 
 const Compare = () => (
