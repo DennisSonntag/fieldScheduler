@@ -25,6 +25,7 @@ specifiers:
   eslint-plugin-react-hooks: ^4.6.0
   firebase: ^9.12.1
   next: 13.0.5
+  pocketbase: ^0.8.1
   postcss: ^8.4.19
   react: 18.2.0
   react-csv: ^2.2.2
@@ -43,6 +44,7 @@ dependencies:
   '@typescript-eslint/parser': 5.45.0_hsf322ms6xhhd4b5ne6lb74y4a
   firebase: 9.14.0
   next: 13.0.5_672uxklweod7ene3nqtsh262ca
+  pocketbase: 0.8.1
   react: 18.2.0
   react-csv: 2.2.2
   react-dom: 18.2.0_react@18.2.0
@@ -4315,6 +4317,10 @@ packages:
     resolution: {integrity: sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /pocketbase/0.8.1:
+    resolution: {integrity: sha512-6ABZJ6gEvkfT46otZbyC+4JQ8kaV/I3tKP2HcqtBU4QIYKaha/THekVPq0dmpj88oGiTIGf+L1Hd5EXLL/T70w==}
+    dev: false
 
   /postcss-import/14.1.0_postcss@8.4.19:
     resolution: {integrity: sha512-flwI+Vgm4SElObFVPpTIT7SU7R3qk2L7PyduMcokiaVKuWv9d/U+Gm/QAd8NDLuykTWTkcrjOeD2Pp1rMeBTGw==}

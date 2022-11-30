@@ -1,19 +1,81 @@
 import { useState } from 'react';
 
-import data, { divisions, schools, seniorities } from '@assets/data.json';
 import FilterChip from './FilterChip';
 import Filter from './Filter';
+import PocketBase from 'pocketbase';
 
 const TeamInfo = () => {
-	type TeamType = {
-		name: string;
-		div: number;
-		'sr/jr': string;
-	}[];
-	const teams = useState<TeamType>(data.rugby.divisions[1].sr.teams)[0];
 	const [divSelect, setDivSelect] = useState([]);
 	const [schoolSelect, setSchoolSelect] = useState([]);
 	const [senioritySelect, setSenioritySelect] = useState([]);
+
+	const teams = [
+		{ name: 'Team 1', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 2', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 3', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 4', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 5', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 6', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 7', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 8', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 9', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 10', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 11', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 12', div: 1, 'sr/jr': 'sr' },
+	];
+
+	const divisions = ["Div 1", "Div 2", "Div 3"]
+	const schools = ["School 1", "School 2", "School 3"]
+	const seniorities = ["Sr", "Jr"]
+
+const pb = new PocketBase('http://127.0.0.1:8090');
+
+const names = [
+	'william-taylor-and-george-wood-learning-centre',
+	'william-aberhart-high-school ',
+	'st-francis-high-school ',
+	'bowness-high-school ',
+	'john-g-diefenbaker-high-school ',
+	'crescent-heights-high-school ',
+	'dr-gordon-townsend-school ',
+	'christine-meikle-school ',
+	'louise-dean-school ',
+	'james-fowler-high-school ',
+	'robert-thirsk-high-school ',
+	'sir-winston-churchill-high-school ',
+	'nelson-mandela-high-school ',
+	'lester-b-pearson-high-school ',
+	'notre-dame-high-school ',
+	'bishop-mcnally-high-school ',
+	'ernest-manning-high-school ',
+	'central-memorial-high-school ',
+	'william-roper-hull-school ',
+	'henry-wise-wood-high-school ',
+	'our-lady-of-lourdes-high-school ',
+	'bishop-carroll-high-school ',
+	'national-sport-school ',
+	'st-marys-high-school ',
+	'dr-ep-scarlett-high-school ',
+	'western-canada-high-school ',
+	'bishop-grandin-high-school ',
+	'st-anthony-school ',
+	'st-anne-academic-centre ',
+	'jack-james-high-school ',
+	'centennial-high-school ',
+	'lord-beaverbrook-high-school ',
+	'father-lacombe-high-school ',
+	'all-saints-high-school ',
+	'bishop-obyrne-high-school ',
+	'forest-lawn-high-school ',
+];
+
+	const data = {
+    "school_Name": "test"
+};
+
+const uploadData = async () => pb.collection('schools').update('RECORD_ID', data);
+
+
 
 	return (
 		<>
@@ -28,6 +90,8 @@ const TeamInfo = () => {
 			<FilterChip options={divisions} selected={divSelect} />
 			<FilterChip options={schools} selected={schoolSelect} />
 			<FilterChip options={seniorities} selected={senioritySelect} />
+
+			<button type="button" onClick={uploadData} >Upload Data</button>
 
 			<div className=" z-0 grid h-auto grow grid-cols-3 gap-4 p-2">
 				{teams.map(team => (

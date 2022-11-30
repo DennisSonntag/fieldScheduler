@@ -2,9 +2,13 @@ import { signInWithEmailAndPassword, User } from 'firebase/auth';
 import { useEffect, useRef, useState } from 'react';
 
 import auth from '@ts/auth';
+import PocketBase, { Record } from 'pocketbase';
 
 const Login = () => {
-	const [user, setUser] = useState<User>();
+	const pb = new PocketBase('http://127.0.0.1:8090');
+
+	// const [user, setUser] = useState<User>();
+	const [user, setUser] = useState<Record>();
 	const [error, setError] = useState(0);
 	const [errorContent, setErrorContent] = useState('');
 	const [email, setEmail] = useState('');
@@ -15,21 +19,25 @@ const Login = () => {
 			const emailRaw = emailRef.current as unknown as HTMLInputElement;
 			setEmail(emailRaw.value);
 			const password = passwordRef.current as unknown as HTMLInputElement;
-			const userRaw = await signInWithEmailAndPassword(auth, email, password.value);
-			setUser(userRaw.user);
+			// const userRaw = await signInWithEmailAndPassword(auth, email, password.value);
+			const userRaw = await pb.collection('users').authWithPassword(email, password.value);
+			// setUser(userRaw.record);
+			setUser(userRaw.record);
 		} catch (e) {
-			const rawError = e as Error;
-			const stringErr = rawError.message.split('-')[1].slice(0, -2);
-			if (stringErr === 'email') {
-				setError(1);
-				setErrorContent('Invalid Email please try again!!');
-			} else if (stringErr === 'password') {
-				setErrorContent('Invalid Password please try again!!');
-				setError(2);
-			} else {
-				setErrorContent('Error try again!!');
-				setError(3);
-			}
+			// const rawError = e as Error;
+			// const stringErr = rawError.message.split('-')[1].slice(0, -2);
+			// if (stringErr === 'email') {
+			// 	setError(1);
+			// 	setErrorContent('Invalid Email please try again!!');
+			// } else if (stringErr === 'password') {
+			// 	setErrorContent('Invalid Password please try again!!');
+			// 	setError(2);
+			// } else {
+			// 	setErrorContent('Error try again!!');
+			// 	setError(3);
+			// }
+			setErrorContent('Error try again!!');
+			setError(3);
 		}
 	};
 

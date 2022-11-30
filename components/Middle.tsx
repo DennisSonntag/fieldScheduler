@@ -1,7 +1,5 @@
 import { useContext, useState } from 'react';
 
-import data from '@assets/data.json';
-
 import caret from '@svg/caret.svg';
 
 import Image from 'next/image';
@@ -15,9 +13,14 @@ import { activePageContext } from './Sport';
 
 const Middle = ({ title }: any) => {
 	const activePage = useContext(activePageContext);
-	const events = activePage ? data.rugby.events : data.soccer.events;
+	const events = {
+		2: [15, 16, 17],
+		3: [18, 20],
+		4: [6, 17, 27],
+		5: [8, 21, 30],
+	};
 
-	const { months } = data.rugby;
+	const months = [2, 3, 4, 5];
 
 	const [active, setActive] = useState(0);
 
