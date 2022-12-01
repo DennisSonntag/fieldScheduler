@@ -19,6 +19,7 @@
 		"react/jsx-one-expression-per-line": "off",
 		"linebreak-style": ["off", "windows"],
 		"react-hooks/exhaustive-deps": "off",
+		"react/require-default-props": "off",
 		"@typescript-eslint/indent": "off",
 		"react/jsx-indent-props": "off",
 		"object-curly-newline": "off",
@@ -31,6 +32,6 @@
 		"no-plusplus": "off",
 		"no-tabs": "off",
 		"max-len": "off",
-		"indent": "off"
+		"indent": "off",
 	}
 }

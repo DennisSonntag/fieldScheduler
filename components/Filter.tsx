@@ -1,14 +1,17 @@
-import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import caret from '@svg/caret.svg';
 import Image from 'next/image';
 
-export type SelectOption = {
-	label: string;
-	value: string;
+type PropType = {
+	title: string;
+	options: string[];
+	selected: string[];
+	scroll?: boolean;
+	setSelected: Dispatch<SetStateAction<string[]>>;
 };
 
-const Filter = ({ title, setSelected, options, selected, scroll }: any) => {
+const Filter = ({ title, setSelected, options, selected, scroll = false }: PropType) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [highlightedIndex, setHighlightedIndex] = useState(0);
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -17,16 +20,13 @@ const Filter = ({ title, setSelected, options, selected, scroll }: any) => {
 		setSelected([]);
 	};
 
-	const selectOption = useCallback(
-		(option: SelectOption) => {
-			if (!selected.map((elm: any) => elm.label).includes(option.label)) {
-				setSelected([...selected, option]);
-			}
-		},
-		[selected, setSelected],
-	);
+	const selectOption = (option: any) => {
+		if (!selected.includes(option)) {
+			setSelected([...selected, option]);
+		}
+	};
 
-	const isOptionSelected = (option: SelectOption) => selected.map((elm: any) => elm.value).includes(option.value);
+	const isOptionSelected = (option: string) => selected.includes(option);
 
 	useEffect(() => {
 		if (isOpen) setHighlightedIndex(0);
@@ -84,7 +84,7 @@ const Filter = ({ title, setSelected, options, selected, scroll }: any) => {
 			<Image src={caret} alt="Filter dropdown caret" className={`h-4 w-4 ${isOpen ? 'rotate-180' : ''} inv duration-75 ease-in-out`} />
 
 			<div className={`${scroll ? 'overflow-y-scroll h-[10rem]' : null} absolute m-0 flex list-none flex-col bg-[rgba(0,0,0,0.5)]  p-0 hover:z-50 ${isOpen ? `h-[${40 * options.length}px]` : 'h-0'}  top-calc left-0 z-50 w-full overflow-y-hidden  rounded-[0.25em] duration-300  ease-in-out`}>
-				{options.map((option: SelectOption, index: number) => (
+				{options.map((option: any, index: number) => (
 					<option
 						onClick={e => {
 							e.stopPropagation();
@@ -92,10 +92,10 @@ const Filter = ({ title, setSelected, options, selected, scroll }: any) => {
 							setIsOpen(false);
 						}}
 						onMouseEnter={() => setHighlightedIndex(index)}
-						key={option.label}
+						key={option}
 						className={`m-2 cursor-pointer truncate rounded-md  py-[0.5em] text-center ${isOptionSelected(option) ? 'bg-blue-700' : 'bg-base'} ${index === highlightedIndex ? 'bg-blue-300 text-invert' : ''} `}
 					>
-						{option as unknown as ReactNode}
+						{option}
 					</option>
 				))}
 			</div>
