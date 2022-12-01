@@ -4,7 +4,7 @@ import sun from '@svg/sun.svg';
 import moon from '@svg/moon.svg';
 import Head from 'next/head';
 import Image from 'next/image';
-import Bg from './Bg';
+import Background from './Background';
 
 type PropType = {
 	children: ReactNode;
@@ -28,15 +28,15 @@ const App = ({ children, title }: PropType) => {
 		<>
 			<Head>
 				<meta name="viewport" content="width=device-width" />
-				<link rel="icon" type="image/svg+xml" href="./icon.svg" />
+				<link rel="icon" type="image/svg+xml" href="public\icon.svg" />
 				<title> {title} </title>
 			</Head>
-			<Bg theme={theme}>
+			<Background theme={theme}>
 				<button title={`Change to ${theme ? 'dark' : 'light'} mode`} type="button" onClick={toggleTheme} className={`smooth absolute top-2 left-2 h-6 w-6 hover:scale-110 active:scale-90 ${theme ? 'invert' : ''}`}>
 					<Image src={theme ? sun : moon} alt="Dark/Light mode toggle button" />
 				</button>
 				{children}
-			</Bg>
+			</Background>
 		</>
 	);
 };

@@ -4,11 +4,15 @@ import { arrayIsEqual } from '@ts/helperFuncs';
 import SideBtn from './SideBtn';
 // eslint-disable-next-line import/no-cycle
 import Middle from './Middle';
-import Left from './Left';
+import Left from './LeftPane';
 
-export const activePageContext = createContext(null);
+export const activePageContext = createContext<boolean[]>([]);
 
-const Sport = ({ activePage }: any) => {
+type PropType = {
+	activePage: boolean[];
+};
+
+const Sport = ({ activePage }: PropType) => {
 	const [leftOpen, setLeftOpen] = useState(true);
 
 	return (
@@ -16,7 +20,7 @@ const Sport = ({ activePage }: any) => {
 			<main className="flex h-full w-full flex-row overflow-hidden">
 				<Left leftOpen={leftOpen} />
 
-				<SideBtn setState={setLeftOpen} state={leftOpen} side={false} />
+				<SideBtn setLeftOpen={setLeftOpen} leftOpen={leftOpen} />
 
 				<Middle title={`${arrayIsEqual(activePage, [true, false, false]) ? 'Rugby' : 'Soccer'} Schedule`} />
 			</main>

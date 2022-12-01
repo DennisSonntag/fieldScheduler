@@ -1,4 +1,11 @@
-const Calendar = ({ month, events, hover, scale }: any) => {
+type PropType = {
+	month: number;
+	hover?: boolean;
+	scale?: string;
+	events: number[];
+};
+
+const Calendar = ({ month, events, hover = false, scale = '' }: PropType) => {
 	const year = 2022;
 	const date = new Date(year, month);
 

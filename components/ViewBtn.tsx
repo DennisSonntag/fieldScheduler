@@ -4,7 +4,13 @@ import weekIcon from '@svg/week.svg';
 import dayIcon from '@svg/day.svg';
 import Image from 'next/image';
 
-const ViewBtn = ({ setIconState, iconNum }: any) => {
+type PropType = {
+	setIconState: () => void;
+	iconNum: number;
+
+}
+
+const ViewBtn = ({ setIconState, iconNum }: PropType) => {
 	const icons = [seasonIcon, monthIcon, weekIcon, dayIcon];
 	const texts = ['Season', 'Month', 'Week', 'Day'];
 	return (

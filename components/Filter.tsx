@@ -20,7 +20,7 @@ const Filter = ({ title, setSelected, options, selected, scroll = false }: PropT
 		setSelected([]);
 	};
 
-	const selectOption = (option: any) => {
+	const selectOption = (option: string) => {
 		if (!selected.includes(option)) {
 			setSelected([...selected, option]);
 		}
@@ -84,7 +84,7 @@ const Filter = ({ title, setSelected, options, selected, scroll = false }: PropT
 			<Image src={caret} alt="Filter dropdown caret" className={`h-4 w-4 ${isOpen ? 'rotate-180' : ''} inv duration-75 ease-in-out`} />
 
 			<div className={`${scroll ? 'overflow-y-scroll h-[10rem]' : null} absolute m-0 flex list-none flex-col bg-[rgba(0,0,0,0.5)]  p-0 hover:z-50 ${isOpen ? `h-[${40 * options.length}px]` : 'h-0'}  top-calc left-0 z-50 w-full overflow-y-hidden  rounded-[0.25em] duration-300  ease-in-out`}>
-				{options.map((option: any, index: number) => (
+				{options.map((option: string, index: number) => (
 					<option
 						onClick={e => {
 							e.stopPropagation();

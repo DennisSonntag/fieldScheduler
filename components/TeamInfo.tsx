@@ -83,15 +83,13 @@ const TeamInfo = () => {
 				<Filter options={seniorities} title="Sr/Jr" selected={senioritySelect} setSelected={setSenioritySelect} />
 			</div>
 
-			{/* <div className="h-4" /> */}
-
 			<FilterChip selected={divSelect} />
 			<FilterChip selected={schoolSelect} />
 			<FilterChip selected={senioritySelect} />
 
-			<button type="button" onClick={uploadData}>
+			{/* <button type="button" onClick={uploadData}>
 				Upload Data
-			</button>
+			</button> */}
 
 			<div className=" z-0 grid h-auto grow grid-cols-3 gap-4 p-2">
 				{teams.map(team => (

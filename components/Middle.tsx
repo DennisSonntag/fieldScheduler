@@ -11,7 +11,11 @@ import WeekCaret from './WeekCaret';
 // eslint-disable-next-line import/no-cycle
 import { activePageContext } from './Sport';
 
-const Middle = ({ title }: any) => {
+type PropType = {
+	title: string;
+}
+
+const Middle = ({ title }: PropType) => {
 	const activePage = useContext(activePageContext);
 	const events = {
 		2: [15, 16, 17],
