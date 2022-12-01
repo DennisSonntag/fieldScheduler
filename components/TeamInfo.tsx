@@ -4,7 +4,14 @@ import PocketBase from 'pocketbase';
 import FilterChip from './FilterChip';
 import Filter from './Filter';
 
-const TeamInfo = () => {
+const pb = new PocketBase('http://127.0.0.1:8090');
+
+
+type PropType = {
+	test: string[];
+};
+
+const TeamInfo = ({ test }: PropType) => {
 	const [divSelect, setDivSelect] = useState<string[]>([]);
 	const [schoolSelect, setSchoolSelect] = useState<string[]>([]);
 	const [senioritySelect, setSenioritySelect] = useState<string[]>([]);
@@ -27,8 +34,6 @@ const TeamInfo = () => {
 	const divisions = ['Div 1', 'Div 2', 'Div 3'];
 	const schools = ['School 1', 'School 2', 'School 3'];
 	const seniorities = ['Sr', 'Jr'];
-
-	const pb = new PocketBase('http://127.0.0.1:8090');
 
 	const names = [
 		'william-taylor-and-george-wood-learning-centre',
@@ -69,11 +74,11 @@ const TeamInfo = () => {
 		'forest-lawn-high-school ',
 	];
 
-	const data = {
-		school_Name: 'test',
-	};
+	const data = { school_Name: 'test' };
 
-	const uploadData = async () => pb.collection('schools').update('RECORD_ID', data);
+	const uploadData = () => {
+		console.log(test);
+	};
 
 	return (
 		<>
@@ -87,9 +92,9 @@ const TeamInfo = () => {
 			<FilterChip selected={schoolSelect} />
 			<FilterChip selected={senioritySelect} />
 
-			{/* <button type="button" onClick={uploadData}>
+			<button type="button" onClick={uploadData}>
 				Upload Data
-			</button> */}
+			</button>
 
 			<div className=" z-0 grid h-auto grow grid-cols-3 gap-4 p-2">
 				{teams.map(team => (
@@ -103,3 +108,13 @@ const TeamInfo = () => {
 	);
 };
 export default TeamInfo;
+
+export async function getServerSideProps() {
+	const records = await pb.collection('schools').getFullList(200 /* batch size */, {
+		sort: '-created',
+	});
+	const namesRaw: string[] = records.map(elm => elm.school_name);
+	return {
+		props: { test: ["plz", "killme"] },
+	};
+}
