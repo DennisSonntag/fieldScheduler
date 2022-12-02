@@ -33,7 +33,7 @@ const Login = () => {
 	const dialogRef = useRef(null);
 
 	const forgotPassword = () => {
-		const dialog = dialogRef.current as unknown as HTMLDialogElement;
+		const dialog = dialogRef.current as unknown as any;
 		dialog.showModal();
 	};
 

@@ -31,3 +31,30 @@
 -   Fix firebase click login twice to log in
 -   FireBase DataBase (store schedule)
 -   Admin pane
+
+
+### Morante's stuf
+-6 games a season 3 home 3 away 
+-Friday left open for rescheduling
+
+-Some teams don't have home field 
+
+-Home field yes no if no alternative field 
+-1 game per week 
+
+-Girls and boys 
+
+-Season start end per shcool board 
+
+-Breaks cbe catholic or both 
+
+-Girls or boys 
+
+-Edit teams bulk edit 
+-Name 
+-Division
+-Black out days 
+-Home field yes no 
+-Alternative field yes no 
+
+-Min 4 teams per div 
