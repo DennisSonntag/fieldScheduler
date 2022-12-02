@@ -13,6 +13,7 @@ const TeamInfo = () => {
 	const [schoolSelect, setSchoolSelect] = useState<string[]>([]);
 	const [senioritySelect, setSenioritySelect] = useState<string[]>([]);
 
+
 	const teams = [
 		{ name: 'Team 1', div: 1, 'sr/jr': 'sr' },
 		{ name: 'Team 2', div: 1, 'sr/jr': 'sr' },
