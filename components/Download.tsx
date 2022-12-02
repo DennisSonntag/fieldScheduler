@@ -1,7 +1,7 @@
 import { CSVLink } from 'react-csv';
 
 const Download = () => {
-	const template =  [['Home Team', 'Visitor Team', 'Start Date (MM/DD/YYYY)', 'Start Time (HH:MM AA)', 'Duration (minutes)', 'Details', 'Show Details', 'League Name', 'Practice Type (Shared or Full)', 'Schedule Name', 'Venue']];
+	const template = [['Home Team', 'Visitor Team', 'Start Date (MM/DD/YYYY)', 'Start Time (HH:MM AA)', 'Duration (minutes)', 'Details', 'Show Details', 'League Name', 'Practice Type (Shared or Full)', 'Schedule Name', 'Venue']];
 	return (
 		<CSVLink filename="test.csv" data={template}>
 			<button type="button" className="group m-2 flex h-14 w-[3rem] items-center overflow-hidden rounded-lg bg-base  p-2 duration-75 ease-in-out hover:w-[10rem] hover:scale-110 active:scale-90">

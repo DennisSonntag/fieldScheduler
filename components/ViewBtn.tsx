@@ -7,8 +7,7 @@ import Image from 'next/image';
 type PropType = {
 	setIconState: () => void;
 	iconNum: number;
-
-}
+};
 
 const ViewBtn = ({ setIconState, iconNum }: PropType) => {
 	const icons = [seasonIcon, monthIcon, weekIcon, dayIcon];

@@ -69,7 +69,7 @@ const Calendar = ({ month, events, hover = false, scale = '' }: PropType) => {
 					</div>
 				))}
 
-				{firstDays.map(day => (
+				{firstDays.map(() => (
 					<div key={uuid()} className=" relative h-full w-full cursor-pointer">
 						<p className="absolute inset-0 m-auto h-fit w-fit"> </p>
 					</div>
@@ -101,7 +101,7 @@ const Calendar = ({ month, events, hover = false, scale = '' }: PropType) => {
 					);
 				})}
 
-				{lastDays.map(day => (
+				{lastDays.map(() => (
 					<div key={uuid()} className="relative h-full w-full cursor-pointer">
 						<p className="absolute inset-0 m-auto h-fit w-fit"> </p>
 					</div>

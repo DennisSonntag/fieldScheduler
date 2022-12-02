@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 import caret from '@svg/caret.svg';
 
@@ -8,15 +8,12 @@ import Title from './Title';
 import Download from './Download';
 import ViewBtn from './ViewBtn';
 import WeekCaret from './WeekCaret';
-// eslint-disable-next-line import/no-cycle
-import { activePageContext } from './Sport';
 
 type PropType = {
 	title: string;
-}
+};
 
 const Middle = ({ title }: PropType) => {
-	const activePage = useContext(activePageContext);
 	const events = {
 		2: [15, 16, 17],
 		3: [18, 20],

@@ -32,6 +32,6 @@
 		"no-plusplus": "off",
 		"no-tabs": "off",
 		"max-len": "off",
-		"indent": "off",
+		"indent": "off"
 	}
 }

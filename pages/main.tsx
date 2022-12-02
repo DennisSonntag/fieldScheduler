@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { createContext, useState } from 'react';
 
 import Link from 'next/link';
@@ -5,9 +6,9 @@ import SportSelect from '@components/SportSelect';
 import Sport from '@components/Sport';
 import Compare from '@components/Compare';
 import App from '@components/App';
-import PocketBase from 'pocketbase';
+// import PocketBase from 'pocketbase';
 
-const pb = new PocketBase('http://127.0.0.1:8090');
+// const pb = new PocketBase('http://127.0.0.1:8090');
 
 export const schoolNameContext = createContext<string[]>([]);
 
@@ -59,12 +60,13 @@ const Main = ({ schoolNames }: PropType) => {
 export default Main;
 
 export async function getServerSideProps() {
-	const records = await pb.collection('schools').getFullList(200 /* batch size */, {
-		sort: '-created',
-	});
-	const namesRaw = records.map(elm => elm.school_name);
+	// const records = await pb.collection('schools').getFullList(200 /* batch size */, {
+	// 	sort: '-created',
+	// });
+	// const namesRaw = records.map(elm => elm.school_name);
 
 	return {
-		props: { schoolNames: namesRaw},
+		// props: { schoolNames: namesRaw },
+		props: { schoolNames: ['school 1', 'school 2', 'school 3'] },
 	};
 }

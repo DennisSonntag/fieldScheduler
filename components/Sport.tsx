@@ -1,8 +1,8 @@
+/* eslint-disable import/no-cycle */
 import { createContext, useState } from 'react';
 
-import { arrayIsEqual } from '@ts/helperFuncs';
+import arrayIsEqual from '@ts/helperFuncs';
 import SideBtn from './SideBtn';
-// eslint-disable-next-line import/no-cycle
 import Middle from './Middle';
 import Left from './LeftPane';
 

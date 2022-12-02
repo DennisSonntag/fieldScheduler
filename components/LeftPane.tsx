@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { useState } from 'react';
 
 import DateInfo from './DateInfo';
@@ -5,7 +6,7 @@ import TeamInfo from './TeamInfo';
 
 type PropType = {
 	leftOpen: boolean;
-}
+};
 const Left = ({ leftOpen }: PropType) => {
 	const [active, setActive] = useState(true);
 
@@ -21,7 +22,7 @@ const Left = ({ leftOpen }: PropType) => {
 					</button>
 				</div>
 			</div>
-			{active ? <TeamInfo  /> : <DateInfo />}
+			{active ? <TeamInfo /> : <DateInfo />}
 		</section>
 	);
 };

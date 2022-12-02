@@ -1,12 +1,10 @@
 import { useContext, useState } from 'react';
 
+// eslint-disable-next-line import/no-cycle
+import { schoolNameContext } from 'pages/main';
+// import { calculate } from '@ts/calculate';
 import FilterChip from './FilterChip';
 import Filter from './Filter';
-import { schoolNameContext } from 'pages/main';
-import PocketBase from 'pocketbase';
-import { calculate } from '@ts/calculate';
-
-const pb = new PocketBase('http://127.0.0.1:8090');
 
 const TeamInfo = () => {
 	const schools = useContext(schoolNameContext);
@@ -30,51 +28,12 @@ const TeamInfo = () => {
 		{ name: 'Team 12', div: 1, 'sr/jr': 'sr' },
 	];
 
-	const names = [
-		'william-taylor-and-george-wood-learning-centre',
-		'william-aberhart-high-school ',
-		'st-francis-high-school ',
-		'bowness-high-school ',
-		'john-g-diefenbaker-high-school ',
-		'crescent-heights-high-school ',
-		'dr-gordon-townsend-school ',
-		'christine-meikle-school ',
-		'louise-dean-school ',
-		'james-fowler-high-school ',
-		'robert-thirsk-high-school ',
-		'sir-winston-churchill-high-school ',
-		'nelson-mandela-high-school ',
-		'lester-b-pearson-high-school ',
-		'notre-dame-high-school ',
-		'bishop-mcnally-high-school ',
-		'ernest-manning-high-school ',
-		'central-memorial-high-school ',
-		'william-roper-hull-school ',
-		'henry-wise-wood-high-school ',
-		'our-lady-of-lourdes-high-school ',
-		'bishop-carroll-high-school ',
-		'national-sport-school ',
-		'st-marys-high-school ',
-		'dr-ep-scarlett-high-school ',
-		'western-canada-high-school ',
-		'bishop-grandin-high-school ',
-		'st-anthony-school ',
-		'st-anne-academic-centre ',
-		'jack-james-high-school ',
-		'centennial-high-school ',
-		'lord-beaverbrook-high-school ',
-		'father-lacombe-high-school ',
-		'all-saints-high-school ',
-		'bishop-obyrne-high-school ',
-		'forest-lawn-high-school ',
-	];
-
 	const divisions = ['Div 1', 'Div 2', 'Div 3'];
 	const seniorities = ['Sr', 'Jr'];
 
-	const uploadData = async () => {
-		calculate()
-	};
+	// const uploadData = async () => {
+	// 	calculate();
+	// };
 
 	return (
 		<>
@@ -88,9 +47,9 @@ const TeamInfo = () => {
 			<FilterChip selected={schoolSelect} />
 			<FilterChip selected={senioritySelect} />
 
-			<button type="button" onClick={uploadData}>
+			{/* <button type="button" onClick={uploadData}>
 				Upload Data
-			</button>
+			</button> */}
 
 			<div className=" z-0 grid h-auto grow grid-cols-3 gap-4 p-2">
 				{teams.map(team => (
