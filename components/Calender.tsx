@@ -1,3 +1,5 @@
+import { v4 as uuid } from 'uuid';
+
 type PropType = {
 	month: number;
 	hover?: boolean;
@@ -62,13 +64,13 @@ const Calendar = ({ month, events, hover = false, scale = '' }: PropType) => {
 			<h1 className="inset-0 mx-auto my-2 h-fit w-fit text-center text-2xl font-bold text-white">{months[month]}</h1>
 			<div className="grid-rows-7 text-md grid h-full grid-cols-7 text-center">
 				{weekDays.map(day => (
-					<div key={day} className="h-full w-full text-center font-bold text-stark">
+					<div key={uuid()} className="h-full w-full text-center font-bold text-stark">
 						{day}
 					</div>
 				))}
 
 				{firstDays.map(day => (
-					<div key={day} className=" relative h-full w-full cursor-pointer">
+					<div key={uuid()} className=" relative h-full w-full cursor-pointer">
 						<p className="absolute inset-0 m-auto h-fit w-fit"> </p>
 					</div>
 				))}
@@ -77,7 +79,7 @@ const Calendar = ({ month, events, hover = false, scale = '' }: PropType) => {
 					if (currentWeekEnds.includes(day)) {
 						// weekends
 						return (
-							<div key={day} className="relative h-full w-full cursor-pointer text-dim">
+							<div key={uuid()} className="relative h-full w-full cursor-pointer text-dim">
 								<p className="absolute inset-0 m-auto h-fit w-fit">{day}</p>
 							</div>
 						);
@@ -86,21 +88,21 @@ const Calendar = ({ month, events, hover = false, scale = '' }: PropType) => {
 						index++;
 						// days with events
 						return (
-							<div key={day} className="h-11/12 relative aspect-square w-11/12 cursor-pointer rounded-full bg-blue-600">
+							<div key={uuid()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer rounded-full bg-blue-600">
 								<p className="absolute inset-0 m-auto h-fit w-fit font-bold text-invert ">{day}</p>
 							</div>
 						);
 					}
 					// normal weekdays
 					return (
-						<div key={day} className="h-11/12 relative aspect-square w-11/12 cursor-pointer text-stark hover:rounded-full hover:bg-blue-800 hover:text-invert">
+						<div key={uuid()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer text-stark hover:rounded-full hover:bg-blue-800 hover:text-invert">
 							<p className="absolute inset-0 m-auto h-fit w-fit">{day}</p>
 						</div>
 					);
 				})}
 
 				{lastDays.map(day => (
-					<div key={day} className="relative h-full w-full cursor-pointer">
+					<div key={uuid()} className="relative h-full w-full cursor-pointer">
 						<p className="absolute inset-0 m-auto h-fit w-fit"> </p>
 					</div>
 				))}

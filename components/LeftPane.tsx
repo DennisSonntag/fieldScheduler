@@ -21,7 +21,7 @@ const Left = ({ leftOpen }: PropType) => {
 					</button>
 				</div>
 			</div>
-			{active ? <TeamInfo /> : <DateInfo />}
+			{active ? <TeamInfo  /> : <DateInfo />}
 		</section>
 	);
 };

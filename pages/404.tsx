@@ -1,6 +1,6 @@
 import gif from '@img/404.gif';
 import Image from 'next/image';
-import App from '../components/App';
+import App from '@components/App';
 
 const NotFound = () => (
 	<App title="Page Not Found">

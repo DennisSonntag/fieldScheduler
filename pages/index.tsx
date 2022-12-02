@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import PocketBase, { Record } from 'pocketbase';
-import App from "../components/App"
+import App from '@components/App';
 
 const Login = () => {
 	const pb = new PocketBase('http://127.0.0.1:8090');
@@ -66,11 +66,7 @@ const Login = () => {
 						</button>
 					</dialog>
 					<p className={`text-bug h-fit w-fit text-center font-bold duration-75 ${error !== 0 ? 'opacity-100' : 'opacity-0'}`}>{errorContent}</p>
-					<button
-						type="button"
-						onClick={login}
-						className={`${error !== 0 ? 'bg-red-700' : 'bg-mid'}  w-fit rounded-md p-2 shadow-lg duration-75 hover:scale-110 active:scale-90`}
-					>
+					<button type="button" onClick={login} className={`${error !== 0 ? 'bg-red-700' : 'bg-mid'}  w-fit rounded-md p-2 shadow-lg duration-75 hover:scale-110 active:scale-90`}>
 						Login
 					</button>
 				</div>

@@ -1,17 +1,16 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
-import PocketBase from 'pocketbase';
 import FilterChip from './FilterChip';
 import Filter from './Filter';
+import { schoolNameContext } from 'pages/main';
+import PocketBase from 'pocketbase';
+import { calculate } from '@ts/calculate';
 
 const pb = new PocketBase('http://127.0.0.1:8090');
 
+const TeamInfo = () => {
+	const schools = useContext(schoolNameContext);
 
-type PropType = {
-	test: string[];
-};
-
-const TeamInfo = ({ test }: PropType) => {
 	const [divSelect, setDivSelect] = useState<string[]>([]);
 	const [schoolSelect, setSchoolSelect] = useState<string[]>([]);
 	const [senioritySelect, setSenioritySelect] = useState<string[]>([]);
@@ -30,10 +29,6 @@ const TeamInfo = ({ test }: PropType) => {
 		{ name: 'Team 11', div: 1, 'sr/jr': 'sr' },
 		{ name: 'Team 12', div: 1, 'sr/jr': 'sr' },
 	];
-
-	const divisions = ['Div 1', 'Div 2', 'Div 3'];
-	const schools = ['School 1', 'School 2', 'School 3'];
-	const seniorities = ['Sr', 'Jr'];
 
 	const names = [
 		'william-taylor-and-george-wood-learning-centre',
@@ -74,10 +69,11 @@ const TeamInfo = ({ test }: PropType) => {
 		'forest-lawn-high-school ',
 	];
 
-	const data = { school_Name: 'test' };
+	const divisions = ['Div 1', 'Div 2', 'Div 3'];
+	const seniorities = ['Sr', 'Jr'];
 
-	const uploadData = () => {
-		console.log(test);
+	const uploadData = async () => {
+		calculate()
 	};
 
 	return (
@@ -108,13 +104,3 @@ const TeamInfo = ({ test }: PropType) => {
 	);
 };
 export default TeamInfo;
-
-export async function getServerSideProps() {
-	const records = await pb.collection('schools').getFullList(200 /* batch size */, {
-		sort: '-created',
-	});
-	const namesRaw: string[] = records.map(elm => elm.school_name);
-	return {
-		props: { test: ["plz", "killme"] },
-	};
-}
