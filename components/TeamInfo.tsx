@@ -3,8 +3,8 @@ import { useContext, useState } from 'react';
 // eslint-disable-next-line import/no-cycle
 import { schoolNameContext } from 'pages/main';
 // import { calculate } from '@ts/calculate';
-import FilterChip from './FilterChip';
 import Filter from './Filter';
+import FilterChip from './FilterChip';
 
 const TeamInfo = () => {
 	const schools = useContext(schoolNameContext);
