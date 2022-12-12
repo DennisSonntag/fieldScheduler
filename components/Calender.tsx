@@ -1,13 +1,19 @@
+import { activePageContext } from 'pages/main';
+import { useContext } from 'react';
 import { v4 as uuid } from 'uuid';
 
 type PropType = {
 	month: number;
 	hover?: boolean;
 	scale?: string;
-	events: number[];
+	eventsProp: Object[];
 };
 
-const Calendar = ({ month, events, hover = false, scale = '' }: PropType) => {
+const Calendar = ({ month, eventsProp, hover = false, scale = '' }: PropType) => {
+	const activePage = useContext(activePageContext);
+
+	const events = eventsProp[activePage];
+
 	const year = 2022;
 	const date = new Date(year, month);
 
@@ -38,8 +44,6 @@ const Calendar = ({ month, events, hover = false, scale = '' }: PropType) => {
 	}
 
 	const currentWeekEnds: number[] = [];
-	// let nextWeekEnds: number[] = [];
-	// let prevWeekEnds: number[] = [];
 
 	const dayThing = (yearArg: number, i: number, arr: number[]) => {
 		const nextDate = new Date(yearArg, month, i);
@@ -49,9 +53,7 @@ const Calendar = ({ month, events, hover = false, scale = '' }: PropType) => {
 	};
 
 	for (let i = 1; i <= daysInMonth; i++) {
-		// dayThing(year + 1, i, nextWeekEnds);
 		dayThing(year, i, currentWeekEnds);
-		// dayThing(year - 1, i, prevWeekEnds);
 	}
 
 	const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -59,7 +61,6 @@ const Calendar = ({ month, events, hover = false, scale = '' }: PropType) => {
 	let index = 0;
 
 	return (
-		// <div className="relative h-full w-full rounded-lg bg-neo p-2 shadow-2xl duration-150 ease-in-out hover:scale-105">
 		<div className={` aspect-square h-fit w-full rounded-lg bg-neo p-2 shadow-2xl ${hover ? 'hover:scale-110' : null} ${scale || null}  m-auto duration-150 ease-in-out`}>
 			<h1 className="inset-0 mx-auto my-2 h-fit w-fit text-center text-2xl font-bold text-white">{months[month]}</h1>
 			<div className="grid-rows-7 text-md grid h-full grid-cols-7 text-center">
@@ -108,7 +109,6 @@ const Calendar = ({ month, events, hover = false, scale = '' }: PropType) => {
 				))}
 			</div>
 		</div>
-		// {/* </div> */}
 	);
 };
 
