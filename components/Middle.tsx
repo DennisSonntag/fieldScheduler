@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import caret from '@svg/caret.svg';
 
 import Image from 'next/image';
-// eslint-disable-next-line import/no-cycle
-import Calendar from './Calender';
+
+import { teamInfoContext } from 'pages/main';
+import Calendar from './Calendar';
 import Title from './Title';
 import Download from './Download';
 import ViewBtn from './ViewBtn';
@@ -15,20 +16,7 @@ type PropType = {
 };
 
 const Middle = ({ title }: PropType) => {
-	const events = [
-		{
-			2: [15, 16, 17],
-			3: [18, 20],
-			4: [6, 17, 27],
-			5: [8, 21, 30],
-		},
-		{
-			2: [5, 12, 27],
-			3: [8, 20, 330],
-			4: [10, 11, 20],
-			5: [6, 25, 31],
-		},
-	];
+	const data = useContext(teamInfoContext);
 
 	const months = [2, 3, 4, 5];
 
@@ -84,7 +72,8 @@ const Middle = ({ title }: PropType) => {
 					// <null className="my-col-2 relative grid h-full w-full auto-rows-auto place-content-center justify-evenly  gap-4 bg-bug">
 					<>
 						{months.map(monthParam => (
-							<Calendar key={monthParam} eventsProp={events} month={monthParam} hover />
+							// @ts-ignore
+							<Calendar key={monthParam} data={data} month={monthParam} hover />
 						))}
 					</>
 				) : null}
@@ -93,7 +82,7 @@ const Middle = ({ title }: PropType) => {
 						<button type="button" onClick={decMonth}>
 							<Image src={caret} alt="" className="smooth inv-1 h-16 w-16 rotate-90 hover:scale-110 active:scale-95" />
 						</button>
-						<Calendar eventsProp={events} month={month} scale="scale-[70%]" />
+						<Calendar data={data} month={month} scale="scale-[70%]" />
 						<button type="button" onClick={incMonth}>
 							<Image src={caret} alt="" className="smooth inv-1 h-16 w-16 rotate-[270deg] hover:scale-110 active:scale-95" />
 						</button>

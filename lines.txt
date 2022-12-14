@@ -1,0 +1,1194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital@1&display=swap');
+	:root {
+		font-family: 'Ubuntu', sans-serif;
+
+		/* dark mode */
+		--color-base: hsl(215, 20%, 65%);
+		--color-mid: hsl(215, 19%, 30%);
+		--color-dim: hsl(217, 33%, 15%);
+		--color-stark: #000000;
+		--color-invert: #ffffff;
+		--color-top-light: #6c87ac;
+		--color-top-dark: #2e3d52;
+		--color-top: #2e3d52;
+		--color-neo: linear-gradient(145deg, hsl(215, 28%, 40%), hsl(215, 28%, 30%));
+		--color-svg-1: invert();
+		--color-svg: ;
+		--bg: linear-gradient(0deg, rgba(16, 22, 35, 1) 0%, var(--color-top-dark) 100%);
+	}
+
+	.light {
+		--bg: linear-gradient(0deg, rgba(62, 87, 128, 1) 0%, var(--color-top-light) 100%);
+		--color-svg: invert();
+		--color-svg-1: ;
+		--color-neo: linear-gradient(145deg, hsl(215, 28%, 20%), hsl(215, 28%, 15%));
+		--color-top: #6c87ac;
+		--color-base: #1e293b;
+		--color-mid: #475569;
+		--color-dim: #94a3b8;
+		--color-stark: #ffffff;
+		--color-invert: #000000;
+	}
+
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
+	*:focus, *:active {
+		outline: none;
+	}
+
+	.gradient {
+		background: var(--bg);
+		background-size: 100vw 100vh;
+	}
+
+	.inv {
+		filter: var(--color-svg);
+	}
+
+	.inv-1 {
+		filter: var(--color-svg-1);
+	}
+
+	.no-move {
+		user-drag: none;
+		user-select: none;
+	}
+
+	.my-col-2 {
+		grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+	}
+
+	.my-col-3 {
+		grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+	}
+
+	.my-shadow {
+		box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.75);
+	}
+	.hover-fade {
+		opacity: 40%;
+		transition: all 150ms ease-in-out;
+	}
+
+	.hover-fade:hover {
+		opacity: 100%;
+	}
+
+	.top-calc {
+		top: calc(100% + 0.25em);
+	}
+
+	.smooth {
+		transition: all 75ms ease-in-out;
+	}
+
+	/* ----------- Login section --------------- */
+
+	.field::after {
+		content: '';
+		position: relative;
+		display: block;
+		height: 4px;
+		width: 100%;
+		background-color: #3a4972;
+		transform: scaleX(0);
+		transform-origin: 0%;
+		transition: transform 500ms ease;
+		top: 2px;
+	}
+	.input {
+		outline: none;
+		border: none;
+		overflow: hidden;
+		margin: 0;
+		width: 100%;
+		padding: 0.25rem 0;
+		background: none;
+		color: var(--color-invert);
+		font-size: 1.2em;
+		font-weight: bold;
+		transition: border 500ms;
+	}
+
+	.field:focus-within {
+		border-color: transparent;
+	}
+
+	.field:focus-within::after {
+		transform: scaleX(1);
+	}
+
+	.label {
+		color: var(--color-invert);
+		position: absolute;
+		transform: translateY(0.5rem);
+		transform-origin: 0%;
+		transition: transform 400ms;
+	}
+
+	.field:focus-within .label,
+	.input:not(:placeholder-shown) + .label {
+		transform: scale(0.8) translateY(-1.5rem);
+	}
+
+	.bot-dash {
+		border-bottom: 2px dashed var(--color-invert);
+	}
+}
+import { ReactNode, useEffect, useState } from 'react';
+
+import sun from '@svg/sun.svg';
+import moon from '@svg/moon.svg';
+import Head from 'next/head';
+import Image from 'next/image';
+import Background from './Background';
+
+type PropType = {
+	children: ReactNode;
+	title: string;
+};
+
+const App = ({ children, title }: PropType) => {
+	const [theme, setTheme] = useState(false);
+	const toggleTheme = () => {
+		setTheme(prev => !prev);
+	};
+	useEffect(() => {
+		setTheme(JSON.parse(localStorage.getItem('dark') as string));
+	}, []);
+
+	useEffect(() => {
+		localStorage.setItem('dark', JSON.stringify(theme));
+	}, [theme]);
+
+	return (
+		<>
+			<Head>
+				<meta name="viewport" content="width=device-width" />
+				<link rel="icon" type="image/svg+xml" href="public\icon.svg" />
+				<title> {title} </title>
+			</Head>
+			<Background theme={theme}>
+				<button title={`Change to ${theme ? 'dark' : 'light'} mode`} type="button" onClick={toggleTheme} className={`smooth absolute top-2 left-2 h-6 w-6 hover:scale-110 active:scale-90 ${theme ? 'invert' : ''}`}>
+					<Image src={theme ? sun : moon} alt="Dark/Light mode toggle button" />
+				</button>
+				{children}
+			</Background>
+		</>
+	);
+};
+export default App;
+import type { ReactNode } from 'react';
+
+type PropType = {
+	children: ReactNode;
+	theme: boolean;
+};
+const Bg = ({ children, theme }: PropType) => <div className={`gradient absolute m-0 box-border h-screen w-screen  ${theme ? 'light' : 'dark'} `}> {children}</div>;
+export default Bg;
+import { v4 as uuid } from 'uuid';
+
+type PropType = {
+	month: number;
+	hover?: boolean;
+	scale?: string;
+	events: number[];
+};
+
+const Calendar = ({ month, events, hover = false, scale = '' }: PropType) => {
+	const year = 2022;
+	const date = new Date(year, month);
+
+	const firstDayIndex = date.getDay() - 1;
+
+	const getDaysInMonth = (yearArg: number, monthArg: number) => new Date(yearArg, monthArg, 0).getDate();
+
+	let lastDay = getDaysInMonth(year, month);
+	const daysInMonth = getDaysInMonth(year, month + 1);
+
+	const firstDays = [];
+	lastDay -= firstDayIndex;
+	for (let i = 0; i <= firstDayIndex; i++) {
+		firstDays.push(lastDay);
+		lastDay++;
+	}
+
+	const days = [];
+	for (let i = 1; i <= daysInMonth; i++) {
+		days.push(i);
+	}
+
+	const daysLeft = 42 - (firstDays.length + days.length);
+
+	const lastDays = [];
+	for (let i = 1; i <= daysLeft; i++) {
+		lastDays.push(i);
+	}
+
+	const currentWeekEnds: number[] = [];
+	// let nextWeekEnds: number[] = [];
+	// let prevWeekEnds: number[] = [];
+
+	const dayThing = (yearArg: number, i: number, arr: number[]) => {
+		const nextDate = new Date(yearArg, month, i);
+		if (nextDate.getDay() === 0 || nextDate.getDay() === 6) {
+			arr.push(i);
+		}
+	};
+
+	for (let i = 1; i <= daysInMonth; i++) {
+		// dayThing(year + 1, i, nextWeekEnds);
+		dayThing(year, i, currentWeekEnds);
+		// dayThing(year - 1, i, prevWeekEnds);
+	}
+
+	const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+	let index = 0;
+
+	return (
+		<div className={` aspect-square h-fit w-full rounded-lg bg-neo p-2 shadow-2xl ${hover ? 'hover:scale-110' : null} ${scale || null}  m-auto duration-150 ease-in-out`}>
+			<h1 className="inset-0 mx-auto my-2 h-fit w-fit text-center text-2xl font-bold text-white">{months[month]}</h1>
+			<div className="grid-rows-7 text-md grid h-full grid-cols-7 text-center">
+				{weekDays.map(day => (
+					<div key={uuid()} className="h-full w-full text-center font-bold text-stark">
+						{day}
+					</div>
+				))}
+
+				{firstDays.map(() => (
+					<div key={uuid()} className=" relative h-full w-full cursor-pointer">
+						<p className="absolute inset-0 m-auto h-fit w-fit"> </p>
+					</div>
+				))}
+
+				{days.map(day => {
+					if (currentWeekEnds.includes(day)) {
+						// weekends
+						return (
+							<div key={uuid()} className="relative h-full w-full cursor-pointer text-dim">
+								<p className="absolute inset-0 m-auto h-fit w-fit">{day}</p>
+							</div>
+						);
+					}
+					if (events[index] === day) {
+						index++;
+						// days with events
+						return (
+							<div key={uuid()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer rounded-full bg-blue-600">
+								<p className="absolute inset-0 m-auto h-fit w-fit font-bold text-invert ">{day}</p>
+							</div>
+						);
+					}
+					// normal weekdays
+					return (
+						<div key={uuid()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer text-stark hover:rounded-full hover:bg-blue-800 hover:text-invert">
+							<p className="absolute inset-0 m-auto h-fit w-fit">{day}</p>
+						</div>
+					);
+				})}
+
+				{lastDays.map(() => (
+					<div key={uuid()} className="relative h-full w-full cursor-pointer">
+						<p className="absolute inset-0 m-auto h-fit w-fit"> </p>
+					</div>
+				))}
+			</div>
+		</div>
+	);
+};
+
+export default Calendar;
+import Middle from './Middle';
+
+const Compare = () => (
+	<main className="absolute flex h-full w-full flex-row overflow-hidden">
+		<Middle title="Rugby Schedule" />
+		<Middle title="Soccer Schedule" />
+	</main>
+);
+
+export default Compare;
+import DatePicker from './DatePicker';
+import Title from './Title';
+
+const DateInfo = () => (
+	<>
+		<div className="h-16 w-full p-3 ">
+			<Title text="Add/Edit Events" />
+		</div>
+
+		<div className="relative flex  w-full flex-grow flex-col  items-center gap-2">
+			<h1 className="text-md rounded-md bg-base py-2 px-8 text-center font-bold text-stark shadow-xl">Season Start/End</h1>
+			<DatePicker />
+			<DatePicker />
+
+			<div className="h-10" />
+
+			<h1 className="text-md rounded-md bg-base py-2 px-8 text-center font-bold text-stark shadow-xl">Breaks/Holidays</h1>
+			<DatePicker />
+		</div>
+	</>
+);
+export default DateInfo;
+import { useState } from 'react';
+import Calendar from './Calendar';
+
+const DatePicker = () => {
+	const date = new Date();
+	const dd = date.getDate();
+	const mm = date.getMonth() + 1;
+	const yyyy = date.getFullYear();
+
+	const [open, setOpen] = useState(false);
+	const handleClick = (e: any) => {
+		e.stopPropagation();
+		setOpen(prev => !prev);
+	};
+
+	return (
+		<>
+			<div className="smooth flex h-fit w-fit select-none items-center justify-around gap-2 rounded-lg bg-mid p-2  text-invert shadow-xl hover:scale-110">
+				<p className="h-fit w-fit">
+					{dd}/{mm}/{yyyy}
+				</p>
+				<button type="button" onClick={handleClick} className="smooth h-8 w-8 cursor-pointer select-none outline-none hover:scale-110 active:scale-90" aria-label="Save">
+					<svg xmlns="http://www.w4.org/2000/svg" viewBox="0 0 448 512" className="fill-invert">
+						<path d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm128 0v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H208c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H336zM64 400v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H208zm112 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H336c-8.8 0-16 7.2-16 16z" />
+					</svg>
+				</button>
+			</div>
+			<div className="relative w-[80%]">{open ? <Calendar events={[]} month={9} /> : null}</div>
+		</>
+	);
+};
+export default DatePicker;
+import { CSVLink } from 'react-csv';
+
+const Download = () => {
+	const template = [['Home Team', 'Visitor Team', 'Start Date (MM/DD/YYYY)', 'Start Time (HH:MM AA)', 'Duration (minutes)', 'Details', 'Show Details', 'League Name', 'Practice Type (Shared or Full)', 'Schedule Name', 'Venue']];
+	return (
+		<CSVLink filename="test.csv" data={template}>
+			<button type="button" className="group m-2 flex h-14 w-[3rem] items-center overflow-hidden rounded-lg bg-base  p-2 duration-75 ease-in-out hover:w-[10rem] hover:scale-110 active:scale-90">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="absolute h-8 w-8 fill-stark">
+					<path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+				</svg>
+				<p className="h-fit font-bold w-fit translate-x-[-110%] whitespace-nowrap text-stark  duration-300 group-hover:translate-x-[30%]">Download Csv</p>
+			</button>
+		</CSVLink>
+	);
+};
+export default Download;
+import { useEffect, useState } from 'react';
+
+const FilterChip = ({ selected }: { selected: string[] }) => {
+	const [empty, setEmpty] = useState(true);
+
+	useEffect(() => {
+		if (selected.length !== 0) {
+			setEmpty(false);
+		} else {
+			setEmpty(true);
+		}
+	}, [selected]);
+
+	return (
+		<div className={` flex w-full ${empty ? 'h-0' : 'h-10'} smooth my-1 shrink-0 gap-4 px-4`}>
+			{selected.map((val: string) => (
+				<div key={val} id={val} className="smooth h-fit w-fit rounded-full bg-base px-4 py-2 text-stark">
+					{val}
+				</div>
+			))}
+		</div>
+	);
+};
+export default FilterChip;
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+
+import caret from '@svg/caret.svg';
+import Image from 'next/image';
+
+type PropType = {
+	title: string;
+	options: string[];
+	selected: string[];
+	scroll?: boolean;
+	setSelected: Dispatch<SetStateAction<string[]>>;
+};
+
+const Filter = ({ title, setSelected, options, selected, scroll = false }: PropType) => {
+	const [isOpen, setIsOpen] = useState(false);
+	const [highlightedIndex, setHighlightedIndex] = useState(0);
+	const containerRef = useRef<HTMLDivElement>(null);
+
+	const clearOptions = () => {
+		setSelected([]);
+	};
+
+	const selectOption = (option: string) => {
+		if (!selected.includes(option)) {
+			setSelected([...selected, option]);
+		}
+	};
+
+	const isOptionSelected = (option: string) => selected.includes(option);
+
+	useEffect(() => {
+		if (isOpen) setHighlightedIndex(0);
+	}, [isOpen]);
+
+	useEffect(() => {
+		const handler = (e: KeyboardEvent) => {
+			if (e.target !== containerRef.current) return;
+			switch (e.code) {
+				case 'Enter':
+				case 'Space':
+					setIsOpen(prev => !prev);
+					if (isOpen) selectOption(options[highlightedIndex]);
+					break;
+				case 'ArrowUp':
+				case 'ArrowDown': {
+					if (!isOpen) {
+						setIsOpen(true);
+						break;
+					}
+
+					const newValue = highlightedIndex + (e.code === 'ArrowDown' ? 1 : -1);
+					if (newValue >= 0 && newValue < options.length) {
+						setHighlightedIndex(newValue);
+					}
+					break;
+				}
+				case 'Escape':
+					setIsOpen(false);
+					break;
+			}
+		};
+		const effectRef = containerRef;
+		effectRef.current?.addEventListener('keydown', handler);
+		return () => {
+			effectRef.current?.removeEventListener('keydown', handler);
+		};
+	}, [isOpen, highlightedIndex, options, selectOption]);
+
+	return (
+		<button title="Click to select filters" type="button" onBlur={() => setIsOpen(false)} onClick={() => setIsOpen(prev => !prev)} tabIndex={0} className="relative z-[999] flex m-auto w-fit shrink-0 select-none  items-center gap-[0.5em] rounded-md bg-base p-[0.5em] text-stark shadow-lg outline-none duration-75 ease-in-out hover:z-[99999] hover:scale-110 focus:border-blue-400   ">
+			<p className="whitespace-nowrap">{title}</p>
+			<svg
+				onClick={e => {
+					e.stopPropagation();
+					clearOptions();
+				}}
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 512 512"
+				className="smooth h-4 w-4 shrink-0 cursor-pointer fill-stark p-0  hover:fill-red-700"
+			>
+				<path d="M175 175C184.4 165.7 199.6 165.7 208.1 175L255.1 222.1L303 175C312.4 165.7 327.6 165.7 336.1 175C346.3 184.4 346.3 199.6 336.1 208.1L289.9 255.1L336.1 303C346.3 312.4 346.3 327.6 336.1 336.1C327.6 346.3 312.4 346.3 303 336.1L255.1 289.9L208.1 336.1C199.6 346.3 184.4 346.3 175 336.1C165.7 327.6 165.7 312.4 175 303L222.1 255.1L175 208.1C165.7 199.6 165.7 184.4 175 175V175zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+			</svg>
+
+			<Image src={caret} alt="Filter dropdown caret" className={`h-4 w-4 ${isOpen ? 'rotate-180' : ''} inv duration-75 ease-in-out`} />
+
+			<div className={`${scroll ? 'overflow-y-scroll h-[10rem]' : null} absolute m-0 flex list-none flex-col bg-[rgba(0,0,0,0.5)]  p-0 hover:z-50 ${isOpen ? `h-[${40 * options.length}px]` : 'h-0'}  top-calc left-0 z-50 w-full overflow-y-hidden  rounded-[0.25em] duration-300  ease-in-out`}>
+				{options.map((option: string, index: number) => (
+					<option
+						onClick={e => {
+							e.stopPropagation();
+							selectOption(option);
+							setIsOpen(false);
+						}}
+						onMouseEnter={() => setHighlightedIndex(index)}
+						key={option}
+						className={`m-2 cursor-pointer truncate rounded-md  py-[0.5em] text-center ${isOptionSelected(option) ? 'bg-blue-700' : 'bg-base'} ${index === highlightedIndex ? 'bg-blue-300 text-invert' : ''} `}
+					>
+						{option}
+					</option>
+				))}
+			</div>
+		</button>
+	);
+};
+export default Filter;
+import { useState } from 'react';
+
+import DateInfo from './DateInfo';
+import TeamInfo from './TeamInfo';
+
+type PropType = {
+	leftOpen: boolean;
+};
+const Left = ({ leftOpen }: PropType) => {
+	const [active, setActive] = useState(true);
+
+	return (
+		<section className={` ${leftOpen ? 'w-1/2' : 'w-0 translate-x-[-100%]'} hover-fade relative flex h-full flex-col  overflow-hidden  rounded-bl-xl `}>
+			<div className="relative h-16 w-full gap-2 ">
+				<div className={`w-fit h-fit absolute inset-0 m-auto flex ${active ? 'bg-mid' : 'bg-base'} rounded-md shadow-lg`}>
+					<button type="button" onClick={() => setActive(true)} className={`${active ? 'text-stark' : 'text-invert'} m-auto h-fit w-fit rounded-md bg-base py-2 px-4 font-semibold shadow-md duration-75 ease-in-out hover:px-6 active:px-3 ${active ? 'bg-base' : 'bg-mid'}`}>
+						Team Info
+					</button>
+					<button type="button" onClick={() => setActive(false)} className={` ${!active ? 'text-stark' : 'text-invert'} m-auto h-fit w-fit rounded-md bg-base py-2 px-4 font-semibold shadow-md duration-75 ease-in-out hover:px-6 active:px-3 ${!active ? 'bg-base' : 'bg-mid'}`}>
+						Date Info
+					</button>
+				</div>
+			</div>
+			{active ? <TeamInfo /> : <DateInfo />}
+		</section>
+	);
+};
+export default Left;
+import { useContext, useState } from 'react';
+
+import caret from '@svg/caret.svg';
+
+import Image from 'next/image';
+
+import { teamInfoContext } from 'pages/main';
+import Calendar from './Calendar';
+import Title from './Title';
+import Download from './Download';
+import ViewBtn from './ViewBtn';
+import WeekCaret from './WeekCaret';
+
+type PropType = {
+	title: string;
+};
+
+const Middle = ({ title }: PropType) => {
+	const events = useContext(teamInfoContext)[10].srGames;
+
+	const months = [2, 3, 4, 5];
+
+	const [active, setActive] = useState(0);
+
+	const setIcon = () => {
+		if (active === 3) {
+			setActive(0);
+			return;
+		}
+		setActive(prev => (prev += 1));
+	};
+
+	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+	const [week, setWeek] = useState(8);
+	const [month, setMonth] = useState(2);
+
+	const incWeek = () => {
+		if (week + 1 <= 52) {
+			setWeek(prev => (prev += 1));
+		}
+	};
+
+	const decWeek = () => {
+		if (week - 1 >= 1) {
+			setWeek(prev => (prev -= 1));
+		}
+	};
+
+	const incMonth = () => {
+		if (month + 1 <= 5) {
+			setMonth(prev => (prev += 1));
+		}
+	};
+
+	const decMonth = () => {
+		if (month - 1 >= 2) {
+			setMonth(prev => (prev -= 1));
+		}
+	};
+
+	return (
+		<section className="hover-fade relative flex h-full w-full flex-col overflow-hidden">
+			<section className="h-16 w-full p-3">
+				<Title text={title} />
+			</section>
+			<div className="relative h-12 w-full shrink-0 ">
+				<ViewBtn setIconState={setIcon} iconNum={active} />
+			</div>
+
+			<section className="my-col-2 relative grid  h-auto w-full grow auto-rows-auto gap-4 p-8 duration-300 ease-in-out ">
+				{active === 0 ? (
+					// <null className="my-col-2 relative grid h-full w-full auto-rows-auto place-content-center justify-evenly  gap-4 bg-bug">
+					<>
+						{months.map(monthParam => (
+							// @ts-ignore
+							<Calendar key={monthParam} events={events[monthParam]} month={monthParam} hover />
+						))}
+					</>
+				) : null}
+				{active === 1 ? (
+					<div className="absolute inset-0 m-auto flex h-fit w-[30rem] ">
+						<button type="button" onClick={decMonth}>
+							<Image src={caret} alt="" className="smooth inv-1 h-16 w-16 rotate-90 hover:scale-110 active:scale-95" />
+						</button>
+						<Calendar events={events[2]} month={month} scale="scale-[70%]" />
+						<button type="button" onClick={incMonth}>
+							<Image src={caret} alt="" className="smooth inv-1 h-16 w-16 rotate-[270deg] hover:scale-110 active:scale-95" />
+						</button>
+					</div>
+				) : null}
+				{active === 2 ? (
+					<div className="absolute inset-0 m-auto flex h-32 w-full bg-mid">
+						<h1 className="absolute inset-x-0 top-[-5rem] mx-auto h-fit w-fit text-[2rem] font-bold text-invert">Week {week}</h1>
+						<WeekCaret func={incWeek} top />
+						{weekDays.map(day => (
+							<>
+								<div className="flex h-fit w-full justify-around bg-bug">
+									<p>{day}</p>
+								</div>
+								<div className="h-full w-auto border border-black bg-green-500" />
+							</>
+						))}
+						<WeekCaret func={decWeek} />
+					</div>
+				) : null}
+				{active === 3 ? <div className="absolute inset-0 m-auto h-fit w-fit text-2xl font-bold text-bug">Day tbd ...</div> : null}
+			</section>
+
+			<div className="grid h-[20%] w-full place-content-center ">
+				<Download />
+			</div>
+		</section>
+	);
+};
+export default Middle;
+import arrow from '@svg/arrow.svg';
+import Image from 'next/image';
+import { Dispatch, SetStateAction } from 'react';
+
+type PropType = {
+	leftOpen: boolean;
+	setLeftOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+const SideBtn = ({ leftOpen, setLeftOpen }: PropType) => (
+	<section className=" hover-fade group grid w-12 shrink-0 place-content-center pt-4 ">
+		<button title="Close right pane" type="button" onClick={() => setLeftOpen((prev: boolean) => !prev)} className={`h-8 w-8 rounded-md bg-base p-2 shadow-lg duration-100 ease-in-out hover:scale-110 active:scale-95  ${leftOpen ? 'rotate-0 ' : 'translate-x-[-200%] group-hover:translate-x-0 rotate-180'}`}>
+			<Image className="inv-1w-4 absolute inset-0 m-auto  h-4" src={arrow} alt="side pane open button" />
+		</button>
+	</section>
+);
+export default SideBtn;
+type PropType = {
+	sport: string;
+	setActivePage: () => void;
+	activePage: boolean;
+};
+
+const SportSelect = ({ activePage, setActivePage, sport }: PropType) => (
+	<button title={`${sport} page`} type="button" onClick={setActivePage} className={` ${activePage ? 'bg-base' : 'bg-mid'}  relative h-[2.5rem] w-[16rem] rounded-md ${sport === 'Rugby' ? 'origin-top-right rounded-bl-[1.5rem] shadow-2xl ' : 'origin-top-left rounded-br-[1.5rem] shadow-2xl'} select-none  duration-150 ease-in-out hover:scale-105 active:scale-95`}>
+		<h1 className={`${activePage ? 'text-stark' : 'text-invert'} absolute inset-0 m-auto inline-block h-fit w-fit text-lg font-bold`}>{sport}</h1>
+	</button>
+);
+export default SportSelect;
+import { useState } from 'react';
+
+import SideBtn from './SideBtn';
+import Middle from './Middle';
+import Left from './LeftPane';
+
+type PropType = {
+	activePage: number;
+};
+
+const Sport = ({ activePage }: PropType) => {
+	const [leftOpen, setLeftOpen] = useState(true);
+	return (
+		<main className="flex h-full w-full flex-row overflow-hidden">
+			<Left leftOpen={leftOpen} />
+
+			<SideBtn setLeftOpen={setLeftOpen} leftOpen={leftOpen} />
+
+			<Middle title={`${activePage === 0 ? 'Rugby' : 'Soccer'} Schedule`} />
+		</main>
+	);
+};
+export default Sport;
+import { useContext, useRef } from 'react';
+
+import { filterContext, schoolNameContext, teamInfoContext } from 'pages/main';
+// import PocketBase from 'pocketbase';
+// import calculate from '@ts/calculate';
+import calculate from '@ts/calculate';
+import Filter from './Filter';
+import FilterChip from './FilterChip';
+
+// const pb = new PocketBase('http://127.0.0.1:8090');
+
+const TeamInfo = () => {
+	const schools = useContext(schoolNameContext);
+	const teamInfo = useContext(teamInfoContext);
+	const filterData = useContext(filterContext);
+
+	const [divSelect, setDivSelect] = filterData[0];
+	const [schoolSelect, setSchoolSelect] = filterData[1];
+	const [senioritySelect, setSenioritySelect] = filterData[2];
+	const [sexSelect, setSexSelect] = filterData[3];
+
+	const teams = [
+		{ name: 'Team 1', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 2', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 3', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 4', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 5', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 6', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 7', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 8', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 9', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 10', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 11', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 12', div: 1, 'sr/jr': 'sr' },
+	];
+
+	const divisions = ['Div 1', 'Div 2', 'Div 3'];
+	const seniorities = ['Sr', 'Jr'];
+	const sex = ['Girls', 'Boys'];
+
+	const uploadData = () => {
+		calculate();
+	};
+	const dialogRef = useRef(null);
+
+	const handleClick = () => {
+		const dialog = dialogRef.current as unknown as any;
+		dialog.showModal();
+	};
+
+	return (
+		<div className="w-full h-full relative flex flex-col gap-2">
+			<dialog ref={dialogRef} className="w-[80%] h-[80%] backdrop:bg-black backdrop:opacity-75 bg-base rounded-xl">
+				<h1 className="absolute inset-x-0 mx-auto h-fit w-fit text-xl text-invert shadow-lg font-bold bg-mid p-3 rounded-md">Add/Edit Team data</h1>
+			</dialog>
+			<button type="button" onClick={uploadData}>
+				upload data
+			</button>
+			<button onClick={handleClick} type="button" className="w-fit h-fit text-stark bg-base p-3 rounded-md relative inset-x-0 mx-auto font-bold hover:scale-110 active:scale-90 smooth">
+				Edit Team data
+			</button>
+			<div className="my-col-3 grid h-fit w-full auto-rows-auto items-center justify-around gap-2">
+				<Filter options={divisions} title="Div n" selected={divSelect} setSelected={setDivSelect} />
+				<Filter scroll options={schools} title="School" selected={schoolSelect} setSelected={setSchoolSelect} />
+				<Filter options={seniorities} title="Sr/Jr" selected={senioritySelect} setSelected={setSenioritySelect} />
+				<Filter options={sex} title="Sex" selected={sexSelect} setSelected={setSexSelect} />
+			</div>
+
+			<FilterChip selected={divSelect} />
+			<FilterChip selected={schoolSelect} />
+			<FilterChip selected={senioritySelect} />
+			<FilterChip selected={sexSelect} />
+
+			{/* <button type="button" onClick={uploadData}>
+				Upload Data
+			</button> */}
+
+			<div className=" z-0 grid h-auto grow grid-cols-3 gap-4 p-2">
+				{teams.map(team => (
+					<div key={team.name} className="smooth no-move relative grid h-full w-full cursor-pointer place-content-center rounded-md bg-base text-center text-stark shadow-xl hover:scale-105 active:scale-90 ">
+						<p className="h-fit w-fit text-center">{team.name}</p>
+						<p className="h-fit w-fit text-center">Div {team.div}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	);
+};
+
+export default TeamInfo;
+type PropType = {
+	text: string;
+};
+
+const Title = ({ text }: PropType) => (
+	<div className="relative mt-2 h-10  w-[95%] rounded-md bg-base text-stark shadow-lg">
+		<h1 className="absolute inset-0 m-auto h-fit w-fit text-xl font-bold">{text}</h1>
+	</div>
+);
+export default Title;
+import seasonIcon from '@svg/year.svg';
+import monthIcon from '@svg/calendar.svg';
+import weekIcon from '@svg/week.svg';
+import dayIcon from '@svg/day.svg';
+import Image from 'next/image';
+
+type PropType = {
+	setIconState: () => void;
+	iconNum: number;
+};
+
+const ViewBtn = ({ setIconState, iconNum }: PropType) => {
+	const icons = [seasonIcon, monthIcon, weekIcon, dayIcon];
+	const texts = ['Season', 'Month', 'Week', 'Day'];
+	return (
+		<button onClick={setIconState} type="button" className=" no-move smooth absolute top-0 left-0 m-2 h-fit w-fit hover:scale-110 active:scale-90">
+			<div className="flex items-center gap-2">
+				<Image className="inv-1 no-move h-8 w-8 " src={icons[iconNum]} alt="" />
+				<p className=" h-fit w-fit font-bold text-base">{texts[iconNum]}</p>
+			</div>
+		</button>
+	);
+};
+export default ViewBtn;
+import caret from '@svg/caret.svg';
+import Image from 'next/image';
+
+type PropType = {
+	func: () => void;
+	top?: boolean;
+};
+
+const WeekCaret = ({ top = false, func }: PropType) => (
+	<button onClick={func} type="button">
+		<Image src={caret} alt="" className={`absolute inset-x-0 mx-auto h-8 w-8 ${top ? 'top-[-2rem] rotate-180 ' : 'bottom-[-2rem]'} smooth inv-1 hover:scale-110 active:scale-90 `} />
+	</button>
+);
+export default WeekCaret;
+import gif from '@img/404.gif';
+import Image from 'next/image';
+import App from '@components/App';
+
+const NotFound = () => (
+	<App title="Page Not Found">
+		<div className="absolute inset-0  m-auto grid h-fit w-fit place-content-center gap-4 p-2">
+			<p className="text-center text-[3rem] font-bold text-red-700">404 PAGE NOT FOUND</p>
+			<Image className="rounded-md shadow-2xl" src={gif} alt="" />
+		</div>
+	</App>
+);
+export default NotFound;
+import '@assets/main.css';
+import type { AppProps } from 'next/app';
+
+export default function App({ Component, pageProps }: AppProps) {
+	// eslint-disable-next-line react/jsx-props-no-spreading
+	return <Component {...pageProps} />;
+}
+import { useEffect, useRef, useState } from 'react';
+
+import PocketBase, { Record } from 'pocketbase';
+import App from '@components/App';
+
+const Login = () => {
+	const pb = new PocketBase('http://127.0.0.1:8090');
+
+	const [user, setUser] = useState<Record>();
+	const [error, setError] = useState(0);
+	const [errorContent, setErrorContent] = useState('');
+	const [email, setEmail] = useState('');
+	const emailRef = useRef(null);
+	const passwordRef = useRef(null);
+	const login = async () => {
+		try {
+			const emailRaw = emailRef.current as unknown as HTMLInputElement;
+			setEmail(emailRaw.value);
+			const password = passwordRef.current as unknown as HTMLInputElement;
+			const userRaw = await pb.collection('users').authWithPassword(email, password.value);
+			setUser(userRaw.record);
+		} catch (e) {
+			setErrorContent('Error try again!!');
+			setError(3);
+		}
+	};
+
+	useEffect(() => {
+		if (user) {
+			window.location.href = '/main';
+		}
+	}, [user]);
+	const dialogRef = useRef(null);
+
+	const forgotPassword = () => {
+		const dialog = dialogRef.current as unknown as any;
+		dialog.showModal();
+	};
+
+	return (
+		<App title="Login">
+			<div className=" absolute inset-0 m-auto flex h-fit w-fit flex-col text-invert">
+				<h1 className="absolute inset-x-0 mx-auto h-fit w-fit text-center text-2xl font-bold ">Sign In</h1>
+				<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
+					<input ref={emailRef} autoComplete="off" placeholder=" " type="text" id="email" className="input h-8 w-52 overflow-hidden rounded-md border-0 outline-0" />
+					<label htmlFor="email" className="label text-lg ">
+						Email
+					</label>
+				</div>
+
+				<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
+					<input ref={passwordRef} placeholder=" " type="password" id="password" className="input h-8 w-52 overflow-hidden rounded-md border-0 outline-0" />
+					<label htmlFor="password" className="label text-lg ">
+						Password
+					</label>
+				</div>
+
+				<div className="flex flex-col items-center gap-2">
+					<button type="button" onClick={forgotPassword} className="text-blue underline text-blue-300 hover:text-blue-400">
+						Forgot Password
+					</button>
+					<dialog className="h-1/2 aspect-square rounded-lg bg-base shadow-2xl backdrop:bg-black backdrop:opacity-60" ref={dialogRef}>
+						<p className="text-center font-bold text-xl">Forgot Password</p>
+						<button type="button" className="absolute inset-x-0 mx-auto w-fit h-fit p-2 bg-dim rounded-md hover:scale-105 active:scale-95 smooth text-invert bottom-4 no-move">
+							Send Reset Email
+						</button>
+					</dialog>
+					<p className={`text-bug h-fit w-fit text-center font-bold duration-75 ${error !== 0 ? 'opacity-100' : 'opacity-0'}`}>{errorContent}</p>
+					<button type="button" onClick={login} className={`${error !== 0 ? 'bg-red-700' : 'bg-mid'}  w-fit rounded-md p-2 shadow-lg duration-75 hover:scale-110 active:scale-90`}>
+						Login
+					</button>
+				</div>
+			</div>
+		</App>
+	);
+};
+export default Login;
+import { createContext, useState } from 'react';
+
+import Link from 'next/link';
+import SportSelect from '@components/SportSelect';
+import Sport from '@components/Sport';
+import Compare from '@components/Compare';
+import App from '@components/App';
+import PocketBase from 'pocketbase';
+
+const pb = new PocketBase('http://127.0.0.1:8090');
+
+type PropType = {
+	schoolNames: string[];
+	teamInfo: any;
+};
+
+export const activePageContext = createContext<number>(0);
+export const schoolNameContext = createContext<string[]>([]);
+export const teamInfoContext = createContext<any[]>([]);
+
+export const filterContext = createContext([[]]);
+
+const Main = ({ schoolNames, teamInfo }: PropType) => {
+	const [activePage, setActivePage] = useState(0);
+	const rugbyActive = activePage === 0;
+	const soccerActive = activePage === 1;
+	const compareActive = activePage === 2;
+
+	const [divSelect, setDivSelect] = useState<string[]>([]);
+	const [schoolSelect, setSchoolSelect] = useState<string[]>([]);
+	const [senioritySelect, setSenioritySelect] = useState<string[]>([]);
+	const [sexSelect, setSexSelect] = useState<string[]>([]);
+
+	const filterData = [
+		[divSelect, setDivSelect],
+		[schoolSelect, setSchoolSelect],
+		[senioritySelect, setSenioritySelect],
+		[sexSelect, setSexSelect],
+	];
+
+	return (
+		<schoolNameContext.Provider value={schoolNames}>
+			<teamInfoContext.Provider value={teamInfo}>
+				<activePageContext.Provider value={activePage}>
+					<filterContext.Provider value={filterData}>
+						<App title="Scheduler">
+							<div className="flex h-screen w-screen flex-col ">
+								<div className="h-16 w-screen shrink-0 ">
+									<Link href="/">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="absolute top-2 right-2 h-6 w-6 fill-base hover:scale-125 active:scale-90">
+											<path d="M160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96C43 32 0 75 0 128V384c0 53 43 96 96 96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H96c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32h64zM504.5 273.4c4.8-4.5 7.5-10.8 7.5-17.4s-2.7-12.9-7.5-17.4l-144-136c-7-6.6-17.2-8.4-26-4.6s-14.5 12.5-14.5 22v72H192c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32H320v72c0 9.6 5.7 18.2 14.5 22s19 2 26-4.6l144-136z" />
+										</svg>
+									</Link>
+									<nav className="absolute inset-x-0 top-0 z-50 m-2 mx-auto box-border flex h-fit w-fit gap-2">
+										<SportSelect sport="Rugby" activePage={rugbyActive} setActivePage={() => setActivePage(0)} />
+										<SportSelect sport="Soccer" activePage={soccerActive} setActivePage={() => setActivePage(1)} />
+										<button title="Compare Schedules" onClick={() => setActivePage(3)} type="button" className={`${compareActive ? 'bg-base' : 'bg-mid'} smooth absolute inset-x-0 top-4 mx-auto h-10 w-10 select-none rounded-full border-[0.3rem] border-top outline-none duration-100 ease-in-out hover:scale-110 active:scale-90`}>
+											<svg className={`inset-0 m-auto h-4 w-4 ${compareActive ? 'fill-stark' : 'fill-invert'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+												<path d="M422.6 278.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L434.7 176H64c-17.7 0-32-14.3-32-32s14.3-32 32-32H434.7L377.4 54.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l112 112c12.5 12.5 12.5 32.8 0 45.3l-112 112zm-269.3 224l-112-112c-12.5-12.5-12.5-32.8 0-45.3l112-112c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3L141.3 336H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H141.3l57.4 57.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0z" />
+											</svg>
+										</button>
+									</nav>
+								</div>
+								<div className="h-auto w-screen grow">
+									{rugbyActive ? <Sport activePage={activePage} /> : null}
+									{soccerActive ? <Sport activePage={activePage} /> : null}
+									{compareActive ? <Compare /> : null}
+								</div>
+							</div>
+						</App>
+					</filterContext.Provider>
+				</activePageContext.Provider>
+			</teamInfoContext.Provider>
+		</schoolNameContext.Provider>
+	);
+};
+export default Main;
+
+export async function getServerSideProps() {
+	const records = await pb.collection('schools').getFullList(200 /* batch size */, {
+		sort: '-created',
+	});
+	const namesRaw = records.map(elm => elm.school_name);
+
+	const records2 = await pb.collection('teams').getFullList(200 /* batch size */, {
+		sort: '-created',
+	});
+
+	const teamsRaw = records2.map(elm => ({
+		school: elm.school_id,
+		srGames: elm.srGames,
+		jrGames: elm.jrGames,
+		team_color: elm.team_color,
+	}));
+
+	return {
+		props: { schoolNames: namesRaw, teamInfo: teamsRaw },
+	};
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital@1&display=swap');
+	:root {
+		font-family: 'Ubuntu', sans-serif;
+
+		/* dark mode */
+		--color-base: hsl(215, 20%, 65%);
+		--color-mid: hsl(215, 19%, 30%);
+		--color-dim: hsl(217, 33%, 15%);
+		--color-stark: #000000;
+		--color-invert: #ffffff;
+		--color-top-light: #6c87ac;
+		--color-top-dark: #2e3d52;
+		--color-top: #2e3d52;
+		--color-neo: linear-gradient(145deg, hsl(215, 28%, 40%), hsl(215, 28%, 30%));
+		--color-svg-1: invert();
+		--color-svg: ;
+		--bg: linear-gradient(0deg, rgba(16, 22, 35, 1) 0%, var(--color-top-dark) 100%);
+	}
+
+	.light {
+		--bg: linear-gradient(0deg, rgba(62, 87, 128, 1) 0%, var(--color-top-light) 100%);
+		--color-svg: invert();
+		--color-svg-1: ;
+		--color-neo: linear-gradient(145deg, hsl(215, 28%, 20%), hsl(215, 28%, 15%));
+		--color-top: #6c87ac;
+		--color-base: #1e293b;
+		--color-mid: #475569;
+		--color-dim: #94a3b8;
+		--color-stark: #ffffff;
+		--color-invert: #000000;
+	}
+
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
+	*:focus, *:active {
+		outline: none;
+	}
+
+	.gradient {
+		background: var(--bg);
+		background-size: 100vw 100vh;
+	}
+
+	.inv {
+		filter: var(--color-svg);
+	}
+
+	.inv-1 {
+		filter: var(--color-svg-1);
+	}
+
+	.no-move {
+		user-drag: none;
+		user-select: none;
+	}
+
+	.my-col-2 {
+		grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+	}
+
+	.my-col-3 {
+		grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+	}
+
+	.my-shadow {
+		box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.75);
+	}
+	.hover-fade {
+		opacity: 40%;
+		transition: all 150ms ease-in-out;
+	}
+
+	.hover-fade:hover {
+		opacity: 100%;
+	}
+
+	.top-calc {
+		top: calc(100% + 0.25em);
+	}
+
+	.smooth {
+		transition: all 75ms ease-in-out;
+	}
+
+	/* ----------- Login section --------------- */
+
+	.field::after {
+		content: '';
+		position: relative;
+		display: block;
+		height: 4px;
+		width: 100%;
+		background-color: #3a4972;
+		transform: scaleX(0);
+		transform-origin: 0%;
+		transition: transform 500ms ease;
+		top: 2px;
+	}
+	.input {
+		outline: none;
+		border: none;
+		overflow: hidden;
+		margin: 0;
+		width: 100%;
+		padding: 0.25rem 0;
+		background: none;
+		color: var(--color-invert);
+		font-size: 1.2em;
+		font-weight: bold;
+		transition: border 500ms;
+	}
+
+	.field:focus-within {
+		border-color: transparent;
+	}
+
+	.field:focus-within::after {
+		transform: scaleX(1);
+	}
+
+	.label {
+		color: var(--color-invert);
+		position: absolute;
+		transform: translateY(0.5rem);
+		transform-origin: 0%;
+		transition: transform 400ms;
+	}
+
+	.field:focus-within .label,
+	.input:not(:placeholder-shown) + .label {
+		transform: scale(0.8) translateY(-1.5rem);
+	}
+
+	.bot-dash {
+		border-bottom: 2px dashed var(--color-invert);
+	}
+}

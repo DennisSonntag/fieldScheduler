@@ -1,19 +1,17 @@
-import { useContext, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useRef } from 'react';
 
-// eslint-disable-next-line import/no-cycle
-import { schoolNameContext } from 'pages/main';
-// import { calculate } from '@ts/calculate';
+import { filterContext, schoolNameContext } from 'pages/main';
 import Filter from './Filter';
 import FilterChip from './FilterChip';
-import Title from './Title';
 
 const TeamInfo = () => {
 	const schools = useContext(schoolNameContext);
+	const filterData = useContext(filterContext);
 
-	const [divSelect, setDivSelect] = useState<string[]>([]);
-	const [schoolSelect, setSchoolSelect] = useState<string[]>([]);
-	const [senioritySelect, setSenioritySelect] = useState<string[]>([]);
-	const [sexSelect, setSexSelect] = useState<string[]>([]);
+	const [divSelect, setDivSelect] = filterData[0];
+	const [schoolSelect, setSchoolSelect] = filterData[1];
+	const [senioritySelect, setSenioritySelect] = filterData[2];
+	const [genderSelect, setGenderSelect] = filterData[3];
 
 	const teams = [
 		{ name: 'Team 1', div: 1, 'sr/jr': 'sr' },
@@ -32,11 +30,7 @@ const TeamInfo = () => {
 
 	const divisions = ['Div 1', 'Div 2', 'Div 3'];
 	const seniorities = ['Sr', 'Jr'];
-	const sex = ['Girls', 'Boys'];
-
-	// const uploadData = async () => {
-	// 	calculate();
-	// };
+	const gender = ['Girls', 'Boys'];
 
 	const dialogRef = useRef(null);
 
@@ -49,26 +43,21 @@ const TeamInfo = () => {
 		<div className="w-full h-full relative flex flex-col gap-2">
 			<dialog ref={dialogRef} className="w-[80%] h-[80%] backdrop:bg-black backdrop:opacity-75 bg-base rounded-xl">
 				<h1 className="absolute inset-x-0 mx-auto h-fit w-fit text-xl text-invert shadow-lg font-bold bg-mid p-3 rounded-md">Add/Edit Team data</h1>
-
 			</dialog>
 			<button onClick={handleClick} type="button" className="w-fit h-fit text-stark bg-base p-3 rounded-md relative inset-x-0 mx-auto font-bold hover:scale-110 active:scale-90 smooth">
 				Edit Team data
 			</button>
 			<div className="my-col-3 grid h-fit w-full auto-rows-auto items-center justify-around gap-2">
-				<Filter options={divisions} title="Div n" selected={divSelect} setSelected={setDivSelect} />
-				<Filter scroll options={schools} title="School" selected={schoolSelect} setSelected={setSchoolSelect} />
-				<Filter options={seniorities} title="Sr/Jr" selected={senioritySelect} setSelected={setSenioritySelect} />
-				<Filter options={sex} title="Sex" selected={sexSelect} setSelected={setSexSelect} />
+				<Filter options={divisions} title="Div n" selected={divSelect as string[]} setSelected={setDivSelect as Dispatch<SetStateAction<string[]>>} />
+				<Filter scroll options={schools} title="School" selected={schoolSelect as string[]} setSelected={setSchoolSelect as Dispatch<SetStateAction<string[]>>} />
+				<Filter options={seniorities} title="Sr/Jr" selected={senioritySelect as string[]} setSelected={setSenioritySelect as Dispatch<SetStateAction<string[]>>} />
+				<Filter options={gender} title="Gender" selected={genderSelect as string[]} setSelected={setGenderSelect as Dispatch<SetStateAction<string[]>>} />
 			</div>
 
-			<FilterChip selected={divSelect} />
-			<FilterChip selected={schoolSelect} />
-			<FilterChip selected={senioritySelect} />
-			<FilterChip selected={sexSelect} />
-
-			{/* <button type="button" onClick={uploadData}>
-				Upload Data
-			</button> */}
+			<FilterChip selected={divSelect as string[]} />
+			<FilterChip selected={schoolSelect as string[]} />
+			<FilterChip selected={senioritySelect as string[]} />
+			<FilterChip selected={genderSelect as string[]} />
 
 			<div className=" z-0 grid h-auto grow grid-cols-3 gap-4 p-2">
 				{teams.map(team => (
@@ -81,4 +70,5 @@ const TeamInfo = () => {
 		</div>
 	);
 };
+
 export default TeamInfo;

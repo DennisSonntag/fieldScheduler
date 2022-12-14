@@ -1,19 +1,18 @@
-import { activePageContext } from 'pages/main';
-import { useContext } from 'react';
+import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
 type PropType = {
 	month: number;
 	hover?: boolean;
 	scale?: string;
-	eventsProp: Object[];
+	data: any;
 };
 
-const Calendar = ({ month, eventsProp, hover = false, scale = '' }: PropType) => {
-	const activePage = useContext(activePageContext);
-
-	const events = eventsProp[activePage];
-
+const Calendar = ({ month, data, hover = false, scale = '' }: PropType) => {
+	const num = useState(20)[0];
+	const events = useState(data[num].srGames[month])[0];
+	const color = useState(String(data[num].team_color).trim() as string)[0];
+	console.log(color);
 	const year = 2022;
 	const date = new Date(year, month);
 
@@ -89,7 +88,8 @@ const Calendar = ({ month, eventsProp, hover = false, scale = '' }: PropType) =>
 						index++;
 						// days with events
 						return (
-							<div key={uuid()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer rounded-full bg-blue-600">
+							<div key={uuid()} className={`h-11/12 relative aspect-square w-11/12 cursor-pointer rounded-full bg-[#${color}]`}>
+							{/* // <div key={uuid()} className={`h-11/12 relative aspect-square w-11/12 cursor-pointer rounded-full bg-[#ff00ff]`}> */}
 								<p className="absolute inset-0 m-auto h-fit w-fit font-bold text-invert ">{day}</p>
 							</div>
 						);

@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-cycle
 import Middle from './Middle';
 
 const Compare = () => (

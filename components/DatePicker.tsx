@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Calendar from './Calender';
+import Calendar from './Calendar';
 
 const DatePicker = () => {
 	const date = new Date();
