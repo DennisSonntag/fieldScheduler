@@ -41,13 +41,13 @@ const schoolNames = [
 ];
 
 const getRandomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
-const randomArray = () =>
+const randomArray = (size: number) =>
 	// eslint-disable-next-line implicit-arrow-linebreak
-	Array(4)
+	Array(size)
 		.fill(0)
 		.map(() => {
 			if (Math.random() > 0.5) {
-				return getRandomInt(1, 30);
+				return 1;
 			}
 			return 0;
 		});
@@ -59,19 +59,9 @@ const calculate = async () => {
 	for (const name of schoolNames) {
 		// example create data
 		const data = {
-			srGames: {
-				2: randomArray(),
-				3: randomArray(),
-				4: randomArray(),
-				5: randomArray(),
-			},
+			srGames: randomArray(121),
 			school_id: name,
-			jrGames: {
-				2: randomArray(),
-				3: randomArray(),
-				4: randomArray(),
-				5: randomArray(),
-			},
+			jrGames: randomArray(121),
 			team_color: colors[getRandomInt(0, 5)],
 		};
 

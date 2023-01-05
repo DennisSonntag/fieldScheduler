@@ -1,24 +1,36 @@
+import { TeamType } from 'pages/main';
 import { useState } from 'react';
-import { v4 as uuid } from 'uuid';
 
 type PropType = {
 	month: number;
 	hover?: boolean;
 	scale?: string;
-	data: any;
+	data: TeamType;
+	school_name: string;
+	seniority: boolean;
 };
+export const getDaysInMonth = (yearArg: number, monthArg: number) => new Date(yearArg, monthArg, 0).getDate();
 
-const Calendar = ({ month, data, hover = false, scale = '' }: PropType) => {
-	const num = useState(20)[0];
-	const events = useState(data[num].srGames[month])[0];
-	const color = useState(String(data[num].team_color).trim() as string)[0];
-	console.log(color);
+export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const Calendar = ({ school_name, seniority, month, data, hover = false, scale = '' }: PropType) => {
+	const getIndexFromName = (name: string): number => {
+		let result: number = 0;
+
+		data.forEach((val, index) => {
+			if (val.school === name) {
+				result = index;
+			}
+		});
+		return result;
+	};
+	const index = getIndexFromName(school_name);
+	const srJr = seniority ? 'srGames' : 'jrGames';
+	const events = useState(data[index][srJr])[0];
+	const color = useState(String(data[index].team_color).trim() as string)[0];
 	const year = 2022;
 	const date = new Date(year, month);
 
 	const firstDayIndex = date.getDay() - 1;
-
-	const getDaysInMonth = (yearArg: number, monthArg: number) => new Date(yearArg, monthArg, 0).getDate();
 
 	let lastDay = getDaysInMonth(year, month);
 	const daysInMonth = getDaysInMonth(year, month + 1);
@@ -55,22 +67,27 @@ const Calendar = ({ month, data, hover = false, scale = '' }: PropType) => {
 		dayThing(year, i, currentWeekEnds);
 	}
 
-	const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-	let index = 0;
+
+	const getBigDay = (currentMonth: number): number => {
+		if (currentMonth === 2) {
+			return 0;
+		}
+		return getDaysInMonth(year, currentMonth) + getBigDay(currentMonth - 1);
+	};
 
 	return (
-		<div className={` aspect-square h-fit w-full rounded-lg bg-neo p-2 shadow-2xl ${hover ? 'hover:scale-110' : null} ${scale || null}  m-auto duration-150 ease-in-out`}>
-			<h1 className="inset-0 mx-auto my-2 h-fit w-fit text-center text-2xl font-bold text-white">{months[month]}</h1>
+		<div className={` my-border my-shadow aspect-square h-fit w-full rounded-lg bg-main p-2 ${hover ? 'hover:scale-110' : null} ${scale || null}  m-auto duration-150 ease-in-out`}>
+			<h1 className="inset-0 mx-auto my-2 h-fit w-fit text-center text-2xl font-bold text-invert">{monthNames[month]}</h1>
 			<div className="grid-rows-7 text-md grid h-full grid-cols-7 text-center">
 				{weekDays.map(day => (
-					<div key={uuid()} className="h-full w-full text-center font-bold text-stark">
+					<div key={crypto.randomUUID()} className="h-full w-full text-center font-bold text-invert">
 						{day}
 					</div>
 				))}
 
 				{firstDays.map(() => (
-					<div key={uuid()} className=" relative h-full w-full cursor-pointer">
+					<div key={crypto.randomUUID()} className=" relative h-full w-full cursor-pointer">
 						<p className="absolute inset-0 m-auto h-fit w-fit"> </p>
 					</div>
 				))}
@@ -79,31 +96,29 @@ const Calendar = ({ month, data, hover = false, scale = '' }: PropType) => {
 					if (currentWeekEnds.includes(day)) {
 						// weekends
 						return (
-							<div key={uuid()} className="relative h-full w-full cursor-pointer text-dim">
+							<div key={crypto.randomUUID()} className="text-dim relative h-full w-full cursor-pointer">
 								<p className="absolute inset-0 m-auto h-fit w-fit">{day}</p>
 							</div>
 						);
 					}
-					if (events[index] === day) {
-						index++;
+					if (events[getBigDay(month) + day] === 1) {
 						// days with events
 						return (
-							<div key={uuid()} className={`h-11/12 relative aspect-square w-11/12 cursor-pointer rounded-full bg-[#${color}]`}>
-							{/* // <div key={uuid()} className={`h-11/12 relative aspect-square w-11/12 cursor-pointer rounded-full bg-[#ff00ff]`}> */}
+							<div key={crypto.randomUUID()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer rounded-full bg-bug">
 								<p className="absolute inset-0 m-auto h-fit w-fit font-bold text-invert ">{day}</p>
 							</div>
 						);
 					}
 					// normal weekdays
 					return (
-						<div key={uuid()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer text-stark hover:rounded-full hover:bg-blue-800 hover:text-invert">
+						<div key={crypto.randomUUID()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer text-invert hover:rounded-full hover:bg-blue-500 hover:text-invert">
 							<p className="absolute inset-0 m-auto h-fit w-fit">{day}</p>
 						</div>
 					);
 				})}
 
 				{lastDays.map(() => (
-					<div key={uuid()} className="relative h-full w-full cursor-pointer">
+					<div key={crypto.randomUUID()} className="relative h-full w-full cursor-pointer">
 						<p className="absolute inset-0 m-auto h-fit w-fit"> </p>
 					</div>
 				))}

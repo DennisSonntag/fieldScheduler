@@ -4,35 +4,59 @@
 
 @layer base {
 	@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital@1&display=swap');
+
 	:root {
 		font-family: 'Ubuntu', sans-serif;
+	}
 
-		/* dark mode */
-		--color-base: hsl(215, 20%, 65%);
-		--color-mid: hsl(215, 19%, 30%);
-		--color-dim: hsl(217, 33%, 15%);
-		--color-stark: #000000;
-		--color-invert: #ffffff;
-		--color-top-light: #6c87ac;
-		--color-top-dark: #2e3d52;
-		--color-top: #2e3d52;
-		--color-neo: linear-gradient(145deg, hsl(215, 28%, 40%), hsl(215, 28%, 30%));
-		--color-svg-1: invert();
+	.dark {
+		--color-main: rgb(255, 255, 255);
+		--color-bg: rgb(255, 255, 255);
+		--color-accent: hsl(0, 45%, 45%);
+		--color-light: hsl(0, 45%, 60%);
+		--color-border: black;
+
+		--color-stark: #ffffff;
+		--color-invert: #000000;
+
 		--color-svg: ;
-		--bg: linear-gradient(0deg, rgba(16, 22, 35, 1) 0%, var(--color-top-dark) 100%);
+		--color-svg-1: invert();
+
 	}
 
 	.light {
-		--bg: linear-gradient(0deg, rgba(62, 87, 128, 1) 0%, var(--color-top-light) 100%);
+		--color-main: rgb(107, 107, 107);
+		--color-bg: rgb(36, 35, 46);
+		--color-accent: hsl(0, 45%, 45%);
+		--color-light: hsl(0, 45%, 60%);
+		--color-border: white;
+
+		--color-stark: #000000;
+		--color-invert: #ffffff;
+
 		--color-svg: invert();
 		--color-svg-1: ;
-		--color-neo: linear-gradient(145deg, hsl(215, 28%, 20%), hsl(215, 28%, 15%));
-		--color-top: #6c87ac;
-		--color-base: #1e293b;
-		--color-mid: #475569;
-		--color-dim: #94a3b8;
-		--color-stark: #ffffff;
-		--color-invert: #000000;
+	}
+
+	.valid-email {
+		background-color: red;
+	}
+
+	.valid-email:valid {
+		background-color: green;
+	}
+
+	* {
+		user-drag: none;
+		user-select: none;
+	}
+
+	.my-shadow {
+		box-shadow: 5px 5px 0px 1px rgba(0, 0, 0, 0.74);
+	}
+
+	.my-border {
+		border: solid black 2px;
 	}
 
 	* {
@@ -41,13 +65,9 @@
 		padding: 0;
 	}
 
-	*:focus, *:active {
+	*:focus,
+	*:active {
 		outline: none;
-	}
-
-	.gradient {
-		background: var(--bg);
-		background-size: 100vw 100vh;
 	}
 
 	.inv {
@@ -71,9 +91,6 @@
 		grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
 	}
 
-	.my-shadow {
-		box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.75);
-	}
 	.hover-fade {
 		opacity: 40%;
 		transition: all 150ms ease-in-out;
@@ -87,7 +104,11 @@
 		top: calc(100% + 0.25em);
 	}
 
-	.smooth {
+	.smooth-bg {
+		transition: background-color 200ms ease-in-out;
+	}
+
+	.smooth-scale {
 		transition: all 75ms ease-in-out;
 	}
 

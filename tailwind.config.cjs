@@ -1,20 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	mode: 'jit',
-	// content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
 	content: ['./pages/*.{js,ts,jsx,tsx}', './components/*.{js,ts,jsx,tsx}'],
 	theme: {
 		extend: {
-			backgroundImage: {
-				neo: 'var(--color-neo)',
-			},
 			colors: {
-				base: 'var(--color-base)',
-				mid: 'var(--color-mid)',
-				dim: 'var(--color-dim)',
+				main: 'var(--color-main)',
+				accent: 'var(--color-accent)',
+				light: 'var(--color-light)',
+				back: 'var(--color-bg)',
 				stark: 'var(--color-stark)',
 				invert: 'var(--color-invert)',
-				top: 'var(--color-top)',
 				bug: '#ff0000',
 			},
 		},

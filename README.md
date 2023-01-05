@@ -9,52 +9,52 @@
 
 # ToDo list
 
-## Setup Database !!
-
 ### Important
--   Add Dates function
--   School and division specific events
--   Add Team function
--   Add School function
--   Add info function
+
+-   Connect filters to events shown and side panel
+-   Setup Add schools/teams dialog
+-   OnClick/OnHover Events function
+-   Seperate events for rugby/Soccer
+-   List view in compare view
+-   Finish day view
+-   Black out days function
+
 -   Games already happened
 -   CALCULATE SCHEDULE
--   Export schedule to csv
--   Calendar event hover/click modal
+-   Export schedule to csv(client or server side)
 
 ### Less Important
--   Fix dark mode load flicker animation
+
+-   Fix dark mode 
 -   Persist login token
 -   Team colors
 -   Forgot password modal popup
 -   Forgot password template email
--   Fix firebase click login twice to log in
--   FireBase DataBase (store schedule)
 -   Admin pane
 
-
 ### Morante's stuf
--6 games a season 3 home 3 away 
+
+-6 games a season 3 home 3 away
 -Friday left open for rescheduling
 
--Some teams don't have home field 
+-Some teams don't have home field
 
--Home field yes no if no alternative field 
--1 game per week 
+-Home field yes no if no alternative field
+-1 game per week
 
--Girls and boys 
+-Girls and boys
 
--Season start end per shcool board 
+-Season start end per shcool board
 
--Breaks cbe catholic or both 
+-Breaks cbe catholic or both
 
--Girls or boys 
+-Girls or boys
 
--Edit teams bulk edit 
--Name 
--Division
--Black out days 
--Home field yes no 
--Alternative field yes no 
+-Edit teams bulk edit
+-   Name
+-   Division
+-   Black out days
+-   Home field yes no
+-   Alternative field yes no
 
--Min 4 teams per div 
+-Min 4 teams per div

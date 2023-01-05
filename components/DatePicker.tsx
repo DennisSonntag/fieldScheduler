@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { teamInfoContext } from 'pages/main';
+import { useContext, useState } from 'react';
 import Calendar from './Calendar';
 
 const DatePicker = () => {
 	const date = new Date();
-	const dd = date.getDate();
-	const mm = date.getMonth() + 1;
-	const yyyy = date.getFullYear();
+	const day = date.getDate();
+	const month = date.getMonth() + 1;
+	const year = date.getFullYear();
+
+	const data = useContext(teamInfoContext);
 
 	const [open, setOpen] = useState(false);
 	const handleClick = (e: any) => {
@@ -15,9 +18,9 @@ const DatePicker = () => {
 
 	return (
 		<>
-			<div className="smooth flex h-fit w-fit select-none items-center justify-around gap-2 rounded-lg bg-mid p-2  text-invert shadow-xl hover:scale-110">
+			<div className="smooth my-shadow my-border flex h-fit w-fit select-none items-center justify-around gap-2 rounded-lg  bg-accent p-2 text-invert hover:scale-110">
 				<p className="h-fit w-fit">
-					{dd}/{mm}/{yyyy}
+					{day}/{month}/{year}
 				</p>
 				<button type="button" onClick={handleClick} className="smooth h-8 w-8 cursor-pointer select-none outline-none hover:scale-110 active:scale-90" aria-label="Save">
 					<svg xmlns="http://www.w4.org/2000/svg" viewBox="0 0 448 512" className="fill-invert">
@@ -25,7 +28,7 @@ const DatePicker = () => {
 					</svg>
 				</button>
 			</div>
-			<div className="relative w-[80%]">{open ? <Calendar events={[]} month={9} /> : null}</div>
+			<div className="relative w-[80%]">{open ? <Calendar data={data} month={8} hover /> : null}</div>
 		</>
 	);
 };

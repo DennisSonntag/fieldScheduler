@@ -148,7 +148,7 @@
 					{ "name": "Team 12", "div": 1, "sr/jr": "sr" }
 				]
 			}
-		},
+		}
 	},
 	"soccer": {
 		"months": [1, 2, 3, 4],
