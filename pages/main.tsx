@@ -9,21 +9,28 @@ import Link from 'next/link';
 
 const pb = new PocketBase('http://127.0.0.1:8090');
 
+// eslint-disable-next-line @typescript-eslint/comma-dangle
 export type TeamType = [
 	{
 		srGames: number[];
 		jrGames: number[];
 		team_color: string;
 		school: string;
-	},
+	}
 ];
+
+export type SchoolType = {
+	school_name: string;
+	id: string;
+};
+
 type PropType = {
-	schoolNames: string[];
+	schoolNames: SchoolType[];
 	teamInfo: TeamType;
 };
 
 export const activePageContext = createContext<number>(0);
-export const schoolNameContext = createContext<string[]>([]);
+export const schoolNameContext = createContext<SchoolType[]>([]);
 export const teamInfoContext = createContext<any[]>([]);
 
 export const filterContext = createContext<(string[] | Dispatch<SetStateAction<string[]>>)[][]>([[]]);
@@ -89,7 +96,8 @@ export async function getServerSideProps() {
 	const records = await pb.collection('schools').getFullList(200 /* batch size */, {
 		sort: '-created',
 	});
-	const namesRaw = records.map(elm => elm.school_name);
+
+	const namesRaw = records.map(elm => ({ school_name: elm.school_name, id: elm.id }));
 
 	const records2 = await pb.collection('teams').getFullList(200 /* batch size */, {
 		sort: '-created',

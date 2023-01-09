@@ -3,7 +3,7 @@
 		"browser": true,
 		"es2021": true
 	},
-	"extends": ["next/core-web-vitals", "react-app", "airbnb", "airbnb-typescript", "plugin:import/typescript", "plugin:react/jsx-runtime"],
+	"extends": ["next/core-web-vitals", "react-app", "airbnb", "airbnb-typescript", "plugin:import/typescript", "plugin:react/jsx-runtime", "plugin:prettier/recommended"],
 	"overrides": [],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
@@ -12,7 +12,7 @@
 		"sourceType": "module",
 		"project": "./tsconfig.json"
 	},
-	"plugins": ["react", "@typescript-eslint"],
+	"plugins": ["react", "@typescript-eslint", "prettier"],
 	"rules": {
 		"jsx-a11y/label-has-associated-control": "off",
 		"react/function-component-definition": "off",
@@ -30,6 +30,7 @@
 		"import/no-cycle": "off",
 		"arrow-parens": "off",
 		"default-case": "off",
+		"comma-dangle": "off",
 		"no-plusplus": "off",
 		"no-tabs": "off",
 		"max-len": "off",

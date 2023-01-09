@@ -1,12 +1,19 @@
 import { Dispatch, SetStateAction, useContext, useRef } from 'react';
 
-import { filterContext, schoolNameContext } from 'pages/main';
-import calculate from '@ts/calculate';
+import { filterContext, schoolNameContext, teamInfoContext } from 'pages/main';
+// import calculate from '@ts/calculate';
+import { makeMatchPairings, newMatchMake, separatePerTeam, separatePerTeam1 } from '@ts/matchUp';
+import PocketBase from 'pocketbase';
 import Filter from './Filter';
 import FilterChip from './FilterChip';
 
+const pb = new PocketBase('http://127.0.0.1:8090');
+
 const TeamInfo = () => {
-	const schools = useContext(schoolNameContext);
+	const schoolData = useContext(schoolNameContext);
+	const schools = schoolData.map(elm => elm.school_name);
+	const school_ids = schoolData.map(elm => elm.id);
+	const teamsTest = useContext(teamInfoContext);
 	const filterData = useContext(filterContext);
 
 	const [divSelect, setDivSelect] = filterData[0];
@@ -47,6 +54,19 @@ const TeamInfo = () => {
 		dialog.close();
 	};
 
+	const handleClickTest = () => {
+		const range = (x: number, y: number): number[] => (x > y ? [] : [x, ...range(x + 1, y)]);
+		const numOfTeams = 8;
+
+		const matchings = makeMatchPairings(range(1, numOfTeams));
+		const sepMatchings = separatePerTeam(matchings, numOfTeams);
+
+		const test = newMatchMake(range(1, numOfTeams));
+
+		console.log(sepMatchings);
+		console.log(test);
+	};
+
 	return (
 		<div className="relative flex h-full w-full flex-col gap-2">
 			<dialog ref={dialogRef} className="my-blur my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] rounded-xl bg-main backdrop:bg-black backdrop:opacity-80">
@@ -57,8 +77,8 @@ const TeamInfo = () => {
 					</svg>
 				</button>
 			</dialog>
-			<button title="Edit Team Data" onClick={calculate} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
-				Upload
+			<button title="Edit Team Data" onClick={handleClickTest} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
+				Test
 			</button>
 			<button title="Edit Team Data" onClick={handleClick} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
 				Edit Team data
