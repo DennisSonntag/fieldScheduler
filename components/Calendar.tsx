@@ -6,8 +6,8 @@ type PropType = {
 	hover?: boolean;
 	scale?: string;
 	data: TeamType;
-	school_name: string;
-	seniority: boolean;
+	school_name?: string;
+	seniority?: boolean;
 };
 export const getDaysInMonth = (yearArg: number, monthArg: number) => new Date(yearArg, monthArg, 0).getDate();
 
@@ -23,10 +23,10 @@ const Calendar = ({ school_name, seniority, month, data, hover = false, scale = 
 		});
 		return result;
 	};
-	const index = getIndexFromName(school_name);
+	const index = getIndexFromName(school_name as string);
 	const srJr = seniority ? 'srGames' : 'jrGames';
 	const events = useState(data[index][srJr])[0];
-	const color = useState(String(data[index].team_color).trim() as string)[0];
+	// const color = useState(String(data[index].team_color).trim() as string)[0];
 	const year = 2022;
 	const date = new Date(year, month);
 

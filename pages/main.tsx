@@ -25,7 +25,7 @@ export type SchoolType = {
 };
 
 type PropType = {
-	schoolNames: SchoolType[];
+	schoolData: SchoolType[];
 	teamInfo: TeamType;
 };
 
@@ -35,7 +35,7 @@ export const teamInfoContext = createContext<any[]>([]);
 
 export const filterContext = createContext<(string[] | Dispatch<SetStateAction<string[]>>)[][]>([[]]);
 
-const Main = ({ schoolNames, teamInfo }: PropType) => {
+const Main = ({ schoolData: schoolNames, teamInfo }: PropType) => {
 	const [activePage, setActivePage] = useState(0);
 	const compareActive = activePage === 2;
 	const soccerActive = activePage === 1;
@@ -97,7 +97,7 @@ export async function getServerSideProps() {
 		sort: '-created',
 	});
 
-	const namesRaw = records.map(elm => ({ school_name: elm.school_name, id: elm.id }));
+	const schoolData = records.map(elm => ({ school_name: elm.school_name, id: elm.id }));
 
 	const records2 = await pb.collection('teams').getFullList(200 /* batch size */, {
 		sort: '-created',
@@ -111,6 +111,6 @@ export async function getServerSideProps() {
 	}));
 
 	return {
-		props: { schoolNames: namesRaw, teamInfo: teamsRaw },
+		props: { schoolData, teamInfo: teamsRaw },
 	};
 }

@@ -30,7 +30,7 @@ const Middle = ({ title }: PropType) => {
 		setActive(prev => (prev += 1));
 	};
 
-	const setPrev = e => {
+	const setPrev = (e: { preventDefault: () => void }) => {
 		e.preventDefault();
 		if (active === 0) {
 			setActive(3);
@@ -42,16 +42,20 @@ const Middle = ({ title }: PropType) => {
 	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 	const [week, setWeek] = useState(1);
 	const [month, setMonth] = useState(2);
+	const monthTable = [2, 2, 2, 2, 23, 3, 3, 3, 3, 4, 4, 4, 4, 45];
 
 	const incWeek = () => {
-		if (week + 1 <= 26) {
+		if (week + 1 <= 18) {
 			setWeek(prev => (prev += 1));
+			console.log(Number(String(monthTable[week + 1])[0]));
 		}
 	};
 
 	const decWeek = () => {
 		if (week - 1 >= 1) {
 			setWeek(prev => (prev -= 1));
+			// setMonth(Math.floor(week / 4) + 2);
+			console.log(Number(String(monthTable[week + 1])[0]));
 		}
 	};
 
@@ -76,12 +80,11 @@ const Middle = ({ title }: PropType) => {
 	const getWeek = (weekNum: number): number[] => {
 		const result: number[] = [];
 		for (let i = 0; i < 7; i++) {
-			result[i] = days[26 + (i + (7 * weekNum))];
+			result[i] = days[26 + (i + 7 * weekNum)];
 		}
 		return result;
 	};
 	const weekData = getWeek(week - 1);
-	console.log(getWeek(4));
 
 	return (
 		<section className="hover-fade relative flex h-full w-full flex-col overflow-hidden">
@@ -113,9 +116,8 @@ const Middle = ({ title }: PropType) => {
 				) : null}
 				{active === 2 ? (
 					<div className="absolute inset-0 m-auto flex h-32 w-full">
+						<h1 className="absolute inset-x-0 top-[-8rem] mx-auto h-fit w-fit text-[2rem] font-bold text-invert">{monthNames[month]}</h1>
 						<h1 className="absolute inset-x-0 top-[-5rem] mx-auto h-fit w-fit text-[2rem] font-bold text-invert">Week {week}</h1>
-						{/* <h1 className="absolute inset-x-0 top-[-8rem] mx-auto h-fit w-fit text-[2rem] font-bold text-invert">{monthNames[month]}</h1> */}
-						<h1 className="absolute inset-x-0 top-[-8rem] mx-auto h-fit w-fit text-[2rem] font-bold text-invert">{month}</h1>
 						<WeekCaret func={incWeek} top />
 						<div className="m-2 flex h-full w-full gap-4">
 							{weekData.map((day, index) => (

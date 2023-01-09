@@ -1,9 +1,6 @@
 import { Dispatch, SetStateAction, useContext, useRef } from 'react';
-
-import { filterContext, schoolNameContext, teamInfoContext } from 'pages/main';
-// import calculate from '@ts/calculate';
-import { makeMatchPairings, newMatchMake, separatePerTeam, separatePerTeam1 } from '@ts/matchUp';
-import PocketBase from 'pocketbase';
+import { filterContext, schoolNameContext } from 'pages/main';
+import PocketBase, { Record } from 'pocketbase';
 import Filter from './Filter';
 import FilterChip from './FilterChip';
 
@@ -11,9 +8,16 @@ const pb = new PocketBase('http://127.0.0.1:8090');
 
 const TeamInfo = () => {
 	const schoolData = useContext(schoolNameContext);
-	const schools = schoolData.map(elm => elm.school_name);
-	const school_ids = schoolData.map(elm => elm.id);
-	const teamsTest = useContext(teamInfoContext);
+	const schoolNames = schoolData.map(elm => elm.school_name.trim());
+	// const schoolIds = schoolData.map(elm => elm.id);
+	const schoolInfo = schoolData.map(elm => {
+		return {
+			name: elm.school_name.trim(),
+			id: elm.id,
+		};
+	});
+
+	// const teamsTest = useContext(teamInfoContext);
 	const filterData = useContext(filterContext);
 
 	const [divSelect, setDivSelect] = filterData[0];
@@ -54,17 +58,55 @@ const TeamInfo = () => {
 		dialog.close();
 	};
 
-	const handleClickTest = () => {
-		const range = (x: number, y: number): number[] => (x > y ? [] : [x, ...range(x + 1, y)]);
-		const numOfTeams = 8;
+	const getTeamsFromName = async (name: string): Promise<Record[]> =>
+		pb.collection('teamsTest').getFullList(200 /* batch size */, {
+			sort: '-created',
+			filter: `school_name="${schoolInfo.filter(elm => elm.name === name)[0].id}"`,
+		});
 
-		const matchings = makeMatchPairings(range(1, numOfTeams));
-		const sepMatchings = separatePerTeam(matchings, numOfTeams);
+	const getTeamsFromType = async (teamType: number): Promise<Record[]> =>
+		pb.collection('teamsTest').getFullList(200 /* batch size */, {
+			sort: '-created',
+			filter: `teamType=${teamType}`,
+		});
 
-		const test = newMatchMake(range(1, numOfTeams));
+	const getTeamsFromDiv = async (div: number): Promise<Record[][]> => {
+		const test3 = await pb.collection('schools').getFullList(200 /* batch size */, {
+			sort: '-created',
+			filter: `div=${div}`,
+		});
+		const idList = test3.map(elm => elm.id);
 
-		console.log(sepMatchings);
-		console.log(test);
+		const divTeams = [];
+		// eslint-disable-next-line no-restricted-syntax
+		for (const ID of idList) {
+			// eslint-disable-next-line no-await-in-loop
+			const records = await pb.collection('teamsTest').getFullList(200 /* batch size */, {
+				sort: '-created',
+				filter: `school_name="${ID}"`,
+			});
+			divTeams.push(records);
+		}
+		return divTeams;
+	};
+
+	const handleClickTest = async () => {
+		// const range = (x: number, y: number): number[] => (x > y ? [] : [x, ...range(x + 1, y)]);
+		// const numOfTeams = 8;
+
+		// const matchings = makeMatchPairings(range(1, numOfTeams));
+		// const sepMatchings = separatePerTeam(matchings, numOfTeams);
+
+		// console.log(sepMatchings);
+
+		// get teams from school name
+		const test = await getTeamsFromName('forest-lawn-high-school');
+
+		// Get teams from team type
+		const test2 = await getTeamsFromType(1);
+
+		// Get team from div
+		const test3 = await getTeamsFromDiv(1);
 	};
 
 	return (
@@ -84,8 +126,8 @@ const TeamInfo = () => {
 				Edit Team data
 			</button>
 			<div className="my-col-3 grid h-fit w-full auto-rows-auto items-center justify-around gap-2">
-				<Filter options={divisions} title="Div n" selected={divSelect as string[]} setSelected={setDivSelect as Dispatch<SetStateAction<string[]>>} />
-				<Filter scroll options={schools} title="School" selected={schoolSelect as string[]} setSelected={setSchoolSelect as Dispatch<SetStateAction<string[]>>} />
+				<Filter options={divisions} title="Div" selected={divSelect as string[]} setSelected={setDivSelect as Dispatch<SetStateAction<string[]>>} />
+				<Filter scroll options={schoolNames} title="School" selected={schoolSelect as string[]} setSelected={setSchoolSelect as Dispatch<SetStateAction<string[]>>} />
 				<Filter options={seniorities} title="Sr/Jr" selected={senioritySelect as string[]} setSelected={setSenioritySelect as Dispatch<SetStateAction<string[]>>} />
 				<Filter options={gender} title="Gender" selected={genderSelect as string[]} setSelected={setGenderSelect as Dispatch<SetStateAction<string[]>>} />
 			</div>

@@ -5,7 +5,7 @@ import dayIcon from '@svg/day.svg';
 import Image from 'next/image';
 
 type PropType = {
-	setPrevState: (e:any) => void;
+	setPrevState: (e: any) => void;
 	setNextState: () => void;
 	iconNum: number;
 };
