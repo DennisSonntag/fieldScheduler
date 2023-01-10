@@ -51,3 +51,28 @@ export const matchFromDb = (ids: string[]): string[][] => {
 
 	return result;
 };
+
+export const scheduleGames = (tourney: string[][]) => {
+	// const randInt = (min: number, max: number): number => Math.round(min - 0.5 + Math.random() * (max - min + 1));
+
+	const dates = Array(124).fill(' ');
+	// set weekends
+	for (let i = 0; i < dates.length; i++) {
+		if (i % 6 === 0) {
+			dates[i] = '1';
+			dates[i + 1] = '1';
+		}
+	}
+
+	// eslint-disable-next-line no-restricted-syntax
+	for (let i = 0; i < tourney.length; i++) {
+		for (let j = 0; j < tourney[i].length; j++) {
+			let index = j * 20;
+			// eslint-disable-next-line no-continue
+			if (dates[j * 20] === '1') index++;
+			dates[index] = tourney[i][j];
+		}
+	}
+
+	return dates;
+};

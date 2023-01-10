@@ -5,7 +5,7 @@ import { filterContext, schoolNameContext, teamTestInfoContext } from 'pages/mai
 import PocketBase, { Record } from 'pocketbase';
 import Filter from './Filter';
 import FilterChip from './FilterChip';
-import { matchFromDb } from '@ts/matchUp';
+import { matchFromDb, scheduleGames } from '@ts/matchUp';
 
 const pb = new PocketBase('http://127.0.0.1:8090');
 
@@ -139,8 +139,9 @@ const TeamInfo = () => {
 		// ['qzde3dea1szq4dm', 'ypod1emnv0q69pr', '7rt2y03cpyb69fz', 'bqdr8u5ar1mtb8p', 'teni7gn16j1qf3f', '8fkbp7yntij3v6g']
 		// ['8fkbp7yntij3v6g', 'yyvwjsmpvsyc8jt', 'g11byipov6g1r0h', 'qjcislwle0s1bwq', 'msfolhhss5mtlmk', 'ac74tdm4z1yf45i']
 		// ['4z1gwwqxz7klm3y', 'qzde3dea1szq4dm', 'ypod1emnv0q69pr', '7rt2y03cpyb69fz', 'bqdr8u5ar1mtb8p', 'teni7gn16j1qf3f']
+		const test2 = scheduleGames(match);
 
-		console.log(nameFromSchoolId('ac74tdm4z1yf45i'));
+		console.log(test2);
 	};
 
 	return (
@@ -153,9 +154,9 @@ const TeamInfo = () => {
 					</svg>
 				</button>
 			</dialog>
-			{/* <button title="Edit Team Data" onClick={handleClickTest} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
+			<button title="Edit Team Data" onClick={handleClickTest} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
 				Test
-			</button> */}
+			</button>
 			<button title="Edit Team Data" onClick={handleClick} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
 				Edit Team data
 			</button>
