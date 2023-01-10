@@ -1,0 +1,1833 @@
+import { ReactNode, useEffect, useState } from 'react';
+
+import sun from '@svg/sun.svg';
+import moon from '@svg/moon.svg';
+import Head from 'next/head';
+import Image from 'next/image';
+import Background from './Background';
+
+type PropType = {
+	children: ReactNode;
+	title: string;
+};
+
+const App = ({ children, title }: PropType) => {
+	// let theme;
+	// if (localStorage.getItem('theme')) {
+	// 	theme = JSON.parse(localStorage.getItem('theme') as string);
+	// } else {
+	// 	theme = true;
+	// }
+
+	// const keepTheme = () => {
+	// 	if (localStorage.getItem('theme')) {
+	// 		if (JSON.parse(localStorage.getItem('theme') as string) === true) {
+	// 			localStorage.setItem('theme', JSON.stringify(true));
+	// 		} else if (JSON.parse(localStorage.getItem('theme') as string) === false) {
+	// 			localStorage.setItem('theme', JSON.stringify(false));
+	// 		}
+	// 	} else {
+	// 		localStorage.setItem('theme', JSON.stringify(true));
+	// 	}
+	// };
+
+	// const toggleTheme = () => {
+	// 	if (JSON.parse(localStorage.getItem('theme') as string) === true) {
+	// 		localStorage.setItem('theme', JSON.stringify(false));
+	// 	} else if (JSON.parse(localStorage.getItem('theme') as string) === false) {
+	// 		localStorage.setItem('theme', JSON.stringify(true));
+	// 	}
+	// };
+
+	// useEffect(() => {
+	// 	keepTheme();
+	// }, []);
+
+	const [theme, setTheme] = useState(false);
+	useEffect(() => {
+		setTheme(JSON.parse(localStorage.getItem('dark') as string));
+	}, []);
+	const toggleTheme = () => {
+		setTheme(prev => !prev);
+	};
+
+	useEffect(() => {
+		localStorage.setItem('dark', JSON.stringify(theme));
+	}, [theme]);
+
+	return (
+		<>
+			<Head>
+				<meta name="viewport" content="width=device-width" />
+				<link rel="icon" type="image/svg+xml" href="public\icon.svg" />
+				<title> {title} </title>
+			</Head>
+			<Background theme={theme}>
+				<button title={`Change to ${theme ? 'dark' : 'light'} mode`} type="button" onClick={toggleTheme} className="smooth-scale my-border my-shadow absolute top-2 left-2 h-fit w-fit rounded-md bg-accent hover:scale-110 active:scale-90">
+					<Image src={theme ? sun : moon} alt="Dark/Light mode toggle button" className={`m-2 h-6 w-6 ${theme ? 'invert' : null}`} />
+				</button>
+				{children}
+			</Background>
+		</>
+	);
+};
+export default App;
+import type { ReactNode } from 'react';
+
+type PropType = {
+	children: ReactNode;
+	theme: boolean;
+};
+const Bg = ({ children, theme }: PropType) => <div className={`smooth-bg absolute m-0 box-border h-screen w-screen bg-back  ${theme ? 'light' : 'dark'} `}> {children}</div>;
+export default Bg;
+import { TeamType } from 'pages/main';
+import { useState } from 'react';
+
+type PropType = {
+	month: number;
+	hover?: boolean;
+	scale?: string;
+	data: TeamType;
+	school_name?: string;
+	seniority?: boolean;
+};
+export const getDaysInMonth = (yearArg: number, monthArg: number) => new Date(yearArg, monthArg, 0).getDate();
+
+export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const Calendar = ({ school_name, seniority, month, data, hover = false, scale = '' }: PropType) => {
+	const getIndexFromName = (name: string): number => {
+		let result: number = 0;
+
+		data.forEach((val, index) => {
+			if (val.school === name) {
+				result = index;
+			}
+		});
+		return result;
+	};
+	const index = getIndexFromName(school_name as string);
+	const srJr = seniority ? 'srGames' : 'jrGames';
+	const events = useState(data[index][srJr])[0];
+	// const color = useState(String(data[index].team_color).trim() as string)[0];
+	const year = 2022;
+	const date = new Date(year, month);
+
+	const firstDayIndex = date.getDay() - 1;
+
+	let lastDay = getDaysInMonth(year, month);
+	const daysInMonth = getDaysInMonth(year, month + 1);
+
+	const firstDays = [];
+	lastDay -= firstDayIndex;
+	for (let i = 0; i <= firstDayIndex; i++) {
+		firstDays.push(lastDay);
+		lastDay++;
+	}
+
+	const days = [];
+	for (let i = 1; i <= daysInMonth; i++) {
+		days.push(i);
+	}
+
+	const daysLeft = 42 - (firstDays.length + days.length);
+
+	const lastDays = [];
+	for (let i = 1; i <= daysLeft; i++) {
+		lastDays.push(i);
+	}
+
+	const currentWeekEnds: number[] = [];
+
+	const dayThing = (yearArg: number, i: number, arr: number[]) => {
+		const nextDate = new Date(yearArg, month, i);
+		if (nextDate.getDay() === 0 || nextDate.getDay() === 6) {
+			arr.push(i);
+		}
+	};
+
+	for (let i = 1; i <= daysInMonth; i++) {
+		dayThing(year, i, currentWeekEnds);
+	}
+
+	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
+	const getBigDay = (currentMonth: number): number => {
+		if (currentMonth === 2) {
+			return 0;
+		}
+		return getDaysInMonth(year, currentMonth) + getBigDay(currentMonth - 1);
+	};
+
+	return (
+		<div className={` my-border my-shadow aspect-square h-fit w-full rounded-lg bg-main p-2 ${hover ? 'hover:scale-110' : null} ${scale || null}  m-auto duration-150 ease-in-out`}>
+			<h1 className="inset-0 mx-auto my-2 h-fit w-fit text-center text-2xl font-bold text-invert">{monthNames[month]}</h1>
+			<div className="grid-rows-7 text-md grid h-full grid-cols-7 text-center">
+				{weekDays.map(day => (
+					<div key={crypto.randomUUID()} className="h-full w-full text-center font-bold text-invert">
+						{day}
+					</div>
+				))}
+
+				{firstDays.map(() => (
+					<div key={crypto.randomUUID()} className=" relative h-full w-full cursor-pointer">
+						<p className="absolute inset-0 m-auto h-fit w-fit"> </p>
+					</div>
+				))}
+
+				{days.map(day => {
+					if (currentWeekEnds.includes(day)) {
+						// weekends
+						return (
+							<div key={crypto.randomUUID()} className="text-dim relative h-full w-full cursor-pointer">
+								<p className="absolute inset-0 m-auto h-fit w-fit">{day}</p>
+							</div>
+						);
+					}
+					if (events[getBigDay(month) + day] === 1) {
+						// days with events
+						return (
+							<div key={crypto.randomUUID()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer rounded-full bg-bug">
+								<p className="absolute inset-0 m-auto h-fit w-fit font-bold text-invert ">{day}</p>
+							</div>
+						);
+					}
+					// normal weekdays
+					return (
+						<div key={crypto.randomUUID()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer text-invert hover:rounded-full hover:bg-blue-500 hover:text-invert">
+							<p className="absolute inset-0 m-auto h-fit w-fit">{day}</p>
+						</div>
+					);
+				})}
+
+				{lastDays.map(() => (
+					<div key={crypto.randomUUID()} className="relative h-full w-full cursor-pointer">
+						<p className="absolute inset-0 m-auto h-fit w-fit"> </p>
+					</div>
+				))}
+			</div>
+		</div>
+	);
+};
+
+export default Calendar;
+import Middle from './Middle';
+
+const Compare = () => (
+	<main className="absolute flex h-full w-full flex-row overflow-hidden">
+		<Middle title="Rugby Schedule" />
+		<Middle title="Soccer Schedule" />
+	</main>
+);
+
+export default Compare;
+import DatePicker from './DatePicker';
+import Title from './Title';
+
+const DateInfo = () => (
+	<div className="">
+		<div className="h-16 w-full p-3 ">
+			<Title text="Add/Edit Events" />
+		</div>
+
+		<div className="relative mt-4 flex w-full flex-grow  flex-col items-center gap-2">
+			<h1 className="text-md my-shadow my-border rounded-md bg-main py-2 px-8 text-center font-bold text-invert">Season Start/End</h1>
+			<DatePicker />
+			<DatePicker />
+
+			<div className="h-10" />
+
+			<h1 className="text-md my-shadow my-border rounded-md bg-main py-2 px-8 text-center font-bold text-invert">Breaks/Holidays</h1>
+			<DatePicker />
+		</div>
+	</div>
+);
+export default DateInfo;
+import { teamInfoContext } from 'pages/main';
+import { useContext, useState } from 'react';
+import Calendar from './Calendar';
+
+const DatePicker = () => {
+	const date = new Date();
+	const day = date.getDate();
+	const month = date.getMonth() + 1;
+	const year = date.getFullYear();
+
+	const data = useContext(teamInfoContext);
+
+	const [open, setOpen] = useState(false);
+	const handleClick = (e: any) => {
+		e.stopPropagation();
+		setOpen(prev => !prev);
+	};
+
+	return (
+		<>
+			<div className="smooth my-shadow my-border flex h-fit w-fit select-none items-center justify-around gap-2 rounded-lg  bg-accent p-2 text-invert hover:scale-110">
+				<p className="h-fit w-fit">
+					{day}/{month}/{year}
+				</p>
+				<button type="button" onClick={handleClick} className="smooth h-8 w-8 cursor-pointer select-none outline-none hover:scale-110 active:scale-90" aria-label="Save">
+					<svg xmlns="http://www.w4.org/2000/svg" viewBox="0 0 448 512" className="fill-invert">
+						<path d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm128 0v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H208c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H336zM64 400v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H208zm112 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H336c-8.8 0-16 7.2-16 16z" />
+					</svg>
+				</button>
+			</div>
+			<div className="relative w-[80%]">{open ? <Calendar data={data} month={8} hover /> : null}</div>
+		</>
+	);
+};
+export default DatePicker;
+import { CSVLink } from 'react-csv';
+
+const Download = () => {
+	const template = [['Home Team', 'Visitor Team', 'Start Date (MM/DD/YYYY)', 'Start Time (HH:MM AA)', 'Duration (minutes)', 'Details', 'Show Details', 'League Name', 'Practice Type (Shared or Full)', 'Schedule Name', 'Venue']];
+	return (
+		<CSVLink filename="test.csv" data={template}>
+			<button type="button" className="my-border my-shadow group m-2 flex h-14 w-[3rem] items-center overflow-hidden rounded-lg bg-main  p-2 duration-75 ease-in-out hover:w-[10rem] hover:scale-110 active:scale-90">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="absolute h-8 w-8 fill-invert">
+					<path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+				</svg>
+				<p className="h-fit w-fit translate-x-[-110%] whitespace-nowrap font-bold text-invert  duration-300 group-hover:translate-x-[30%]">Download Csv</p>
+			</button>
+		</CSVLink>
+	);
+};
+export default Download;
+import { useEffect, useState } from 'react';
+
+type PropType = {
+	selected: string[];
+};
+const FilterChip = ({ selected }: PropType) => {
+	const [empty, setEmpty] = useState(true);
+
+	useEffect(() => {
+		if (selected.length !== 0) {
+			setEmpty(false);
+		} else {
+			setEmpty(true);
+		}
+	}, [selected]);
+
+	return (
+		<div className={` flex w-full ${empty ? 'hidden h-0' : 'h-10'} smooth my-1 shrink-0 gap-4 px-4`}>
+			{selected.map((val: string) => (
+				<div key={val} id={val} className="smooth my-shadow my-border h-fit w-fit rounded-full bg-main px-4 py-2 text-invert">
+					{val}
+				</div>
+			))}
+		</div>
+	);
+};
+export default FilterChip;
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+
+import caret from '@svg/caret.svg';
+import Image from 'next/image';
+
+type PropType = {
+	title: string;
+	options: string[];
+	selected: string[];
+	scroll?: boolean;
+	setSelected: Dispatch<SetStateAction<string[]>>;
+};
+
+const Filter = ({ title, setSelected, options, selected, scroll = false }: PropType) => {
+	const [isOpen, setIsOpen] = useState(false);
+	const [highlightedIndex, setHighlightedIndex] = useState(0);
+	const containerRef = useRef<HTMLDivElement>(null);
+
+	const clearOptions = () => {
+		setSelected([]);
+	};
+
+	const arrayRemove = (array: string[], value: string) => array.filter(geeks => geeks !== value);
+
+	const selectOption = (option: string) => {
+		if (!selected.includes(option)) {
+			setSelected([...selected, option]);
+		} else {
+			setSelected(arrayRemove(selected, option));
+		}
+	};
+
+	const isOptionSelected = (option: string) => selected.includes(option);
+
+	useEffect(() => {
+		if (isOpen) setHighlightedIndex(0);
+	}, [isOpen]);
+
+	useEffect(() => {
+		const handler = (e: KeyboardEvent) => {
+			if (e.target !== containerRef.current) return;
+			switch (e.code) {
+				case 'Enter':
+				case 'Space':
+					setIsOpen(prev => !prev);
+					if (isOpen) selectOption(options[highlightedIndex]);
+					break;
+				case 'ArrowUp':
+				case 'ArrowDown': {
+					if (!isOpen) {
+						setIsOpen(true);
+						break;
+					}
+
+					const newValue = highlightedIndex + (e.code === 'ArrowDown' ? 1 : -1);
+					if (newValue >= 0 && newValue < options.length) {
+						setHighlightedIndex(newValue);
+					}
+					break;
+				}
+				case 'Escape':
+					setIsOpen(false);
+					break;
+			}
+		};
+		const effectRef = containerRef;
+		effectRef.current?.addEventListener('keydown', handler);
+		return () => {
+			effectRef.current?.removeEventListener('keydown', handler);
+		};
+	}, [isOpen, highlightedIndex, options, selectOption]);
+
+	return (
+		<button title="Click to select filters" type="button" onBlur={() => setIsOpen(false)} onClick={() => setIsOpen(prev => !prev)} tabIndex={0} className="my-shadow my-border my-shadow relative z-[999] m-auto flex w-fit shrink-0  select-none items-center gap-[0.5em] rounded-md bg-main p-[0.5em] text-invert outline-none duration-75 ease-in-out hover:z-[99999] hover:scale-110 focus:border-gray-800">
+			<p className="whitespace-nowrap">{title}</p>
+			<svg
+				onClick={e => {
+					e.stopPropagation();
+					clearOptions();
+				}}
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 512 512"
+				className="smooth h-4 w-4 shrink-0 cursor-pointer fill-invert p-0  hover:fill-red-700"
+			>
+				<path d="M175 175C184.4 165.7 199.6 165.7 208.1 175L255.1 222.1L303 175C312.4 165.7 327.6 165.7 336.1 175C346.3 184.4 346.3 199.6 336.1 208.1L289.9 255.1L336.1 303C346.3 312.4 346.3 327.6 336.1 336.1C327.6 346.3 312.4 346.3 303 336.1L255.1 289.9L208.1 336.1C199.6 346.3 184.4 346.3 175 336.1C165.7 327.6 165.7 312.4 175 303L222.1 255.1L175 208.1C165.7 199.6 165.7 184.4 175 175V175zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+			</svg>
+
+			<Image src={caret} alt="Filter dropdown caret" className={`h-4 w-4 ${isOpen ? 'rotate-180' : ''} inv duration-75 ease-in-out`} />
+
+			<div className={`${scroll ? 'h-[10rem] overflow-y-scroll' : null} my-border my-shadow absolute m-0 flex list-none flex-col bg-main  p-0 hover:z-50 ${isOpen ? `h-[${40 * options.length}px]` : 'hidden h-0'}  top-calc left-0 z-50 w-full overflow-y-hidden  rounded-[0.25em] duration-300  ease-in-out`}>
+				{options.map((option: string, index: number) => (
+					<option
+						onClick={e => {
+							e.stopPropagation();
+							selectOption(option);
+							setIsOpen(false);
+						}}
+						onMouseEnter={() => setHighlightedIndex(index)}
+						key={option}
+						className={`my-border m-2 h-fit cursor-pointer truncate rounded-md  text-center ${isOptionSelected(option) ? 'bg-accent' : 'bg-main'} ${index === highlightedIndex ? 'bg-light text-invert' : null} `}
+					>
+						{option}
+					</option>
+				))}
+			</div>
+		</button>
+	);
+};
+export default Filter;
+import { useState } from 'react';
+
+import DateInfo from './DateInfo';
+import TeamInfo from './TeamInfo';
+
+type PropType = {
+	leftOpen: boolean;
+};
+const Left = ({ leftOpen }: PropType) => {
+	const [active, setActive] = useState(true);
+
+	return (
+		<section className={` ${leftOpen ? 'w-1/2' : 'w-0 translate-x-[-100%]'} hover-fade relative flex h-full flex-col  overflow-hidden  rounded-bl-xl `}>
+			<div className="relative h-16 w-full gap-2 ">
+				<div className="absolute inset-0 m-auto flex h-fit w-fit gap-2 rounded-md shadow-lg">
+					<button type="button" onClick={() => setActive(true)} className={`${active ? 'text-invert' : 'text-stark'} my-border my-shadow my-shadow smooth-scale m-auto h-fit w-fit rounded-md bg-main py-2 px-4 font-semibold hover:px-6 active:px-3 ${active ? 'bg-main' : 'bg-accent'}`}>
+						Team Info
+					</button>
+					<button type="button" onClick={() => setActive(false)} className={` ${!active ? 'text-invert' : 'text-stark'} my-border my-shadow my-shadow smooth-scale m-auto h-fit w-fit rounded-md bg-main py-2 px-4 font-semibold hover:px-6 active:px-3 ${!active ? 'bg-main' : 'bg-accent'}`}>
+						Date Info
+					</button>
+				</div>
+			</div>
+			{active ? <TeamInfo /> : <DateInfo />}
+		</section>
+	);
+};
+export default Left;
+import { useContext, useState } from 'react';
+
+import caret from '@svg/caret.svg';
+
+import Image from 'next/image';
+
+import { teamInfoContext, TeamType } from 'pages/main';
+import Calendar, { getDaysInMonth, monthNames } from './Calendar';
+import Title from './Title';
+import Download from './Download';
+import ViewBtn from './ViewBtn';
+import WeekCaret from './WeekCaret';
+
+type PropType = {
+	title: string;
+};
+
+const Middle = ({ title }: PropType) => {
+	const data = useContext(teamInfoContext) as TeamType;
+
+	const months = [2, 3, 4, 5];
+
+	const [active, setActive] = useState(0);
+
+	const setNext = () => {
+		if (active === 3) {
+			setActive(0);
+			return;
+		}
+		setActive(prev => (prev += 1));
+	};
+
+	const setPrev = (e: { preventDefault: () => void }) => {
+		e.preventDefault();
+		if (active === 0) {
+			setActive(3);
+			return;
+		}
+		setActive(prev => (prev -= 1));
+	};
+
+	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+	const [week, setWeek] = useState(1);
+	const [month, setMonth] = useState(2);
+	const monthTable = [2, 2, 2, 2, 23, 3, 3, 3, 3, 4, 4, 4, 4, 45];
+
+	const incWeek = () => {
+		if (week + 1 <= 18) {
+			setWeek(prev => (prev += 1));
+			console.log(Number(String(monthTable[week + 1])[0]));
+		}
+	};
+
+	const decWeek = () => {
+		if (week - 1 >= 1) {
+			setWeek(prev => (prev -= 1));
+			// setMonth(Math.floor(week / 4) + 2);
+			console.log(Number(String(monthTable[week + 1])[0]));
+		}
+	};
+
+	const incMonth = () => {
+		if (month + 1 <= 5) {
+			setMonth(prev => (prev += 1));
+		}
+	};
+
+	const decMonth = () => {
+		if (month - 1 >= 2) {
+			setMonth(prev => (prev -= 1));
+		}
+	};
+
+	const days: number[] = [];
+	for (let i = 0; i < 6; i++) {
+		for (let j = 1; j <= getDaysInMonth(2022, 2 + i); j++) {
+			days.push(j);
+		}
+	}
+	const getWeek = (weekNum: number): number[] => {
+		const result: number[] = [];
+		for (let i = 0; i < 7; i++) {
+			result[i] = days[26 + (i + 7 * weekNum)];
+		}
+		return result;
+	};
+	const weekData = getWeek(week - 1);
+
+	return (
+		<section className="hover-fade relative flex h-full w-full flex-col overflow-hidden">
+			<section className="h-16 w-full p-3">
+				<Title text={title} />
+			</section>
+			<div className="relative h-12 w-full shrink-0 p-2">
+				<ViewBtn setNextState={setNext} setPrevState={setPrev} iconNum={active} />
+			</div>
+
+			<section className="my-col-2 relative grid  h-auto w-full grow auto-rows-auto gap-4 p-8 duration-300 ease-in-out ">
+				{active === 0 ? (
+					<>
+						{months.map(monthParam => (
+							<Calendar school_name="sir-winston-churchill-high-school" seniority key={monthParam} data={data} month={monthParam} hover />
+						))}
+					</>
+				) : null}
+				{active === 1 ? (
+					<div className="absolute inset-0 m-auto flex h-fit w-[30rem] ">
+						<button type="button" onClick={decMonth}>
+							<Image src={caret} alt="" className="smooth inv h-16 w-16 rotate-90 hover:scale-110 active:scale-95" />
+						</button>
+						<Calendar data={data} month={month} scale="scale-[100%]" />
+						<button type="button" onClick={incMonth}>
+							<Image src={caret} alt="" className="smooth inv h-16 w-16 rotate-[270deg] hover:scale-110 active:scale-95" />
+						</button>
+					</div>
+				) : null}
+				{active === 2 ? (
+					<div className="absolute inset-0 m-auto flex h-32 w-full">
+						<h1 className="absolute inset-x-0 top-[-8rem] mx-auto h-fit w-fit text-[2rem] font-bold text-invert">{monthNames[month]}</h1>
+						<h1 className="absolute inset-x-0 top-[-5rem] mx-auto h-fit w-fit text-[2rem] font-bold text-invert">Week {week}</h1>
+						<WeekCaret func={incWeek} top />
+						<div className="m-2 flex h-full w-full gap-4">
+							{weekData.map((day, index) => (
+								<div className="my-border bg-base my-shadow relative h-full w-full rounded-md">
+									<p className="absolute inset-x-0 mx-auto h-fit w-fit px-2 font-bold">{weekDays[index]}</p>
+									<div>{day}</div>
+								</div>
+							))}
+						</div>
+						<WeekCaret func={decWeek} />
+					</div>
+				) : null}
+				{active === 3 ? <div className="absolute inset-0 m-auto h-fit w-fit text-2xl font-bold text-bug">Day tbd ...</div> : null}
+			</section>
+
+			<div className="grid h-[20%] w-full place-content-center ">
+				<Download />
+			</div>
+		</section>
+	);
+};
+export default Middle;
+import arrow from '@svg/arrow.svg';
+import Image from 'next/image';
+import { Dispatch, SetStateAction } from 'react';
+
+type PropType = {
+	leftOpen: boolean;
+	setLeftOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+const SideBtn = ({ leftOpen, setLeftOpen }: PropType) => (
+	<section className=" hover-fade group grid w-12 shrink-0 place-content-center pt-4 ">
+		<button title="Close right pane" type="button" onClick={() => setLeftOpen((prev: boolean) => !prev)} className={`my-border h-8 w-8 rounded-md bg-main p-2 duration-100 ease-in-out hover:scale-110 active:scale-95  ${leftOpen ? 'rotate-0 ' : 'translate-x-[-200%] rotate-180 group-hover:translate-x-0'}`}>
+			<Image className="inv-1w-4 absolute inset-0 m-auto  h-4" src={arrow} alt="side pane open button" />
+		</button>
+	</section>
+);
+export default SideBtn;
+type PropType = {
+	sport: string;
+	setActivePage: () => void;
+	activePage: boolean;
+};
+
+const SportSelect = ({ activePage, setActivePage, sport }: PropType) => (
+	<button title={`${sport} page`} type="button" onClick={setActivePage} className={` ${activePage ? 'bg-main' : 'bg-accent'}  relative h-[2.5rem] w-[16rem] rounded-md ${sport === 'Rugby' ? 'origin-top-right rounded-bl-[1.5rem]' : 'origin-top-left rounded-br-[1.5rem]'} my-shadow my-border select-none duration-150 ease-in-out hover:scale-105 active:scale-95`}>
+		<h1 className={`${activePage ? 'text-invert' : 'text-stark'} absolute inset-0 m-auto inline-block h-fit w-fit text-lg font-bold`}>{sport}</h1>
+	</button>
+);
+export default SportSelect;
+import { useState } from 'react';
+
+import SideBtn from './SideBtn';
+import Middle from './Middle';
+import Left from './LeftPane';
+
+type PropType = {
+	activePage: number;
+};
+
+const Sport = ({ activePage }: PropType) => {
+	const [leftOpen, setLeftOpen] = useState(true);
+	return (
+		<main className="flex h-full w-full flex-row overflow-hidden">
+			<Left leftOpen={leftOpen} />
+
+			<SideBtn setLeftOpen={setLeftOpen} leftOpen={leftOpen} />
+
+			<Middle title={`${activePage === 0 ? 'Rugby' : 'Soccer'} Schedule`} />
+		</main>
+	);
+};
+export default Sport;
+/* eslint-disable jsx-a11y/anchor-has-content */
+/* eslint-disable jsx-a11y/control-has-associated-label */
+import { Dispatch, SetStateAction, useContext, useRef } from 'react';
+import { filterContext, schoolNameContext, teamTestInfoContext } from 'pages/main';
+import PocketBase, { Record } from 'pocketbase';
+import Filter from './Filter';
+import FilterChip from './FilterChip';
+import { matchFromDb } from '@ts/matchUp';
+
+const pb = new PocketBase('http://127.0.0.1:8090');
+
+const TeamInfo = () => {
+	const schoolData = useContext(schoolNameContext);
+	const teamTestInfo = useContext(teamTestInfoContext);
+	const schoolNames = schoolData.map(elm => elm.school_name.trim());
+	const schoolIds = schoolData.map(elm => elm.id);
+	const schoolInfo = schoolData.map(elm => {
+		return {
+			name: elm.school_name.trim(),
+			id: elm.id,
+		};
+	});
+
+	// const teamsTest = useContext(teamInfoContext);
+	const filterData = useContext(filterContext);
+
+	const [divSelect, setDivSelect] = filterData[0];
+	const [schoolSelect, setSchoolSelect] = filterData[1];
+	const [senioritySelect, setSenioritySelect] = filterData[2];
+	const [genderSelect, setGenderSelect] = filterData[3];
+
+	const teams = [
+		{ name: 'Team 1', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 2', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 3', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 4', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 5', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 6', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 7', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 8', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 9', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 10', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 11', div: 1, 'sr/jr': 'sr' },
+		{ name: 'Team 12', div: 1, 'sr/jr': 'sr' },
+	];
+
+	const divisions = ['Div 1', 'Div 2', 'Div 3'];
+	const seniorities = ['Sr', 'Jr'];
+	const gender = ['Girls', 'Boys'];
+
+	const dialogRef = useRef(null);
+
+	const handleClick = () => {
+		const dialog = dialogRef.current as unknown as any;
+
+		dialog.showModal();
+	};
+
+	const closeModal = () => {
+		const dialog = dialogRef.current as unknown as any;
+
+		dialog.close();
+	};
+
+	const getTeamsFromName = async (name: string): Promise<Record[]> =>
+		pb.collection('teamsTest').getFullList(200 /* batch size */, {
+			sort: '-created',
+			filter: `school_name="${schoolInfo.filter(elm => elm.name === name)[0].id}"`,
+		});
+
+	const getTeamsFromType = async (teamType: number): Promise<Record[]> =>
+		pb.collection('teamsTest').getFullList(200 /* batch size */, {
+			sort: '-created',
+			filter: `teamType=${teamType}`,
+		});
+
+	const getTeamsFromDiv = async (div: number): Promise<Record[][]> => {
+		const test3 = await pb.collection('schools').getFullList(200 /* batch size */, {
+			sort: '-created',
+			filter: `div=${div}`,
+		});
+		const idList = test3.map(elm => elm.id);
+
+		const divTeams = [];
+		// eslint-disable-next-line no-restricted-syntax
+		for (const ID of idList) {
+			// eslint-disable-next-line no-await-in-loop
+			const records = await pb.collection('teamsTest').getFullList(200 /* batch size */, {
+				sort: '-created',
+				filter: `school_name="${ID}"`,
+			});
+			divTeams.push(records);
+		}
+		return divTeams;
+	};
+
+	const getTeamsFromDivAndType = async (div: number, type: number): Promise<Record[][]> => {
+		const test3 = await pb.collection('schools').getFullList(200 /* batch size */, {
+			sort: '-created',
+			filter: `div=${div}`,
+		});
+		const idList = test3.map(elm => elm.id);
+
+		const divTeams = [];
+		// eslint-disable-next-line no-restricted-syntax
+		for (const ID of idList) {
+			// eslint-disable-next-line no-await-in-loop
+			const records = await pb.collection('teamsTest').getFullList(200 /* batch size */, {
+				sort: '-created',
+				filter: `school_name="${ID}" && teamType=${type}`,
+			});
+			divTeams.push(records);
+		}
+		return divTeams;
+	};
+	const nameFromSchoolId = (id: string): string => schoolInfo.filter(elm3 => elm3.id === id)[0].name;
+	const teamIdToSchoolId = (teamId: string): string => {};
+
+	const handleClickTest = async () => {
+		// const range = (x: number, y: number): number[] => (x > y ? [] : [x, ...range(x + 1, y)]);
+
+		const test = await getTeamsFromDivAndType(2, 1);
+		const match = matchFromDb(test.flat().map(elm => elm.id));
+
+		// const namedMatches = match.map(elm => elm.map(elm2 => nameFromId(elm2)));
+
+		// 2ieh5qsw506xilw
+		// forest-lawn-high-school
+
+		// ['ac74tdm4z1yf45i', '8fkbp7yntij3v6g', 'qzde3dea1szq4dm', 'yyvwjsmpvsyc8jt', 'ypod1emnv0q69pr', 'g11byipov6g1r0h']
+		// ['teni7gn16j1qf3f', '4z1gwwqxz7klm3y', 'yyvwjsmpvsyc8jt', 'g11byipov6g1r0h', 'qjcislwle0s1bwq', 'msfolhhss5mtlmk']
+		// ['msfolhhss5mtlmk', 'ac74tdm4z1yf45i', '4z1gwwqxz7klm3y', 'ypod1emnv0q69pr', '7rt2y03cpyb69fz', 'bqdr8u5ar1mtb8p']
+		// ['bqdr8u5ar1mtb8p', 'teni7gn16j1qf3f', '8fkbp7yntij3v6g', '4z1gwwqxz7klm3y', 'g11byipov6g1r0h', 'qjcislwle0s1bwq']
+		// ['qjcislwle0s1bwq', 'msfolhhss5mtlmk', 'ac74tdm4z1yf45i', 'qzde3dea1szq4dm', '4z1gwwqxz7klm3y', '7rt2y03cpyb69fz']
+		// ['7rt2y03cpyb69fz', 'bqdr8u5ar1mtb8p', 'teni7gn16j1qf3f', '8fkbp7yntij3v6g', 'yyvwjsmpvsyc8jt', '4z1gwwqxz7klm3y']
+		// ['g11byipov6g1r0h', 'qjcislwle0s1bwq', 'msfolhhss5mtlmk', 'ac74tdm4z1yf45i', 'qzde3dea1szq4dm', 'ypod1emnv0q69pr']
+		// ['ypod1emnv0q69pr', '7rt2y03cpyb69fz', 'bqdr8u5ar1mtb8p', 'teni7gn16j1qf3f', '8fkbp7yntij3v6g', 'yyvwjsmpvsyc8jt']
+		// ['yyvwjsmpvsyc8jt', 'g11byipov6g1r0h', 'qjcislwle0s1bwq', 'msfolhhss5mtlmk', 'ac74tdm4z1yf45i', 'qzde3dea1szq4dm']
+		// ['qzde3dea1szq4dm', 'ypod1emnv0q69pr', '7rt2y03cpyb69fz', 'bqdr8u5ar1mtb8p', 'teni7gn16j1qf3f', '8fkbp7yntij3v6g']
+		// ['8fkbp7yntij3v6g', 'yyvwjsmpvsyc8jt', 'g11byipov6g1r0h', 'qjcislwle0s1bwq', 'msfolhhss5mtlmk', 'ac74tdm4z1yf45i']
+		// ['4z1gwwqxz7klm3y', 'qzde3dea1szq4dm', 'ypod1emnv0q69pr', '7rt2y03cpyb69fz', 'bqdr8u5ar1mtb8p', 'teni7gn16j1qf3f']
+
+		console.log(nameFromSchoolId('ac74tdm4z1yf45i'));
+	};
+
+	return (
+		<div className="relative flex h-full w-full flex-col gap-2">
+			<dialog ref={dialogRef} className="my-blur my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] rounded-xl bg-main backdrop:bg-black backdrop:opacity-80">
+				<h1 className=" my-shadow my-border absolute inset-x-0 top-4 mx-auto h-fit w-fit rounded-md bg-accent p-3 text-xl font-bold text-stark">Add/Edit Team data</h1>
+				<button type="button" onClick={closeModal} className="smooth-scale my-shadow my-border absolute top-4 right-4 h-fit w-fit rounded-md bg-accent hover:scale-110 active:scale-90">
+					<svg className="h-10 w-10 fill-stark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+						<path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z" />
+					</svg>
+				</button>
+			</dialog>
+			{/* <button title="Edit Team Data" onClick={handleClickTest} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
+				Test
+			</button> */}
+			<button title="Edit Team Data" onClick={handleClick} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
+				Edit Team data
+			</button>
+			<div className="my-col-3 grid h-fit w-full auto-rows-auto items-center justify-around gap-2">
+				<Filter options={divisions} title="Div" selected={divSelect as string[]} setSelected={setDivSelect as Dispatch<SetStateAction<string[]>>} />
+				<Filter scroll options={schoolNames} title="School" selected={schoolSelect as string[]} setSelected={setSchoolSelect as Dispatch<SetStateAction<string[]>>} />
+				<Filter options={seniorities} title="Sr/Jr" selected={senioritySelect as string[]} setSelected={setSenioritySelect as Dispatch<SetStateAction<string[]>>} />
+				<Filter options={gender} title="Gender" selected={genderSelect as string[]} setSelected={setGenderSelect as Dispatch<SetStateAction<string[]>>} />
+			</div>
+
+			<FilterChip selected={divSelect as string[]} />
+			<FilterChip selected={schoolSelect as string[]} />
+			<FilterChip selected={senioritySelect as string[]} />
+			<FilterChip selected={genderSelect as string[]} />
+
+			<div className=" z-0 grid h-auto grow grid-cols-3 gap-4 p-2">
+				{teams.map(team => (
+					<div key={team.name} className="smooth-scale no-move my-border my-shadow relative grid h-full w-full cursor-pointer place-content-center rounded-md bg-main text-center text-invert hover:scale-105 active:scale-90 ">
+						<p className="h-fit w-fit text-center">{team.name}</p>
+						<p className="h-fit w-fit text-center">Div {team.div}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	);
+};
+
+export default TeamInfo;
+type PropType = {
+	text: string;
+};
+
+const Title = ({ text }: PropType) => (
+	<div className="my-shadow my-border relative mt-2  h-10 w-[95%] rounded-md bg-main text-invert ">
+		<h1 className="absolute inset-0 m-auto h-fit w-fit text-xl font-bold">{text}</h1>
+	</div>
+);
+export default Title;
+import monthIcon from '@svg/calendar.svg';
+import seasonIcon from '@svg/year.svg';
+import weekIcon from '@svg/week.svg';
+import dayIcon from '@svg/day.svg';
+import Image from 'next/image';
+
+type PropType = {
+	setPrevState: (e: any) => void;
+	setNextState: () => void;
+	iconNum: number;
+};
+
+const ViewBtn = ({ setNextState, setPrevState, iconNum }: PropType) => {
+	const icons = [seasonIcon, monthIcon, weekIcon, dayIcon];
+	const texts = ['Season', 'Month', 'Week', 'Day'];
+	return (
+		<button onContextMenu={setPrevState} onClick={setNextState} type="button" className="my-border my-shadow no-move smooth-scale absolute top-0 left-0 m-2 h-fit w-fit rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
+			<div className="flex items-center gap-2">
+				<Image className="inv-1 no-move h-8 w-8" src={icons[iconNum]} alt="" />
+				<p className=" h-fit w-fit font-bold text-stark">{texts[iconNum]}</p>
+			</div>
+		</button>
+	);
+};
+export default ViewBtn;
+import caret from '@svg/caret.svg';
+import Image from 'next/image';
+
+type PropType = {
+	func: () => void;
+	top?: boolean;
+};
+
+const WeekCaret = ({ top = false, func }: PropType) => (
+	<button onClick={func} type="button">
+		<Image src={caret} alt="" className={`absolute inset-x-0 mx-auto h-8 w-8 ${top ? 'top-[-2rem] rotate-180 ' : 'bottom-[-3rem]'} smooth inv hover:scale-110 active:scale-90 `} />
+	</button>
+);
+export default WeekCaret;
+import PocketBase from 'pocketbase';
+
+const pb = new PocketBase('http://127.0.0.1:8090');
+
+const schoolNames = [
+	'william-aberhart-high-school ',
+	'st-francis-high-school ',
+	'bowness-high-school ',
+	'john-g-diefenbaker-high-school ',
+	'crescent-heights-high-school ',
+	'dr-gordon-townsend-school ',
+	'christine-meikle-school ',
+	'louise-dean-school ',
+	'james-fowler-high-school ',
+	'robert-thirsk-high-school ',
+	'sir-winston-churchill-high-school ',
+	'nelson-mandela-high-school ',
+	'lester-b-pearson-high-school ',
+	'notre-dame-high-school ',
+	'bishop-mcnally-high-school ',
+	'ernest-manning-high-school ',
+	'central-memorial-high-school ',
+	'william-roper-hull-school ',
+	'henry-wise-wood-high-school ',
+	'our-lady-of-lourdes-high-school ',
+	'bishop-carroll-high-school ',
+	'national-sport-school ',
+	'st-marys-high-school ',
+	'dr-ep-scarlett-high-school ',
+	'western-canada-high-school ',
+	'bishop-grandin-high-school ',
+	'st-anthony-school ',
+	'st-anne-academic-centre ',
+	'jack-james-high-school ',
+	'centennial-high-school ',
+	'lord-beaverbrook-high-school ',
+	'father-lacombe-high-school ',
+	'all-saints-high-school ',
+	'bishop-obyrne-high-school ',
+	'forest-lawn-high-school ',
+];
+
+const getRandomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+const randomArray = (size: number) =>
+	// eslint-disable-next-line implicit-arrow-linebreak
+	Array(size)
+		.fill(0)
+		.map(() => {
+			if (Math.random() > 0.5) {
+				return 1;
+			}
+			return 0;
+		});
+
+const colors = ['ff0000', 'ffff00', '00ff00', '00ffff', '0000ff', 'ff00ff'];
+
+const calculate = async () => {
+	// eslint-disable-next-line no-restricted-syntax, guard-for-in
+	for (const name of schoolNames) {
+		// example create data
+		const data = {
+			srGames: randomArray(121),
+			school_id: name,
+			jrGames: randomArray(121),
+			team_color: colors[getRandomInt(0, 5)],
+		};
+
+		// eslint-disable-next-line no-await-in-loop
+		await pb.collection('teams').create(data);
+	}
+};
+export default calculate;
+const arrayIsEqual = (a: Boolean[], b: Boolean[]) => Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((val, index) => val === b[index]);
+export default arrayIsEqual;
+export const makeMatchPairings = (teams: number[]): number[][][] => {
+	// if team size is odd add dummy team for calculation
+	if (teams.length % 2 === 1) {
+		teams.push(0);
+	}
+
+	const teamCount: number = teams.length;
+	const half: number = teamCount / 2;
+
+	const tournamentPairings = [];
+
+	const teamIndexes = teams.map((_, i) => i).slice(1);
+
+	for (let round = 0; round < 6; round++) {
+		const roundPairings = [];
+
+		const newPlayerIndexes = [0].concat(teamIndexes);
+
+		const firstHalf = newPlayerIndexes.slice(0, half);
+		const secondHalf = newPlayerIndexes.slice(half, teamCount).reverse();
+
+		for (let i = 0; i < firstHalf.length; i++) {
+			roundPairings.push([teams[firstHalf[i]], teams[secondHalf[i]]]);
+		}
+
+		// rotating the array
+		teamIndexes.push(teamIndexes.shift() as number);
+		tournamentPairings.push(roundPairings);
+	}
+
+	return tournamentPairings;
+};
+
+export const separatePerTeam = (tournament: number[][][], teamNum: number) =>
+	Array(teamNum)
+		.fill(0)
+		.map(
+			(_, i) =>
+				tournament
+					.flat()
+					.filter(elm => elm.includes(i + 1))
+					.map(elm => elm.filter(elm2 => elm2 !== i + 1))
+					.flat()
+			// .sort((a, b) => a - b)
+		);
+
+export const matchFromDb = (ids: string[]): string[][] => {
+	const range = (x: number, y: number): number[] => (x > y ? [] : [x, ...range(x + 1, y)]);
+	const raw: number[][] = separatePerTeam(makeMatchPairings(range(1, ids.length)), ids.length);
+	const result: string[][] = raw.map(elm => elm.map(elm2 => ids[elm2 - 1]));
+
+	return result;
+};
+import gif from '@img/404.gif';
+import Image from 'next/image';
+import App from '@components/App';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+
+const NotFound = () => {
+	const router = useRouter();
+
+	useEffect(() => {
+		setTimeout(() => {
+			router.push('/');
+		}, 3000);
+	}, []);
+
+	return (
+		<App title="Page Not Found">
+			<div className="absolute inset-0 m-auto grid h-fit w-fit gap-4">
+				<p className="my-border my-shadow relative rounded-md p-2 text-center text-[3rem] font-bold text-red-700">404 PAGE NOT FOUND</p>
+				<Image className="my-shadow my-border relative mx-auto w-[30rem] rounded-md" src={gif} alt="" />
+			</div>
+		</App>
+	);
+};
+export default NotFound;
+/* eslint-disable react/jsx-props-no-spreading */
+import '@assets/main.css';
+import { SessionProvider } from 'next-auth/react';
+import type { AppProps } from 'next/app';
+
+export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+	// eslint-disable-next-line react/jsx-props-no-spreading
+	return (
+		<SessionProvider session={session}>
+			<Component {...pageProps} />;
+		</SessionProvider>
+	);
+}
+import { FormEventHandler, useEffect, useRef, useState } from 'react';
+
+import App from '@components/App';
+import eyeOpen from '@svg/eyeOpen.svg';
+import eyeClosed from '@svg/eyeClosed.svg';
+import { getSession, signIn } from 'next-auth/react';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+
+const Login = () => {
+	const [error, setError] = useState(false);
+	const dialogRef = useRef(null);
+
+	const forgotPassword = () => {
+		const dialog = dialogRef.current as unknown as any;
+		dialog.showModal();
+	};
+
+	const closeModal = () => {
+		const dialog = dialogRef.current as unknown as any;
+
+		dialog.close();
+	};
+
+	const [eyeState, setEyeState] = useState(false);
+
+	const router = useRouter();
+	const [userInfo, setUserInfo] = useState({ email: '', password: '' });
+	const handleSubmit: FormEventHandler<HTMLFormElement> = async e => {
+		e.preventDefault();
+		const res = await signIn('credentials', {
+			email: userInfo.email,
+			password: userInfo.password,
+			redirect: false,
+		});
+		if (res?.ok) {
+			setError(false);
+			router.push('/main');
+		} else {
+			setError(true);
+		}
+	};
+
+	const toggleVisible = () => {
+		setEyeState(prev => !prev);
+	};
+
+	useEffect(() => {
+		if (error) {
+			setTimeout(() => {
+				setError(false);
+			}, 5000);
+		}
+	}, [error]);
+
+	return (
+		<App title="Login">
+			<form onSubmit={handleSubmit} className=" absolute inset-0 m-auto flex h-fit w-fit flex-col text-invert">
+				<h1 className="my-shadow my-border absolute inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-2 text-center text-2xl font-bold">Sign In</h1>
+				<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
+					<input value={userInfo.email} onChange={({ target }) => setUserInfo({ ...userInfo, email: target.value })} type="email" autoComplete="off" className="input h-8 w-52 overflow-hidden rounded-md border-0 text-red-500 outline-0 valid:text-green-500" />
+					<label htmlFor="email" className="label text-lg ">
+						Email
+					</label>
+				</div>
+
+				<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
+					<input value={userInfo.password} onChange={({ target }) => setUserInfo({ ...userInfo, password: target.value })} type={eyeState ? 'text' : 'password'} className="input h-8 w-52 overflow-hidden rounded-md border-0 outline-0" />
+					<label htmlFor="password" className="label text-lg ">
+						Password
+					</label>
+					<Image src={eyeState ? eyeOpen : eyeClosed} onClick={toggleVisible} alt="Show Hide Password Button" className="inv absolute right-0 m-2 h-6 w-6 hover:scale-105 active:scale-95" />
+				</div>
+
+				<div className="flex flex-col items-center gap-2">
+					<button type="button" onClick={forgotPassword} className="text-blue text-blue-500 underline hover:text-blue-400">
+						Forgot Password
+					</button>
+
+					<dialog className="my-shadow my-border absolute inset-0 m-auto aspect-square h-1/2 rounded-lg bg-main backdrop:bg-black backdrop:opacity-80" ref={dialogRef}>
+						<p className="my-shadow my-border absolute inset-x-0 top-4 mx-auto h-fit w-fit rounded-md bg-accent p-2 text-xl font-bold text-stark">Forgot Password</p>
+						<input type="text" name="email" className="my-border my-shadow valid-email absolute inset-0 m-auto h-10 w-3/4 rounded-md bg-white text-center" />
+						<button type="button" onClick={closeModal} className="smooth-scale my-shadow my-border absolute top-4 right-4 h-fit w-fit rounded-md bg-accent hover:scale-110 active:scale-90">
+							<svg className="h-10 w-10 fill-stark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+								<path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z" />
+							</svg>
+						</button>
+						<button type="button" className="my-border my-shadow smooth-scale no-move absolute inset-x-0 bottom-4 mx-auto h-fit w-fit rounded-md bg-accent p-2  text-stark hover:scale-105 active:scale-95">
+							Send Reset Email
+						</button>
+					</dialog>
+
+					<p className={`h-fit w-fit text-center font-bold text-bug duration-300 ${error ? 'opacity-100' : 'opacity-0'}`}>Invalid Info!</p>
+					<input type="submit" value="Login" className={`${error ? 'bg-bug' : 'bg-accent'}  my-shadow my-border w-fit rounded-md p-2 duration-75 hover:scale-110 active:scale-90`} />
+				</div>
+			</form>
+		</App>
+	);
+};
+export default Login;
+
+// eslint-disable-next-line consistent-return
+export async function getServerSideProps(context: any) {
+	const session = await getSession(context);
+	if (session) {
+		return {
+			redirect: {
+				destination: '/main',
+				permanent: false,
+			},
+		};
+	}
+
+	return {
+		props: {
+			session,
+		},
+	};
+}
+import { createContext, Dispatch, SetStateAction, useState } from 'react';
+
+import SportSelect from '@components/SportSelect';
+import Compare from '@components/Compare';
+import Sport from '@components/Sport';
+import PocketBase from 'pocketbase';
+import App from '@components/App';
+import Link from 'next/link';
+import { getSession, signOut } from 'next-auth/react';
+
+const pb = new PocketBase('http://127.0.0.1:8090');
+
+// eslint-disable-next-line @typescript-eslint/comma-dangle
+export type TeamType = [
+	{
+		srGames: number[];
+		jrGames: number[];
+		team_color: string;
+		school: string;
+	}
+];
+
+export type SchoolType = {
+	school_name: string;
+	id: string;
+};
+
+type TeamTestInfo = [
+	{
+		school_id: string;
+		type: number;
+		id: string;
+	}
+];
+
+type PropType = {
+	schoolData: SchoolType[];
+	teamInfo: TeamType;
+	teamTestInfo: TeamTestInfo;
+};
+
+export const activePageContext = createContext<number>(0);
+export const schoolNameContext = createContext<SchoolType[]>([]);
+export const teamInfoContext = createContext<any[]>([]);
+export const teamTestInfoContext = createContext<any[]>([]);
+
+export const filterContext = createContext<(string[] | Dispatch<SetStateAction<string[]>>)[][]>([[]]);
+
+const Main = ({ schoolData: schoolNames, teamInfo, teamTestInfo }: PropType) => {
+	const [activePage, setActivePage] = useState(0);
+	const compareActive = activePage === 2;
+	const soccerActive = activePage === 1;
+	const rugbyActive = activePage === 0;
+
+	const [senioritySelect, setSenioritySelect] = useState<string[]>([]);
+	const [schoolSelect, setSchoolSelect] = useState<string[]>([]);
+	const [divSelect, setDivSelect] = useState<string[]>([]);
+	const [sexSelect, setSexSelect] = useState<string[]>([]);
+
+	// eslint-disable-next-line react/jsx-no-constructed-context-values
+	const filterData = [
+		[senioritySelect, setSenioritySelect],
+		[schoolSelect, setSchoolSelect],
+		[divSelect, setDivSelect],
+		[sexSelect, setSexSelect],
+	];
+
+	const logout = () => {
+		signOut();
+		pb.authStore.clear();
+	};
+
+	return (
+		<schoolNameContext.Provider value={schoolNames}>
+			<teamInfoContext.Provider value={teamInfo}>
+				<teamTestInfoContext.Provider value={teamTestInfo}>
+					<activePageContext.Provider value={activePage}>
+						<filterContext.Provider value={filterData}>
+							<App title="Scheduler">
+								<div className="flex h-screen w-screen flex-col ">
+									<div className="h-16 w-screen shrink-0 ">
+										<Link href="/" onClick={logout} className="my-border my-shadow smooth-scale absolute top-2 right-2 h-fit w-fit rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="h-6 w-6 fill-stark ">
+												<path d="M160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96C43 32 0 75 0 128V384c0 53 43 96 96 96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H96c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32h64zM504.5 273.4c4.8-4.5 7.5-10.8 7.5-17.4s-2.7-12.9-7.5-17.4l-144-136c-7-6.6-17.2-8.4-26-4.6s-14.5 12.5-14.5 22v72H192c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32H320v72c0 9.6 5.7 18.2 14.5 22s19 2 26-4.6l144-136z" />
+											</svg>
+										</Link>
+										<nav className="absolute inset-x-0 top-0 z-50 m-2 mx-auto box-border flex h-fit w-fit gap-2">
+											<SportSelect sport="Rugby" activePage={rugbyActive} setActivePage={() => setActivePage(0)} />
+											<button title="Compare Schedules" onClick={() => setActivePage(2)} type="button" className={`${compareActive ? 'bg-main' : 'bg-accent'} smooth my-border   my-shadow relative mx-auto h-10 w-10 select-none rounded-md duration-100 ease-in-out hover:scale-110 active:scale-90`}>
+												<svg className={`inset-0 m-auto h-4 w-4 ${compareActive ? 'fill-invert' : 'fill-stark'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+													<path d="M422.6 278.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L434.7 176H64c-17.7 0-32-14.3-32-32s14.3-32 32-32H434.7L377.4 54.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l112 112c12.5 12.5 12.5 32.8 0 45.3l-112 112zm-269.3 224l-112-112c-12.5-12.5-12.5-32.8 0-45.3l112-112c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3L141.3 336H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H141.3l57.4 57.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0z" />
+												</svg>
+											</button>
+											<SportSelect sport="Soccer" activePage={soccerActive} setActivePage={() => setActivePage(1)} />
+										</nav>
+									</div>
+									<div className="h-auto w-screen grow">
+										{rugbyActive ? <Sport activePage={activePage} /> : null}
+										{soccerActive ? <Sport activePage={activePage} /> : null}
+										{compareActive ? <Compare /> : null}
+									</div>
+								</div>
+							</App>
+						</filterContext.Provider>
+					</activePageContext.Provider>
+				</teamTestInfoContext.Provider>
+			</teamInfoContext.Provider>
+		</schoolNameContext.Provider>
+	);
+};
+export default Main;
+
+export async function getServerSideProps(context: any) {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
+	}
+
+	const records = await pb.collection('schools').getFullList(200 /* batch size */, {
+		sort: '-created',
+	});
+
+	const schoolData = records.map(elm => ({ school_name: elm.school_name, id: elm.id }));
+
+	const records2 = await pb.collection('teams').getFullList(200 /* batch size */, {
+		sort: '-created',
+	});
+
+	const teamsRaw = records2.map(elm => ({
+		school: elm.school_id,
+		srGames: elm.srGames,
+		jrGames: elm.jrGames,
+		team_color: elm.team_color,
+	}));
+
+	const records3 = await pb.collection('teamsTest').getFullList(200 /* batch size */, {
+		sort: '-created',
+	});
+
+	const teamTestRaw = records3.map(elm => ({
+		school_id: elm.school_name,
+		type: elm.teamType,
+		id: elm.id,
+	}));
+
+	return {
+		props: { schoolData, teamInfo: teamsRaw, teamTestRaw },
+	};
+}
+import { createContext, Dispatch, SetStateAction, useState } from 'react';
+
+import SportSelect from '@components/SportSelect';
+import Compare from '@components/Compare';
+import Sport from '@components/Sport';
+import PocketBase from 'pocketbase';
+import App from '@components/App';
+import Link from 'next/link';
+import { getSession, signOut } from 'next-auth/react';
+
+const pb = new PocketBase('http://127.0.0.1:8090');
+
+// eslint-disable-next-line @typescript-eslint/comma-dangle
+export type TeamType = [
+	{
+		srGames: number[];
+		jrGames: number[];
+		team_color: string;
+		school: string;
+	}
+];
+
+export type SchoolType = {
+	school_name: string;
+	id: string;
+};
+
+type TeamTestInfo = [
+	{
+		school_id: string;
+		type: number;
+		id: string;
+	}
+];
+
+type PropType = {
+	schoolData: SchoolType[];
+	teamInfo: TeamType;
+	teamTestInfo: TeamTestInfo;
+};
+
+export const activePageContext = createContext<number>(0);
+export const schoolNameContext = createContext<SchoolType[]>([]);
+export const teamInfoContext = createContext<any[]>([]);
+export const teamTestInfoContext = createContext<any[]>([]);
+
+export const filterContext = createContext<(string[] | Dispatch<SetStateAction<string[]>>)[][]>([[]]);
+
+const Main = ({ schoolData: schoolNames, teamInfo, teamTestInfo }: PropType) => {
+	const [activePage, setActivePage] = useState(0);
+	const compareActive = activePage === 2;
+	const soccerActive = activePage === 1;
+	const rugbyActive = activePage === 0;
+
+	const [senioritySelect, setSenioritySelect] = useState<string[]>([]);
+	const [schoolSelect, setSchoolSelect] = useState<string[]>([]);
+	const [divSelect, setDivSelect] = useState<string[]>([]);
+	const [sexSelect, setSexSelect] = useState<string[]>([]);
+
+	// eslint-disable-next-line react/jsx-no-constructed-context-values
+	const filterData = [
+		[senioritySelect, setSenioritySelect],
+		[schoolSelect, setSchoolSelect],
+		[divSelect, setDivSelect],
+		[sexSelect, setSexSelect],
+	];
+
+	const logout = () => {
+		signOut();
+		pb.authStore.clear();
+	};
+
+	return (
+		<schoolNameContext.Provider value={schoolNames}>
+			<teamInfoContext.Provider value={teamInfo}>
+				<teamTestInfoContext.Provider value={teamTestInfo}>
+					<activePageContext.Provider value={activePage}>
+						<filterContext.Provider value={filterData}>
+							<App title="Scheduler">
+								<div className="flex h-screen w-screen flex-col ">
+									<div className="h-16 w-screen shrink-0 ">
+										<Link href="/" onClick={logout} className="my-border my-shadow smooth-scale absolute top-2 right-2 h-fit w-fit rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="h-6 w-6 fill-stark ">
+												<path d="M160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96C43 32 0 75 0 128V384c0 53 43 96 96 96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H96c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32h64zM504.5 273.4c4.8-4.5 7.5-10.8 7.5-17.4s-2.7-12.9-7.5-17.4l-144-136c-7-6.6-17.2-8.4-26-4.6s-14.5 12.5-14.5 22v72H192c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32H320v72c0 9.6 5.7 18.2 14.5 22s19 2 26-4.6l144-136z" />
+											</svg>
+										</Link>
+										<nav className="absolute inset-x-0 top-0 z-50 m-2 mx-auto box-border flex h-fit w-fit gap-2">
+											<SportSelect sport="Rugby" activePage={rugbyActive} setActivePage={() => setActivePage(0)} />
+											<button title="Compare Schedules" onClick={() => setActivePage(2)} type="button" className={`${compareActive ? 'bg-main' : 'bg-accent'} smooth my-border   my-shadow relative mx-auto h-10 w-10 select-none rounded-md duration-100 ease-in-out hover:scale-110 active:scale-90`}>
+												<svg className={`inset-0 m-auto h-4 w-4 ${compareActive ? 'fill-invert' : 'fill-stark'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+													<path d="M422.6 278.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L434.7 176H64c-17.7 0-32-14.3-32-32s14.3-32 32-32H434.7L377.4 54.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l112 112c12.5 12.5 12.5 32.8 0 45.3l-112 112zm-269.3 224l-112-112c-12.5-12.5-12.5-32.8 0-45.3l112-112c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3L141.3 336H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H141.3l57.4 57.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0z" />
+												</svg>
+											</button>
+											<SportSelect sport="Soccer" activePage={soccerActive} setActivePage={() => setActivePage(1)} />
+										</nav>
+									</div>
+									<div className="h-auto w-screen grow">
+										{rugbyActive ? <Sport activePage={activePage} /> : null}
+										{soccerActive ? <Sport activePage={activePage} /> : null}
+										{compareActive ? <Compare /> : null}
+									</div>
+								</div>
+							</App>
+						</filterContext.Provider>
+					</activePageContext.Provider>
+				</teamTestInfoContext.Provider>
+			</teamInfoContext.Provider>
+		</schoolNameContext.Provider>
+	);
+};
+export default Main;
+
+export async function getServerSideProps(context: any) {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
+	}
+
+	const records = await pb.collection('schools').getFullList(200 /* batch size */, {
+		sort: '-created',
+	});
+
+	const schoolData = records.map(elm => ({ school_name: elm.school_name, id: elm.id }));
+
+	const records2 = await pb.collection('teams').getFullList(200 /* batch size */, {
+		sort: '-created',
+	});
+
+	const teamsRaw = records2.map(elm => ({
+		school: elm.school_id,
+		srGames: elm.srGames,
+		jrGames: elm.jrGames,
+		team_color: elm.team_color,
+	}));
+
+	const records3 = await pb.collection('teamsTest').getFullList(200 /* batch size */, {
+		sort: '-created',
+	});
+
+	const teamTestRaw = records3.map(elm => ({
+		school_id: elm.school_name,
+		type: elm.teamType,
+		id: elm.id,
+	}));
+
+	return {
+		props: { schoolData, teamInfo: teamsRaw, teamTestRaw },
+	};
+}
+import { FormEventHandler, useEffect, useRef, useState } from 'react';
+
+import App from '@components/App';
+import eyeOpen from '@svg/eyeOpen.svg';
+import eyeClosed from '@svg/eyeClosed.svg';
+import { getSession, signIn } from 'next-auth/react';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+
+const Login = () => {
+	const [error, setError] = useState(false);
+	const dialogRef = useRef(null);
+
+	const forgotPassword = () => {
+		const dialog = dialogRef.current as unknown as any;
+		dialog.showModal();
+	};
+
+	const closeModal = () => {
+		const dialog = dialogRef.current as unknown as any;
+
+		dialog.close();
+	};
+
+	const [eyeState, setEyeState] = useState(false);
+
+	const router = useRouter();
+	const [userInfo, setUserInfo] = useState({ email: '', password: '' });
+	const handleSubmit: FormEventHandler<HTMLFormElement> = async e => {
+		e.preventDefault();
+		const res = await signIn('credentials', {
+			email: userInfo.email,
+			password: userInfo.password,
+			redirect: false,
+		});
+		if (res?.ok) {
+			setError(false);
+			router.push('/main');
+		} else {
+			setError(true);
+		}
+	};
+
+	const toggleVisible = () => {
+		setEyeState(prev => !prev);
+	};
+
+	useEffect(() => {
+		if (error) {
+			setTimeout(() => {
+				setError(false);
+			}, 5000);
+		}
+	}, [error]);
+
+	return (
+		<App title="Login">
+			<form onSubmit={handleSubmit} className=" absolute inset-0 m-auto flex h-fit w-fit flex-col text-invert">
+				<h1 className="my-shadow my-border absolute inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-2 text-center text-2xl font-bold">Sign In</h1>
+				<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
+					<input value={userInfo.email} onChange={({ target }) => setUserInfo({ ...userInfo, email: target.value })} type="email" autoComplete="off" className="input h-8 w-52 overflow-hidden rounded-md border-0 text-red-500 outline-0 valid:text-green-500" />
+					<label htmlFor="email" className="label text-lg ">
+						Email
+					</label>
+				</div>
+
+				<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
+					<input value={userInfo.password} onChange={({ target }) => setUserInfo({ ...userInfo, password: target.value })} type={eyeState ? 'text' : 'password'} className="input h-8 w-52 overflow-hidden rounded-md border-0 outline-0" />
+					<label htmlFor="password" className="label text-lg ">
+						Password
+					</label>
+					<Image src={eyeState ? eyeOpen : eyeClosed} onClick={toggleVisible} alt="Show Hide Password Button" className="inv absolute right-0 m-2 h-6 w-6 hover:scale-105 active:scale-95" />
+				</div>
+
+				<div className="flex flex-col items-center gap-2">
+					<button type="button" onClick={forgotPassword} className="text-blue text-blue-500 underline hover:text-blue-400">
+						Forgot Password
+					</button>
+
+					<dialog className="my-shadow my-border absolute inset-0 m-auto aspect-square h-1/2 rounded-lg bg-main backdrop:bg-black backdrop:opacity-80" ref={dialogRef}>
+						<p className="my-shadow my-border absolute inset-x-0 top-4 mx-auto h-fit w-fit rounded-md bg-accent p-2 text-xl font-bold text-stark">Forgot Password</p>
+						<input type="text" name="email" className="my-border my-shadow valid-email absolute inset-0 m-auto h-10 w-3/4 rounded-md bg-white text-center" />
+						<button type="button" onClick={closeModal} className="smooth-scale my-shadow my-border absolute top-4 right-4 h-fit w-fit rounded-md bg-accent hover:scale-110 active:scale-90">
+							<svg className="h-10 w-10 fill-stark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+								<path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z" />
+							</svg>
+						</button>
+						<button type="button" className="my-border my-shadow smooth-scale no-move absolute inset-x-0 bottom-4 mx-auto h-fit w-fit rounded-md bg-accent p-2  text-stark hover:scale-105 active:scale-95">
+							Send Reset Email
+						</button>
+					</dialog>
+
+					<p className={`h-fit w-fit text-center font-bold text-bug duration-300 ${error ? 'opacity-100' : 'opacity-0'}`}>Invalid Info!</p>
+					<input type="submit" value="Login" className={`${error ? 'bg-bug' : 'bg-accent'}  my-shadow my-border w-fit rounded-md p-2 duration-75 hover:scale-110 active:scale-90`} />
+				</div>
+			</form>
+		</App>
+	);
+};
+export default Login;
+
+// eslint-disable-next-line consistent-return
+export async function getServerSideProps(context: any) {
+	const session = await getSession(context);
+	if (session) {
+		return {
+			redirect: {
+				destination: '/main',
+				permanent: false,
+			},
+		};
+	}
+
+	return {
+		props: {
+			session,
+		},
+	};
+}
+import gif from '@img/404.gif';
+import Image from 'next/image';
+import App from '@components/App';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+
+const NotFound = () => {
+	const router = useRouter();
+
+	useEffect(() => {
+		setTimeout(() => {
+			router.push('/');
+		}, 3000);
+	}, []);
+
+	return (
+		<App title="Page Not Found">
+			<div className="absolute inset-0 m-auto grid h-fit w-fit gap-4">
+				<p className="my-border my-shadow relative rounded-md p-2 text-center text-[3rem] font-bold text-red-700">404 PAGE NOT FOUND</p>
+				<Image className="my-shadow my-border relative mx-auto w-[30rem] rounded-md" src={gif} alt="" />
+			</div>
+		</App>
+	);
+};
+export default NotFound;
+/* eslint-disable react/jsx-props-no-spreading */
+import '@assets/main.css';
+import { SessionProvider } from 'next-auth/react';
+import type { AppProps } from 'next/app';
+
+export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+	// eslint-disable-next-line react/jsx-props-no-spreading
+	return (
+		<SessionProvider session={session}>
+			<Component {...pageProps} />;
+		</SessionProvider>
+	);
+}
+import NextAuth, { NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import PocketBase from 'pocketbase';
+
+const pb = new PocketBase('http://127.0.0.1:8090');
+
+const authOptions: NextAuthOptions = {
+	providers: [
+		CredentialsProvider({
+			type: 'credentials',
+			credentials: {},
+			// @ts-ignore
+			async authorize(credentials) {
+				const { email, password } = credentials as {
+					email: string;
+					password: string;
+				};
+				await pb.collection('users').authWithPassword(email, password);
+				const id = pb.authStore.model?.id;
+				const record = await pb.collection('users').getOne(id as string, {
+					expand: 'relField1,relField2.subRelField',
+				});
+
+				return { id, name: record.name, email };
+			},
+		}),
+	],
+};
+export default NextAuth(authOptions);
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital@1&display=swap');
+
+	:root {
+		font-family: 'Ubuntu', sans-serif;
+	}
+
+	.dark {
+		--color-main: rgb(255, 255, 255);
+		--color-bg: rgb(255, 255, 255);
+		--color-accent: hsl(0, 45%, 45%);
+		--color-light: hsl(0, 45%, 60%);
+		--color-border: black;
+
+		--color-stark: #ffffff;
+		--color-invert: #000000;
+
+		--color-svg: ;
+		--color-svg-1: invert();
+
+	}
+
+	.light {
+		--color-main: rgb(107, 107, 107);
+		--color-bg: rgb(36, 35, 46);
+		--color-accent: hsl(0, 45%, 45%);
+		--color-light: hsl(0, 45%, 60%);
+		--color-border: white;
+
+		--color-stark: #000000;
+		--color-invert: #ffffff;
+
+		--color-svg: invert();
+		--color-svg-1: ;
+	}
+
+	.valid-email {
+		background-color: red;
+	}
+
+	.valid-email:valid {
+		background-color: green;
+	}
+
+	* {
+		user-drag: none;
+		user-select: none;
+	}
+
+	.my-shadow {
+		box-shadow: 5px 5px 0px 1px rgba(0, 0, 0, 0.74);
+	}
+
+	.my-border {
+		border: solid black 2px;
+	}
+
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
+	*:focus,
+	*:active {
+		outline: none;
+	}
+
+	.inv {
+		filter: var(--color-svg);
+	}
+
+	.inv-1 {
+		filter: var(--color-svg-1);
+	}
+
+	.no-move {
+		user-drag: none;
+		user-select: none;
+	}
+
+	.my-col-2 {
+		grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+	}
+
+	.my-col-3 {
+		grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+	}
+
+	.hover-fade {
+		opacity: 40%;
+		transition: all 150ms ease-in-out;
+	}
+
+	.hover-fade:hover {
+		opacity: 100%;
+	}
+
+	.top-calc {
+		top: calc(100% + 0.25em);
+	}
+
+	.smooth-bg {
+		transition: background-color 200ms ease-in-out;
+	}
+
+	.smooth-scale {
+		transition: all 75ms ease-in-out;
+	}
+
+	/* ----------- Login section --------------- */
+
+	.field::after {
+		content: '';
+		position: relative;
+		display: block;
+		height: 4px;
+		width: 100%;
+		background-color: #3a4972;
+		transform: scaleX(0);
+		transform-origin: 0%;
+		transition: transform 500ms ease;
+		top: 2px;
+	}
+	.input {
+		outline: none;
+		border: none;
+		overflow: hidden;
+		margin: 0;
+		width: 100%;
+		padding: 0.25rem 0;
+		background: none;
+		color: var(--color-invert);
+		font-size: 1.2em;
+		font-weight: bold;
+		transition: border 500ms;
+	}
+
+	.field:focus-within {
+		border-color: transparent;
+	}
+
+	.field:focus-within::after {
+		transform: scaleX(1);
+	}
+
+	.label {
+		color: var(--color-invert);
+		position: absolute;
+		transform: translateY(0.5rem);
+		transform-origin: 0%;
+		transition: transform 400ms;
+	}
+
+	.field:focus-within .label,
+	.input:not(:placeholder-shown) + .label {
+		transform: scale(0.8) translateY(-1.5rem);
+	}
+
+	.bot-dash {
+		border-bottom: 2px dashed var(--color-invert);
+	}
+}

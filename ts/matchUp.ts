@@ -7,9 +7,9 @@ export const makeMatchPairings = (teams: number[]): number[][][] => {
 	const teamCount: number = teams.length;
 	const half: number = teamCount / 2;
 
-	const tournamentPairings: number[][][] = [];
+	const tournamentPairings = [];
 
-	const teamIndexes: number[] = teams.map((_, i) => i).slice(1);
+	const teamIndexes = teams.map((_, i) => i).slice(1);
 
 	for (let round = 0; round < 6; round++) {
 		const roundPairings = [];
@@ -34,11 +34,20 @@ export const makeMatchPairings = (teams: number[]): number[][][] => {
 export const separatePerTeam = (tournament: number[][][], teamNum: number) =>
 	Array(teamNum)
 		.fill(0)
-		.map((_, i) =>
-			tournament
-				.flat()
-				.filter(elm => elm.includes(i + 1))
-				.map(elm => elm.filter(elm2 => elm2 !== i + 1))
-				.flat()
-				.sort((a, b) => a - b)
+		.map(
+			(_, i) =>
+				tournament
+					.flat()
+					.filter(elm => elm.includes(i + 1))
+					.map(elm => elm.filter(elm2 => elm2 !== i + 1))
+					.flat()
+			// .sort((a, b) => a - b)
 		);
+
+export const matchFromDb = (ids: string[]): string[][] => {
+	const range = (x: number, y: number): number[] => (x > y ? [] : [x, ...range(x + 1, y)]);
+	const raw: number[][] = separatePerTeam(makeMatchPairings(range(1, ids.length)), ids.length);
+	const result: string[][] = raw.map(elm => elm.map(elm2 => ids[elm2 - 1]));
+
+	return result;
+};

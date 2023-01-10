@@ -1,16 +1,19 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import { Dispatch, SetStateAction, useContext, useRef } from 'react';
-import { filterContext, schoolNameContext } from 'pages/main';
+import { filterContext, schoolNameContext, teamTestInfoContext } from 'pages/main';
 import PocketBase, { Record } from 'pocketbase';
 import Filter from './Filter';
 import FilterChip from './FilterChip';
+import { matchFromDb } from '@ts/matchUp';
 
 const pb = new PocketBase('http://127.0.0.1:8090');
-const client = new PocketBase('https://schedulerdatabase.fly.dev');
 
 const TeamInfo = () => {
 	const schoolData = useContext(schoolNameContext);
+	const teamTestInfo = useContext(teamTestInfoContext);
 	const schoolNames = schoolData.map(elm => elm.school_name.trim());
-	// const schoolIds = schoolData.map(elm => elm.id);
+	const schoolIds = schoolData.map(elm => elm.id);
 	const schoolInfo = schoolData.map(elm => {
 		return {
 			name: elm.school_name.trim(),
@@ -91,37 +94,53 @@ const TeamInfo = () => {
 		return divTeams;
 	};
 
+	const getTeamsFromDivAndType = async (div: number, type: number): Promise<Record[][]> => {
+		const test3 = await pb.collection('schools').getFullList(200 /* batch size */, {
+			sort: '-created',
+			filter: `div=${div}`,
+		});
+		const idList = test3.map(elm => elm.id);
+
+		const divTeams = [];
+		// eslint-disable-next-line no-restricted-syntax
+		for (const ID of idList) {
+			// eslint-disable-next-line no-await-in-loop
+			const records = await pb.collection('teamsTest').getFullList(200 /* batch size */, {
+				sort: '-created',
+				filter: `school_name="${ID}" && teamType=${type}`,
+			});
+			divTeams.push(records);
+		}
+		return divTeams;
+	};
+	const nameFromSchoolId = (id: string): string => schoolInfo.filter(elm3 => elm3.id === id)[0].name;
+	const teamIdToSchoolId = (teamId: string): string => {};
+
 	const handleClickTest = async () => {
 		// const range = (x: number, y: number): number[] => (x > y ? [] : [x, ...range(x + 1, y)]);
-		// const numOfTeams = 8;
 
-		// const matchings = makeMatchPairings(range(1, numOfTeams));
-		// const sepMatchings = separatePerTeam(matchings, numOfTeams);
+		const test = await getTeamsFromDivAndType(2, 1);
+		const match = matchFromDb(test.flat().map(elm => elm.id));
 
-		// console.log(sepMatchings);
+		// const namedMatches = match.map(elm => elm.map(elm2 => nameFromId(elm2)));
 
-		// get teams from school name
-		// const test = await getTeamsFromName('forest-lawn-high-school');
+		// 2ieh5qsw506xilw
+		// forest-lawn-high-school
 
-		// Get teams from team type
-		// const test2 = await getTeamsFromType(1);
+		// ['ac74tdm4z1yf45i', '8fkbp7yntij3v6g', 'qzde3dea1szq4dm', 'yyvwjsmpvsyc8jt', 'ypod1emnv0q69pr', 'g11byipov6g1r0h']
+		// ['teni7gn16j1qf3f', '4z1gwwqxz7klm3y', 'yyvwjsmpvsyc8jt', 'g11byipov6g1r0h', 'qjcislwle0s1bwq', 'msfolhhss5mtlmk']
+		// ['msfolhhss5mtlmk', 'ac74tdm4z1yf45i', '4z1gwwqxz7klm3y', 'ypod1emnv0q69pr', '7rt2y03cpyb69fz', 'bqdr8u5ar1mtb8p']
+		// ['bqdr8u5ar1mtb8p', 'teni7gn16j1qf3f', '8fkbp7yntij3v6g', '4z1gwwqxz7klm3y', 'g11byipov6g1r0h', 'qjcislwle0s1bwq']
+		// ['qjcislwle0s1bwq', 'msfolhhss5mtlmk', 'ac74tdm4z1yf45i', 'qzde3dea1szq4dm', '4z1gwwqxz7klm3y', '7rt2y03cpyb69fz']
+		// ['7rt2y03cpyb69fz', 'bqdr8u5ar1mtb8p', 'teni7gn16j1qf3f', '8fkbp7yntij3v6g', 'yyvwjsmpvsyc8jt', '4z1gwwqxz7klm3y']
+		// ['g11byipov6g1r0h', 'qjcislwle0s1bwq', 'msfolhhss5mtlmk', 'ac74tdm4z1yf45i', 'qzde3dea1szq4dm', 'ypod1emnv0q69pr']
+		// ['ypod1emnv0q69pr', '7rt2y03cpyb69fz', 'bqdr8u5ar1mtb8p', 'teni7gn16j1qf3f', '8fkbp7yntij3v6g', 'yyvwjsmpvsyc8jt']
+		// ['yyvwjsmpvsyc8jt', 'g11byipov6g1r0h', 'qjcislwle0s1bwq', 'msfolhhss5mtlmk', 'ac74tdm4z1yf45i', 'qzde3dea1szq4dm']
+		// ['qzde3dea1szq4dm', 'ypod1emnv0q69pr', '7rt2y03cpyb69fz', 'bqdr8u5ar1mtb8p', 'teni7gn16j1qf3f', '8fkbp7yntij3v6g']
+		// ['8fkbp7yntij3v6g', 'yyvwjsmpvsyc8jt', 'g11byipov6g1r0h', 'qjcislwle0s1bwq', 'msfolhhss5mtlmk', 'ac74tdm4z1yf45i']
+		// ['4z1gwwqxz7klm3y', 'qzde3dea1szq4dm', 'ypod1emnv0q69pr', '7rt2y03cpyb69fz', 'bqdr8u5ar1mtb8p', 'teni7gn16j1qf3f']
 
-		// Get team from div
-		// const test3 = await getTeamsFromDiv(1);
-		const records = await pb.collection('schools').getFullList(200 /* batch size */, {
-			sort: '-created',
-		});
-
-		const dataList = records.map(elm => ({
-			school_name: elm.school_name,
-			div: elm.div,
-		}));
-		console.log(records);
-		// eslint-disable-next-line no-restricted-syntax
-		for (const item of dataList) {
-			// eslint-disable-next-line no-await-in-loop
-			// console.log(item)
-		}
+		console.log(nameFromSchoolId('ac74tdm4z1yf45i'));
 	};
 
 	return (
@@ -134,9 +153,9 @@ const TeamInfo = () => {
 					</svg>
 				</button>
 			</dialog>
-			<button title="Edit Team Data" onClick={handleClickTest} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
+			{/* <button title="Edit Team Data" onClick={handleClickTest} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
 				Test
-			</button>
+			</button> */}
 			<button title="Edit Team Data" onClick={handleClick} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
 				Edit Team data
 			</button>
