@@ -5,6 +5,7 @@ import Filter from './Filter';
 import FilterChip from './FilterChip';
 
 const pb = new PocketBase('http://127.0.0.1:8090');
+const client = new PocketBase('https://schedulerdatabase.fly.dev');
 
 const TeamInfo = () => {
 	const schoolData = useContext(schoolNameContext);
@@ -100,13 +101,27 @@ const TeamInfo = () => {
 		// console.log(sepMatchings);
 
 		// get teams from school name
-		const test = await getTeamsFromName('forest-lawn-high-school');
+		// const test = await getTeamsFromName('forest-lawn-high-school');
 
 		// Get teams from team type
-		const test2 = await getTeamsFromType(1);
+		// const test2 = await getTeamsFromType(1);
 
 		// Get team from div
-		const test3 = await getTeamsFromDiv(1);
+		// const test3 = await getTeamsFromDiv(1);
+		const records = await pb.collection('schools').getFullList(200 /* batch size */, {
+			sort: '-created',
+		});
+
+		const dataList = records.map(elm => ({
+			school_name: elm.school_name,
+			div: elm.div,
+		}));
+		console.log(records);
+		// eslint-disable-next-line no-restricted-syntax
+		for (const item of dataList) {
+			// eslint-disable-next-line no-await-in-loop
+			// console.log(item)
+		}
 	};
 
 	return (
