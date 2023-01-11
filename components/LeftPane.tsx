@@ -3,9 +3,9 @@ import { useState } from 'react';
 import DateInfo from './DateInfo';
 import TeamInfo from './TeamInfo';
 
-type PropType = {
+interface PropType {
 	leftOpen: boolean;
-};
+}
 const Left = ({ leftOpen }: PropType) => {
 	const [active, setActive] = useState(true);
 

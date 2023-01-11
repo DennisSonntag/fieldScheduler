@@ -1,10 +1,10 @@
 import caret from '@svg/caret.svg';
 import Image from 'next/image';
 
-type PropType = {
+interface PropType {
 	func: () => void;
 	top?: boolean;
-};
+}
 
 const WeekCaret = ({ top = false, func }: PropType) => (
 	<button onClick={func} type="button">

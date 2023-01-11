@@ -3,14 +3,18 @@ import { useContext, useState } from 'react';
 import Image from 'next/image';
 import arrow1 from '@svg/arrow1.svg';
 
-type PropTypes = {
+interface PropTypes {
 	close: () => void;
-};
+}
 const EditData = ({ close }: PropTypes) => {
 	const schoolData = useContext(schoolNameContext) as SchoolType[];
 	// console.log(schoolData);
 	const [selected, setSelected] = useState(false);
-	type SelData = { name: any; div: any; field: any };
+	interface SelData {
+		name: any;
+		div: any;
+		field: any;
+	}
 	const [selData, setSelData] = useState<SelData>();
 
 	const handleSelect = (name: string, div: number, field: boolean) => {
@@ -38,9 +42,24 @@ const EditData = ({ close }: PropTypes) => {
 					<button type="button" onClick={() => setSelected(false)}>
 						<Image src={arrow1} alt="Dark/Light mode toggle button" className="my-border inv my-shadow smooth-scale absolute top-2 left-2 h-10 w-10 rounded-md bg-accent p-2 hover:scale-105 active:scale-95" />
 					</button>
-					<p className="font-bold">{selData?.name}</p>
-					<p>Div {selData?.div}</p>
-					<p className={selData?.field ? 'text-green-500' : 'text-bug'}>Has field {String(selData.field)}</p>
+					<div className="my-border my-shadow absolute inset-0 m-auto h-fit w-fit rounded-md p-2">
+						<p className="font-bold">{selData?.name}</p>
+						<p>Div {selData?.div}</p>
+						<p className={selData?.field ? 'text-green-500' : 'text-bug'}>Has field {String(selData?.field)}</p>
+					</div>
+					<div className="absolute inset-x-0 bottom-40 mx-auto h-fit w-fit flex-col gap-2">
+						<div>
+							<label htmlFor="field">Has Field</label>
+							<input id="field" type="text" className="my-border my-shadow h-10 w-[5rem] rounded-sm" />
+						</div>
+						<div>
+							<label htmlFor="div">Div</label>
+							<input id="div" type="text" className="my-border my-shadow h-10 w-[5rem] rounded-sm" />
+						</div>
+					</div>
+					<button type="button" className="my-border my-accent my-shadow smooth-scale absolute inset-x-0 bottom-10 mx-auto h-fit w-fit rounded-md bg-accent p-2 text-2xl font-bold text-stark hover:scale-90 active:scale-110">
+						Upload
+					</button>
 				</div>
 			) : (
 				<div className="my-grid mt-32 grid h-fit w-full gap-10">

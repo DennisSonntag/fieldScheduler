@@ -3,13 +3,13 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import caret from '@svg/caret.svg';
 import Image from 'next/image';
 
-type PropType = {
+interface PropType {
 	title: string;
 	options: string[];
 	selected: string[];
 	scroll?: boolean;
 	setSelected: Dispatch<SetStateAction<string[]>>;
-};
+}
 
 const Filter = ({ title, setSelected, options, selected, scroll = false }: PropType) => {
 	const [isOpen, setIsOpen] = useState(false);

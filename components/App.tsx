@@ -6,43 +6,12 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Background from './Background';
 
-type PropType = {
+interface PropType {
 	children: ReactNode;
 	title: string;
-};
+}
 
 const App = ({ children, title }: PropType) => {
-	// let theme;
-	// if (localStorage.getItem('theme')) {
-	// 	theme = JSON.parse(localStorage.getItem('theme') as string);
-	// } else {
-	// 	theme = true;
-	// }
-
-	// const keepTheme = () => {
-	// 	if (localStorage.getItem('theme')) {
-	// 		if (JSON.parse(localStorage.getItem('theme') as string) === true) {
-	// 			localStorage.setItem('theme', JSON.stringify(true));
-	// 		} else if (JSON.parse(localStorage.getItem('theme') as string) === false) {
-	// 			localStorage.setItem('theme', JSON.stringify(false));
-	// 		}
-	// 	} else {
-	// 		localStorage.setItem('theme', JSON.stringify(true));
-	// 	}
-	// };
-
-	// const toggleTheme = () => {
-	// 	if (JSON.parse(localStorage.getItem('theme') as string) === true) {
-	// 		localStorage.setItem('theme', JSON.stringify(false));
-	// 	} else if (JSON.parse(localStorage.getItem('theme') as string) === false) {
-	// 		localStorage.setItem('theme', JSON.stringify(true));
-	// 	}
-	// };
-
-	// useEffect(() => {
-	// 	keepTheme();
-	// }, []);
-
 	const [theme, setTheme] = useState(false);
 	useEffect(() => {
 		setTheme(JSON.parse(localStorage.getItem('dark') as string));

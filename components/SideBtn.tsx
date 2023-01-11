@@ -2,10 +2,10 @@ import arrow from '@svg/arrow.svg';
 import Image from 'next/image';
 import { Dispatch, SetStateAction } from 'react';
 
-type PropType = {
+interface PropType {
 	leftOpen: boolean;
 	setLeftOpen: Dispatch<SetStateAction<boolean>>;
-};
+}
 
 const SideBtn = ({ leftOpen, setLeftOpen }: PropType) => (
 	<section className=" hover-fade group grid w-12 shrink-0 place-content-center pt-4 ">

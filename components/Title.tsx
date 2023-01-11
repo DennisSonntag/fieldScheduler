@@ -1,6 +1,6 @@
-type PropType = {
+interface PropType {
 	text: string;
-};
+}
 
 const Title = ({ text }: PropType) => (
 	<div className="my-shadow my-border relative mt-2  h-10 w-[95%] rounded-md bg-main text-invert ">

@@ -80,8 +80,9 @@ type PropType = {
 };
 const Bg = ({ children, theme }: PropType) => <div className={`smooth-bg absolute m-0 box-border h-screen w-screen bg-back  ${theme ? 'light' : 'dark'} `}> {children}</div>;
 export default Bg;
-import { TeamType } from 'pages/main';
-import { useState } from 'react';
+import { scheduleGames } from '@ts/matchUp';
+import { scheduleGamesContext, TeamType } from 'pages/main';
+import { useContext, useEffect, useState } from 'react';
 
 type PropType = {
 	month: number;
@@ -95,6 +96,7 @@ export const getDaysInMonth = (yearArg: number, monthArg: number) => new Date(ye
 
 export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const Calendar = ({ school_name, seniority, month, data, hover = false, scale = '' }: PropType) => {
+	const [gameData, setGameData] = useContext(scheduleGamesContext);
 	const getIndexFromName = (name: string): number => {
 		let result: number = 0;
 
@@ -151,15 +153,23 @@ const Calendar = ({ school_name, seniority, month, data, hover = false, scale = 
 
 	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-	const getBigDay = (currentMonth: number): number => {
-		if (currentMonth === 2) {
-			return 0;
-		}
-		return getDaysInMonth(year, currentMonth) + getBigDay(currentMonth - 1);
+	// const getBigDay = (currentMonth: number): number => {
+	// 	if (currentMonth === 2) {
+	// 		return 0;
+	// 	}
+	// 	return getDaysInMonth(year, currentMonth) + getBigDay(currentMonth - 1);
+	// };
+
+	const [dateHover, setDateHover] = useState(false);
+	const [dateInfo, setDateInfo] = useState<any[]>([]);
+
+	const handleMouseEnter = (dataParam: Date[]) => {
+		setDateHover(true);
+		setDateInfo(dataParam);
 	};
 
 	return (
-		<div className={` my-border my-shadow aspect-square h-fit w-full rounded-lg bg-main p-2 ${hover ? 'hover:scale-110' : null} ${scale || null}  m-auto duration-150 ease-in-out`}>
+		<div onMouseLeave={() => setDateHover(false)} className={` my-border my-shadow aspect-square h-fit w-full rounded-lg bg-main p-2 ${hover ? 'hover:scale-110' : null} ${scale || null} relative m-auto duration-150 ease-in-out`}>
 			<h1 className="inset-0 mx-auto my-2 h-fit w-fit text-center text-2xl font-bold text-invert">{monthNames[month]}</h1>
 			<div className="grid-rows-7 text-md grid h-full grid-cols-7 text-center">
 				{weekDays.map(day => (
@@ -183,12 +193,23 @@ const Calendar = ({ school_name, seniority, month, data, hover = false, scale = 
 							</div>
 						);
 					}
-					if (events[getBigDay(month) + day] === 1) {
+					const currentDate = new Date(2023, month, day);
+					// console.log(gameDays.filter(elm => elm.toString() === currentDate.toString()).length !== 0);
+					// if (events[getBigDay(month) + day] === 1) {
+					const gameDays = gameData.map(elm => elm.day);
+					const currentData: Date[] = gameDays.filter(elm => elm.toString() === currentDate.toString());
+					if (currentData.length !== 0) {
+						// const teamsData = gameData.filter((elm, idx) => elm.day === currentData[idx]);
+						const teamsData = gameData.filter(elm => currentData.includes(elm.day));
+						if (teamsData.length !== 0) {
+							console.log(teamsData);
+						}
+						// if (gameDays) {
 						// days with events
 						return (
-							<div key={crypto.randomUUID()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer rounded-full bg-bug">
-								<p className="absolute inset-0 m-auto h-fit w-fit font-bold text-invert ">{day}</p>
-							</div>
+							<button onMouseEnter={() => handleMouseEnter(teamsData)} onMouseLeave={() => setDateHover(false)} type="button" onClick={() => console.log(gameDays.filter(elm => elm.toString() === currentDate.toString()))} key={crypto.randomUUID()} className="h-11/12 my-border relative aspect-square w-11/12 cursor-pointer rounded-full bg-accent hover:scale-110 active:scale-95">
+								<p className="absolute inset-0 m-auto h-fit w-fit font-bold text-stark ">{day}</p>
+							</button>
 						);
 					}
 					// normal weekdays
@@ -205,6 +226,18 @@ const Calendar = ({ school_name, seniority, month, data, hover = false, scale = 
 					</div>
 				))}
 			</div>
+			{dateHover ? (
+				<div className="my-border my-shadow absolute inset-x-0 bottom-[-100%] mx-auto h-fit w-fit flex-col gap-2 rounded-md p-2 font-bold">
+					{dateInfo.map(elm => (
+						<div className="my-border h-fit w-fit">
+							<p className="relative h-fit w-fit">
+								{elm.team1} vs {elm.team2}
+							</p>
+							<p className="relative h-fit w-fit">{elm.day.toLocaleString('en-us').split(' ')[0]}</p>
+						</div>
+					))}
+				</div>
+			) : null}
 		</div>
 	);
 };
@@ -293,6 +326,65 @@ const Download = () => {
 	);
 };
 export default Download;
+import { schoolNameContext, SchoolType } from 'pages/main';
+import { useContext, useState } from 'react';
+import Image from 'next/image';
+import arrow1 from '@svg/arrow1.svg';
+
+type PropTypes = {
+	close: () => void;
+};
+const EditData = ({ close }: PropTypes) => {
+	const schoolData = useContext(schoolNameContext) as SchoolType[];
+	// console.log(schoolData);
+	const [selected, setSelected] = useState(false);
+	type SelData = { name: any; div: any; field: any };
+	const [selData, setSelData] = useState<SelData>();
+
+	const handleSelect = (name: string, div: number, field: boolean) => {
+		setSelected(true);
+		setSelData({
+			name,
+			div,
+			field,
+		});
+	};
+
+	return (
+		<>
+			<div className="absolute inset-x-0 top-4 mx-auto flex h-fit w-fit gap-2">
+				<h1 className="my-shadow my-border relative h-fit w-fit rounded-md bg-accent p-3 text-xl font-bold text-stark duration-150 ease-in-out hover:px-6 active:px-4">Edit</h1>
+				<h1 className="my-shadow my-border relative h-fit w-fit rounded-md bg-accent p-3 text-xl font-bold text-stark duration-150 ease-in-out hover:px-6 active:px-4">Add/Remove</h1>
+			</div>
+			<button type="button" onClick={close} className="smooth-scale my-shadow my-border absolute top-4 right-4 h-fit w-fit rounded-md bg-accent hover:scale-110 active:scale-90">
+				<svg className="h-10 w-10 fill-stark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+					<path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z" />
+				</svg>
+			</button>
+			{selected ? (
+				<div>
+					<button type="button" onClick={() => setSelected(false)}>
+						<Image src={arrow1} alt="Dark/Light mode toggle button" className="my-border inv my-shadow smooth-scale absolute top-2 left-2 h-10 w-10 rounded-md bg-accent p-2 hover:scale-105 active:scale-95" />
+					</button>
+					<p className="font-bold">{selData?.name}</p>
+					<p>Div {selData?.div}</p>
+					<p className={selData?.field ? 'text-green-500' : 'text-bug'}>Has field {String(selData.field)}</p>
+				</div>
+			) : (
+				<div className="my-grid mt-32 grid h-fit w-full gap-10">
+					{schoolData.map(elm => (
+						<button type="button" onClick={() => handleSelect(elm.school_name, elm.div, elm.field)} className="my-border my-shadow smooth-scale relative m-auto h-fit w-fit rounded-md p-2 text-center hover:scale-110 active:scale-90">
+							<p className="font-bold">{elm.school_name}</p>
+							<p>Div {elm.div}</p>
+							<p className={elm.field ? 'text-green-500' : 'text-bug'}>Has field {String(elm.field)}</p>
+						</button>
+					))}
+				</div>
+			)}
+		</>
+	);
+};
+export default EditData;
 import { useEffect, useState } from 'react';
 
 type PropType = {
@@ -482,7 +574,7 @@ const Middle = ({ title }: PropType) => {
 	const [active, setActive] = useState(0);
 
 	const setNext = () => {
-		if (active === 3) {
+		if (active === 2) {
 			setActive(0);
 			return;
 		}
@@ -506,7 +598,7 @@ const Middle = ({ title }: PropType) => {
 	const incWeek = () => {
 		if (week + 1 <= 18) {
 			setWeek(prev => (prev += 1));
-			console.log(Number(String(monthTable[week + 1])[0]));
+			// console.log(Number(String(monthTable[week + 1])[0]));
 		}
 	};
 
@@ -514,7 +606,7 @@ const Middle = ({ title }: PropType) => {
 		if (week - 1 >= 1) {
 			setWeek(prev => (prev -= 1));
 			// setMonth(Math.floor(week / 4) + 2);
-			console.log(Number(String(monthTable[week + 1])[0]));
+			// console.log(Number(String(monthTable[week + 1])[0]));
 		}
 	};
 
@@ -651,20 +743,26 @@ const Sport = ({ activePage }: PropType) => {
 	);
 };
 export default Sport;
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import { Dispatch, SetStateAction, useContext, useRef } from 'react';
-import { filterContext, schoolNameContext, teamTestInfoContext } from 'pages/main';
+import { filterContext, scheduleGamesContext, schoolNameContext, teamTestInfoContext } from 'pages/main';
 import PocketBase, { Record } from 'pocketbase';
+// import { makeMatchPairings, matchFromDb, newTeamAlg, scheduleGames, separatePerTeam } from '@ts/matchUp';
+import { TeamTestInfo, SchoolType } from 'pages/main';
 import Filter from './Filter';
 import FilterChip from './FilterChip';
-import { matchFromDb } from '@ts/matchUp';
+import EditData from './EditData';
+import { scheduleGames } from '@ts/matchUp';
 
 const pb = new PocketBase('http://127.0.0.1:8090');
 
 const TeamInfo = () => {
-	const schoolData = useContext(schoolNameContext);
-	const teamTestInfo = useContext(teamTestInfoContext);
+	const [gameData, setGameData] = useContext(scheduleGamesContext);
+	const schoolData = useContext(schoolNameContext) as SchoolType[];
+	const teamTestInfo = useContext(teamTestInfoContext) as TeamTestInfo;
 	const schoolNames = schoolData.map(elm => elm.school_name.trim());
 	const schoolIds = schoolData.map(elm => elm.id);
 	const schoolInfo = schoolData.map(elm => {
@@ -752,6 +850,7 @@ const TeamInfo = () => {
 			sort: '-created',
 			filter: `div=${div}`,
 		});
+
 		const idList = test3.map(elm => elm.id);
 
 		const divTeams = [];
@@ -767,50 +866,41 @@ const TeamInfo = () => {
 		return divTeams;
 	};
 	const nameFromSchoolId = (id: string): string => schoolInfo.filter(elm3 => elm3.id === id)[0].name;
-	const teamIdToSchoolId = (teamId: string): string => {};
+
+	const teamIdToSchoolId = (teamId: string): string => teamTestInfo.filter(elm => elm.id === teamId)[0].school_id;
+
+	const idToName = (id: string): string => nameFromSchoolId(teamIdToSchoolId(id));
+
+	const idToType = (id: string): number => teamTestInfo.filter(elm => elm.id === id)[0].type;
+	const schoolIdToDiv = (id: string): number => schoolData.filter(elm => elm.id === id)[0].div;
 
 	const handleClickTest = async () => {
-		// const range = (x: number, y: number): number[] => (x > y ? [] : [x, ...range(x + 1, y)]);
-
-		const test = await getTeamsFromDivAndType(2, 1);
-		const match = matchFromDb(test.flat().map(elm => elm.id));
-
-		// const namedMatches = match.map(elm => elm.map(elm2 => nameFromId(elm2)));
-
-		// 2ieh5qsw506xilw
-		// forest-lawn-high-school
-
-		// ['ac74tdm4z1yf45i', '8fkbp7yntij3v6g', 'qzde3dea1szq4dm', 'yyvwjsmpvsyc8jt', 'ypod1emnv0q69pr', 'g11byipov6g1r0h']
-		// ['teni7gn16j1qf3f', '4z1gwwqxz7klm3y', 'yyvwjsmpvsyc8jt', 'g11byipov6g1r0h', 'qjcislwle0s1bwq', 'msfolhhss5mtlmk']
-		// ['msfolhhss5mtlmk', 'ac74tdm4z1yf45i', '4z1gwwqxz7klm3y', 'ypod1emnv0q69pr', '7rt2y03cpyb69fz', 'bqdr8u5ar1mtb8p']
-		// ['bqdr8u5ar1mtb8p', 'teni7gn16j1qf3f', '8fkbp7yntij3v6g', '4z1gwwqxz7klm3y', 'g11byipov6g1r0h', 'qjcislwle0s1bwq']
-		// ['qjcislwle0s1bwq', 'msfolhhss5mtlmk', 'ac74tdm4z1yf45i', 'qzde3dea1szq4dm', '4z1gwwqxz7klm3y', '7rt2y03cpyb69fz']
-		// ['7rt2y03cpyb69fz', 'bqdr8u5ar1mtb8p', 'teni7gn16j1qf3f', '8fkbp7yntij3v6g', 'yyvwjsmpvsyc8jt', '4z1gwwqxz7klm3y']
-		// ['g11byipov6g1r0h', 'qjcislwle0s1bwq', 'msfolhhss5mtlmk', 'ac74tdm4z1yf45i', 'qzde3dea1szq4dm', 'ypod1emnv0q69pr']
-		// ['ypod1emnv0q69pr', '7rt2y03cpyb69fz', 'bqdr8u5ar1mtb8p', 'teni7gn16j1qf3f', '8fkbp7yntij3v6g', 'yyvwjsmpvsyc8jt']
-		// ['yyvwjsmpvsyc8jt', 'g11byipov6g1r0h', 'qjcislwle0s1bwq', 'msfolhhss5mtlmk', 'ac74tdm4z1yf45i', 'qzde3dea1szq4dm']
-		// ['qzde3dea1szq4dm', 'ypod1emnv0q69pr', '7rt2y03cpyb69fz', 'bqdr8u5ar1mtb8p', 'teni7gn16j1qf3f', '8fkbp7yntij3v6g']
-		// ['8fkbp7yntij3v6g', 'yyvwjsmpvsyc8jt', 'g11byipov6g1r0h', 'qjcislwle0s1bwq', 'msfolhhss5mtlmk', 'ac74tdm4z1yf45i']
-		// ['4z1gwwqxz7klm3y', 'qzde3dea1szq4dm', 'ypod1emnv0q69pr', '7rt2y03cpyb69fz', 'bqdr8u5ar1mtb8p', 'teni7gn16j1qf3f']
-
-		console.log(nameFromSchoolId('ac74tdm4z1yf45i'));
+		const startDate = new Date('2023-3-1');
+		const endDate = new Date('2023-6-30');
+		const teamsPerSubdivision = [6, 12, 8, 4, 10, 6, 12, 8, 4, 10, 6, 12];
+		const noGamesOnDates = ['2023-4-1'];
+		const res = scheduleGames(teamsPerSubdivision, 12, true, noGamesOnDates, 6, 16, startDate, endDate);
+		// const gameDays = res.map(elm => elm.day);
+		setGameData(res);
 	};
 
 	return (
+		// eslint-disable-next-line react/jsx-no-comment-textnodes
 		<div className="relative flex h-full w-full flex-col gap-2">
-			<dialog ref={dialogRef} className="my-blur my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] rounded-xl bg-main backdrop:bg-black backdrop:opacity-80">
-				<h1 className=" my-shadow my-border absolute inset-x-0 top-4 mx-auto h-fit w-fit rounded-md bg-accent p-3 text-xl font-bold text-stark">Add/Edit Team data</h1>
-				<button type="button" onClick={closeModal} className="smooth-scale my-shadow my-border absolute top-4 right-4 h-fit w-fit rounded-md bg-accent hover:scale-110 active:scale-90">
-					<svg className="h-10 w-10 fill-stark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-						<path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z" />
-					</svg>
-				</button>
+			<dialog onClick={e => e.stopPropagation()} ref={dialogRef} className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] rounded-xl bg-main backdrop:bg-black backdrop:opacity-80">
+				<EditData close={closeModal} />
 			</dialog>
+
 			{/* <button title="Edit Team Data" onClick={handleClickTest} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
 				Test
 			</button> */}
+
 			<button title="Edit Team Data" onClick={handleClick} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
 				Edit Team data
+			</button>
+
+			<button title="Edit Team Data" onClick={handleClickTest} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
+				Calculate Schedule
 			</button>
 			<div className="my-col-3 grid h-fit w-full auto-rows-auto items-center justify-around gap-2">
 				<Filter options={divisions} title="Div" selected={divSelect as string[]} setSelected={setDivSelect as Dispatch<SetStateAction<string[]>>} />
@@ -886,784 +976,6 @@ const WeekCaret = ({ top = false, func }: PropType) => (
 	</button>
 );
 export default WeekCaret;
-import PocketBase from 'pocketbase';
-
-const pb = new PocketBase('http://127.0.0.1:8090');
-
-const schoolNames = [
-	'william-aberhart-high-school ',
-	'st-francis-high-school ',
-	'bowness-high-school ',
-	'john-g-diefenbaker-high-school ',
-	'crescent-heights-high-school ',
-	'dr-gordon-townsend-school ',
-	'christine-meikle-school ',
-	'louise-dean-school ',
-	'james-fowler-high-school ',
-	'robert-thirsk-high-school ',
-	'sir-winston-churchill-high-school ',
-	'nelson-mandela-high-school ',
-	'lester-b-pearson-high-school ',
-	'notre-dame-high-school ',
-	'bishop-mcnally-high-school ',
-	'ernest-manning-high-school ',
-	'central-memorial-high-school ',
-	'william-roper-hull-school ',
-	'henry-wise-wood-high-school ',
-	'our-lady-of-lourdes-high-school ',
-	'bishop-carroll-high-school ',
-	'national-sport-school ',
-	'st-marys-high-school ',
-	'dr-ep-scarlett-high-school ',
-	'western-canada-high-school ',
-	'bishop-grandin-high-school ',
-	'st-anthony-school ',
-	'st-anne-academic-centre ',
-	'jack-james-high-school ',
-	'centennial-high-school ',
-	'lord-beaverbrook-high-school ',
-	'father-lacombe-high-school ',
-	'all-saints-high-school ',
-	'bishop-obyrne-high-school ',
-	'forest-lawn-high-school ',
-];
-
-const getRandomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
-const randomArray = (size: number) =>
-	// eslint-disable-next-line implicit-arrow-linebreak
-	Array(size)
-		.fill(0)
-		.map(() => {
-			if (Math.random() > 0.5) {
-				return 1;
-			}
-			return 0;
-		});
-
-const colors = ['ff0000', 'ffff00', '00ff00', '00ffff', '0000ff', 'ff00ff'];
-
-const calculate = async () => {
-	// eslint-disable-next-line no-restricted-syntax, guard-for-in
-	for (const name of schoolNames) {
-		// example create data
-		const data = {
-			srGames: randomArray(121),
-			school_id: name,
-			jrGames: randomArray(121),
-			team_color: colors[getRandomInt(0, 5)],
-		};
-
-		// eslint-disable-next-line no-await-in-loop
-		await pb.collection('teams').create(data);
-	}
-};
-export default calculate;
-const arrayIsEqual = (a: Boolean[], b: Boolean[]) => Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((val, index) => val === b[index]);
-export default arrayIsEqual;
-export const makeMatchPairings = (teams: number[]): number[][][] => {
-	// if team size is odd add dummy team for calculation
-	if (teams.length % 2 === 1) {
-		teams.push(0);
-	}
-
-	const teamCount: number = teams.length;
-	const half: number = teamCount / 2;
-
-	const tournamentPairings = [];
-
-	const teamIndexes = teams.map((_, i) => i).slice(1);
-
-	for (let round = 0; round < 6; round++) {
-		const roundPairings = [];
-
-		const newPlayerIndexes = [0].concat(teamIndexes);
-
-		const firstHalf = newPlayerIndexes.slice(0, half);
-		const secondHalf = newPlayerIndexes.slice(half, teamCount).reverse();
-
-		for (let i = 0; i < firstHalf.length; i++) {
-			roundPairings.push([teams[firstHalf[i]], teams[secondHalf[i]]]);
-		}
-
-		// rotating the array
-		teamIndexes.push(teamIndexes.shift() as number);
-		tournamentPairings.push(roundPairings);
-	}
-
-	return tournamentPairings;
-};
-
-export const separatePerTeam = (tournament: number[][][], teamNum: number) =>
-	Array(teamNum)
-		.fill(0)
-		.map(
-			(_, i) =>
-				tournament
-					.flat()
-					.filter(elm => elm.includes(i + 1))
-					.map(elm => elm.filter(elm2 => elm2 !== i + 1))
-					.flat()
-			// .sort((a, b) => a - b)
-		);
-
-export const matchFromDb = (ids: string[]): string[][] => {
-	const range = (x: number, y: number): number[] => (x > y ? [] : [x, ...range(x + 1, y)]);
-	const raw: number[][] = separatePerTeam(makeMatchPairings(range(1, ids.length)), ids.length);
-	const result: string[][] = raw.map(elm => elm.map(elm2 => ids[elm2 - 1]));
-
-	return result;
-};
-import gif from '@img/404.gif';
-import Image from 'next/image';
-import App from '@components/App';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-
-const NotFound = () => {
-	const router = useRouter();
-
-	useEffect(() => {
-		setTimeout(() => {
-			router.push('/');
-		}, 3000);
-	}, []);
-
-	return (
-		<App title="Page Not Found">
-			<div className="absolute inset-0 m-auto grid h-fit w-fit gap-4">
-				<p className="my-border my-shadow relative rounded-md p-2 text-center text-[3rem] font-bold text-red-700">404 PAGE NOT FOUND</p>
-				<Image className="my-shadow my-border relative mx-auto w-[30rem] rounded-md" src={gif} alt="" />
-			</div>
-		</App>
-	);
-};
-export default NotFound;
-/* eslint-disable react/jsx-props-no-spreading */
-import '@assets/main.css';
-import { SessionProvider } from 'next-auth/react';
-import type { AppProps } from 'next/app';
-
-export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-	// eslint-disable-next-line react/jsx-props-no-spreading
-	return (
-		<SessionProvider session={session}>
-			<Component {...pageProps} />;
-		</SessionProvider>
-	);
-}
-import { FormEventHandler, useEffect, useRef, useState } from 'react';
-
-import App from '@components/App';
-import eyeOpen from '@svg/eyeOpen.svg';
-import eyeClosed from '@svg/eyeClosed.svg';
-import { getSession, signIn } from 'next-auth/react';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-
-const Login = () => {
-	const [error, setError] = useState(false);
-	const dialogRef = useRef(null);
-
-	const forgotPassword = () => {
-		const dialog = dialogRef.current as unknown as any;
-		dialog.showModal();
-	};
-
-	const closeModal = () => {
-		const dialog = dialogRef.current as unknown as any;
-
-		dialog.close();
-	};
-
-	const [eyeState, setEyeState] = useState(false);
-
-	const router = useRouter();
-	const [userInfo, setUserInfo] = useState({ email: '', password: '' });
-	const handleSubmit: FormEventHandler<HTMLFormElement> = async e => {
-		e.preventDefault();
-		const res = await signIn('credentials', {
-			email: userInfo.email,
-			password: userInfo.password,
-			redirect: false,
-		});
-		if (res?.ok) {
-			setError(false);
-			router.push('/main');
-		} else {
-			setError(true);
-		}
-	};
-
-	const toggleVisible = () => {
-		setEyeState(prev => !prev);
-	};
-
-	useEffect(() => {
-		if (error) {
-			setTimeout(() => {
-				setError(false);
-			}, 5000);
-		}
-	}, [error]);
-
-	return (
-		<App title="Login">
-			<form onSubmit={handleSubmit} className=" absolute inset-0 m-auto flex h-fit w-fit flex-col text-invert">
-				<h1 className="my-shadow my-border absolute inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-2 text-center text-2xl font-bold">Sign In</h1>
-				<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
-					<input value={userInfo.email} onChange={({ target }) => setUserInfo({ ...userInfo, email: target.value })} type="email" autoComplete="off" className="input h-8 w-52 overflow-hidden rounded-md border-0 text-red-500 outline-0 valid:text-green-500" />
-					<label htmlFor="email" className="label text-lg ">
-						Email
-					</label>
-				</div>
-
-				<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
-					<input value={userInfo.password} onChange={({ target }) => setUserInfo({ ...userInfo, password: target.value })} type={eyeState ? 'text' : 'password'} className="input h-8 w-52 overflow-hidden rounded-md border-0 outline-0" />
-					<label htmlFor="password" className="label text-lg ">
-						Password
-					</label>
-					<Image src={eyeState ? eyeOpen : eyeClosed} onClick={toggleVisible} alt="Show Hide Password Button" className="inv absolute right-0 m-2 h-6 w-6 hover:scale-105 active:scale-95" />
-				</div>
-
-				<div className="flex flex-col items-center gap-2">
-					<button type="button" onClick={forgotPassword} className="text-blue text-blue-500 underline hover:text-blue-400">
-						Forgot Password
-					</button>
-
-					<dialog className="my-shadow my-border absolute inset-0 m-auto aspect-square h-1/2 rounded-lg bg-main backdrop:bg-black backdrop:opacity-80" ref={dialogRef}>
-						<p className="my-shadow my-border absolute inset-x-0 top-4 mx-auto h-fit w-fit rounded-md bg-accent p-2 text-xl font-bold text-stark">Forgot Password</p>
-						<input type="text" name="email" className="my-border my-shadow valid-email absolute inset-0 m-auto h-10 w-3/4 rounded-md bg-white text-center" />
-						<button type="button" onClick={closeModal} className="smooth-scale my-shadow my-border absolute top-4 right-4 h-fit w-fit rounded-md bg-accent hover:scale-110 active:scale-90">
-							<svg className="h-10 w-10 fill-stark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-								<path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z" />
-							</svg>
-						</button>
-						<button type="button" className="my-border my-shadow smooth-scale no-move absolute inset-x-0 bottom-4 mx-auto h-fit w-fit rounded-md bg-accent p-2  text-stark hover:scale-105 active:scale-95">
-							Send Reset Email
-						</button>
-					</dialog>
-
-					<p className={`h-fit w-fit text-center font-bold text-bug duration-300 ${error ? 'opacity-100' : 'opacity-0'}`}>Invalid Info!</p>
-					<input type="submit" value="Login" className={`${error ? 'bg-bug' : 'bg-accent'}  my-shadow my-border w-fit rounded-md p-2 duration-75 hover:scale-110 active:scale-90`} />
-				</div>
-			</form>
-		</App>
-	);
-};
-export default Login;
-
-// eslint-disable-next-line consistent-return
-export async function getServerSideProps(context: any) {
-	const session = await getSession(context);
-	if (session) {
-		return {
-			redirect: {
-				destination: '/main',
-				permanent: false,
-			},
-		};
-	}
-
-	return {
-		props: {
-			session,
-		},
-	};
-}
-import { createContext, Dispatch, SetStateAction, useState } from 'react';
-
-import SportSelect from '@components/SportSelect';
-import Compare from '@components/Compare';
-import Sport from '@components/Sport';
-import PocketBase from 'pocketbase';
-import App from '@components/App';
-import Link from 'next/link';
-import { getSession, signOut } from 'next-auth/react';
-
-const pb = new PocketBase('http://127.0.0.1:8090');
-
-// eslint-disable-next-line @typescript-eslint/comma-dangle
-export type TeamType = [
-	{
-		srGames: number[];
-		jrGames: number[];
-		team_color: string;
-		school: string;
-	}
-];
-
-export type SchoolType = {
-	school_name: string;
-	id: string;
-};
-
-type TeamTestInfo = [
-	{
-		school_id: string;
-		type: number;
-		id: string;
-	}
-];
-
-type PropType = {
-	schoolData: SchoolType[];
-	teamInfo: TeamType;
-	teamTestInfo: TeamTestInfo;
-};
-
-export const activePageContext = createContext<number>(0);
-export const schoolNameContext = createContext<SchoolType[]>([]);
-export const teamInfoContext = createContext<any[]>([]);
-export const teamTestInfoContext = createContext<any[]>([]);
-
-export const filterContext = createContext<(string[] | Dispatch<SetStateAction<string[]>>)[][]>([[]]);
-
-const Main = ({ schoolData: schoolNames, teamInfo, teamTestInfo }: PropType) => {
-	const [activePage, setActivePage] = useState(0);
-	const compareActive = activePage === 2;
-	const soccerActive = activePage === 1;
-	const rugbyActive = activePage === 0;
-
-	const [senioritySelect, setSenioritySelect] = useState<string[]>([]);
-	const [schoolSelect, setSchoolSelect] = useState<string[]>([]);
-	const [divSelect, setDivSelect] = useState<string[]>([]);
-	const [sexSelect, setSexSelect] = useState<string[]>([]);
-
-	// eslint-disable-next-line react/jsx-no-constructed-context-values
-	const filterData = [
-		[senioritySelect, setSenioritySelect],
-		[schoolSelect, setSchoolSelect],
-		[divSelect, setDivSelect],
-		[sexSelect, setSexSelect],
-	];
-
-	const logout = () => {
-		signOut();
-		pb.authStore.clear();
-	};
-
-	return (
-		<schoolNameContext.Provider value={schoolNames}>
-			<teamInfoContext.Provider value={teamInfo}>
-				<teamTestInfoContext.Provider value={teamTestInfo}>
-					<activePageContext.Provider value={activePage}>
-						<filterContext.Provider value={filterData}>
-							<App title="Scheduler">
-								<div className="flex h-screen w-screen flex-col ">
-									<div className="h-16 w-screen shrink-0 ">
-										<Link href="/" onClick={logout} className="my-border my-shadow smooth-scale absolute top-2 right-2 h-fit w-fit rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
-											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="h-6 w-6 fill-stark ">
-												<path d="M160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96C43 32 0 75 0 128V384c0 53 43 96 96 96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H96c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32h64zM504.5 273.4c4.8-4.5 7.5-10.8 7.5-17.4s-2.7-12.9-7.5-17.4l-144-136c-7-6.6-17.2-8.4-26-4.6s-14.5 12.5-14.5 22v72H192c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32H320v72c0 9.6 5.7 18.2 14.5 22s19 2 26-4.6l144-136z" />
-											</svg>
-										</Link>
-										<nav className="absolute inset-x-0 top-0 z-50 m-2 mx-auto box-border flex h-fit w-fit gap-2">
-											<SportSelect sport="Rugby" activePage={rugbyActive} setActivePage={() => setActivePage(0)} />
-											<button title="Compare Schedules" onClick={() => setActivePage(2)} type="button" className={`${compareActive ? 'bg-main' : 'bg-accent'} smooth my-border   my-shadow relative mx-auto h-10 w-10 select-none rounded-md duration-100 ease-in-out hover:scale-110 active:scale-90`}>
-												<svg className={`inset-0 m-auto h-4 w-4 ${compareActive ? 'fill-invert' : 'fill-stark'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-													<path d="M422.6 278.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L434.7 176H64c-17.7 0-32-14.3-32-32s14.3-32 32-32H434.7L377.4 54.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l112 112c12.5 12.5 12.5 32.8 0 45.3l-112 112zm-269.3 224l-112-112c-12.5-12.5-12.5-32.8 0-45.3l112-112c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3L141.3 336H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H141.3l57.4 57.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0z" />
-												</svg>
-											</button>
-											<SportSelect sport="Soccer" activePage={soccerActive} setActivePage={() => setActivePage(1)} />
-										</nav>
-									</div>
-									<div className="h-auto w-screen grow">
-										{rugbyActive ? <Sport activePage={activePage} /> : null}
-										{soccerActive ? <Sport activePage={activePage} /> : null}
-										{compareActive ? <Compare /> : null}
-									</div>
-								</div>
-							</App>
-						</filterContext.Provider>
-					</activePageContext.Provider>
-				</teamTestInfoContext.Provider>
-			</teamInfoContext.Provider>
-		</schoolNameContext.Provider>
-	);
-};
-export default Main;
-
-export async function getServerSideProps(context: any) {
-	const session = await getSession(context);
-	if (!session) {
-		return {
-			redirect: {
-				destination: '/',
-				permanent: false,
-			},
-		};
-	}
-
-	const records = await pb.collection('schools').getFullList(200 /* batch size */, {
-		sort: '-created',
-	});
-
-	const schoolData = records.map(elm => ({ school_name: elm.school_name, id: elm.id }));
-
-	const records2 = await pb.collection('teams').getFullList(200 /* batch size */, {
-		sort: '-created',
-	});
-
-	const teamsRaw = records2.map(elm => ({
-		school: elm.school_id,
-		srGames: elm.srGames,
-		jrGames: elm.jrGames,
-		team_color: elm.team_color,
-	}));
-
-	const records3 = await pb.collection('teamsTest').getFullList(200 /* batch size */, {
-		sort: '-created',
-	});
-
-	const teamTestRaw = records3.map(elm => ({
-		school_id: elm.school_name,
-		type: elm.teamType,
-		id: elm.id,
-	}));
-
-	return {
-		props: { schoolData, teamInfo: teamsRaw, teamTestRaw },
-	};
-}
-import { createContext, Dispatch, SetStateAction, useState } from 'react';
-
-import SportSelect from '@components/SportSelect';
-import Compare from '@components/Compare';
-import Sport from '@components/Sport';
-import PocketBase from 'pocketbase';
-import App from '@components/App';
-import Link from 'next/link';
-import { getSession, signOut } from 'next-auth/react';
-
-const pb = new PocketBase('http://127.0.0.1:8090');
-
-// eslint-disable-next-line @typescript-eslint/comma-dangle
-export type TeamType = [
-	{
-		srGames: number[];
-		jrGames: number[];
-		team_color: string;
-		school: string;
-	}
-];
-
-export type SchoolType = {
-	school_name: string;
-	id: string;
-};
-
-type TeamTestInfo = [
-	{
-		school_id: string;
-		type: number;
-		id: string;
-	}
-];
-
-type PropType = {
-	schoolData: SchoolType[];
-	teamInfo: TeamType;
-	teamTestInfo: TeamTestInfo;
-};
-
-export const activePageContext = createContext<number>(0);
-export const schoolNameContext = createContext<SchoolType[]>([]);
-export const teamInfoContext = createContext<any[]>([]);
-export const teamTestInfoContext = createContext<any[]>([]);
-
-export const filterContext = createContext<(string[] | Dispatch<SetStateAction<string[]>>)[][]>([[]]);
-
-const Main = ({ schoolData: schoolNames, teamInfo, teamTestInfo }: PropType) => {
-	const [activePage, setActivePage] = useState(0);
-	const compareActive = activePage === 2;
-	const soccerActive = activePage === 1;
-	const rugbyActive = activePage === 0;
-
-	const [senioritySelect, setSenioritySelect] = useState<string[]>([]);
-	const [schoolSelect, setSchoolSelect] = useState<string[]>([]);
-	const [divSelect, setDivSelect] = useState<string[]>([]);
-	const [sexSelect, setSexSelect] = useState<string[]>([]);
-
-	// eslint-disable-next-line react/jsx-no-constructed-context-values
-	const filterData = [
-		[senioritySelect, setSenioritySelect],
-		[schoolSelect, setSchoolSelect],
-		[divSelect, setDivSelect],
-		[sexSelect, setSexSelect],
-	];
-
-	const logout = () => {
-		signOut();
-		pb.authStore.clear();
-	};
-
-	return (
-		<schoolNameContext.Provider value={schoolNames}>
-			<teamInfoContext.Provider value={teamInfo}>
-				<teamTestInfoContext.Provider value={teamTestInfo}>
-					<activePageContext.Provider value={activePage}>
-						<filterContext.Provider value={filterData}>
-							<App title="Scheduler">
-								<div className="flex h-screen w-screen flex-col ">
-									<div className="h-16 w-screen shrink-0 ">
-										<Link href="/" onClick={logout} className="my-border my-shadow smooth-scale absolute top-2 right-2 h-fit w-fit rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
-											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="h-6 w-6 fill-stark ">
-												<path d="M160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96C43 32 0 75 0 128V384c0 53 43 96 96 96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H96c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32h64zM504.5 273.4c4.8-4.5 7.5-10.8 7.5-17.4s-2.7-12.9-7.5-17.4l-144-136c-7-6.6-17.2-8.4-26-4.6s-14.5 12.5-14.5 22v72H192c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32H320v72c0 9.6 5.7 18.2 14.5 22s19 2 26-4.6l144-136z" />
-											</svg>
-										</Link>
-										<nav className="absolute inset-x-0 top-0 z-50 m-2 mx-auto box-border flex h-fit w-fit gap-2">
-											<SportSelect sport="Rugby" activePage={rugbyActive} setActivePage={() => setActivePage(0)} />
-											<button title="Compare Schedules" onClick={() => setActivePage(2)} type="button" className={`${compareActive ? 'bg-main' : 'bg-accent'} smooth my-border   my-shadow relative mx-auto h-10 w-10 select-none rounded-md duration-100 ease-in-out hover:scale-110 active:scale-90`}>
-												<svg className={`inset-0 m-auto h-4 w-4 ${compareActive ? 'fill-invert' : 'fill-stark'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-													<path d="M422.6 278.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L434.7 176H64c-17.7 0-32-14.3-32-32s14.3-32 32-32H434.7L377.4 54.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l112 112c12.5 12.5 12.5 32.8 0 45.3l-112 112zm-269.3 224l-112-112c-12.5-12.5-12.5-32.8 0-45.3l112-112c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3L141.3 336H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H141.3l57.4 57.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0z" />
-												</svg>
-											</button>
-											<SportSelect sport="Soccer" activePage={soccerActive} setActivePage={() => setActivePage(1)} />
-										</nav>
-									</div>
-									<div className="h-auto w-screen grow">
-										{rugbyActive ? <Sport activePage={activePage} /> : null}
-										{soccerActive ? <Sport activePage={activePage} /> : null}
-										{compareActive ? <Compare /> : null}
-									</div>
-								</div>
-							</App>
-						</filterContext.Provider>
-					</activePageContext.Provider>
-				</teamTestInfoContext.Provider>
-			</teamInfoContext.Provider>
-		</schoolNameContext.Provider>
-	);
-};
-export default Main;
-
-export async function getServerSideProps(context: any) {
-	const session = await getSession(context);
-	if (!session) {
-		return {
-			redirect: {
-				destination: '/',
-				permanent: false,
-			},
-		};
-	}
-
-	const records = await pb.collection('schools').getFullList(200 /* batch size */, {
-		sort: '-created',
-	});
-
-	const schoolData = records.map(elm => ({ school_name: elm.school_name, id: elm.id }));
-
-	const records2 = await pb.collection('teams').getFullList(200 /* batch size */, {
-		sort: '-created',
-	});
-
-	const teamsRaw = records2.map(elm => ({
-		school: elm.school_id,
-		srGames: elm.srGames,
-		jrGames: elm.jrGames,
-		team_color: elm.team_color,
-	}));
-
-	const records3 = await pb.collection('teamsTest').getFullList(200 /* batch size */, {
-		sort: '-created',
-	});
-
-	const teamTestRaw = records3.map(elm => ({
-		school_id: elm.school_name,
-		type: elm.teamType,
-		id: elm.id,
-	}));
-
-	return {
-		props: { schoolData, teamInfo: teamsRaw, teamTestRaw },
-	};
-}
-import { FormEventHandler, useEffect, useRef, useState } from 'react';
-
-import App from '@components/App';
-import eyeOpen from '@svg/eyeOpen.svg';
-import eyeClosed from '@svg/eyeClosed.svg';
-import { getSession, signIn } from 'next-auth/react';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-
-const Login = () => {
-	const [error, setError] = useState(false);
-	const dialogRef = useRef(null);
-
-	const forgotPassword = () => {
-		const dialog = dialogRef.current as unknown as any;
-		dialog.showModal();
-	};
-
-	const closeModal = () => {
-		const dialog = dialogRef.current as unknown as any;
-
-		dialog.close();
-	};
-
-	const [eyeState, setEyeState] = useState(false);
-
-	const router = useRouter();
-	const [userInfo, setUserInfo] = useState({ email: '', password: '' });
-	const handleSubmit: FormEventHandler<HTMLFormElement> = async e => {
-		e.preventDefault();
-		const res = await signIn('credentials', {
-			email: userInfo.email,
-			password: userInfo.password,
-			redirect: false,
-		});
-		if (res?.ok) {
-			setError(false);
-			router.push('/main');
-		} else {
-			setError(true);
-		}
-	};
-
-	const toggleVisible = () => {
-		setEyeState(prev => !prev);
-	};
-
-	useEffect(() => {
-		if (error) {
-			setTimeout(() => {
-				setError(false);
-			}, 5000);
-		}
-	}, [error]);
-
-	return (
-		<App title="Login">
-			<form onSubmit={handleSubmit} className=" absolute inset-0 m-auto flex h-fit w-fit flex-col text-invert">
-				<h1 className="my-shadow my-border absolute inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-2 text-center text-2xl font-bold">Sign In</h1>
-				<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
-					<input value={userInfo.email} onChange={({ target }) => setUserInfo({ ...userInfo, email: target.value })} type="email" autoComplete="off" className="input h-8 w-52 overflow-hidden rounded-md border-0 text-red-500 outline-0 valid:text-green-500" />
-					<label htmlFor="email" className="label text-lg ">
-						Email
-					</label>
-				</div>
-
-				<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
-					<input value={userInfo.password} onChange={({ target }) => setUserInfo({ ...userInfo, password: target.value })} type={eyeState ? 'text' : 'password'} className="input h-8 w-52 overflow-hidden rounded-md border-0 outline-0" />
-					<label htmlFor="password" className="label text-lg ">
-						Password
-					</label>
-					<Image src={eyeState ? eyeOpen : eyeClosed} onClick={toggleVisible} alt="Show Hide Password Button" className="inv absolute right-0 m-2 h-6 w-6 hover:scale-105 active:scale-95" />
-				</div>
-
-				<div className="flex flex-col items-center gap-2">
-					<button type="button" onClick={forgotPassword} className="text-blue text-blue-500 underline hover:text-blue-400">
-						Forgot Password
-					</button>
-
-					<dialog className="my-shadow my-border absolute inset-0 m-auto aspect-square h-1/2 rounded-lg bg-main backdrop:bg-black backdrop:opacity-80" ref={dialogRef}>
-						<p className="my-shadow my-border absolute inset-x-0 top-4 mx-auto h-fit w-fit rounded-md bg-accent p-2 text-xl font-bold text-stark">Forgot Password</p>
-						<input type="text" name="email" className="my-border my-shadow valid-email absolute inset-0 m-auto h-10 w-3/4 rounded-md bg-white text-center" />
-						<button type="button" onClick={closeModal} className="smooth-scale my-shadow my-border absolute top-4 right-4 h-fit w-fit rounded-md bg-accent hover:scale-110 active:scale-90">
-							<svg className="h-10 w-10 fill-stark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-								<path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z" />
-							</svg>
-						</button>
-						<button type="button" className="my-border my-shadow smooth-scale no-move absolute inset-x-0 bottom-4 mx-auto h-fit w-fit rounded-md bg-accent p-2  text-stark hover:scale-105 active:scale-95">
-							Send Reset Email
-						</button>
-					</dialog>
-
-					<p className={`h-fit w-fit text-center font-bold text-bug duration-300 ${error ? 'opacity-100' : 'opacity-0'}`}>Invalid Info!</p>
-					<input type="submit" value="Login" className={`${error ? 'bg-bug' : 'bg-accent'}  my-shadow my-border w-fit rounded-md p-2 duration-75 hover:scale-110 active:scale-90`} />
-				</div>
-			</form>
-		</App>
-	);
-};
-export default Login;
-
-// eslint-disable-next-line consistent-return
-export async function getServerSideProps(context: any) {
-	const session = await getSession(context);
-	if (session) {
-		return {
-			redirect: {
-				destination: '/main',
-				permanent: false,
-			},
-		};
-	}
-
-	return {
-		props: {
-			session,
-		},
-	};
-}
-import gif from '@img/404.gif';
-import Image from 'next/image';
-import App from '@components/App';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-
-const NotFound = () => {
-	const router = useRouter();
-
-	useEffect(() => {
-		setTimeout(() => {
-			router.push('/');
-		}, 3000);
-	}, []);
-
-	return (
-		<App title="Page Not Found">
-			<div className="absolute inset-0 m-auto grid h-fit w-fit gap-4">
-				<p className="my-border my-shadow relative rounded-md p-2 text-center text-[3rem] font-bold text-red-700">404 PAGE NOT FOUND</p>
-				<Image className="my-shadow my-border relative mx-auto w-[30rem] rounded-md" src={gif} alt="" />
-			</div>
-		</App>
-	);
-};
-export default NotFound;
-/* eslint-disable react/jsx-props-no-spreading */
-import '@assets/main.css';
-import { SessionProvider } from 'next-auth/react';
-import type { AppProps } from 'next/app';
-
-export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-	// eslint-disable-next-line react/jsx-props-no-spreading
-	return (
-		<SessionProvider session={session}>
-			<Component {...pageProps} />;
-		</SessionProvider>
-	);
-}
-import NextAuth, { NextAuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import PocketBase from 'pocketbase';
-
-const pb = new PocketBase('http://127.0.0.1:8090');
-
-const authOptions: NextAuthOptions = {
-	providers: [
-		CredentialsProvider({
-			type: 'credentials',
-			credentials: {},
-			// @ts-ignore
-			async authorize(credentials) {
-				const { email, password } = credentials as {
-					email: string;
-					password: string;
-				};
-				await pb.collection('users').authWithPassword(email, password);
-				const id = pb.authStore.model?.id;
-				const record = await pb.collection('users').getOne(id as string, {
-					expand: 'relField1,relField2.subRelField',
-				});
-
-				return { id, name: record.name, email };
-			},
-		}),
-	],
-};
-export default NextAuth(authOptions);
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -1830,4 +1142,506 @@ export default NextAuth(authOptions);
 	.bot-dash {
 		border-bottom: 2px dashed var(--color-invert);
 	}
+	.my-grid {
+		grid-template-columns: repeat(4, 1fr);
+	}
 }
+import NextAuth, { NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import PocketBase from 'pocketbase';
+
+const pb = new PocketBase('http://127.0.0.1:8090');
+
+const authOptions: NextAuthOptions = {
+	providers: [
+		CredentialsProvider({
+			type: 'credentials',
+			credentials: {},
+			// @ts-ignore
+			async authorize(credentials) {
+				const { email, password } = credentials as {
+					email: string;
+					password: string;
+				};
+
+				await pb.collection('users').authWithPassword(email, password);
+				const id = pb.authStore.model?.id;
+				const record = await pb.collection('users').getOne(id as string, {
+					expand: 'relField1,relField2.subRelField',
+				});
+
+				return { id, name: record.name, email };
+			},
+		}),
+	],
+};
+export default NextAuth(authOptions);
+import gif from '@img/404.gif';
+import Image from 'next/image';
+import App from '@components/App';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+
+const NotFound = () => {
+	const router = useRouter();
+
+	useEffect(() => {
+		setTimeout(() => {
+			router.push('/');
+		}, 3000);
+	}, []);
+
+	return (
+		<App title="Page Not Found">
+			<div className="absolute inset-0 m-auto grid h-fit w-fit gap-4">
+				<p className="my-border my-shadow relative rounded-md p-2 text-center text-[3rem] font-bold text-red-700">404 PAGE NOT FOUND</p>
+				<Image className="my-shadow my-border relative mx-auto w-[30rem] rounded-md" src={gif} alt="" />
+			</div>
+		</App>
+	);
+};
+export default NotFound;
+/* eslint-disable react/jsx-props-no-spreading */
+import '@assets/main.css';
+import { SessionProvider } from 'next-auth/react';
+import type { AppProps } from 'next/app';
+
+export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+	// eslint-disable-next-line react/jsx-props-no-spreading
+	return (
+		<SessionProvider session={session}>
+			<Component {...pageProps} />;
+		</SessionProvider>
+	);
+}
+import { FormEventHandler, useEffect, useRef, useState } from 'react';
+
+import App from '@components/App';
+import eyeOpen from '@svg/eyeOpen.svg';
+import eyeClosed from '@svg/eyeClosed.svg';
+import { getSession, signIn } from 'next-auth/react';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+
+const Login = () => {
+	const [error, setError] = useState(false);
+	const dialogRef = useRef(null);
+
+	const forgotPassword = () => {
+		const dialog = dialogRef.current as unknown as any;
+		dialog.showModal();
+	};
+
+	const closeModal = () => {
+		const dialog = dialogRef.current as unknown as any;
+
+		dialog.close();
+	};
+
+	const [eyeState, setEyeState] = useState(false);
+
+	const router = useRouter();
+	const [userInfo, setUserInfo] = useState({ email: '', password: '' });
+	const handleSubmit: FormEventHandler<HTMLFormElement> = async e => {
+		e.preventDefault();
+		const res = await signIn('credentials', {
+			email: userInfo.email,
+			password: userInfo.password,
+			redirect: false,
+		});
+		if (res?.ok) {
+			setError(false);
+			router.push('/main');
+		} else {
+			setError(true);
+		}
+	};
+
+	const toggleVisible = () => {
+		setEyeState(prev => !prev);
+	};
+
+	useEffect(() => {
+		if (error) {
+			setTimeout(() => {
+				setError(false);
+			}, 5000);
+		}
+	}, [error]);
+
+	return (
+		<App title="Login">
+			<form onSubmit={handleSubmit} className=" absolute inset-0 m-auto flex h-fit w-fit flex-col text-invert">
+				<h1 className="my-shadow my-border absolute inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-2 text-center text-2xl font-bold">Sign In</h1>
+				<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
+					<input value={userInfo.email} onChange={({ target }) => setUserInfo({ ...userInfo, email: target.value })} type="email" autoComplete="off" className="input h-8 w-52 overflow-hidden rounded-md border-0 text-red-500 outline-0 valid:text-green-500" />
+					<label htmlFor="email" className="label text-lg ">
+						Email
+					</label>
+				</div>
+
+				<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
+					<input value={userInfo.password} onChange={({ target }) => setUserInfo({ ...userInfo, password: target.value })} type={eyeState ? 'text' : 'password'} className="input h-8 w-52 overflow-hidden rounded-md border-0 outline-0" />
+					<label htmlFor="password" className="label text-lg ">
+						Password
+					</label>
+					<Image src={eyeState ? eyeOpen : eyeClosed} onClick={toggleVisible} alt="Show Hide Password Button" className="inv absolute right-0 m-2 h-6 w-6 hover:scale-105 active:scale-95" />
+				</div>
+
+				<div className="flex flex-col items-center gap-2">
+					<button type="button" onClick={forgotPassword} className="text-blue text-blue-500 underline hover:text-blue-400">
+						Forgot Password
+					</button>
+
+					<dialog className="my-shadow my-border absolute inset-0 m-auto aspect-square h-1/2 rounded-lg bg-main backdrop:bg-black backdrop:opacity-80" ref={dialogRef}>
+						<p className="my-shadow my-border absolute inset-x-0 top-4 mx-auto h-fit w-fit rounded-md bg-accent p-2 text-xl font-bold text-stark">Forgot Password</p>
+						<input type="text" name="email" className="my-border my-shadow valid-email absolute inset-0 m-auto h-10 w-3/4 rounded-md bg-white text-center" />
+						<button type="button" onClick={closeModal} className="smooth-scale my-shadow my-border absolute top-4 right-4 h-fit w-fit rounded-md bg-accent hover:scale-110 active:scale-90">
+							<svg className="h-10 w-10 fill-stark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+								<path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z" />
+							</svg>
+						</button>
+						<button type="button" className="my-border my-shadow smooth-scale no-move absolute inset-x-0 bottom-4 mx-auto h-fit w-fit rounded-md bg-accent p-2  text-stark hover:scale-105 active:scale-95">
+							Send Reset Email
+						</button>
+					</dialog>
+
+					<p className={`h-fit w-fit text-center font-bold text-bug duration-300 ${error ? 'opacity-100' : 'opacity-0'}`}>Invalid Info!</p>
+					<input type="submit" value="Login" className={`${error ? 'bg-bug' : 'bg-accent'}  my-shadow my-border w-fit rounded-md p-2 duration-75 hover:scale-110 active:scale-90`} />
+				</div>
+			</form>
+		</App>
+	);
+};
+export default Login;
+
+// eslint-disable-next-line consistent-return
+export async function getServerSideProps(context: any) {
+	const session = await getSession(context);
+	if (session) {
+		return {
+			redirect: {
+				destination: '/main',
+				permanent: false,
+			},
+		};
+	}
+
+	return {
+		props: {
+			session,
+		},
+	};
+}
+import { createContext, Dispatch, SetStateAction, useState } from 'react';
+
+import SportSelect from '@components/SportSelect';
+import Compare from '@components/Compare';
+import Sport from '@components/Sport';
+import PocketBase from 'pocketbase';
+import App from '@components/App';
+import Link from 'next/link';
+import { getSession, signOut } from 'next-auth/react';
+
+const pb = new PocketBase('http://127.0.0.1:8090');
+
+// eslint-disable-next-line @typescript-eslint/comma-dangle
+export type TeamType = [
+	{
+		srGames: number[];
+		jrGames: number[];
+		team_color: string;
+		school: string;
+	}
+];
+
+export type SchoolType = {
+	school_name: string;
+	id: string;
+	div: number;
+	field: boolean;
+};
+
+export type TeamTestInfo = [
+	{
+		school_id: string;
+		type: number;
+		id: string;
+		div: number;
+	}
+];
+
+type PropType = {
+	schoolData: SchoolType[];
+	teamInfo: TeamType;
+	teamTestInfo: TeamTestInfo;
+};
+
+export const activePageContext = createContext<number>(0);
+export const schoolNameContext = createContext<SchoolType[]>([]);
+export const teamInfoContext = createContext<any[]>([]);
+export const teamTestInfoContext = createContext<any[]>([]);
+
+export const scheduleGamesContext = createContext<any[]>([]);
+
+export const filterContext = createContext<(string[] | Dispatch<SetStateAction<string[]>>)[][]>([[]]);
+
+const Main = ({ schoolData, teamInfo, teamTestInfo }: PropType) => {
+	const [activePage, setActivePage] = useState(0);
+	const compareActive = activePage === 2;
+	const soccerActive = activePage === 1;
+	const rugbyActive = activePage === 0;
+
+	const [senioritySelect, setSenioritySelect] = useState<string[]>([]);
+	const [schoolSelect, setSchoolSelect] = useState<string[]>([]);
+	const [divSelect, setDivSelect] = useState<string[]>([]);
+	const [sexSelect, setSexSelect] = useState<string[]>([]);
+	const gameState = useState<any[]>([]);
+
+	// eslint-disable-next-line react/jsx-no-constructed-context-values
+	const filterData = [
+		[senioritySelect, setSenioritySelect],
+		[schoolSelect, setSchoolSelect],
+		[divSelect, setDivSelect],
+		[sexSelect, setSexSelect],
+	];
+
+	const logout = () => {
+		signOut();
+		pb.authStore.clear();
+	};
+
+	return (
+		<schoolNameContext.Provider value={schoolData}>
+			<teamInfoContext.Provider value={teamInfo}>
+				<teamTestInfoContext.Provider value={teamTestInfo}>
+					<activePageContext.Provider value={activePage}>
+						<filterContext.Provider value={filterData}>
+							<scheduleGamesContext.Provider value={gameState}>
+								<App title="Scheduler">
+									<div className="flex h-screen w-screen flex-col ">
+										<div className="h-16 w-screen shrink-0 ">
+											<Link href="/" onClick={logout} className="my-border my-shadow smooth-scale absolute top-2 right-2 h-fit w-fit rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="h-6 w-6 fill-stark ">
+													<path d="M160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96C43 32 0 75 0 128V384c0 53 43 96 96 96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H96c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32h64zM504.5 273.4c4.8-4.5 7.5-10.8 7.5-17.4s-2.7-12.9-7.5-17.4l-144-136c-7-6.6-17.2-8.4-26-4.6s-14.5 12.5-14.5 22v72H192c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32H320v72c0 9.6 5.7 18.2 14.5 22s19 2 26-4.6l144-136z" />
+												</svg>
+											</Link>
+											<nav className="absolute inset-x-0 top-0 z-50 m-2 mx-auto box-border flex h-fit w-fit gap-2">
+												<SportSelect sport="Rugby" activePage={rugbyActive} setActivePage={() => setActivePage(0)} />
+												<button title="Compare Schedules" onClick={() => setActivePage(2)} type="button" className={`${compareActive ? 'bg-main' : 'bg-accent'} smooth my-border   my-shadow relative mx-auto h-10 w-10 select-none rounded-md duration-100 ease-in-out hover:scale-110 active:scale-90`}>
+													<svg className={`inset-0 m-auto h-4 w-4 ${compareActive ? 'fill-invert' : 'fill-stark'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+														<path d="M422.6 278.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L434.7 176H64c-17.7 0-32-14.3-32-32s14.3-32 32-32H434.7L377.4 54.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l112 112c12.5 12.5 12.5 32.8 0 45.3l-112 112zm-269.3 224l-112-112c-12.5-12.5-12.5-32.8 0-45.3l112-112c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3L141.3 336H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H141.3l57.4 57.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0z" />
+													</svg>
+												</button>
+												<SportSelect sport="Soccer" activePage={soccerActive} setActivePage={() => setActivePage(1)} />
+											</nav>
+										</div>
+										<div className="h-auto w-screen grow">
+											{rugbyActive ? <Sport activePage={activePage} /> : null}
+											{soccerActive ? <Sport activePage={activePage} /> : null}
+											{compareActive ? <Compare /> : null}
+										</div>
+									</div>
+								</App>
+							</scheduleGamesContext.Provider>
+						</filterContext.Provider>
+					</activePageContext.Provider>
+				</teamTestInfoContext.Provider>
+			</teamInfoContext.Provider>
+		</schoolNameContext.Provider>
+	);
+};
+export default Main;
+
+export async function getServerSideProps(context: any) {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
+	}
+
+	const records = await pb.collection('schools').getFullList(200 /* batch size */, {
+		sort: '-created',
+	});
+
+	const schoolData = records.map(elm => ({ school_name: elm.school_name, id: elm.id, div: elm.div, field: elm.has_field }));
+
+	const records2 = await pb.collection('teams').getFullList(200 /* batch size */, {
+		sort: '-created',
+	});
+
+	const teamsRaw = records2.map(elm => ({
+		school: elm.school_id,
+		srGames: elm.srGames,
+		jrGames: elm.jrGames,
+		team_color: elm.team_color,
+	}));
+
+	const records3 = await pb.collection('teamsTest').getFullList(200 /* batch size */, {
+		sort: '-created',
+	});
+
+	const teamTestRaw = records3.map(elm => ({
+		school_id: elm.school_name,
+		type: elm.teamType,
+		id: elm.id,
+		div: schoolData.filter(elm2 => elm2.id === elm.school_name)[0].div,
+	}));
+
+	return {
+		props: { schoolData, teamInfo: teamsRaw, teamTestInfo: teamTestRaw },
+	};
+}
+import PocketBase from 'pocketbase';
+
+const pb = new PocketBase('http://127.0.0.1:8090');
+
+const schoolNames = [
+	'william-aberhart-high-school ',
+	'st-francis-high-school ',
+	'bowness-high-school ',
+	'john-g-diefenbaker-high-school ',
+	'crescent-heights-high-school ',
+	'dr-gordon-townsend-school ',
+	'christine-meikle-school ',
+	'louise-dean-school ',
+	'james-fowler-high-school ',
+	'robert-thirsk-high-school ',
+	'sir-winston-churchill-high-school ',
+	'nelson-mandela-high-school ',
+	'lester-b-pearson-high-school ',
+	'notre-dame-high-school ',
+	'bishop-mcnally-high-school ',
+	'ernest-manning-high-school ',
+	'central-memorial-high-school ',
+	'william-roper-hull-school ',
+	'henry-wise-wood-high-school ',
+	'our-lady-of-lourdes-high-school ',
+	'bishop-carroll-high-school ',
+	'national-sport-school ',
+	'st-marys-high-school ',
+	'dr-ep-scarlett-high-school ',
+	'western-canada-high-school ',
+	'bishop-grandin-high-school ',
+	'st-anthony-school ',
+	'st-anne-academic-centre ',
+	'jack-james-high-school ',
+	'centennial-high-school ',
+	'lord-beaverbrook-high-school ',
+	'father-lacombe-high-school ',
+	'all-saints-high-school ',
+	'bishop-obyrne-high-school ',
+	'forest-lawn-high-school ',
+];
+
+const getRandomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+const randomArray = (size: number) =>
+	// eslint-disable-next-line implicit-arrow-linebreak
+	Array(size)
+		.fill(0)
+		.map(() => {
+			if (Math.random() > 0.5) {
+				return 1;
+			}
+			return 0;
+		});
+
+const colors = ['ff0000', 'ffff00', '00ff00', '00ffff', '0000ff', 'ff00ff'];
+
+const calculate = async () => {
+	// eslint-disable-next-line no-restricted-syntax, guard-for-in
+	for (const name of schoolNames) {
+		// example create data
+		const data = {
+			srGames: randomArray(121),
+			school_id: name,
+			jrGames: randomArray(121),
+			team_color: colors[getRandomInt(0, 5)],
+		};
+
+		// eslint-disable-next-line no-await-in-loop
+		await pb.collection('teams').create(data);
+	}
+};
+export default calculate;
+const arrayIsEqual = (a: Boolean[], b: Boolean[]) => Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((val, index) => val === b[index]);
+export default arrayIsEqual;
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable @typescript-eslint/no-loop-func */
+// /* eslint-disable import/prefer-default-export */
+// /* eslint-disable no-continue */
+// /* eslint-disable no-restricted-syntax */
+// Helper function to get a random date between start and end
+const getRandomArbitrary = (start: number, end: number): Date => new Date(start + Math.random() * (end - start));
+
+const getGameDay = (noWeekends: boolean, noDates: string[], startDate: Date, endDate: Date) => {
+	let gameDay;
+	do {
+		gameDay = new Date(getRandomArbitrary(startDate.getTime(), endDate.getTime()));
+		gameDay.setHours(0, 0, 0, 0);
+	} while ((noWeekends && (gameDay.getDay() === 0 || gameDay.getDay() === 6)) || noDates.includes(gameDay.toDateString()));
+	return gameDay;
+};
+
+export const scheduleGames = (teamsPerSubdivision: number[], subdivisions: number, noGamesOnWeekends: boolean, noGamesOnDates: string[], maxGamesPerTeam: number, seasonLength: number, startDate: Date, endDate: Date) => {
+	// Initialize the schedule as an empty array
+	const schedule = [];
+
+	// Initialize an array to keep track of the number of games played by each team
+	const gamesPlayed = [];
+	for (let sub = 0; sub < subdivisions; sub++) {
+		const numTeams = teamsPerSubdivision[sub];
+		for (let team = 0; team < numTeams; team++) {
+			gamesPlayed.push(0);
+		}
+	}
+	// Initialize a variable to keep track of the current week
+	let currentWeek = 0;
+
+	// Loop through each sub-division
+	for (let sub = 0; sub < subdivisions; sub++) {
+		const numTeams = teamsPerSubdivision[sub];
+		// Loop through each team in the current sub-division
+		for (let team = 0; team < numTeams; team++) {
+			// Loop through each opposing team
+			for (let opp = 0; opp < numTeams; opp++) {
+				// Make sure the opposing team is not the same as the current team and teams have played less than 6 games
+				if (opp !== team && gamesPlayed[sub * numTeams + team] < maxGamesPerTeam && gamesPlayed[sub * numTeams + opp] < maxGamesPerTeam) {
+					// Get a random day for the game that is not a weekend and not a no-game date
+					const gameDay = getGameDay(noGamesOnWeekends, noGamesOnDates, startDate, endDate);
+					// check that no team play more than one game per day
+					let team1Playing = false;
+					let team2Playing = false;
+					schedule.forEach(game => {
+						if (game.day === gameDay) {
+							if (game.team1 === `${sub}-${team}` || game.team2 === `${sub}-${team}`) {
+								team1Playing = true;
+							}
+							if (game.team1 === `${sub}-${opp}` || game.team2 === `${sub}-${opp}`) {
+								team2Playing = true;
+							}
+						}
+					});
+					if (!team1Playing && !team2Playing) {
+						// Add the game to the schedule
+						schedule.push({
+							team1: `${sub}-${team}`,
+							team2: `${sub}-${opp}`,
+							day: gameDay,
+							week: currentWeek,
+						});
+						gamesPlayed[sub * numTeams + team]++;
+						gamesPlayed[sub * numTeams + opp]++;
+						currentWeek++;
+						if (currentWeek > seasonLength) currentWeek = 0;
+					}
+				}
+			}
+		}
+	}
+	return schedule;
+};

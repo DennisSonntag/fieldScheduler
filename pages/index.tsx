@@ -79,7 +79,10 @@ const Login = () => {
 
 					<dialog className="my-shadow my-border absolute inset-0 m-auto aspect-square h-1/2 rounded-lg bg-main backdrop:bg-black backdrop:opacity-80" ref={dialogRef}>
 						<p className="my-shadow my-border absolute inset-x-0 top-4 mx-auto h-fit w-fit rounded-md bg-accent p-2 text-xl font-bold text-stark">Forgot Password</p>
-						<input type="text" name="email" className="my-border my-shadow valid-email absolute inset-0 m-auto h-10 w-3/4 rounded-md bg-white text-center" />
+						<input type="email" id="email" name="email" className="my-border my-shadow absolute inset-0 m-auto h-10 w-3/4 rounded-md bg-red-500 text-center valid:bg-green-500" />
+						<label htmlFor="email" className="absolute inset-x-0 top-40 mx-auto h-fit w-fit text-2xl font-bold">
+							Enter Email To Reset Password
+						</label>
 						<button type="button" onClick={closeModal} className="smooth-scale my-shadow my-border absolute top-4 right-4 h-fit w-fit rounded-md bg-accent hover:scale-110 active:scale-90">
 							<svg className="h-10 w-10 fill-stark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
 								<path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z" />

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-type PropType = {
+interface PropType {
 	selected: string[];
-};
+}
 const FilterChip = ({ selected }: PropType) => {
 	const [empty, setEmpty] = useState(true);
 

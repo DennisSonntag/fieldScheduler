@@ -21,6 +21,7 @@ export const scheduleGames = (teamsPerSubdivision: number[], subdivisions: numbe
 
 	// Initialize an array to keep track of the number of games played by each team
 	const gamesPlayed = [];
+
 	for (let sub = 0; sub < subdivisions; sub++) {
 		const numTeams = teamsPerSubdivision[sub];
 		for (let team = 0; team < numTeams; team++) {

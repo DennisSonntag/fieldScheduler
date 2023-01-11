@@ -4,9 +4,9 @@ import SideBtn from './SideBtn';
 import Middle from './Middle';
 import Left from './LeftPane';
 
-type PropType = {
+interface PropType {
 	activePage: number;
-};
+}
 
 const Sport = ({ activePage }: PropType) => {
 	const [leftOpen, setLeftOpen] = useState(true);

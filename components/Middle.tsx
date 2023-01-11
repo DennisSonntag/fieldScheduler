@@ -1,22 +1,21 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 import caret from '@svg/caret.svg';
 
 import Image from 'next/image';
 
-import { teamInfoContext, TeamType } from 'pages/main';
 import Calendar, { getDaysInMonth, monthNames } from './Calendar';
 import Title from './Title';
 import Download from './Download';
 import ViewBtn from './ViewBtn';
 import WeekCaret from './WeekCaret';
 
-type PropType = {
+interface PropType {
 	title: string;
-};
+}
 
 const Middle = ({ title }: PropType) => {
-	const data = useContext(teamInfoContext) as TeamType;
+	// const data = useContext(teamInfoContext) as TeamType;
 
 	const months = [2, 3, 4, 5];
 
@@ -42,7 +41,7 @@ const Middle = ({ title }: PropType) => {
 	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 	const [week, setWeek] = useState(1);
 	const [month, setMonth] = useState(2);
-	const monthTable = [2, 2, 2, 2, 23, 3, 3, 3, 3, 4, 4, 4, 4, 45];
+	// const monthTable = [2, 2, 2, 2, 23, 3, 3, 3, 3, 4, 4, 4, 4, 45];
 
 	const incWeek = () => {
 		if (week + 1 <= 18) {
@@ -99,7 +98,7 @@ const Middle = ({ title }: PropType) => {
 				{active === 0 ? (
 					<>
 						{months.map(monthParam => (
-							<Calendar school_name="sir-winston-churchill-high-school" seniority key={monthParam} data={data} month={monthParam} hover />
+							<Calendar key={monthParam} month={monthParam} hover />
 						))}
 					</>
 				) : null}
@@ -108,7 +107,7 @@ const Middle = ({ title }: PropType) => {
 						<button type="button" onClick={decMonth}>
 							<Image src={caret} alt="" className="smooth inv h-16 w-16 rotate-90 hover:scale-110 active:scale-95" />
 						</button>
-						<Calendar data={data} month={month} scale="scale-[100%]" />
+						<Calendar month={month} scale="scale-[100%]" />
 						<button type="button" onClick={incMonth}>
 							<Image src={caret} alt="" className="smooth inv h-16 w-16 rotate-[270deg] hover:scale-110 active:scale-95" />
 						</button>
