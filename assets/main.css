@@ -164,4 +164,7 @@
 	.bot-dash {
 		border-bottom: 2px dashed var(--color-invert);
 	}
+	.my-grid {
+		grid-template-columns: repeat(4, 1fr);
+	}
 }

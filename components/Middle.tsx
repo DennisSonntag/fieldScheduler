@@ -23,7 +23,7 @@ const Middle = ({ title }: PropType) => {
 	const [active, setActive] = useState(0);
 
 	const setNext = () => {
-		if (active === 3) {
+		if (active === 2) {
 			setActive(0);
 			return;
 		}
@@ -47,7 +47,7 @@ const Middle = ({ title }: PropType) => {
 	const incWeek = () => {
 		if (week + 1 <= 18) {
 			setWeek(prev => (prev += 1));
-			console.log(Number(String(monthTable[week + 1])[0]));
+			// console.log(Number(String(monthTable[week + 1])[0]));
 		}
 	};
 
@@ -55,7 +55,7 @@ const Middle = ({ title }: PropType) => {
 		if (week - 1 >= 1) {
 			setWeek(prev => (prev -= 1));
 			// setMonth(Math.floor(week / 4) + 2);
-			console.log(Number(String(monthTable[week + 1])[0]));
+			// console.log(Number(String(monthTable[week + 1])[0]));
 		}
 	};
 

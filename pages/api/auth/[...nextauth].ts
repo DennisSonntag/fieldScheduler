@@ -15,6 +15,7 @@ const authOptions: NextAuthOptions = {
 					email: string;
 					password: string;
 				};
+
 				await pb.collection('users').authWithPassword(email, password);
 				const id = pb.authStore.model?.id;
 				const record = await pb.collection('users').getOne(id as string, {
