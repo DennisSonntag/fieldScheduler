@@ -17,6 +17,7 @@
 		"jsx-a11y/label-has-associated-control": "off",
 		"react/function-component-definition": "off",
 		"react/jsx-one-expression-per-line": "off",
+		"react/jsx-props-no-spreading": "off",
 		"linebreak-style": ["off", "windows"],
 		"react-hooks/exhaustive-deps": "off",
 		"react/require-default-props": "off",

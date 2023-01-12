@@ -38,19 +38,6 @@
 		--color-svg-1: ;
 	}
 
-	.valid-email {
-		background-color: red;
-	}
-
-	.valid-email:valid {
-		background-color: green;
-	}
-
-	* {
-		user-drag: none;
-		user-select: none;
-	}
-
 	.my-shadow {
 		box-shadow: 5px 5px 0px 1px rgba(0, 0, 0, 0.74);
 	}

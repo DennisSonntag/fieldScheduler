@@ -1,9 +1,4 @@
 /* eslint-disable import/prefer-default-export */
-/* eslint-disable @typescript-eslint/no-loop-func */
-// /* eslint-disable import/prefer-default-export */
-// /* eslint-disable no-continue */
-// /* eslint-disable no-restricted-syntax */
-// Helper function to get a random date between start and end
 const getRandomArbitrary = (start: number, end: number): Date => new Date(start + Math.random() * (end - start));
 
 const getGameDay = (noWeekends: boolean, noDates: string[], startDate: Date, endDate: Date) => {

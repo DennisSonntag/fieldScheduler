@@ -102,8 +102,7 @@ const Login = () => {
 };
 export default Login;
 
-// eslint-disable-next-line consistent-return
-export async function getServerSideProps(context: any) {
+export const getServerSideProps = async (context: any) => {
 	const session = await getSession(context);
 	if (session) {
 		return {
@@ -119,4 +118,4 @@ export async function getServerSideProps(context: any) {
 			session,
 		},
 	};
-}
+};

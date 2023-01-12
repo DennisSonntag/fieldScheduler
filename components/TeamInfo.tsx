@@ -1,8 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/anchor-has-content */
-/* eslint-disable jsx-a11y/control-has-associated-label */
 import { Dispatch, SetStateAction, useRef } from 'react';
 import { divAtom, GameStateAtom, schoolDataAtom, schoolAtom, seniorityAtom, genderAtom } from 'pages/main';
 import { scheduleGames } from '@ts/matchUp';
@@ -15,7 +10,6 @@ const TeamInfo = () => {
 	const setGameData = useAtom(GameStateAtom)[1];
 	const [schoolData] = useAtom(schoolDataAtom);
 	const schoolNames = schoolData.map(elm => elm.school_name.trim());
-	console.log(schoolData);
 
 	const [divSelect, setDivSelect] = useAtom(divAtom);
 	const [schoolSelect, setSchoolSelect] = useAtom(schoolAtom);
@@ -53,9 +47,8 @@ const TeamInfo = () => {
 	const range = (x: number, y: number): number[] => (x > y ? [] : [x, ...range(x + 1, y)]);
 
 	return (
-		// eslint-disable-next-line react/jsx-no-comment-textnodes
 		<div className="relative flex h-full w-full flex-col gap-2">
-			<dialog onClick={e => e.stopPropagation()} ref={dialogRef} className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] rounded-xl bg-main backdrop:bg-black backdrop:opacity-80">
+			<dialog ref={dialogRef} className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] rounded-xl bg-main backdrop:bg-black backdrop:opacity-80">
 				<EditData close={closeModal} />
 			</dialog>
 
