@@ -1,5 +1,4 @@
-import { teamInfoContext } from 'pages/main';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import Calendar from './Calendar';
 
 const DatePicker = () => {
@@ -7,8 +6,6 @@ const DatePicker = () => {
 	const day = date.getDate();
 	const month = date.getMonth() + 1;
 	const year = date.getFullYear();
-
-	const data = useContext(teamInfoContext);
 
 	const [open, setOpen] = useState(false);
 	const handleClick = (e: any) => {
@@ -28,7 +25,7 @@ const DatePicker = () => {
 					</svg>
 				</button>
 			</div>
-			<div className="relative w-[80%]">{open ? <Calendar data={data} month={8} hover /> : null}</div>
+			<div className="relative w-[80%]">{open ? <Calendar month={8} hover /> : null}</div>
 		</>
 	);
 };

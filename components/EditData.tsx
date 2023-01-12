@@ -1,14 +1,14 @@
-import { schoolNameContext, SchoolType } from 'pages/main';
-import { FC, useContext, useState } from 'react';
+import { schoolDataAtom } from 'pages/main';
+import { FC, useState } from 'react';
 import Image from 'next/image';
 import arrow1 from '@svg/arrow1.svg';
+import { useAtom } from 'jotai';
 
 type PropTypes = {
 	close: () => void;
 };
 const EditData: FC<PropTypes> = ({ close }) => {
-	const schoolData = useContext(schoolNameContext) as SchoolType[];
-	// console.log(schoolData);
+	const schoolData = useAtom(schoolDataAtom)[0];
 	const [selected, setSelected] = useState(false);
 	type SelData = {
 		name: any;

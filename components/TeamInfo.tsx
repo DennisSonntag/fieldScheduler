@@ -1,53 +1,26 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import { Dispatch, SetStateAction, useContext, useRef } from 'react';
-import { filterContext, scheduleGamesContext, schoolNameContext, SchoolType } from 'pages/main';
-// import PocketBase, { Record } from 'pocketbase';
-// import { makeMatchPairings, matchFromDb, newTeamAlg, scheduleGames, separatePerTeam } from '@ts/matchUp';
+import { Dispatch, SetStateAction, useRef } from 'react';
+import { divAtom, GameStateAtom, schoolDataAtom, schoolAtom, seniorityAtom, genderAtom } from 'pages/main';
 import { scheduleGames } from '@ts/matchUp';
+import { useAtom } from 'jotai';
 import Filter from './Filter';
 import FilterChip from './FilterChip';
 import EditData from './EditData';
 
-// const pb = new PocketBase('http://127.0.0.1:8090');
-
 const TeamInfo = () => {
-	const setGameData = useContext(scheduleGamesContext)[1];
-	const schoolData = useContext(schoolNameContext) as SchoolType[];
-	// const teamTestInfo = useContext(teamTestInfoContext) as TeamTestInfo;
+	const setGameData = useAtom(GameStateAtom)[1];
+	const [schoolData] = useAtom(schoolDataAtom);
 	const schoolNames = schoolData.map(elm => elm.school_name.trim());
-	// const schoolIds = schoolData.map(elm => elm.id);
-	// const schoolInfo = schoolData.map(elm => {
-	// 	return {
-	// 		name: elm.school_name.trim(),
-	// 		id: elm.id,
-	// 	};
-	// });
+	console.log(schoolData);
 
-	// const teamsTest = useContext(teamInfoContext);
-	const filterData = useContext(filterContext);
-
-	const [divSelect, setDivSelect] = filterData[0];
-	const [schoolSelect, setSchoolSelect] = filterData[1];
-	const [senioritySelect, setSenioritySelect] = filterData[2];
-	const [genderSelect, setGenderSelect] = filterData[3];
-
-	const teams = [
-		{ name: 'Team 1', div: 1, 'sr/jr': 'sr' },
-		{ name: 'Team 2', div: 1, 'sr/jr': 'sr' },
-		{ name: 'Team 3', div: 1, 'sr/jr': 'sr' },
-		{ name: 'Team 4', div: 1, 'sr/jr': 'sr' },
-		{ name: 'Team 5', div: 1, 'sr/jr': 'sr' },
-		{ name: 'Team 6', div: 1, 'sr/jr': 'sr' },
-		{ name: 'Team 7', div: 1, 'sr/jr': 'sr' },
-		{ name: 'Team 8', div: 1, 'sr/jr': 'sr' },
-		{ name: 'Team 9', div: 1, 'sr/jr': 'sr' },
-		{ name: 'Team 10', div: 1, 'sr/jr': 'sr' },
-		{ name: 'Team 11', div: 1, 'sr/jr': 'sr' },
-		{ name: 'Team 12', div: 1, 'sr/jr': 'sr' },
-	];
+	const [divSelect, setDivSelect] = useAtom(divAtom);
+	const [schoolSelect, setSchoolSelect] = useAtom(schoolAtom);
+	const [senioritySelect, setSenioritySelect] = useAtom(seniorityAtom);
+	const [genderSelect, setGenderSelect] = useAtom(genderAtom);
 
 	const divisions = ['Div 1', 'Div 2', 'Div 3'];
 	const seniorities = ['Sr', 'Jr'];
@@ -67,67 +40,6 @@ const TeamInfo = () => {
 		dialog.close();
 	};
 
-	// const getTeamsFromName = async (name: string): Promise<Record[]> =>
-	// 	pb.collection('teamsTest').getFullList(200 /* batch size */, {
-	// 		sort: '-created',
-	// 		filter: `school_name="${schoolInfo.filter(elm => elm.name === name)[0].id}"`,
-	// 	});
-
-	// const getTeamsFromType = async (teamType: number): Promise<Record[]> =>
-	// 	pb.collection('teamsTest').getFullList(200 /* batch size */, {
-	// 		sort: '-created',
-	// 		filter: `teamType=${teamType}`,
-	// 	});
-
-	// const getTeamsFromDiv = async (div: number): Promise<Record[][]> => {
-	// 	const test3 = await pb.collection('schools').getFullList(200 /* batch size */, {
-	// 		sort: '-created',
-	// 		filter: `div=${div}`,
-	// 	});
-	// 	const idList = test3.map(elm => elm.id);
-
-	// 	const divTeams = [];
-	// 	// eslint-disable-next-line no-restricted-syntax
-	// 	for (const ID of idList) {
-	// 		// eslint-disable-next-line no-await-in-loop
-	// 		const records = await pb.collection('teamsTest').getFullList(200 /* batch size */, {
-	// 			sort: '-created',
-	// 			filter: `school_name="${ID}"`,
-	// 		});
-	// 		divTeams.push(records);
-	// 	}
-	// 	return divTeams;
-	// };
-
-	// const getTeamsFromDivAndType = async (div: number, type: number): Promise<Record[][]> => {
-	// 	const test3 = await pb.collection('schools').getFullList(200 /* batch size */, {
-	// 		sort: '-created',
-	// 		filter: `div=${div}`,
-	// 	});
-
-	// 	const idList = test3.map(elm => elm.id);
-
-	// 	const divTeams = [];
-	// 	// eslint-disable-next-line no-restricted-syntax
-	// 	for (const ID of idList) {
-	// 		// eslint-disable-next-line no-await-in-loop
-	// 		const records = await pb.collection('teamsTest').getFullList(200 /* batch size */, {
-	// 			sort: '-created',
-	// 			filter: `school_name="${ID}" && teamType=${type}`,
-	// 		});
-	// 		divTeams.push(records);
-	// 	}
-	// 	return divTeams;
-	// };
-	// const nameFromSchoolId = (id: string): string => schoolInfo.filter(elm3 => elm3.id === id)[0].name;
-
-	// const teamIdToSchoolId = (teamId: string): string => teamTestInfo.filter(elm => elm.id === teamId)[0].school_id;
-
-	// const idToName = (id: string): string => nameFromSchoolId(teamIdToSchoolId(id));
-
-	// const idToType = (id: string): number => teamTestInfo.filter(elm => elm.id === id)[0].type;
-	// const schoolIdToDiv = (id: string): number => schoolData.filter(elm => elm.id === id)[0].div;
-
 	const handleClickTest = async () => {
 		const startDate = new Date('2023-3-1');
 		const endDate = new Date('2023-6-30');
@@ -137,6 +49,8 @@ const TeamInfo = () => {
 		// const gameDays = res.map(elm => elm.day);
 		setGameData(res);
 	};
+
+	const range = (x: number, y: number): number[] => (x > y ? [] : [x, ...range(x + 1, y)]);
 
 	return (
 		// eslint-disable-next-line react/jsx-no-comment-textnodes
@@ -169,8 +83,8 @@ const TeamInfo = () => {
 			<FilterChip selected={genderSelect as string[]} />
 
 			<div className=" z-0 grid h-auto grow grid-cols-3 gap-4 p-2">
-				{teams.map(team => (
-					<div key={team.name} className="smooth-scale no-move my-border my-shadow relative grid h-full w-full cursor-pointer place-content-center rounded-md bg-main text-center text-invert hover:scale-105 active:scale-90 ">
+				{range(1, 12).map(() => (
+					<div key={crypto.randomUUID()} className="smooth-scale no-move my-border my-shadow relative grid h-full w-full cursor-pointer place-content-center rounded-md bg-main text-center text-invert hover:scale-105 active:scale-90 ">
 						<p className="h-fit w-fit text-center">{schoolSelect as string[]}</p>
 						<p className="h-fit w-fit text-center">{senioritySelect as string[]}</p>
 						<p className="h-fit w-fit text-center">{divSelect as string[]}</p>

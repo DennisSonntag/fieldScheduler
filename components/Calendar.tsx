@@ -1,5 +1,6 @@
-import { GameType, scheduleGamesContext } from 'pages/main';
-import { FC, useContext, useState } from 'react';
+import { useAtom } from 'jotai';
+import { GameStateAtom, GameType } from 'pages/main';
+import { FC, useState } from 'react';
 
 type PropType = {
 	month: number;
@@ -10,7 +11,7 @@ export const getDaysInMonth = (yearArg: number, monthArg: number) => new Date(ye
 
 export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
-	const gameData: GameType = useContext(scheduleGamesContext)[0];
+	const gameData: GameType[] = useAtom(GameStateAtom)[0];
 	const year = 2022;
 	const date = new Date(year, month);
 
@@ -63,7 +64,7 @@ const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 	const [dateHover, setDateHover] = useState(false);
 	const [dateInfo, setDateInfo] = useState<any[]>([]);
 
-	const handleMouseEnter = (dataParam: GameType) => {
+	const handleMouseEnter = (dataParam: GameType[]) => {
 		setDateHover(true);
 		setDateInfo(dataParam);
 	};
@@ -97,7 +98,7 @@ const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 					const gameDays = gameData.map(elm => elm.day);
 					const currentData: Date[] = gameDays.filter(elm => elm.toString() === currentDate.toString());
 					if (currentData.length !== 0) {
-						const teamsData = gameData.filter(elm => currentData.includes(elm.day)) as GameType;
+						const teamsData = gameData.filter(elm => currentData.includes(elm.day));
 						// days with events
 						return (
 							<button onMouseEnter={() => handleMouseEnter(teamsData)} onMouseLeave={() => setDateHover(false)} type="button" key={crypto.randomUUID()} className="h-11/12 my-border relative aspect-square w-11/12 cursor-pointer rounded-full bg-accent hover:scale-110 active:scale-95">

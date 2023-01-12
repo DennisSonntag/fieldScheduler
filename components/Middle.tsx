@@ -44,15 +44,12 @@ const Middle: FC<PropType> = ({ title }) => {
 	const incWeek = () => {
 		if (week + 1 <= 18) {
 			setWeek(prev => (prev += 1));
-			// console.log(Number(String(monthTable[week + 1])[0]));
 		}
 	};
 
 	const decWeek = () => {
 		if (week - 1 >= 1) {
 			setWeek(prev => (prev -= 1));
-			// setMonth(Math.floor(week / 4) + 2);
-			// console.log(Number(String(monthTable[week + 1])[0]));
 		}
 	};
 
