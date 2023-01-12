@@ -3,14 +3,15 @@ import seasonIcon from '@svg/year.svg';
 import weekIcon from '@svg/week.svg';
 import dayIcon from '@svg/day.svg';
 import Image from 'next/image';
+import { FC } from 'react';
 
-interface PropType {
+type PropType = {
 	setPrevState: (e: any) => void;
 	setNextState: () => void;
 	iconNum: number;
-}
+};
 
-const ViewBtn = ({ setNextState, setPrevState, iconNum }: PropType) => {
+const ViewBtn: FC<PropType> = ({ setNextState, setPrevState, iconNum }) => {
 	const icons = [seasonIcon, monthIcon, weekIcon, dayIcon];
 	const texts = ['Season', 'Month', 'Week', 'Day'];
 	return (

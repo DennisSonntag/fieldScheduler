@@ -1,14 +1,10 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
 import SideBtn from './SideBtn';
 import Middle from './Middle';
 import Left from './LeftPane';
 
-interface PropType {
-	activePage: number;
-}
-
-const Sport = ({ activePage }: PropType) => {
+const Sport: FC<{ activePage: number }> = ({ activePage }) => {
 	const [leftOpen, setLeftOpen] = useState(true);
 	return (
 		<main className="flex h-full w-full flex-row overflow-hidden">

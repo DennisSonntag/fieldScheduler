@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
 import caret from '@svg/caret.svg';
 
@@ -10,13 +10,11 @@ import Download from './Download';
 import ViewBtn from './ViewBtn';
 import WeekCaret from './WeekCaret';
 
-interface PropType {
+type PropType = {
 	title: string;
-}
+};
 
-const Middle = ({ title }: PropType) => {
-	// const data = useContext(teamInfoContext) as TeamType;
-
+const Middle: FC<PropType> = ({ title }) => {
 	const months = [2, 3, 4, 5];
 
 	const [active, setActive] = useState(0);

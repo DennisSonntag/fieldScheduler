@@ -1,17 +1,17 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import caret from '@svg/caret.svg';
 import Image from 'next/image';
 
-interface PropType {
+type PropType = {
 	title: string;
 	options: string[];
 	selected: string[];
 	scroll?: boolean;
 	setSelected: Dispatch<SetStateAction<string[]>>;
-}
+};
 
-const Filter = ({ title, setSelected, options, selected, scroll = false }: PropType) => {
+const Filter: FC<PropType> = ({ title, setSelected, options, selected, scroll = false }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [highlightedIndex, setHighlightedIndex] = useState(0);
 	const containerRef = useRef<HTMLDivElement>(null);

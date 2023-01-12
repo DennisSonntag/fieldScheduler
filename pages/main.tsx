@@ -1,4 +1,4 @@
-import { createContext, Dispatch, SetStateAction, useState } from 'react';
+import { createContext, Dispatch, FC, SetStateAction, useState } from 'react';
 
 import SportSelect from '@components/SportSelect';
 import Compare from '@components/Compare';
@@ -10,36 +10,30 @@ import { getSession, signOut } from 'next-auth/react';
 
 const pb = new PocketBase('http://127.0.0.1:8090');
 
-// eslint-disable-next-line @typescript-eslint/comma-dangle
-export interface TeamTypeItem {
-	srGames: number[];
-	jrGames: number[];
-	team_color: string;
-	school: string;
-}
+export type TeamType = [
+	{
+		srGames: number[];
+		jrGames: number[];
+		team_color: string;
+		school: string;
+	}
+];
 
-export interface TeamType extends Array<TeamTestInfoItem> {}
-
-export interface SchoolType {
+export type SchoolType = {
 	school_name: string;
 	id: string;
 	div: number;
 	field: boolean;
-}
+};
 
-export interface TeamTestInfoItem {
-	school_id: string;
-	type: number;
-	id: string;
-	div: number;
-}
-interface TeamTestInfo extends Array<TeamTestInfoItem> {}
-
-interface PropType {
-	schoolData: SchoolType[];
-	teamInfo: TeamType;
-	teamTestInfo: TeamTestInfo;
-}
+export type TeamTestInfo = [
+	{
+		school_id: string;
+		type: number;
+		id: string;
+		div: number;
+	}
+];
 
 export const activePageContext = createContext<number>(0);
 export const schoolNameContext = createContext<SchoolType[]>([]);
@@ -50,16 +44,22 @@ export const scheduleGamesContext = createContext<any[]>([]);
 
 export const filterContext = createContext<(string[] | Dispatch<SetStateAction<string[]>>)[][]>([[]]);
 
-export interface GameTypeItem {
-	team1: string;
-	team2: string;
-	day: Date;
-	week: number;
-}
+export type GameType = [
+	{
+		team1: string;
+		team2: string;
+		day: Date;
+		week: number;
+	}
+];
 
-export interface GameType extends Array<GameTypeItem> {}
+type PropType = {
+	schoolData: SchoolType[];
+	teamInfo: TeamType;
+	teamTestInfo: TeamTestInfo;
+};
 
-const Main = ({ schoolData, teamInfo, teamTestInfo }: PropType) => {
+const Main: FC<PropType> = ({ schoolData, teamInfo, teamTestInfo }) => {
 	const [activePage, setActivePage] = useState(0);
 	const compareActive = activePage === 2;
 	const soccerActive = activePage === 1;
@@ -70,7 +70,7 @@ const Main = ({ schoolData, teamInfo, teamTestInfo }: PropType) => {
 	const [divSelect, setDivSelect] = useState<string[]>([]);
 	const [sexSelect, setSexSelect] = useState<string[]>([]);
 
-	const gameState = useState<GameType>([]);
+	const gameState = useState<GameType>();
 
 	// eslint-disable-next-line react/jsx-no-constructed-context-values
 	const filterData = [

@@ -1,20 +1,20 @@
 import { schoolNameContext, SchoolType } from 'pages/main';
-import { useContext, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import Image from 'next/image';
 import arrow1 from '@svg/arrow1.svg';
 
-interface PropTypes {
+type PropTypes = {
 	close: () => void;
-}
-const EditData = ({ close }: PropTypes) => {
+};
+const EditData: FC<PropTypes> = ({ close }) => {
 	const schoolData = useContext(schoolNameContext) as SchoolType[];
 	// console.log(schoolData);
 	const [selected, setSelected] = useState(false);
-	interface SelData {
+	type SelData = {
 		name: any;
 		div: any;
 		field: any;
-	}
+	};
 	const [selData, setSelData] = useState<SelData>();
 
 	const handleSelect = (name: string, div: number, field: boolean) => {

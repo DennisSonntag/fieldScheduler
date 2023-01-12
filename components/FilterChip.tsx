@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
-interface PropType {
+type PropType = {
 	selected: string[];
-}
-const FilterChip = ({ selected }: PropType) => {
+};
+const FilterChip: FC<PropType> = ({ selected }) => {
 	const [empty, setEmpty] = useState(true);
 
 	useEffect(() => {

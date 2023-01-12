@@ -1,12 +1,9 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
 import DateInfo from './DateInfo';
 import TeamInfo from './TeamInfo';
 
-interface PropType {
-	leftOpen: boolean;
-}
-const Left = ({ leftOpen }: PropType) => {
+const Left: FC<{ leftOpen: boolean }> = ({ leftOpen }) => {
 	const [active, setActive] = useState(true);
 
 	return (

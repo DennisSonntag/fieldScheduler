@@ -1,18 +1,15 @@
 import { GameType, scheduleGamesContext } from 'pages/main';
-import { useContext, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 
-interface PropType {
+type PropType = {
 	month: number;
 	hover?: boolean;
 	scale?: string;
-	// data: TeamType;
-	// school_name?: string;
-	// seniority?: boolean;
-}
+};
 export const getDaysInMonth = (yearArg: number, monthArg: number) => new Date(yearArg, monthArg, 0).getDate();
 
 export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const Calendar = ({ month, hover = false, scale = '' }: PropType) => {
+const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 	const gameData: GameType = useContext(scheduleGamesContext)[0];
 	const year = 2022;
 	const date = new Date(year, month);
@@ -100,7 +97,7 @@ const Calendar = ({ month, hover = false, scale = '' }: PropType) => {
 					const gameDays = gameData.map(elm => elm.day);
 					const currentData: Date[] = gameDays.filter(elm => elm.toString() === currentDate.toString());
 					if (currentData.length !== 0) {
-						const teamsData = gameData.filter(elm => currentData.includes(elm.day));
+						const teamsData = gameData.filter(elm => currentData.includes(elm.day)) as GameType;
 						// days with events
 						return (
 							<button onMouseEnter={() => handleMouseEnter(teamsData)} onMouseLeave={() => setDateHover(false)} type="button" key={crypto.randomUUID()} className="h-11/12 my-border relative aspect-square w-11/12 cursor-pointer rounded-full bg-accent hover:scale-110 active:scale-95">
