@@ -16,13 +16,14 @@ const authOptions: NextAuthOptions = {
 					password: string;
 				};
 
-				await pb.collection('users').authWithPassword(email, password);
+				const user = await pb.collection('users').authWithPassword(email, password);
 				const id = pb.authStore.model?.id;
+
 				const record = await pb.collection('users').getOne(id as string, {
 					expand: 'relField1,relField2.subRelField',
 				});
 
-				return { id, name: record.name, email };
+				return { id, name: record.name, email, user };
 			},
 		}),
 	],

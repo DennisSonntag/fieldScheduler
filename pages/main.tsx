@@ -1,5 +1,4 @@
-import { createContext, Dispatch, FC, SetStateAction, useState } from 'react';
-
+import { FC, useState } from 'react';
 import SportSelect from '@components/SportSelect';
 import Compare from '@components/Compare';
 import Sport from '@components/Sport';
@@ -24,10 +23,6 @@ export type TeamType = {
 	id: string;
 	div: number;
 };
-
-export const scheduleGamesContext = createContext<any[]>([]);
-
-export const filterContext = createContext<(string[] | Dispatch<SetStateAction<string[]>>)[][]>([[]]);
 
 export type GameType = {
 	team1: string;

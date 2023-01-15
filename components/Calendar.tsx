@@ -28,6 +28,7 @@ const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 	}
 
 	const days = [];
+
 	for (let i = 1; i <= daysInMonth; i++) {
 		days.push(i);
 	}
@@ -41,32 +42,21 @@ const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 
 	const currentWeekEnds: number[] = [];
 
-	const dayThing = (yearArg: number, i: number, arr: number[]) => {
-		const nextDate = new Date(yearArg, month, i);
-		if (nextDate.getDay() === 0 || nextDate.getDay() === 6) {
-			arr.push(i);
-		}
-	};
-
 	for (let i = 1; i <= daysInMonth; i++) {
-		dayThing(year, i, currentWeekEnds);
+		const nextDate = new Date(year, month, i);
+		if (nextDate.getDay() === 0 || nextDate.getDay() === 6) {
+			currentWeekEnds.push(i);
+		}
 	}
 
 	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-	// const getBigDay = (currentMonth: number): number => {
-	// 	if (currentMonth === 2) {
-	// 		return 0;
-	// 	}
-	// 	return getDaysInMonth(year, currentMonth) + getBigDay(currentMonth - 1);
-	// };
-
 	const [dateHover, setDateHover] = useState(false);
-	const [dateInfo, setDateInfo] = useState<any[]>([]);
+	const [currentDateInfo, setCurrentDateInfo] = useState<any[]>([]);
 
-	const handleMouseEnter = (dataParam: GameType[]) => {
+	const handleMouseEnter = (currentDate: GameType[]) => {
 		setDateHover(true);
-		setDateInfo(dataParam);
+		setCurrentDateInfo(currentDate);
 	};
 
 	return (
@@ -102,7 +92,7 @@ const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 						// days with events
 						return (
 							<button onMouseEnter={() => handleMouseEnter(teamsData)} onMouseLeave={() => setDateHover(false)} type="button" key={crypto.randomUUID()} className="h-11/12 my-border relative aspect-square w-11/12 cursor-pointer rounded-full bg-accent hover:scale-110 active:scale-95">
-								<p className="absolute inset-0 m-auto h-fit w-fit font-bold text-stark ">{day}</p>
+								<p className="absolute inset-0 m-auto h-fit w-fit font-bold text-stark">{day}</p>
 							</button>
 						);
 					}
@@ -122,7 +112,7 @@ const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 			</div>
 			{dateHover ? (
 				<div className="my-border my-shadow absolute inset-x-0 bottom-[-100%] mx-auto h-fit w-fit flex-col gap-2 rounded-md p-2 font-bold">
-					{dateInfo.map(elm => (
+					{currentDateInfo.map(elm => (
 						<div className="my-border h-fit w-fit">
 							<p className="relative h-fit w-fit">
 								{elm.team1} vs {elm.team2}

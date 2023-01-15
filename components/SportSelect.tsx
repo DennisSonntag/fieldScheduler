@@ -11,4 +11,5 @@ const SportSelect: FC<PropType> = ({ activePage, setActivePage, sport }) => (
 		<h1 className={`${activePage ? 'text-invert' : 'text-stark'} absolute inset-0 m-auto inline-block h-fit w-fit text-lg font-bold`}>{sport}</h1>
 	</button>
 );
+
 export default SportSelect;

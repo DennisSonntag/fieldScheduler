@@ -10,16 +10,16 @@ type PropTypes = {
 const EditData: FC<PropTypes> = ({ close }) => {
 	const schoolData = useAtom(schoolDataAtom)[0];
 	const [selected, setSelected] = useState(false);
-	type SelData = {
+	type SelectedDataType = {
 		name: any;
 		div: any;
 		field: any;
 	};
-	const [selData, setSelData] = useState<SelData>();
+	const [selectedData, setSelectedData] = useState<SelectedDataType>();
 
 	const handleSelect = (name: string, div: number, field: boolean) => {
 		setSelected(true);
-		setSelData({
+		setSelectedData({
 			name,
 			div,
 			field,
@@ -43,9 +43,9 @@ const EditData: FC<PropTypes> = ({ close }) => {
 						<Image src={arrow1} alt="Dark/Light mode toggle button" className="my-border inv my-shadow smooth-scale absolute top-2 left-2 h-10 w-10 rounded-md bg-accent p-2 hover:scale-105 active:scale-95" />
 					</button>
 					<div className="my-border my-shadow absolute inset-0 m-auto h-fit w-fit rounded-md p-2">
-						<p className="font-bold">{selData?.name}</p>
-						<p>Div {selData?.div}</p>
-						<p className={selData?.field ? 'text-green-500' : 'text-bug'}>Has field {String(selData?.field)}</p>
+						<p className="font-bold">{selectedData?.name}</p>
+						<p>Div {selectedData?.div}</p>
+						<p className={selectedData?.field ? 'text-green-500' : 'text-bug'}>Has field {String(selectedData?.field)}</p>
 					</div>
 					<div className="absolute inset-x-0 bottom-40 mx-auto h-fit w-fit flex-col gap-2">
 						<div>
@@ -63,11 +63,11 @@ const EditData: FC<PropTypes> = ({ close }) => {
 				</div>
 			) : (
 				<div className="my-grid mt-32 grid h-fit w-full gap-10">
-					{schoolData.map(elm => (
-						<button type="button" onClick={() => handleSelect(elm.school_name, elm.div, elm.field)} className="my-border my-shadow smooth-scale relative m-auto h-fit w-fit rounded-md p-2 text-center hover:scale-110 active:scale-90">
-							<p className="font-bold">{elm.school_name}</p>
-							<p>Div {elm.div}</p>
-							<p className={elm.field ? 'text-green-500' : 'text-bug'}>Has field {String(elm.field)}</p>
+					{schoolData.map(school => (
+						<button key={school.school_name} type="button" onClick={() => handleSelect(school.school_name, school.div, school.field)} className="my-border my-shadow smooth-scale relative m-auto h-fit w-fit rounded-md p-2 text-center hover:scale-110 active:scale-90">
+							<p className="font-bold">{school.school_name}</p>
+							<p>Div {school.div}</p>
+							<p className={school.field ? 'text-green-500' : 'text-bug'}>Has field {String(school.field)}</p>
 						</button>
 					))}
 				</div>

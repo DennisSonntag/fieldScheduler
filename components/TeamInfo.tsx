@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useRef } from 'react';
 import { divAtom, GameStateAtom, schoolDataAtom, schoolAtom, seniorityAtom, genderAtom } from 'pages/main';
-import { scheduleGames } from '@ts/matchUp';
+import scheduleGames from '@ts/matchUp';
 import { useAtom } from 'jotai';
 import Filter from './Filter';
 import FilterChip from './FilterChip';
@@ -34,14 +34,13 @@ const TeamInfo = () => {
 		dialog.close();
 	};
 
-	const handleClickTest = async () => {
+	const handleClickCalculate = async () => {
 		const startDate = new Date('2023-3-1');
 		const endDate = new Date('2023-6-30');
 		const teamsPerSubdivision = [6, 12, 8, 4, 10, 6, 12, 8, 4, 10, 6, 12];
 		const noGamesOnDates = ['2023-4-1'];
-		const res = scheduleGames(teamsPerSubdivision, 12, true, noGamesOnDates, 6, 16, startDate, endDate);
-		// const gameDays = res.map(elm => elm.day);
-		setGameData(res);
+		const result = scheduleGames(teamsPerSubdivision, 12, true, noGamesOnDates, 6, 16, startDate, endDate);
+		setGameData(result);
 	};
 
 	const range = (x: number, y: number): number[] => (x > y ? [] : [x, ...range(x + 1, y)]);
@@ -60,7 +59,7 @@ const TeamInfo = () => {
 				Edit Team data
 			</button>
 
-			<button title="Edit Team Data" onClick={handleClickTest} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
+			<button title="Edit Team Data" onClick={handleClickCalculate} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
 				Calculate Schedule
 			</button>
 			<div className="my-col-3 grid h-fit w-full auto-rows-auto items-center justify-around gap-2">

@@ -6,9 +6,13 @@ import eyeClosed from '@svg/eyeClosed.svg';
 import { getSession, signIn } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useMutation } from 'react-query';
+import { z } from 'zod';
+import PocketBase from 'pocketbase';
+
+const pb = new PocketBase('http://127.0.0.1:8090');
 
 const Login = () => {
-	const [error, setError] = useState(false);
 	const dialogRef = useRef(null);
 
 	const forgotPassword = () => {
@@ -23,21 +27,48 @@ const Login = () => {
 	};
 
 	const [eyeState, setEyeState] = useState(false);
+	const [hasError, setHasError] = useState(false);
 
 	const router = useRouter();
-	const [userInfo, setUserInfo] = useState({ email: '', password: '' });
+
+	const userEmailValid = z.string().email();
+
+	type UserEmailType = z.infer<typeof userEmailValid>;
+
+	const [userEmail, setUserEmail] = useState<UserEmailType>('');
+
+	const userPasswordValid = z.string();
+
+	type UserPasswordType = z.infer<typeof userPasswordValid>;
+
+	const [userPassword, setUserPassword] = useState<UserPasswordType>('');
+
+	const {
+		data,
+		isLoading,
+		mutate: loginUser,
+	} = useMutation({
+		mutationFn: () =>
+			signIn('credentials', {
+				email: userEmail,
+				password: userPassword,
+				redirect: false,
+			}),
+	});
+
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async e => {
 		e.preventDefault();
-		const res = await signIn('credentials', {
-			email: userInfo.email,
-			password: userInfo.password,
-			redirect: false,
-		});
-		if (res?.ok) {
-			setError(false);
+
+		loginUser();
+
+		console.log('isLoading', isLoading);
+		console.log('data', data);
+
+		if (data?.ok) {
+			setHasError(false);
 			router.push('/main');
 		} else {
-			setError(true);
+			setHasError(true);
 		}
 	};
 
@@ -46,26 +77,26 @@ const Login = () => {
 	};
 
 	useEffect(() => {
-		if (error) {
+		if (hasError) {
 			setTimeout(() => {
-				setError(false);
-			}, 5000);
+				setHasError(false);
+			}, 2000);
 		}
-	}, [error]);
+	}, [hasError]);
 
 	return (
 		<App title="Login">
 			<form onSubmit={handleSubmit} className=" absolute inset-0 m-auto flex h-fit w-fit flex-col text-invert">
 				<h1 className="my-shadow my-border absolute inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-2 text-center text-2xl font-bold">Sign In</h1>
 				<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
-					<input value={userInfo.email} onChange={({ target }) => setUserInfo({ ...userInfo, email: target.value })} type="email" autoComplete="off" className="input h-8 w-52 overflow-hidden rounded-md border-0 text-red-500 outline-0 valid:text-green-500" />
+					<input value={userEmail} onChange={({ target }) => setUserEmail(target.value)} type="email" autoComplete="off" className="input h-8 w-52 overflow-hidden rounded-md border-0 text-red-500 outline-0 valid:text-green-500" />
 					<label htmlFor="email" className="label text-lg ">
 						Email
 					</label>
 				</div>
 
 				<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
-					<input value={userInfo.password} onChange={({ target }) => setUserInfo({ ...userInfo, password: target.value })} type={eyeState ? 'text' : 'password'} className="input h-8 w-52 overflow-hidden rounded-md border-0 outline-0" />
+					<input value={userPassword} onChange={({ target }) => setUserPassword(target.value)} type={eyeState ? 'text' : 'password'} className="input h-8 w-52 overflow-hidden rounded-md border-0 outline-0" />
 					<label htmlFor="password" className="label text-lg ">
 						Password
 					</label>
@@ -93,8 +124,8 @@ const Login = () => {
 						</button>
 					</dialog>
 
-					<p className={`h-fit w-fit text-center font-bold text-bug duration-300 ${error ? 'opacity-100' : 'opacity-0'}`}>Invalid Info!</p>
-					<input type="submit" value="Login" className={`${error ? 'bg-bug' : 'bg-accent'}  my-shadow my-border w-fit rounded-md p-2 duration-75 hover:scale-110 active:scale-90`} />
+					<p className={`h-fit w-fit text-center font-bold text-bug duration-300 ${hasError ? 'opacity-100' : 'opacity-0'}`}>Invalid Info!</p>
+					<input type="submit" value={isLoading ? 'Loading...' : 'Login'} className={`${hasError ? 'bg-bug' : 'bg-accent'}  my-shadow my-border w-fit rounded-md p-2 duration-75 hover:scale-110 active:scale-90`} />
 				</div>
 			</form>
 		</App>
