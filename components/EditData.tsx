@@ -11,17 +11,15 @@ const EditData: FC<PropTypes> = ({ close }) => {
 	const schoolData = useAtom(schoolDataAtom)[0];
 	const [selected, setSelected] = useState(false);
 	type SelectedDataType = {
-		name: any;
-		div: any;
-		field: any;
+		name: string;
+		field: number;
 	};
 	const [selectedData, setSelectedData] = useState<SelectedDataType>();
 
-	const handleSelect = (name: string, div: number, field: boolean) => {
+	const handleSelect = (name: string, field: number) => {
 		setSelected(true);
 		setSelectedData({
 			name,
-			div,
 			field,
 		});
 	};
@@ -44,7 +42,6 @@ const EditData: FC<PropTypes> = ({ close }) => {
 					</button>
 					<div className="my-border my-shadow absolute inset-0 m-auto h-fit w-fit rounded-md p-2">
 						<p className="font-bold">{selectedData?.name}</p>
-						<p>Div {selectedData?.div}</p>
 						<p className={selectedData?.field ? 'text-green-500' : 'text-bug'}>Has field {String(selectedData?.field)}</p>
 					</div>
 					<div className="absolute inset-x-0 bottom-40 mx-auto h-fit w-fit flex-col gap-2">
@@ -64,9 +61,8 @@ const EditData: FC<PropTypes> = ({ close }) => {
 			) : (
 				<div className="my-grid mt-32 grid h-fit w-full gap-10">
 					{schoolData.map(school => (
-						<button key={school.school_name} type="button" onClick={() => handleSelect(school.school_name, school.div, school.field)} className="my-border my-shadow smooth-scale relative m-auto h-fit w-fit rounded-md p-2 text-center hover:scale-110 active:scale-90">
+						<button key={school.school_name} type="button" onClick={() => handleSelect(school.school_name, school.field)} className="my-border my-shadow smooth-scale relative m-auto h-fit w-fit rounded-md p-2 text-center hover:scale-110 active:scale-90">
 							<p className="font-bold">{school.school_name}</p>
-							<p>Div {school.div}</p>
 							<p className={school.field ? 'text-green-500' : 'text-bug'}>Has field {String(school.field)}</p>
 						</button>
 					))}

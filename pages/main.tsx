@@ -8,13 +8,13 @@ import Link from 'next/link';
 import { getSession, signOut } from 'next-auth/react';
 import { Provider as JotaiProvider, useAtom, atom } from 'jotai';
 
-const pb = new PocketBase('http://127.0.0.1:8090');
+const pb = new PocketBase('https://schedulerdatabase.fly.dev');
 
 export type SchoolType = {
 	school_name: string;
 	id: string;
-	div: number;
-	field: boolean;
+	code: string;
+	field: number;
 };
 
 export type TeamType = {
@@ -108,17 +108,17 @@ export const getServerSideProps = async (context: any) => {
 		sort: '-created',
 	});
 
-	const schoolData = records.map(elm => ({ school_name: elm.school_name, id: elm.id, div: elm.div, field: elm.has_field }));
+	const schoolData = records.map(elm => ({ school_name: elm.school_name, code: elm.school_code, id: elm.id, field: elm.has_field }));
 
-	const records3 = await pb.collection('teamsTest').getFullList(200 /* batch size */, {
+	const records2 = await pb.collection('teams').getFullList(200 /* batch size */, {
 		sort: '-created',
 	});
 
-	const teamRaw = records3.map(elm => ({
-		school_id: elm.school_name,
-		type: elm.teamType,
+	const teamRaw = records2.map(elm => ({
+		school_id: elm.school,
+		type: elm.team_type,
 		id: elm.id,
-		div: schoolData.filter(elm2 => elm2.id === elm.school_name)[0].div,
+		div: elm.div,
 	}));
 
 	return {

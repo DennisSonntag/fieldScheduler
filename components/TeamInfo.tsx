@@ -45,15 +45,44 @@ const TeamInfo = () => {
 
 	const range = (x: number, y: number): number[] => (x > y ? [] : [x, ...range(x + 1, y)]);
 
+	// type NameType = {
+	// 	[key: string]: string;
+	// };
+
+	// const nameMap: NameType = {
+	// 	Centennial: 'CEN',
+	// 	'Notre Dame': 'ND',
+	// 	'St. Francis': 'SF',
+	// 	'Western Canada': 'WC',
+	// 	'Ernest Manning': 'EM',
+	// 	'All Saints': 'AS',
+	// 	Bowness: 'BOW',
+	// 	'Crescent Heights': 'CH',
+	// 	'Henry Wise Wood': 'HWW',
+	// 	'Our Lady Of The Rockies': 'OLR',
+	// 	'Joane Cardinal Schubert-TBD': 'JC',
+	// 	'John G. Diefenbaker': 'JGD',
+	// 	'Sir Winston Churchill': 'SWC',
+	// 	'William Aberhart': 'WA',
+	// 	'Bishop Carroll': 'BC',
+	// 	'Bishop McNally': 'BM',
+	// 	'Central Memorial': 'CM',
+	// 	'Forest Lawn': 'FL',
+	// 	'Lester B. Pearson': 'LBP',
+	// 	'Nelson Mandela': 'NM',
+	// 	'Robert Thirsk': 'RT',
+	// 	'St. Mary’s': 'SM',
+	// 	'Lord Beaverbrook': 'LB',
+	// 	'Bishop O’Byrne': 'BOB',
+	// 	'Dr. E.P. Scarlett': 'EPS',
+	// 	'Queen Elizabeth': 'QE',
+	// };
+
 	return (
 		<div className="relative flex h-full w-full flex-col gap-2">
 			<dialog ref={dialogRef} className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] rounded-xl bg-main backdrop:bg-black backdrop:opacity-80">
 				<EditData close={closeModal} />
 			</dialog>
-
-			{/* <button title="Edit Team Data" onClick={handleClickTest} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
-				Test
-			</button> */}
 
 			<button title="Edit Team Data" onClick={handleClick} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
 				Edit Team data

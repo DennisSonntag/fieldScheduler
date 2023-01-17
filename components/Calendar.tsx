@@ -7,6 +7,7 @@ type PropType = {
 	hover?: boolean;
 	scale?: string;
 };
+
 export const getDaysInMonth = (yearArg: number, monthArg: number) => new Date(yearArg, monthArg, 0).getDate();
 
 export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -61,7 +62,7 @@ const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 
 	return (
 		<div onMouseLeave={() => setDateHover(false)} className={` my-border my-shadow aspect-square h-fit w-full rounded-lg bg-main p-2 ${hover ? 'hover:scale-110' : null} ${scale || null} relative m-auto duration-150 ease-in-out`}>
-			<h1 className="inset-0 mx-auto my-2 h-fit w-fit text-center text-2xl font-bold text-invert">{monthNames[month]}</h1>
+			<h1 className="inset-0 mx-auto my-2 h-fit w-fit text-center text-2xl font-bold text-invert">{Intl.DateTimeFormat('en', { month: 'long' }).format(new Date(month))}</h1>
 			<div className="grid-rows-7 text-md grid h-full grid-cols-7 text-center">
 				{weekDays.map(day => (
 					<div key={crypto.randomUUID()} className="h-full w-full text-center font-bold text-invert">
