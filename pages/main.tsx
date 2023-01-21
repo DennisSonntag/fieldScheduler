@@ -5,8 +5,9 @@ import Sport from '@components/Sport';
 import PocketBase from 'pocketbase';
 import App from '@components/App';
 import Link from 'next/link';
-import { getSession, signOut } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import { Provider as JotaiProvider, useAtom, atom } from 'jotai';
+import { Schedule } from '@ts/matchUp';
 
 const pb = new PocketBase('https://schedulerdatabase.fly.dev');
 
@@ -17,36 +18,30 @@ export type SchoolType = {
 	field: number;
 };
 
-export type TeamType = {
-	school_id: string;
+type TeamPropType = {
+	school: string;
 	type: number;
+	field: number;
 	id: string;
 	div: number;
 };
 
-export type GameType = {
-	team1: string;
-	team2: string;
-	day: Date;
-	week: number;
-};
-
 type PropType = {
 	schoolData: SchoolType[];
-	// teamInfo: TeamType[];
+	teamInfo: TeamPropType[];
 };
 
 export const schoolDataAtom = atom<SchoolType[]>([]);
-export const TeamInfoAtom = atom<TeamType[]>([]);
+export const TeamInfoAtom = atom<TeamPropType[]>([]);
 export const ActivePageAtom = atom<number>(0);
-export const GameStateAtom = atom<GameType[]>([]);
+export const ScheduleAtom = atom<Schedule[]>([]);
 
 export const seniorityAtom = atom<string[]>([]);
 export const schoolAtom = atom<string[]>([]);
 export const divAtom = atom<string[]>([]);
 export const genderAtom = atom<string[]>([]);
 
-const Main: FC<PropType> = ({ schoolData }) => {
+const Main: FC<PropType> = ({ schoolData, teamInfo }) => {
 	const [activePage, setActivePage] = useState(0);
 	const compareActive = activePage === 2;
 	const soccerActive = activePage === 1;
@@ -62,7 +57,12 @@ const Main: FC<PropType> = ({ schoolData }) => {
 	setActivePageAtom(activePage);
 
 	return (
-		<JotaiProvider initialValues={[[schoolDataAtom, schoolData]]}>
+		<JotaiProvider
+			initialValues={[
+				[schoolDataAtom, schoolData],
+				[TeamInfoAtom, teamInfo],
+			]}
+		>
 			<App title="Scheduler">
 				<div className="flex h-screen w-screen flex-col ">
 					<div className="h-16 w-screen shrink-0 ">
@@ -93,16 +93,17 @@ const Main: FC<PropType> = ({ schoolData }) => {
 };
 export default Main;
 
-export const getServerSideProps = async (context: any) => {
-	const session = await getSession(context);
-	if (!session) {
-		return {
-			redirect: {
-				destination: '/',
-				permanent: false,
-			},
-		};
-	}
+// export const getServerSideProps = async (context: any) => {
+export const getServerSideProps = async () => {
+	// const session = await getSession(context);
+	// if (!session) {
+	// 	return {
+	// 		redirect: {
+	// 			destination: '/',
+	// 			permanent: false,
+	// 		},
+	// 	};
+	// }
 
 	const records = await pb.collection('schools').getFullList(200 /* batch size */, {
 		sort: '-created',
@@ -115,8 +116,9 @@ export const getServerSideProps = async (context: any) => {
 	});
 
 	const teamRaw = records2.map(elm => ({
-		school_id: elm.school,
+		school: schoolData.filter(elm2 => elm2.id === elm.school)[0].school_name,
 		type: elm.team_type,
+		field: schoolData.filter(elm2 => elm2.id === elm.school)[0].field,
 		id: elm.id,
 		div: elm.div,
 	}));

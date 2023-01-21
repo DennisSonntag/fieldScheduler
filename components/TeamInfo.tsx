@@ -1,14 +1,18 @@
 import { Dispatch, SetStateAction, useRef } from 'react';
-import { divAtom, GameStateAtom, schoolDataAtom, schoolAtom, seniorityAtom, genderAtom } from 'pages/main';
-import scheduleGames from '@ts/matchUp';
+import { divAtom, ScheduleAtom, schoolDataAtom, schoolAtom, seniorityAtom, genderAtom, TeamInfoAtom } from 'pages/main';
 import { useAtom } from 'jotai';
+import PocketBase from 'pocketbase';
+import generateSchedule, { Team } from '@ts/matchUp';
 import Filter from './Filter';
 import FilterChip from './FilterChip';
 import EditData from './EditData';
 
+const pb = new PocketBase('https://schedulerdatabase.fly.dev');
+
 const TeamInfo = () => {
-	const setGameData = useAtom(GameStateAtom)[1];
+	const setGameData = useAtom(ScheduleAtom)[1];
 	const [schoolData] = useAtom(schoolDataAtom);
+	const [teamData] = useAtom(TeamInfoAtom);
 	const schoolNames = schoolData.map(elm => elm.school_name.trim());
 
 	const [divSelect, setDivSelect] = useAtom(divAtom);
@@ -35,11 +39,28 @@ const TeamInfo = () => {
 	};
 
 	const handleClickCalculate = async () => {
-		const startDate = new Date('2023-3-1');
-		const endDate = new Date('2023-6-30');
-		const teamsPerSubdivision = [6, 12, 8, 4, 10, 6, 12, 8, 4, 10, 6, 12];
-		const noGamesOnDates = ['2023-4-1'];
-		const result = scheduleGames(teamsPerSubdivision, 12, true, noGamesOnDates, 6, 16, startDate, endDate);
+		// console.log(teamData);
+		const TeamTypes = ['srBoys', 'jrBoys', 'srGirls', 'jrGirls'];
+		const FieldNames = ['none', 'single', 'double'];
+
+		const teams: Team[] = teamData.map(elm => ({
+			schoolName: elm.school as string,
+			teamType: TeamTypes[elm.type - 1],
+			skillDivision: elm.div,
+			field: 'single',
+			alternateFields: 'cru',
+			gamesPlayed: 0,
+			opponents: [],
+		}));
+		const unavailableDates: Date[] = [
+			/* array of dates */
+		];
+		// Number of referees
+		const maxGamesPerDay: number = 10;
+		const seasonLength: number = 16;
+
+		const result = generateSchedule(teams, maxGamesPerDay, seasonLength, unavailableDates);
+
 		setGameData(result);
 	};
 
@@ -78,11 +99,21 @@ const TeamInfo = () => {
 	// 	'Queen Elizabeth': 'QE',
 	// };
 
+	const testFunc = () => {
+		pb.authStore.onChange(() => {
+			console.log(pb.authStore.model);
+		});
+	};
+
 	return (
 		<div className="relative flex h-full w-full flex-col gap-2">
 			<dialog ref={dialogRef} className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] rounded-xl bg-main backdrop:bg-black backdrop:opacity-80">
 				<EditData close={closeModal} />
 			</dialog>
+
+			<button title="Edit Team Data" onClick={testFunc} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
+				Test
+			</button>
 
 			<button title="Edit Team Data" onClick={handleClick} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
 				Edit Team data

@@ -1,0 +1,47 @@
+Pretend you are an expert in programming with modern typescript and creating sports scheduling algorithms
+
+Take note of the following type declerations but dont do anything with them yet "
+type TeamType = 'srBoys' | 'jrBoys' | 'srGirls' | 'jrGirls';
+type DivType = 1 | 2 | 3;
+type Team = {
+	schoolName: string;
+	teamType: TeamType;
+	skillDivision: DivType;
+	field: 'none' | 'single' | 'double';
+	alternateFields?: 'cru' | 'irish';
+	gamesPlayed: number;
+};
+
+type TimeType = '4:45pm' | '6pm';
+
+type Schedule = {
+	date: Date;
+	time: TimeType;
+	homeTeam: Team;
+	awayTeam: Team;
+	field?: 'cru' | 'irish';
+};
+"
+
+Use the above type declerations to write code for am idempotent matchmaking and scheduling algorithm using TypeScript (without using classes) without external libraries for a sports league that consists of 12 sub-divisions. 
+-Each sub-division will have a minimum of 4 to a maximum of 12 teams. 
+-Each sub-division is composed of 3 skill divisions (either, div 1, div 2 or div 3) and 4 team types resulting in a total of 12 possible sub-divisions (srBoys, jrBoys, srGirls, jrGirls) 
+-A school can have multiple team types within (e.g. schoolName: SchoolA, skillDivision: 1, teams: [srboys, jrgirls]) 
+-A school can have up too 4 teams, each having a skill division and type (e.g. schoolName: SchoolA,teams: [{type: srboys, div: 1}, {type: jrGirls, div: 2}])
+-A school can have a variety of field requirements 
+-A school could not have a field and will either have "cru" or "irish" as their alternative field
+-A school could have a field where 1 game a day can be played at either "4:45pm" or "6pm"
+-A school could have a double header field meaning 2 games can be played one at 4:45pm and one at 6pm
+-The algorithm should take into consideration the following contstraints
+-No games on weekends 
+-No games on specified dates 
+-A team will always play 6 games per season even if it means playing the same team multiple times
+-A team will preferable play 3 home games and 3 away games 
+-A teams games should be spread evenly accross the season 
+-A team cannot play 2 games on the same day 
+-Games can start at either 4:45pm or 6pm 
+-The season is 16 weeks long. 
+-There is a specified number of referees for the season which will determine the maxiumum number of games that can be played a day
+-The algorithm should never schedule games on Fridays.
+-Only teams with the same skillDivision and teamType can play each other
+There should be no randomness and the algorithm should generate the same result every time

@@ -20,6 +20,7 @@
 		"@types/react-dom": "18.0.10",
 		"@typescript-eslint/eslint-plugin": "^5.48.2",
 		"@typescript-eslint/parser": "^5.48.2",
+		"crypto-js": "^4.1.1",
 		"csv-stringify": "^6.2.3",
 		"jotai": "^1.13.1",
 		"next": "13.1.2",
@@ -29,11 +30,13 @@
 		"react-csv": "^2.2.2",
 		"react-dom": "18.2.0",
 		"react-query": "^3.39.2",
+		"seedrandom": "^3.0.5",
 		"typescript": "4.9.4",
 		"zod": "^3.20.2"
 	},
 	"devDependencies": {
 		"@types/react-csv": "^1.1.3",
+		"@types/seedrandom": "^3.0.4",
 		"autoprefixer": "^10.4.13",
 		"eslint": "^8.32.0",
 		"eslint-config-airbnb": "^19.0.4",

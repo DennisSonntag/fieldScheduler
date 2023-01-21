@@ -1,5 +1,6 @@
+import { Schedule } from '@ts/matchUp';
 import { useAtom } from 'jotai';
-import { GameStateAtom, GameType } from 'pages/main';
+import { ScheduleAtom } from 'pages/main';
 import { FC, useState } from 'react';
 
 type PropType = {
@@ -12,8 +13,9 @@ export const getDaysInMonth = (yearArg: number, monthArg: number) => new Date(ye
 
 export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
-	const gameData: GameType[] = useAtom(GameStateAtom)[0];
-	const year = 2022;
+	const gameData: Schedule[] = useAtom(ScheduleAtom)[0];
+
+	const year = 2023;
 	const date = new Date(year, month);
 
 	const firstDayIndex = date.getDay() - 1;
@@ -55,14 +57,14 @@ const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 	const [dateHover, setDateHover] = useState(false);
 	const [currentDateInfo, setCurrentDateInfo] = useState<any[]>([]);
 
-	const handleMouseEnter = (currentDate: GameType[]) => {
+	const handleMouseEnter = (currentDate: Schedule[]) => {
 		setDateHover(true);
 		setCurrentDateInfo(currentDate);
 	};
 
 	return (
 		<div onMouseLeave={() => setDateHover(false)} className={` my-border my-shadow aspect-square h-fit w-full rounded-lg bg-main p-2 ${hover ? 'hover:scale-110' : null} ${scale || null} relative m-auto duration-150 ease-in-out`}>
-			<h1 className="inset-0 mx-auto my-2 h-fit w-fit text-center text-2xl font-bold text-invert">{Intl.DateTimeFormat('en', { month: 'long' }).format(new Date(month))}</h1>
+			<h1 className="inset-0 mx-auto my-2 h-fit w-fit text-center text-2xl font-bold text-invert">{monthNames[month]}</h1>
 			<div className="grid-rows-7 text-md grid h-full grid-cols-7 text-center">
 				{weekDays.map(day => (
 					<div key={crypto.randomUUID()} className="h-full w-full text-center font-bold text-invert">
@@ -86,10 +88,13 @@ const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 						);
 					}
 					const currentDate = new Date(2023, month, day);
-					const gameDays = gameData.map(elm => elm.day);
-					const currentData: Date[] = gameDays.filter(elm => elm.toString() === currentDate.toString());
+
+					const gameDays = gameData.map(elm => elm.date);
+
+					const currentData: Date[] = gameDays.filter(elm => elm.toISOString().split('T')[0] === currentDate.toISOString().split('T')[0]);
+
 					if (currentData.length !== 0) {
-						const teamsData = gameData.filter(elm => currentData.includes(elm.day));
+						const teamsData = gameData.filter(elm => currentData.includes(elm.date));
 						// days with events
 						return (
 							<button onMouseEnter={() => handleMouseEnter(teamsData)} onMouseLeave={() => setDateHover(false)} type="button" key={crypto.randomUUID()} className="h-11/12 my-border relative aspect-square w-11/12 cursor-pointer rounded-full bg-accent hover:scale-110 active:scale-95">
@@ -118,7 +123,8 @@ const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 							<p className="relative h-fit w-fit">
 								{elm.team1} vs {elm.team2}
 							</p>
-							<p className="relative h-fit w-fit">{elm.day.toLocaleString('en-us').split(' ')[0]}</p>
+							{/* <p className="relative h-fit w-fit">{elm.day.toLocaleString('en-us').split(' ')[0]}</p> */}
+							<p className="relative h-fit w-fit">{elm.day}</p>
 						</div>
 					))}
 				</div>
