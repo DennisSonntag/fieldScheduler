@@ -9,11 +9,11 @@ const TeamInput = () => (
 					<p className="text-center text-lg font-bold">Gender</p>
 					<div className="my-border h-fit w-fit">
 						<p>Boys</p>
-						<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block flex h-fit w-fit" />
+						<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit" />
 					</div>
 					<div className="my-border h-fit w-fit">
 						<p>Girls</p>
-						<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block flex h-fit w-fit" />
+						<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit" />
 					</div>
 				</div>
 
@@ -21,11 +21,11 @@ const TeamInput = () => (
 					<p className="text-center text-lg font-bold">Seniroity</p>
 					<div className="my-border h-fit w-fit">
 						<p>Sr</p>
-						<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block flex h-fit w-fit" />
+						<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit" />
 					</div>
 					<div className="my-border h-fit w-fit">
 						<p>Jr</p>
-						<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block flex h-fit w-fit" />
+						<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit" />
 					</div>
 				</div>
 
@@ -33,15 +33,15 @@ const TeamInput = () => (
 					<p className="text-center text-lg font-bold">Division</p>
 					<div className="my-border h-fit w-fit">
 						<p>Div 1</p>
-						<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block flex h-fit w-fit" />
+						<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit" />
 					</div>
 					<div className="my-border h-fit w-fit">
 						<p>Div 2</p>
-						<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block flex h-fit w-fit" />
+						<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block  h-fit w-fit" />
 					</div>
 					<div className="my-border h-fit w-fit">
 						<p>Div 3</p>
-						<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block flex h-fit w-fit" />
+						<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block  h-fit w-fit" />
 					</div>
 				</div>
 			</div>
@@ -66,12 +66,12 @@ const SchoolInput = ({ id, setState, state }: SchoolInputProps) => {
 
 	const removeSelf = () => {
 		const array = state;
-		// const index = array.indexOf(id);
-		// if (index > -1) {
-		// 	// only splice array when item is found
-		// 	array.splice(index, 1); // 2nd parameter means remove one item only
-		// }
-		array.pop();
+		const index = array.indexOf(id);
+		if (index > -1) {
+			// only splice array when item is found
+			array.splice(index, 1); // 2nd parameter means remove one item only
+		}
+		// array.pop();
 
 		setState(array);
 	};
@@ -98,30 +98,30 @@ const SchoolInput = ({ id, setState, state }: SchoolInputProps) => {
 				<div className="h-full w-fit flex-col justify-center">
 					<div className="my-border h-fit w-fit justify-center">
 						<p>Alternate Field</p>
-						<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block flex h-fit w-fit" />
+						<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit" />
 					</div>
 
 					<div className="my-border relative inset-x-0 mx-auto flex h-fit w-fit gap-2">
 						<div>
 							<p>Cru</p>
-							<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block flex h-fit w-fit" />
+							<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit" />
 						</div>
 
 						<div>
 							<p>Irish</p>
-							<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block flex h-fit w-fit" />
+							<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit" />
 						</div>
 					</div>
 				</div>
 
 				<div className="my-border h-fit w-fit">
 					<p>Single Field</p>
-					<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block flex h-fit w-fit" />
+					<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit" />
 				</div>
 
 				<div className="my-border h-fit w-fit">
 					<p>Double Header Field</p>
-					<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block flex h-fit w-fit" />
+					<input type="checkbox" className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit" />
 				</div>
 			</div>
 			<button onClick={enlaregeArray} type="button" className="my-border my-shadow smooth-scale relative inset-x-0 mx-auto w-fit rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
@@ -140,7 +140,7 @@ const CreateData = () => {
 	const [schools, setSchools] = useState<number[]>([]);
 
 	const enlaregeArray = () => {
-		setSchools(prev => [...prev, prev.at(-1) + 1]);
+		setSchools(prev => [...prev, 1]);
 	};
 
 	return (

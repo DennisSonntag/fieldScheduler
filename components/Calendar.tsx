@@ -6,13 +6,12 @@ import { FC, useState, Dispatch, SetStateAction } from 'react';
 type PropType = {
 	month: number;
 	setOpen: Dispatch<SetStateAction<boolean>>;
-	setDate: Dispatch<SetStateAction<Date>>;
 };
 
 export const getDaysInMonth = (yearArg: number, monthArg: number) => new Date(yearArg, monthArg, 0).getDate();
 
 export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const Calendar: FC<PropType> = ({ month, setOpen, setDate }) => {
+const Calendar: FC<PropType> = ({ month, setOpen }) => {
 	const gameData: Game[] = useAtom(ScheduleAtom)[0];
 	const schoolData: SchoolType[] = useAtom(SchoolDataAtom)[0];
 	const seniority: string[] = useAtom(seniorityAtom)[0].map(elm => elm.toLowerCase());
@@ -61,7 +60,7 @@ const Calendar: FC<PropType> = ({ month, setOpen, setDate }) => {
 
 	const [currentDateInfo, setCurrentDateInfo] = useState<Game[]>([]);
 
-	const handleMouseEnter = (dateInfo: Game[], currentDate: Date) => {
+	const handleMouseEnter = (dateInfo: Game[]) => {
 		setCurrentDateInfo(dateInfo);
 		// setDate(currentDate);
 	};
@@ -103,7 +102,6 @@ const Calendar: FC<PropType> = ({ month, setOpen, setDate }) => {
 							return true;
 						}
 
-
 						return genderBool && divBool && seniorityBool && schoolBool;
 					});
 
@@ -115,7 +113,7 @@ const Calendar: FC<PropType> = ({ month, setOpen, setDate }) => {
 						const teamsData = filteredData.filter(elm => currentData.includes(elm.date));
 						// days with events
 						return (
-							<button onClick={() => setOpen(true)} onMouseEnter={() => handleMouseEnter(teamsData, currentDate)} type="button" key={crypto.randomUUID()} className="h-11/12 my-border group relative aspect-square w-11/12 cursor-pointer rounded-full bg-accent hover:scale-110 active:scale-95">
+							<button onClick={() => setOpen(true)} onMouseEnter={() => handleMouseEnter(teamsData)} type="button" key={crypto.randomUUID()} className="h-11/12 my-border group relative aspect-square w-11/12 cursor-pointer rounded-full bg-accent hover:scale-110 active:scale-95">
 								<p className="absolute inset-0 m-auto h-fit w-fit font-bold text-stark">{day}</p>
 								<div className="my-border my-shadow absolute left-1/2 top-[-.5rem] hidden h-fit w-fit translate-x-[-50%] translate-y-[-100%] flex-col rounded-md bg-main group-hover:block">
 									{currentDateInfo.map(elm => (

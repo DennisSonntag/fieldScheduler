@@ -24,11 +24,11 @@ const DateInfo = () => {
 				<div className="flex gap-2">
 					<div className="flex-col text-center">
 						<p>Start</p>
-						<input type="date" className="smooth-scale my-border my-shadow  rounded-md bg-accent p-2 text-center hover:scale-105 active:scale-95" onChange={e => setStartDate(e.target.valueAsDate)} />
+						<input type="date" className="smooth-scale my-border my-shadow  rounded-md bg-accent p-2 text-center hover:scale-105 active:scale-95" onChange={e => setStartDate(e.target.valueAsDate as Date)} />
 					</div>
 					<div className="flex-col text-center">
 						<p>End</p>
-						<input type="date" className="smooth-scale my-border my-shadow  rounded-md bg-accent p-2 text-center hover:scale-105 active:scale-95" onChange={e => setStartDate(e.target.valueAsDate)} />
+						<input type="date" className="smooth-scale my-border my-shadow  rounded-md bg-accent p-2 text-center hover:scale-105 active:scale-95" onChange={e => setEndDate(e.target.valueAsDate as Date)} />
 					</div>
 				</div>
 				<button onClick={changeDates} type="button" className="smooth-scale my-border my-shadow rounded-md bg-accent p-2 hover:scale-110 active:scale-90">

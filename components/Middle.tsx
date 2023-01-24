@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 
 import caret from '@svg/caret.svg';
 // import arrow1 from '@svg/arrow1.svg';
@@ -117,7 +117,6 @@ const Middle: FC<PropType> = ({ title }) => {
 	};
 
 	const [gameOpen, setGameOpen] = useState(false);
-	const [date, setDate] = useState<Date>(new Date());
 
 	return (
 		<section className="hover-fade relative flex h-full w-full flex-col overflow-hidden">
@@ -132,7 +131,7 @@ const Middle: FC<PropType> = ({ title }) => {
 				{active === 0 ? (
 					<>
 						{months.map(monthParam => (
-							<Calendar setDate={setDate} setOpen={setGameOpen} month={monthParam} />
+							<Calendar setOpen={setGameOpen} month={monthParam} />
 						))}
 					</>
 				) : null}
@@ -141,7 +140,7 @@ const Middle: FC<PropType> = ({ title }) => {
 						<button type="button" onClick={decrementMonth}>
 							<Image src={caret} alt="" className="smooth inv h-16 w-16 rotate-90 hover:scale-110 active:scale-95" />
 						</button>
-						<Calendar setDate={setDate} setOpen={setGameOpen} month={month} />
+						<Calendar setOpen={setGameOpen} month={month} />
 						<button type="button" onClick={incrementMonth}>
 							<Image src={caret} alt="" className="smooth inv h-16 w-16 rotate-[270deg] hover:scale-110 active:scale-95" />
 						</button>

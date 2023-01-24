@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai';
 import { SchoolDataAtom } from 'pages/main';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import arrow1 from '@svg/arrow1.svg';
 import Image from 'next/image';
 
