@@ -1,8 +1,7 @@
 import { Dispatch, SetStateAction, useRef } from 'react';
-import { divAtom, ScheduleAtom, schoolDataAtom, schoolAtom, seniorityAtom, genderAtom, TeamInfoAtom } from 'pages/main';
+import { divAtom, ScheduleAtom, SchoolDataAtom, schoolAtom, seniorityAtom, genderAtom, TeamInfoAtom } from 'pages/main';
 import { useAtom } from 'jotai';
 import PocketBase from 'pocketbase';
-import generateSchedule, { Team } from '@ts/matchUp';
 import Filter from './Filter';
 import FilterChip from './FilterChip';
 import EditData from './EditData';
@@ -10,9 +9,7 @@ import EditData from './EditData';
 const pb = new PocketBase('https://schedulerdatabase.fly.dev');
 
 const TeamInfo = () => {
-	const setGameData = useAtom(ScheduleAtom)[1];
-	const [schoolData] = useAtom(schoolDataAtom);
-	const [teamData] = useAtom(TeamInfoAtom);
+	const [schoolData] = useAtom(SchoolDataAtom);
 	const schoolNames = schoolData.map(elm => elm.school_name.trim());
 
 	const [divSelect, setDivSelect] = useAtom(divAtom);
@@ -36,32 +33,6 @@ const TeamInfo = () => {
 		const dialog = dialogRef.current as unknown as any;
 
 		dialog.close();
-	};
-
-	const handleClickCalculate = async () => {
-		// console.log(teamData);
-		const TeamTypes = ['srBoys', 'jrBoys', 'srGirls', 'jrGirls'];
-		const FieldNames = ['none', 'single', 'double'];
-
-		const teams: Team[] = teamData.map(elm => ({
-			schoolName: elm.school as string,
-			teamType: TeamTypes[elm.type - 1],
-			skillDivision: elm.div,
-			field: 'single',
-			alternateFields: 'cru',
-			gamesPlayed: 0,
-			opponents: [],
-		}));
-		const unavailableDates: Date[] = [
-			/* array of dates */
-		];
-		// Number of referees
-		const maxGamesPerDay: number = 10;
-		const seasonLength: number = 16;
-
-		const result = generateSchedule(teams, maxGamesPerDay, seasonLength, unavailableDates);
-
-		setGameData(result);
 	};
 
 	const range = (x: number, y: number): number[] => (x > y ? [] : [x, ...range(x + 1, y)]);
@@ -99,11 +70,11 @@ const TeamInfo = () => {
 	// 	'Queen Elizabeth': 'QE',
 	// };
 
-	const testFunc = () => {
-		pb.authStore.onChange(() => {
-			console.log(pb.authStore.model);
-		});
-	};
+	// const testFunc = () => {
+	// 	pb.authStore.onChange(() => {
+	// 		console.log(pb.authStore.model);
+	// 	});
+	// };
 
 	return (
 		<div className="relative flex h-full w-full flex-col gap-2">
@@ -111,17 +82,14 @@ const TeamInfo = () => {
 				<EditData close={closeModal} />
 			</dialog>
 
-			<button title="Edit Team Data" onClick={testFunc} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
-				Test
-			</button>
+			{/* <button title="Edit Team Data" onClick={testFunc} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90"> */}
+			{/* 	Test */}
+			{/* </button> */}
 
 			<button title="Edit Team Data" onClick={handleClick} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
 				Edit Team data
 			</button>
 
-			<button title="Edit Team Data" onClick={handleClickCalculate} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
-				Calculate Schedule
-			</button>
 			<div className="my-col-3 grid h-fit w-full auto-rows-auto items-center justify-around gap-2">
 				<Filter options={divisions} title="Div" selected={divSelect as string[]} setSelected={setDivSelect as Dispatch<SetStateAction<string[]>>} />
 				<Filter scroll options={schoolNames} title="School" selected={schoolSelect as string[]} setSelected={setSchoolSelect as Dispatch<SetStateAction<string[]>>} />
@@ -134,16 +102,16 @@ const TeamInfo = () => {
 			<FilterChip selected={senioritySelect as string[]} />
 			<FilterChip selected={genderSelect as string[]} />
 
-			<div className=" z-0 grid h-auto grow grid-cols-3 gap-4 p-2">
-				{range(1, 12).map(() => (
-					<div key={crypto.randomUUID()} className="smooth-scale no-move my-border my-shadow relative grid h-full w-full cursor-pointer place-content-center rounded-md bg-main text-center text-invert hover:scale-105 active:scale-90 ">
-						<p className="h-fit w-fit text-center">{schoolSelect as string[]}</p>
-						<p className="h-fit w-fit text-center">{senioritySelect as string[]}</p>
-						<p className="h-fit w-fit text-center">{divSelect as string[]}</p>
-						<p className="h-fit w-fit text-center">{genderSelect as string[]}</p>
-					</div>
-				))}
-			</div>
+			{/* <div className=" z-0 grid h-auto grow grid-cols-3 gap-4 p-2"> */}
+			{/* 	{range(1, 12).map(() => ( */}
+			{/* 		<div key={crypto.randomUUID()} className="smooth-scale no-move my-border my-shadow relative grid h-full w-full cursor-pointer place-content-center rounded-md bg-main text-center text-invert hover:scale-105 active:scale-90 "> */}
+			{/* 			<p className="h-fit w-fit text-center">{schoolSelect as string[]}</p> */}
+			{/* 			<p className="h-fit w-fit text-center">{senioritySelect as string[]}</p> */}
+			{/* 			<p className="h-fit w-fit text-center">{divSelect as string[]}</p> */}
+			{/* 			<p className="h-fit w-fit text-center">{genderSelect as string[]}</p> */}
+			{/* 		</div> */}
+			{/* 	))} */}
+			{/* </div> */}
 		</div>
 	);
 };

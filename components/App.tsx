@@ -28,7 +28,7 @@ const App: FC<PropType> = ({ children, title }) => {
 		<>
 			<Head>
 				<meta name="viewport" content="width=device-width" />
-				<link rel="icon" type="image/svg+xml" href="public\icon.svg" />
+				<link rel="icon" type="image/svg+xml" href="../public/icon.svg" />
 				<title> {title} </title>
 			</Head>
 			<Background theme={theme}>

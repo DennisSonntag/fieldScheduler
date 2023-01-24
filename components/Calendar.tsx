@@ -1,6 +1,6 @@
 import { Schedule } from '@ts/matchUp';
 import { useAtom } from 'jotai';
-import { ScheduleAtom } from 'pages/main';
+import { divAtom, genderAtom, ScheduleAtom, schoolAtom, SchoolDataAtom, SchoolType, seniorityAtom } from 'pages/main';
 import { FC, useState } from 'react';
 
 type PropType = {
@@ -14,6 +14,16 @@ export const getDaysInMonth = (yearArg: number, monthArg: number) => new Date(ye
 export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 	const gameData: Schedule[] = useAtom(ScheduleAtom)[0];
+	const schoolData: SchoolType[] = useAtom(SchoolDataAtom)[0];
+	const seniority: string[] = useAtom(seniorityAtom)[0].map(elm => elm.toLowerCase());
+	const school: string[] = useAtom(schoolAtom)[0];
+	const div: number[] = useAtom(divAtom)[0].map(elm => Number(elm.slice(-1)));
+	const gender: string[] = useAtom(genderAtom)[0].map(elm => elm.toLowerCase());
+
+	// console.log('seniority', seniority);
+	// console.log('school', school);
+	// console.log('div', div);
+	// console.log('gender', gender);
 
 	const year = 2023;
 	const date = new Date(year, month);
@@ -54,16 +64,14 @@ const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 
 	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-	const [dateHover, setDateHover] = useState(false);
-	const [currentDateInfo, setCurrentDateInfo] = useState<any[]>([]);
+	const [currentDateInfo, setCurrentDateInfo] = useState<Schedule[]>([]);
 
 	const handleMouseEnter = (currentDate: Schedule[]) => {
-		setDateHover(true);
 		setCurrentDateInfo(currentDate);
 	};
 
 	return (
-		<div onMouseLeave={() => setDateHover(false)} className={` my-border my-shadow aspect-square h-fit w-full rounded-lg bg-main p-2 ${hover ? 'hover:scale-110' : null} ${scale || null} relative m-auto duration-150 ease-in-out`}>
+		<div className={` my-border my-shadow aspect-square h-fit w-full rounded-lg bg-main p-2 ${hover ? 'hover:scale-110' : null} ${scale || null} relative m-auto duration-150 ease-in-out`}>
 			<h1 className="inset-0 mx-auto my-2 h-fit w-fit text-center text-2xl font-bold text-invert">{monthNames[month]}</h1>
 			<div className="grid-rows-7 text-md grid h-full grid-cols-7 text-center">
 				{weekDays.map(day => (
@@ -82,23 +90,52 @@ const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 					if (currentWeekEnds.includes(day)) {
 						// weekends
 						return (
-							<div key={crypto.randomUUID()} className="text-dim relative h-full w-full cursor-pointer">
+							<div key={crypto.randomUUID()} className="h-11/12 relative aspect-square w-11/12 cursor-pointer text-gray-700 hover:rounded-full hover:bg-blue-500 hover:text-invert">
 								<p className="absolute inset-0 m-auto h-fit w-fit">{day}</p>
 							</div>
 						);
 					}
 					const currentDate = new Date(2023, month, day);
 
-					const gameDays = gameData.map(elm => elm.date);
+					// const filteredData = gameData.filter(elm => div.includes(elm.homeTeam.skillDivision));
+					// console.log(schoolData.map(elm => elm.school_name));
+					const filteredData = gameData.filter(elm => {
+						const genderBool = gender.length === 0 ? true : gender.includes(elm.homeTeam.teamType.substring(2).toLowerCase());
+						const divBool = div.length === 0 ? true : div.includes(elm.homeTeam.skillDivision);
+						const seniorityBool = seniority.length === 0 ? true : seniority.includes(elm.homeTeam.teamType.substring(0, 2));
+						const schoolBool = school.length === 0 ? true : school.includes(elm.homeTeam.schoolName) || school.includes(elm.awayTeam.schoolName);
+
+						if (gender.length === 0 && div.length === 0 && seniority.length === 0 && school.length === 0) {
+							return true;
+						}
+
+						return genderBool && divBool && seniorityBool && schoolBool;
+						// return genderBool || divBool || seniorityBool || schoolBool;
+					});
+					// console.log(gameData)
+
+					const gameDays = filteredData.map(elm => elm.date);
+					// console.log(gameData.map(elm => elm.homeTeam.teamType.substring(2)));
+					// console.log(gender.includes("Boys"))
+					// console.log(gameData.filter(elm => gender.includes(elm.homeTeam.teamType.substring(2))));
 
 					const currentData: Date[] = gameDays.filter(elm => elm.toISOString().split('T')[0] === currentDate.toISOString().split('T')[0]);
 
 					if (currentData.length !== 0) {
-						const teamsData = gameData.filter(elm => currentData.includes(elm.date));
+						const teamsData = filteredData.filter(elm => currentData.includes(elm.date));
 						// days with events
 						return (
-							<button onMouseEnter={() => handleMouseEnter(teamsData)} onMouseLeave={() => setDateHover(false)} type="button" key={crypto.randomUUID()} className="h-11/12 my-border relative aspect-square w-11/12 cursor-pointer rounded-full bg-accent hover:scale-110 active:scale-95">
+							<button onMouseOver={() => handleMouseEnter(teamsData)} type="button" key={crypto.randomUUID()} className="h-11/12 my-border group relative aspect-square w-11/12 cursor-pointer rounded-full bg-accent hover:scale-110 active:scale-95">
 								<p className="absolute inset-0 m-auto h-fit w-fit font-bold text-stark">{day}</p>
+								<div className="my-border my-shadow absolute left-1/2 top-[-.5rem] hidden h-fit w-fit translate-x-[-50%] translate-y-[-100%] flex-col rounded-md bg-main group-hover:block">
+									{currentDateInfo.map(elm => (
+										<div className="my-border m-1 flex justify-center gap-2 rounded-md p-1">
+											<p className="text-blue-500">{schoolData.filter(elm2 => elm2.school_name === elm.homeTeam.schoolName)[0].code}</p>
+											<p className="font-bold">VS</p>
+											<p className="text-red-500">{schoolData.filter(elm2 => elm2.school_name === elm.awayTeam.schoolName)[0].code}</p>
+										</div>
+									))}
+								</div>
 							</button>
 						);
 					}
@@ -116,19 +153,6 @@ const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 					</div>
 				))}
 			</div>
-			{dateHover ? (
-				<div className="my-border my-shadow absolute inset-x-0 bottom-[-100%] mx-auto h-fit w-fit flex-col gap-2 rounded-md p-2 font-bold">
-					{currentDateInfo.map(elm => (
-						<div className="my-border h-fit w-fit">
-							<p className="relative h-fit w-fit">
-								{elm.team1} vs {elm.team2}
-							</p>
-							{/* <p className="relative h-fit w-fit">{elm.day.toLocaleString('en-us').split(' ')[0]}</p> */}
-							<p className="relative h-fit w-fit">{elm.day}</p>
-						</div>
-					))}
-				</div>
-			) : null}
 		</div>
 	);
 };

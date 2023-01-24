@@ -4,6 +4,9 @@ import caret from '@svg/caret.svg';
 
 import Image from 'next/image';
 
+import generateSchedule, { Team } from '@ts/matchUp';
+import { ScheduleAtom, TeamInfoAtom } from 'pages/main';
+import { useAtom } from 'jotai';
 import Calendar, { getDaysInMonth, monthNames } from './Calendar';
 import Title from './Title';
 import Download from './Download';
@@ -15,6 +18,8 @@ type PropType = {
 };
 
 const Middle: FC<PropType> = ({ title }) => {
+	const setGameData = useAtom(ScheduleAtom)[1];
+	const [teamData] = useAtom(TeamInfoAtom);
 	const months = [2, 3, 4, 5];
 
 	const [active, setActive] = useState(0);
@@ -71,6 +76,7 @@ const Middle: FC<PropType> = ({ title }) => {
 			days.push(j);
 		}
 	}
+
 	const getWeek = (weekNum: number): number[] => {
 		const result: number[] = [];
 		for (let i = 0; i < 7; i++) {
@@ -78,7 +84,41 @@ const Middle: FC<PropType> = ({ title }) => {
 		}
 		return result;
 	};
+
 	const weekData = getWeek(week - 1);
+
+	const handleClickCalculate = async () => {
+		// console.log(teamData);
+		const TeamTypes = ['srBoys', 'jrBoys', 'srGirls', 'jrGirls'];
+		const FieldNames = ['none', 'single', 'double'];
+		const AltFieldNames = ['cru', 'irish'];
+
+		const teams: Team[] = teamData.map((elm, index) => ({
+			schoolName: elm.school as string,
+			teamType: TeamTypes[elm.type - 1],
+			skillDivision: elm.div,
+			field: FieldNames[Math.floor((index * 3) / teamData.length)],
+			// field: 'single',
+			alternateFields: AltFieldNames[Math.floor((index * 2) / teamData.length)],
+			gamesPlayed: 0,
+			opponents: [],
+		}));
+		const unavailableDates: Date[] = [
+			/* array of dates */
+		];
+		// Number of referees
+		const maxGamesPerDay: number = 10;
+		const startDate = new Date(2023, 2, 1);
+		const endDate = new Date(2023, 5, 30);
+
+		const result = generateSchedule(teams, maxGamesPerDay, unavailableDates, startDate, endDate);
+
+		// console.log(result.map(elm => elm.homeTeam.gamesPlayed).filter(elm => elm !== 6));
+		// console.log(result.map(elm => elm.awayTeam.gamesPlayed).filter(elm => elm !== 6));
+		// console.log(result);
+
+		setGameData(result);
+	};
 
 	return (
 		<section className="hover-fade relative flex h-full w-full flex-col overflow-hidden">
@@ -127,8 +167,13 @@ const Middle: FC<PropType> = ({ title }) => {
 				{active === 3 ? <div className="absolute inset-0 m-auto h-fit w-fit text-2xl font-bold text-bug">Day tbd ...</div> : null}
 			</section>
 
-			<div className="grid h-[20%] w-full place-content-center ">
-				<Download />
+			<div className="inset-x-0 mx-auto h-fit w-fit flex-col items-center">
+				<button title="Edit Team Data" onClick={handleClickCalculate} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
+					Calculate Schedule
+				</button>
+				<div className="grid place-content-center ">
+					<Download />
+				</div>
 			</div>
 		</section>
 	);

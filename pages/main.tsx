@@ -31,7 +31,7 @@ type PropType = {
 	teamInfo: TeamPropType[];
 };
 
-export const schoolDataAtom = atom<SchoolType[]>([]);
+export const SchoolDataAtom = atom<SchoolType[]>([]);
 export const TeamInfoAtom = atom<TeamPropType[]>([]);
 export const ActivePageAtom = atom<number>(0);
 export const ScheduleAtom = atom<Schedule[]>([]);
@@ -59,7 +59,7 @@ const Main: FC<PropType> = ({ schoolData, teamInfo }) => {
 	return (
 		<JotaiProvider
 			initialValues={[
-				[schoolDataAtom, schoolData],
+				[SchoolDataAtom, schoolData],
 				[TeamInfoAtom, teamInfo],
 			]}
 		>

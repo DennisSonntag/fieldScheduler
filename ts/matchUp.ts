@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-continue */
+/* eslint-disable no-constant-condition */
 
 // import crypto from 'crypto';
 import seedrandom from 'seedrandom';
@@ -41,17 +42,38 @@ const isUnavailable = (date: Date, unavailableDates: Date[]): boolean => {
 	});
 };
 
-// Helper function to check if two teams have the same field
-const haveSameField = (team1: Team, team2: Team): boolean => team1.field === team2.field;
+export const getDaysInMonth = (yearArg: number, monthArg: number) => new Date(yearArg, monthArg, 0).getDate();
 
-// Helper function to check if two teams have the same alternateFields
-const haveSameAlternateField = (team1: Team, team2: Team): boolean => team1.alternateFields === team2.alternateFields;
+const days: number[] = [];
+for (let i = 0; i < 6; i++) {
+	for (let j = 1; j <= getDaysInMonth(2022, 2 + i); j++) {
+		days.push(j);
+	}
+}
+
+const weekFromDay = (day: Date): number => {
+	const date = new Date(day.getTime());
+	date.setHours(0, 0, 0, 0);
+	// Thursday in current week decides the year.
+	date.setDate(date.getDate() + 3 - ((date.getDay() + 6) % 7));
+	// January 4 is always in week 1.
+	const week1 = new Date(date.getFullYear(), 0, 4);
+	// Adjust to Thursday in week 1 and count number of weeks from date to week1.
+	return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7);
+};
+
+const getWeek = (date: Date): number[] => {
+	const week = weekFromDay(date);
+
+	const result: number[] = [];
+	for (let i = 0; i < 7; i++) {
+		result[i] = days[26 + (i + 7 * week)];
+	}
+	return result;
+};
 
 // Helper function to get all the teams that have the same field as a given team
-const getEligibleFields = (team: Team, teams: Team[]): Team[] => teams.filter(t => haveSameField(t, team) && t.schoolName !== team.schoolName);
-
-// Helper function to get all the teams that have the same alternateFields as a given team
-const getEligibleAlternateFields = (team: Team, teams: Team[]): Team[] => teams.filter(t => haveSameAlternateField(t, team) && t.schoolName !== team.schoolName);
+const getEligibleTeams = (team: Team, teams: Team[]): Team[] => teams.filter(t => t.schoolName !== team.schoolName && t.teamType === team.teamType);
 
 let rng: () => number;
 // Helper function to seed the Math.random() function
@@ -89,65 +111,82 @@ const scheduleGame = (homeTeam: Team, awayTeam: Team, date: Date, time: TimeType
 	return { date, time, homeTeam, awayTeam };
 };
 
-const generateSchedule = (teams: Team[], maxGamesPerDay: number, seasonLength: number, unavailableDates: Date[]): Schedule[] => {
-	seedRandom(JSON.stringify(teams));
+const createDate = (unavailableDates: Date[], startDate: Date, endDate: Date): Date => {
+	let date: Date;
+	do {
+		date = getRandomDate(startDate, endDate);
+	} while (isWeekend(date) || isUnavailable(date, unavailableDates) || date.getUTCDay() === 5);
+	return date;
+};
 
-	const schedules: Schedule[] = [];
+const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableDates: Date[], startDate: Date, endDate: Date): Schedule[] => {
+	let schedule: Schedule[] = [];
+	for (let j = 0; j < 10; j++) {
+		const teams: Team[] = JSON.parse(JSON.stringify(teamsArg));
+		seedRandom(JSON.stringify(teams) + String(j));
 
-	// Main scheduling loop
-	for (let week = 1; week <= seasonLength; week++) {
-		for (const team of teams) {
-			if (team.gamesPlayed >= 6) {
-				continue;
-			}
+		schedule = [];
 
-			const eligibleFields = getEligibleFields(team, teams);
-			const eligibleAlternateFields = getEligibleAlternateFields(team, teams);
-			let opponent: Team | undefined;
+		// Main scheduling loop
+		for (let i = 0; i < 20000; i++) {
+			for (const team of teams) {
+				if (team.gamesPlayed >= 6) {
+					continue;
+				}
 
-			if (team.field !== 'none') {
-				// If the team has a field, try to schedule a game against a team with the same field
-				opponent = getRandomTeam(eligibleFields);
+				const eligibleTeams = getEligibleTeams(team, teams);
+				// const eligibleAlternateFields = getEligibleAlternateFields(team, teams);
+				const opponent = getRandomTeam(eligibleTeams);
+
+				if (opponent.gamesPlayed >= 6) {
+					continue;
+				}
+
 				if (!opponent) {
-					// If no team with the same field is available, try to schedule a game against a team with the same alternateFields
-					opponent = getRandomTeam(eligibleAlternateFields);
+					// if no opponent is found, skip to the next team
+					continue;
 				}
-			} else {
-				// If the team does not have a field, try to schedule a game against a team with the same alternateFields
-				opponent = getRandomTeam(eligibleAlternateFields);
-			}
 
-			if (!opponent) {
-				// if no opponent is found, skip to the next team
-				continue;
-			}
+				// Get a random date that is not a weekend or unavailable
+				let date = createDate(unavailableDates, startDate, endDate);
 
-			// Get a random date that is not a weekend or unavailable
-			let date: Date;
-			do {
-				date = getRandomDate(new Date(2023, 2, week * 7 - 6), new Date(2023, 6, week * 7 - 2));
-			} while (isWeekend(date) || isUnavailable(date, unavailableDates) || date.getUTCDay() === 5);
+				// Schedule the game and add it to the schedules array
+				if (team.field === 'single') {
+					const week = getWeek(date);
+					if (week.includes(date.getDay())) {
+						continue;
+					}
+					schedule.push(scheduleGame(team, opponent, date, '4:45pm'));
+				} else if (team.field === 'double' || team.field === 'none') {
+					while (true) {
+						const currentGames = schedule.filter(elm => elm.homeTeam.schoolName === team.schoolName && elm.date.toISOString().split('T')[0] === date.toISOString().split('T')[0]);
 
-			// Schedule the game and add it to the schedules array
-			if (team.field === 'single') {
-				schedules.push(scheduleGame(team, opponent, date, '4:45pm'));
-			} else if (team.field === 'double') {
-				if (team.field === 'double') {
-					const opponent1 = getRandomTeam(eligibleFields);
-					const opponent2 = getRandomTeam(eligibleFields.filter(o => o !== opponent1));
-					schedules.push(scheduleGame(team, opponent1 as Team, date, '4:45pm'));
-					schedules.push(scheduleGame(team, opponent2 as Team, date, '6:00pm'));
+						if (currentGames.length === 0) {
+							schedule.push(scheduleGame(team, opponent as Team, date, '4:45pm'));
+							break;
+						} else if (currentGames.length === 1) {
+							schedule.push(scheduleGame(team, opponent as Team, date, '6:00pm'));
+							break;
+						} else {
+							date = createDate(unavailableDates, startDate, endDate);
+							continue;
+						}
+					}
+				}
+
+				// Check if the number of games scheduled for that day has reached the maximum
+				if (schedule.filter(s => s.date.getTime() === date.getTime()).length === maxGamesPerDay) {
+					break;
 				}
 			}
-
-			// Check if the number of games scheduled for that day has reached the maximum
-			if (schedules.filter(s => s.date.getTime() === date.getTime()).length === maxGamesPerDay) {
-				break;
-			}
+		}
+		const end = teams.filter(elm => elm.gamesPlayed !== 6);
+		if (end.length === 0) {
+			break;
 		}
 	}
 
-	return schedules;
+	return schedule;
 };
 
 export default generateSchedule;
