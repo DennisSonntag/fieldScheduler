@@ -1,12 +1,12 @@
-import { FormEventHandler, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import App from '@components/App';
 import eyeOpen from '@svg/eyeOpen.svg';
 import eyeClosed from '@svg/eyeClosed.svg';
-import { getSession, signIn } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useMutation } from 'react-query';
+// import { useMutation } from 'react-query';
 import { z } from 'zod';
 
 const Login = () => {
@@ -40,30 +40,30 @@ const Login = () => {
 
 	const [userPassword, setUserPassword] = useState<UserPasswordType>('');
 
-	const {
-		data,
-		isLoading,
-		mutate: loginUser,
-	} = useMutation({
-		mutationFn: () =>
-			signIn('credentials', {
-				email: userEmail,
-				password: userPassword,
-				redirect: false,
-			}),
-	});
+	// const {
+	// 	data,
+	// 	isLoading,
+	// 	mutate: loginUser,
+	// } = useMutation({
+	// 	mutationFn: () =>
+	// 		signIn('credentials', {
+	// 			email: userEmail,
+	// 			password: userPassword,
+	// 			redirect: false,
+	// 		}),
+	// });
 
-	const handleSubmit: FormEventHandler<HTMLFormElement> = async e => {
+	const handleSubmit = (e: { preventDefault: () => void }) => {
 		e.preventDefault();
 
-		loginUser();
+		// loginUser();
 
-		if (data?.ok) {
-			setHasError(false);
-			router.push('/main');
-		} else {
-			setHasError(true);
-		}
+		router.push('/main');
+		// if (data?.ok) {
+		// 	setHasError(false);
+		// } else {
+		// 	setHasError(true);
+		// }
 	};
 
 	const toggleVisible = () => {
@@ -80,7 +80,7 @@ const Login = () => {
 
 	return (
 		<App title="Login">
-			<form onSubmit={handleSubmit} className=" absolute inset-0 m-auto flex h-fit w-fit flex-col text-invert">
+			<div className=" absolute inset-0 m-auto flex h-fit w-fit flex-col text-invert">
 				<h1 className="my-shadow my-border absolute inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-2 text-center text-2xl font-bold">Sign In</h1>
 				<div className="bot-dash field relative my-auto mt-16 mb-4 flex w-full flex-col">
 					<input value={userEmail} onChange={({ target }) => setUserEmail(target.value)} type="email" autoComplete="off" className="input h-8 w-52 overflow-hidden rounded-md border-0 text-red-500 outline-0 valid:text-green-500" />
@@ -119,9 +119,12 @@ const Login = () => {
 					</dialog>
 
 					<p className={`h-fit w-fit text-center font-bold text-bug duration-300 ${hasError ? 'opacity-100' : 'opacity-0'}`}>Invalid Info!</p>
-					<input type="submit" value={isLoading ? 'Loading...' : 'Login'} className={`${hasError ? 'bg-bug' : 'bg-accent'}  my-shadow my-border w-fit rounded-md p-2 duration-75 hover:scale-110 active:scale-90`} />
+					<button onClick={handleSubmit} type="button" className={`${hasError ? 'bg-bug' : 'bg-accent'}  my-shadow my-border w-fit rounded-md p-2 duration-75 hover:scale-110 active:scale-90`}>
+						{/* {isLoading ? 'Loading...' : 'Login'} */}
+						Login
+					</button>
 				</div>
-			</form>
+			</div>
 		</App>
 	);
 };
@@ -129,14 +132,14 @@ export default Login;
 
 export const getServerSideProps = async (context: any) => {
 	const session = await getSession(context);
-	if (session) {
-		return {
-			redirect: {
-				destination: '/main',
-				permanent: false,
-			},
-		};
-	}
+	// if (session) {
+	// 	return {
+	// 		redirect: {
+	// 			destination: '/main',
+	// 			permanent: false,
+	// 		},
+	// 	};
+	// }
 
 	return {
 		props: {
