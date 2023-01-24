@@ -1,12 +1,10 @@
-import { Dispatch, SetStateAction, useRef } from 'react';
-import { divAtom, ScheduleAtom, SchoolDataAtom, schoolAtom, seniorityAtom, genderAtom, TeamInfoAtom } from 'pages/main';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
+import { divAtom, SchoolDataAtom, schoolAtom, seniorityAtom, genderAtom } from 'pages/main';
 import { useAtom } from 'jotai';
-import PocketBase from 'pocketbase';
 import Filter from './Filter';
 import FilterChip from './FilterChip';
 import EditData from './EditData';
-
-const pb = new PocketBase('https://schedulerdatabase.fly.dev');
+import CreateData from './CreateData';
 
 const TeamInfo = () => {
 	const [schoolData] = useAtom(SchoolDataAtom);
@@ -34,57 +32,28 @@ const TeamInfo = () => {
 
 		dialog.close();
 	};
-
-	const range = (x: number, y: number): number[] => (x > y ? [] : [x, ...range(x + 1, y)]);
-
-	// type NameType = {
-	// 	[key: string]: string;
-	// };
-
-	// const nameMap: NameType = {
-	// 	Centennial: 'CEN',
-	// 	'Notre Dame': 'ND',
-	// 	'St. Francis': 'SF',
-	// 	'Western Canada': 'WC',
-	// 	'Ernest Manning': 'EM',
-	// 	'All Saints': 'AS',
-	// 	Bowness: 'BOW',
-	// 	'Crescent Heights': 'CH',
-	// 	'Henry Wise Wood': 'HWW',
-	// 	'Our Lady Of The Rockies': 'OLR',
-	// 	'Joane Cardinal Schubert-TBD': 'JC',
-	// 	'John G. Diefenbaker': 'JGD',
-	// 	'Sir Winston Churchill': 'SWC',
-	// 	'William Aberhart': 'WA',
-	// 	'Bishop Carroll': 'BC',
-	// 	'Bishop McNally': 'BM',
-	// 	'Central Memorial': 'CM',
-	// 	'Forest Lawn': 'FL',
-	// 	'Lester B. Pearson': 'LBP',
-	// 	'Nelson Mandela': 'NM',
-	// 	'Robert Thirsk': 'RT',
-	// 	'St. Mary’s': 'SM',
-	// 	'Lord Beaverbrook': 'LB',
-	// 	'Bishop O’Byrne': 'BOB',
-	// 	'Dr. E.P. Scarlett': 'EPS',
-	// 	'Queen Elizabeth': 'QE',
-	// };
-
-	// const testFunc = () => {
-	// 	pb.authStore.onChange(() => {
-	// 		console.log(pb.authStore.model);
-	// 	});
-	// };
+	const [editActive, setEditActive] = useState(true);
 
 	return (
 		<div className="relative flex h-full w-full flex-col gap-2">
-			<dialog ref={dialogRef} className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] rounded-xl bg-main backdrop:bg-black backdrop:opacity-80">
-				<EditData close={closeModal} />
+			<dialog ref={dialogRef} className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] flex-col rounded-xl bg-main backdrop:bg-black backdrop:opacity-80">
+				<button type="button" onClick={closeModal} className="smooth-scale my-shadow my-border absolute top-2 right-2 h-fit w-fit rounded-md bg-accent hover:scale-110 active:scale-90">
+					<svg className="h-10 w-10 fill-stark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+						<path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z" />
+					</svg>
+				</button>
+				<div className="h-fit w-full">
+					<div className="inset-x-0 top-4 mx-auto flex h-fit w-fit gap-2">
+						<button type="button" onClick={() => setEditActive(true)} className={`${editActive ? 'bg-main text-black' : 'bg-accent'} my-shadow my-border relative h-fit w-fit rounded-md p-3 text-xl font-bold text-stark duration-150 ease-in-out hover:px-6 active:px-4`}>
+							Edit
+						</button>
+						<button type="button" onClick={() => setEditActive(false)} className={`${!editActive ? 'bg-main text-black' : 'bg-accent'} my-shadow my-border relative h-fit w-fit rounded-md p-3 text-xl font-bold text-stark duration-150 ease-in-out hover:px-6 active:px-4`}>
+							Add
+						</button>
+					</div>
+				</div>
+				<div className="h-fit w-full">{editActive ? <EditData /> : <CreateData />}</div>
 			</dialog>
-
-			{/* <button title="Edit Team Data" onClick={testFunc} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90"> */}
-			{/* 	Test */}
-			{/* </button> */}
 
 			<button title="Edit Team Data" onClick={handleClick} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
 				Edit Team data
@@ -101,17 +70,6 @@ const TeamInfo = () => {
 			<FilterChip selected={schoolSelect as string[]} />
 			<FilterChip selected={senioritySelect as string[]} />
 			<FilterChip selected={genderSelect as string[]} />
-
-			{/* <div className=" z-0 grid h-auto grow grid-cols-3 gap-4 p-2"> */}
-			{/* 	{range(1, 12).map(() => ( */}
-			{/* 		<div key={crypto.randomUUID()} className="smooth-scale no-move my-border my-shadow relative grid h-full w-full cursor-pointer place-content-center rounded-md bg-main text-center text-invert hover:scale-105 active:scale-90 "> */}
-			{/* 			<p className="h-fit w-fit text-center">{schoolSelect as string[]}</p> */}
-			{/* 			<p className="h-fit w-fit text-center">{senioritySelect as string[]}</p> */}
-			{/* 			<p className="h-fit w-fit text-center">{divSelect as string[]}</p> */}
-			{/* 			<p className="h-fit w-fit text-center">{genderSelect as string[]}</p> */}
-			{/* 		</div> */}
-			{/* 	))} */}
-			{/* </div> */}
 		</div>
 	);
 };

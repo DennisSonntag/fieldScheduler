@@ -2,31 +2,32 @@
 /* eslint-disable no-continue */
 /* eslint-disable no-constant-condition */
 
-// import crypto from 'crypto';
 import seedrandom from 'seedrandom';
 
-type TeamType = 'srBoys' | 'jrBoys' | 'srGirls' | 'jrGirls';
+export type TeamType = 'srBoys' | 'jrBoys' | 'srGirls' | 'jrGirls';
 
-type DivType = 1 | 2 | 3;
+export type DivType = 1 | 2 | 3;
+
+export type FieldType = 'none' | 'single' | 'double';
+export type AltField = 'cru' | 'irish';
 
 export type Team = {
 	schoolName: string;
 	teamType: TeamType;
 	skillDivision: DivType;
-	field: 'none' | 'single' | 'double';
-	alternateFields?: 'cru' | 'irish';
+	field: FieldType;
+	alternateFields?: AltField;
 	gamesPlayed: number;
 	opponents: string[];
 };
 
 type TimeType = '4:45pm' | '6:00pm';
 
-export type Schedule = {
+export type Game = {
 	date: Date;
 	time: TimeType;
 	homeTeam: Team;
 	awayTeam: Team;
-	field?: 'cru' | 'irish';
 };
 
 // Helper function to check if a date is on a weekend
@@ -97,13 +98,13 @@ const getRandomDate = (startDate: Date, endDate: Date) => {
 	return new Date(randomTimestamp);
 };
 
-const getRandomTeam = (_teams: Team[]) => {
-	const index = getRandomIndex(_teams);
-	return _teams[index];
+const getRandomTeam = (teams: Team[]) => {
+	const index = getRandomIndex(teams);
+	return teams[index];
 };
 
 // Helper function to schedule a game between two teams
-const scheduleGame = (homeTeam: Team, awayTeam: Team, date: Date, time: TimeType): Schedule => {
+const scheduleGame = (homeTeam: Team, awayTeam: Team, date: Date, time: TimeType): Game => {
 	homeTeam.gamesPlayed++;
 	awayTeam.gamesPlayed++;
 	homeTeam.opponents.push(awayTeam.schoolName);
@@ -119,8 +120,8 @@ const createDate = (unavailableDates: Date[], startDate: Date, endDate: Date): D
 	return date;
 };
 
-const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableDates: Date[], startDate: Date, endDate: Date): Schedule[] => {
-	let schedule: Schedule[] = [];
+const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableDates: Date[], startDate: Date, endDate: Date): Game[] => {
+	let schedule: Game[] = [];
 	for (let j = 0; j < 10; j++) {
 		const teams: Team[] = JSON.parse(JSON.stringify(teamsArg));
 		seedRandom(JSON.stringify(teams) + String(j));
@@ -159,7 +160,7 @@ const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableD
 					schedule.push(scheduleGame(team, opponent, date, '4:45pm'));
 				} else if (team.field === 'double' || team.field === 'none') {
 					while (true) {
-						const currentGames = schedule.filter(elm => elm.homeTeam.schoolName === team.schoolName && elm.date.toISOString().split('T')[0] === date.toISOString().split('T')[0]);
+						const currentGames = schedule.filter(game => game.homeTeam.schoolName === team.schoolName && game.date.toISOString().split('T')[0] === date.toISOString().split('T')[0]);
 
 						if (currentGames.length === 0) {
 							schedule.push(scheduleGame(team, opponent as Team, date, '4:45pm'));
@@ -175,12 +176,12 @@ const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableD
 				}
 
 				// Check if the number of games scheduled for that day has reached the maximum
-				if (schedule.filter(s => s.date.getTime() === date.getTime()).length === maxGamesPerDay) {
+				if (schedule.filter(game => game.date.getTime() === date.getTime()).length === maxGamesPerDay) {
 					break;
 				}
 			}
 		}
-		const end = teams.filter(elm => elm.gamesPlayed !== 6);
+		const end = teams.filter(team => team.gamesPlayed !== 6);
 		if (end.length === 0) {
 			break;
 		}

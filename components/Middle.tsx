@@ -1,11 +1,12 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import caret from '@svg/caret.svg';
+// import arrow1 from '@svg/arrow1.svg';
 
 import Image from 'next/image';
 
-import generateSchedule, { Team } from '@ts/matchUp';
-import { ScheduleAtom, TeamInfoAtom } from 'pages/main';
+import generateSchedule, { AltField, DivType, FieldType, Team, TeamType } from '@ts/matchUp';
+import { ScheduleAtom, startEndDateAtom, TeamInfoAtom } from 'pages/main';
 import { useAtom } from 'jotai';
 import Calendar, { getDaysInMonth, monthNames } from './Calendar';
 import Title from './Title';
@@ -18,6 +19,7 @@ type PropType = {
 };
 
 const Middle: FC<PropType> = ({ title }) => {
+	const startEndDate = useAtom(startEndDateAtom)[0];
 	const setGameData = useAtom(ScheduleAtom)[1];
 	const [teamData] = useAtom(TeamInfoAtom);
 	const months = [2, 3, 4, 5];
@@ -95,11 +97,11 @@ const Middle: FC<PropType> = ({ title }) => {
 
 		const teams: Team[] = teamData.map((elm, index) => ({
 			schoolName: elm.school as string,
-			teamType: TeamTypes[elm.type - 1],
-			skillDivision: elm.div,
-			field: FieldNames[Math.floor((index * 3) / teamData.length)],
+			teamType: TeamTypes[elm.type - 1] as TeamType,
+			skillDivision: elm.div as DivType,
+			field: FieldNames[Math.floor((index * 3) / teamData.length)] as FieldType,
 			// field: 'single',
-			alternateFields: AltFieldNames[Math.floor((index * 2) / teamData.length)],
+			alternateFields: AltFieldNames[Math.floor((index * 2) / teamData.length)] as AltField,
 			gamesPlayed: 0,
 			opponents: [],
 		}));
@@ -108,17 +110,14 @@ const Middle: FC<PropType> = ({ title }) => {
 		];
 		// Number of referees
 		const maxGamesPerDay: number = 10;
-		const startDate = new Date(2023, 2, 1);
-		const endDate = new Date(2023, 5, 30);
-
+		const [startDate, endDate] = startEndDate;
 		const result = generateSchedule(teams, maxGamesPerDay, unavailableDates, startDate, endDate);
-
-		// console.log(result.map(elm => elm.homeTeam.gamesPlayed).filter(elm => elm !== 6));
-		// console.log(result.map(elm => elm.awayTeam.gamesPlayed).filter(elm => elm !== 6));
-		// console.log(result);
 
 		setGameData(result);
 	};
+
+	const [gameOpen, setGameOpen] = useState(false);
+	const [date, setDate] = useState<Date>(new Date());
 
 	return (
 		<section className="hover-fade relative flex h-full w-full flex-col overflow-hidden">
@@ -133,7 +132,7 @@ const Middle: FC<PropType> = ({ title }) => {
 				{active === 0 ? (
 					<>
 						{months.map(monthParam => (
-							<Calendar key={monthParam} month={monthParam} hover />
+							<Calendar setDate={setDate} setOpen={setGameOpen} month={monthParam} />
 						))}
 					</>
 				) : null}
@@ -142,7 +141,7 @@ const Middle: FC<PropType> = ({ title }) => {
 						<button type="button" onClick={decrementMonth}>
 							<Image src={caret} alt="" className="smooth inv h-16 w-16 rotate-90 hover:scale-110 active:scale-95" />
 						</button>
-						<Calendar month={month} scale="scale-[100%]" />
+						<Calendar setDate={setDate} setOpen={setGameOpen} month={month} />
 						<button type="button" onClick={incrementMonth}>
 							<Image src={caret} alt="" className="smooth inv h-16 w-16 rotate-[270deg] hover:scale-110 active:scale-95" />
 						</button>
@@ -166,6 +165,18 @@ const Middle: FC<PropType> = ({ title }) => {
 				) : null}
 				{active === 3 ? <div className="absolute inset-0 m-auto h-fit w-fit text-2xl font-bold text-bug">Day tbd ...</div> : null}
 			</section>
+
+			{gameOpen && (
+				<div className="absolute z-50 h-full w-full bg-black bg-opacity-50">
+					<div className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] rounded-md bg-main">
+						<button type="button" onClick={() => setGameOpen(false)} className="smooth-scale my-shadow my-border absolute top-4 right-4 h-fit w-fit rounded-md bg-accent hover:scale-110 active:scale-90">
+							<svg className="h-10 w-10 fill-stark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+								<path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z" />
+							</svg>
+						</button>
+					</div>
+				</div>
+			)}
 
 			<div className="inset-x-0 mx-auto h-fit w-fit flex-col items-center">
 				<button title="Edit Team Data" onClick={handleClickCalculate} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">

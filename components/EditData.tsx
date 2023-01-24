@@ -1,20 +1,18 @@
+import { useAtom } from 'jotai';
 import { SchoolDataAtom } from 'pages/main';
 import { FC, useState } from 'react';
-import Image from 'next/image';
 import arrow1 from '@svg/arrow1.svg';
-import { useAtom } from 'jotai';
+import Image from 'next/image';
 
-type PropTypes = {
-	close: () => void;
+type SelectedDataType = {
+	name: string;
+	field: number;
 };
-const EditData: FC<PropTypes> = ({ close }) => {
+
+const DataMenu = () => {
 	const schoolData = useAtom(SchoolDataAtom)[0];
-	const [selected, setSelected] = useState(false);
-	type SelectedDataType = {
-		name: string;
-		field: number;
-	};
 	const [selectedData, setSelectedData] = useState<SelectedDataType>();
+	const [selected, setSelected] = useState(false);
 
 	const handleSelect = (name: string, field: number) => {
 		setSelected(true);
@@ -23,18 +21,8 @@ const EditData: FC<PropTypes> = ({ close }) => {
 			field,
 		});
 	};
-
 	return (
-		<>
-			<div className="absolute inset-x-0 top-4 mx-auto flex h-fit w-fit gap-2">
-				<h1 className="my-shadow my-border relative h-fit w-fit rounded-md bg-accent p-3 text-xl font-bold text-stark duration-150 ease-in-out hover:px-6 active:px-4">Edit</h1>
-				<h1 className="my-shadow my-border relative h-fit w-fit rounded-md bg-accent p-3 text-xl font-bold text-stark duration-150 ease-in-out hover:px-6 active:px-4">Add/Remove</h1>
-			</div>
-			<button type="button" onClick={close} className="smooth-scale my-shadow my-border absolute top-4 right-4 h-fit w-fit rounded-md bg-accent hover:scale-110 active:scale-90">
-				<svg className="h-10 w-10 fill-stark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-					<path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z" />
-				</svg>
-			</button>
+		<div>
 			{selected ? (
 				<div>
 					<button type="button" onClick={() => setSelected(false)}>
@@ -59,16 +47,17 @@ const EditData: FC<PropTypes> = ({ close }) => {
 					</button>
 				</div>
 			) : (
-				<div className="my-grid mt-32 grid h-fit w-full gap-10">
+				<div className="my-grid grid h-fit w-full gap-10 p-4">
 					{schoolData.map(school => (
-						<button key={school.school_name} type="button" onClick={() => handleSelect(school.school_name, school.field)} className="my-border my-shadow smooth-scale relative m-auto h-fit w-fit rounded-md p-2 text-center hover:scale-110 active:scale-90">
+						<button key={school.school_name} type="button" onClick={() => handleSelect(school.school_name, school.field)} className="my-border my-shadow smooth-scale relative m-auto h-fit w-full w-fit rounded-md bg-main p-2 text-center hover:scale-110 active:scale-90">
 							<p className="font-bold">{school.school_name}</p>
 							<p className={school.field ? 'text-green-500' : 'text-bug'}>Has field {String(school.field)}</p>
 						</button>
 					))}
 				</div>
 			)}
-		</>
+		</div>
 	);
 };
-export default EditData;
+
+export default DataMenu;

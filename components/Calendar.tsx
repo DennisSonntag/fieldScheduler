@@ -1,29 +1,24 @@
-import { Schedule } from '@ts/matchUp';
+import { Game } from '@ts/matchUp';
 import { useAtom } from 'jotai';
 import { divAtom, genderAtom, ScheduleAtom, schoolAtom, SchoolDataAtom, SchoolType, seniorityAtom } from 'pages/main';
-import { FC, useState } from 'react';
+import { FC, useState, Dispatch, SetStateAction } from 'react';
 
 type PropType = {
 	month: number;
-	hover?: boolean;
-	scale?: string;
+	setOpen: Dispatch<SetStateAction<boolean>>;
+	setDate: Dispatch<SetStateAction<Date>>;
 };
 
 export const getDaysInMonth = (yearArg: number, monthArg: number) => new Date(yearArg, monthArg, 0).getDate();
 
 export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
-	const gameData: Schedule[] = useAtom(ScheduleAtom)[0];
+const Calendar: FC<PropType> = ({ month, setOpen, setDate }) => {
+	const gameData: Game[] = useAtom(ScheduleAtom)[0];
 	const schoolData: SchoolType[] = useAtom(SchoolDataAtom)[0];
 	const seniority: string[] = useAtom(seniorityAtom)[0].map(elm => elm.toLowerCase());
 	const school: string[] = useAtom(schoolAtom)[0];
 	const div: number[] = useAtom(divAtom)[0].map(elm => Number(elm.slice(-1)));
 	const gender: string[] = useAtom(genderAtom)[0].map(elm => elm.toLowerCase());
-
-	// console.log('seniority', seniority);
-	// console.log('school', school);
-	// console.log('div', div);
-	// console.log('gender', gender);
 
 	const year = 2023;
 	const date = new Date(year, month);
@@ -64,14 +59,15 @@ const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 
 	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-	const [currentDateInfo, setCurrentDateInfo] = useState<Schedule[]>([]);
+	const [currentDateInfo, setCurrentDateInfo] = useState<Game[]>([]);
 
-	const handleMouseEnter = (currentDate: Schedule[]) => {
-		setCurrentDateInfo(currentDate);
+	const handleMouseEnter = (dateInfo: Game[], currentDate: Date) => {
+		setCurrentDateInfo(dateInfo);
+		// setDate(currentDate);
 	};
 
 	return (
-		<div className={` my-border my-shadow aspect-square h-fit w-full rounded-lg bg-main p-2 ${hover ? 'hover:scale-110' : null} ${scale || null} relative m-auto duration-150 ease-in-out`}>
+		<div className="my-border my-shadow relative m-auto aspect-square h-fit w-full rounded-lg bg-main p-2 duration-150 ease-in-out hover:scale-110">
 			<h1 className="inset-0 mx-auto my-2 h-fit w-fit text-center text-2xl font-bold text-invert">{monthNames[month]}</h1>
 			<div className="grid-rows-7 text-md grid h-full grid-cols-7 text-center">
 				{weekDays.map(day => (
@@ -97,8 +93,6 @@ const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 					}
 					const currentDate = new Date(2023, month, day);
 
-					// const filteredData = gameData.filter(elm => div.includes(elm.homeTeam.skillDivision));
-					// console.log(schoolData.map(elm => elm.school_name));
 					const filteredData = gameData.filter(elm => {
 						const genderBool = gender.length === 0 ? true : gender.includes(elm.homeTeam.teamType.substring(2).toLowerCase());
 						const divBool = div.length === 0 ? true : div.includes(elm.homeTeam.skillDivision);
@@ -109,15 +103,11 @@ const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 							return true;
 						}
 
+
 						return genderBool && divBool && seniorityBool && schoolBool;
-						// return genderBool || divBool || seniorityBool || schoolBool;
 					});
-					// console.log(gameData)
 
 					const gameDays = filteredData.map(elm => elm.date);
-					// console.log(gameData.map(elm => elm.homeTeam.teamType.substring(2)));
-					// console.log(gender.includes("Boys"))
-					// console.log(gameData.filter(elm => gender.includes(elm.homeTeam.teamType.substring(2))));
 
 					const currentData: Date[] = gameDays.filter(elm => elm.toISOString().split('T')[0] === currentDate.toISOString().split('T')[0]);
 
@@ -125,7 +115,7 @@ const Calendar: FC<PropType> = ({ month, hover = false, scale = '' }) => {
 						const teamsData = filteredData.filter(elm => currentData.includes(elm.date));
 						// days with events
 						return (
-							<button onMouseOver={() => handleMouseEnter(teamsData)} type="button" key={crypto.randomUUID()} className="h-11/12 my-border group relative aspect-square w-11/12 cursor-pointer rounded-full bg-accent hover:scale-110 active:scale-95">
+							<button onClick={() => setOpen(true)} onMouseEnter={() => handleMouseEnter(teamsData, currentDate)} type="button" key={crypto.randomUUID()} className="h-11/12 my-border group relative aspect-square w-11/12 cursor-pointer rounded-full bg-accent hover:scale-110 active:scale-95">
 								<p className="absolute inset-0 m-auto h-fit w-fit font-bold text-stark">{day}</p>
 								<div className="my-border my-shadow absolute left-1/2 top-[-.5rem] hidden h-fit w-fit translate-x-[-50%] translate-y-[-100%] flex-col rounded-md bg-main group-hover:block">
 									{currentDateInfo.map(elm => (

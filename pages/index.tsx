@@ -8,9 +8,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 import { z } from 'zod';
-import PocketBase from 'pocketbase';
-
-const pb = new PocketBase('http://127.0.0.1:8090');
 
 const Login = () => {
 	const dialogRef = useRef(null);
@@ -60,9 +57,6 @@ const Login = () => {
 		e.preventDefault();
 
 		loginUser();
-
-		console.log('isLoading', isLoading);
-		console.log('data', data);
 
 		if (data?.ok) {
 			setHasError(false);
