@@ -87,7 +87,7 @@ const Filter: FC<PropType> = ({ title, setSelected, options, selected, scroll = 
 
 			<Image src={caret} alt="Filter dropdown caret" className={`h-4 w-4 ${isOpen ? 'rotate-180' : ''} inv duration-75 ease-in-out`} />
 
-			<div className={`${scroll ? 'h-[10rem] overflow-y-scroll' : null} my-border my-shadow absolute m-0 flex list-none flex-col bg-main  p-0 hover:z-50 ${isOpen ? `h-[${40 * options.length}px]` : 'hidden h-0'}  top-calc left-0 z-50 w-full overflow-y-hidden  rounded-[0.25em] duration-300  ease-in-out`}>
+			<div className={`${scroll ? 'h-[10rem] overflow-y-scroll' : null} my-border my-shadow absolute m-0 flex list-none flex-col bg-main  p-0 hover:z-50 ${isOpen ? `h-[${40 * options.length}px]` : 'hidden h-0'} top-calc left-0 z-50 w-full overflow-y-hidden rounded-[0.25em] duration-300  ease-in-out`}>
 				{options.map((option: string, index: number) => (
 					<option
 						onClick={e => {

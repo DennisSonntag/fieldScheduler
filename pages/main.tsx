@@ -40,7 +40,7 @@ export const seniorityAtom = atom<string[]>([]);
 export const schoolAtom = atom<string[]>([]);
 export const divAtom = atom<string[]>([]);
 export const genderAtom = atom<string[]>([]);
-export const startEndDateAtom = atom<Date[]>([]);
+export const startEndDateAtom = atom<Date[]>([new Date(2023, 2, 0), new Date(2023, 5, 31)]);
 
 const Main: FC<PropType> = ({ schoolData, teamInfo }) => {
 	const [activePage, setActivePage] = useState(0);

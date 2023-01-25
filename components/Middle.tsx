@@ -1,7 +1,6 @@
 import { FC, useState } from 'react';
 
 import caret from '@svg/caret.svg';
-// import arrow1 from '@svg/arrow1.svg';
 
 import Image from 'next/image';
 
@@ -120,9 +119,7 @@ const Middle: FC<PropType> = ({ title }) => {
 
 	return (
 		<section className="hover-fade relative flex h-full w-full flex-col overflow-hidden">
-			<section className="h-16 w-full p-3">
-				<Title text={title} />
-			</section>
+			<Title text={title} />
 			<div className="relative h-12 w-full shrink-0 p-2">
 				<ViewBtn setNextState={setNextView} setPrevState={setPrevious} iconNum={active} />
 			</div>
@@ -153,7 +150,7 @@ const Middle: FC<PropType> = ({ title }) => {
 						<WeekCaret func={incrementWeek} top />
 						<div className="m-2 flex h-full w-full gap-4">
 							{weekData.map((day, index) => (
-								<div className="my-border bg-base my-shadow relative h-full w-full rounded-md">
+								<div className="my-border bg-base my-shadow relative h-full w-full rounded-md bg-main">
 									<p className="absolute inset-x-0 mx-auto h-fit w-fit px-2 font-bold">{weekDays[index]}</p>
 									<div>{day}</div>
 								</div>

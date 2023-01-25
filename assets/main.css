@@ -21,7 +21,6 @@
 
 		--color-svg: ;
 		--color-svg-1: invert();
-
 	}
 
 	.light {
@@ -36,6 +35,10 @@
 
 		--color-svg: invert();
 		--color-svg-1: ;
+	}
+
+	input {
+		accent-color: var(--color-accent);
 	}
 
 	.my-shadow {
