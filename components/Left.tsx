@@ -94,7 +94,7 @@ const Left = () => {
 			<FilterChip selected={genderSelect as string[]} />
 
 			<div className="absolute bottom-0 flex h-fit w-full flex-grow  flex-col items-center gap-2 p-4">
-				<button title="Edit Team Data" onClick={handleClick} type="button" className="my-shadow my-6 my-border smooth-scale h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:px-6 active:px-3">
+				<button title="Edit Team Data" onClick={handleClick} type="button" className="my-shadow my-border smooth-scale my-6 h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:px-6 active:px-3">
 					Edit Team data
 				</button>
 				<h1 className="text-md my-shadow my-border rounded-md bg-main py-2 px-8 text-center font-bold text-invert">Season Start/End</h1>

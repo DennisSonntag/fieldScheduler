@@ -24,16 +24,17 @@ const TeamInput: FC<TeamInputProps> = ({ index, setState, state }) => {
 	};
 
 	return (
-		<div className="my-border my-shadow smooth-scale relative flex h-fit w-fit rounded-md bg-main p-2 hover:scale-105">
-			<div className="h-48 w-full">
-				<p className="m-2 h-fit w-fit text-center text-2xl font-bold">Team {index} Info</p>
+		<form className="relative flex h-fit w-fit bg-main">
+			<fieldset className="my-shadow rounded-md p-2">
+				<legend className="text-2xl font-bold">Team {index} Info</legend>
+
 				<button type="button" onClick={removeSelf} className="smooth-scale my-border absolute top-2 right-2 h-fit w-fit rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
 					<Image className="h-3 w-3" src={remove} alt="remove icon" />
 				</button>
 
 				<div className="flex gap-2">
-					<div className="my-border flex-col justify-center rounded-md p-2">
-						<p className="text-center text-lg font-bold">Gender</p>
+					<fieldset className="my-border flex-col items-center justify-center rounded-md p-2">
+						<legend className="text-lg font-bold">Gender</legend>
 						<div className="h-fit w-fit">
 							<input type="radio" id={`boys${id}`} name={`gender${id}`} className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer" />
 							<label htmlFor={`boys${id}`} className="mx-1 cursor-pointer">
@@ -46,10 +47,10 @@ const TeamInput: FC<TeamInputProps> = ({ index, setState, state }) => {
 								Girls
 							</label>
 						</div>
-					</div>
+					</fieldset>
 
-					<div className="my-border flex-col items-center rounded-md p-2">
-						<p className="text-center text-lg font-bold">Seniority</p>
+					<fieldset className="my-border flex-col items-center justify-center rounded-md p-2">
+						<legend className="text-lg font-bold">Seniority</legend>
 						<div className="h-fit w-fit">
 							<input type="radio" id={`sr${id}`} name={`Seniroity${id}`} className="relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer" />
 							<label htmlFor={`sr${id}`} className="mx-1 cursor-pointer">
@@ -62,10 +63,10 @@ const TeamInput: FC<TeamInputProps> = ({ index, setState, state }) => {
 								Jr
 							</label>
 						</div>
-					</div>
+					</fieldset>
 
-					<div className="my-border flex-col rounded-md p-2">
-						<p className="text-center text-lg font-bold">Division</p>
+					<fieldset className="my-border flex-col rounded-md p-2">
+						<legend className="text-lg font-bold">Division</legend>
 						<div className="h-fit w-fit">
 							<input type="radio" id={`div1${id}`} name={`Division${id}`} className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer" />
 							<label htmlFor={`div1${id}`} className="mx-1 cursor-pointer">
@@ -84,10 +85,10 @@ const TeamInput: FC<TeamInputProps> = ({ index, setState, state }) => {
 								Div 3
 							</label>
 						</div>
-					</div>
+					</fieldset>
 				</div>
-			</div>
-		</div>
+			</fieldset>
+		</form>
 	);
 };
 
