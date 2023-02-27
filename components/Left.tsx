@@ -62,16 +62,16 @@ const Left = () => {
 
 	return (
 		<section className="hover-fade relative flex h-full w-[40%] flex-col gap-2 overflow-hidden rounded-bl-xl">
-			<dialog ref={dialogRef} className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] flex-col rounded-xl bg-back backdrop:bg-black backdrop:opacity-80">
+			<dialog ref={dialogRef} className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] flex-col rounded-xl bg-back backdrop:backdrop-blur-lg backdrop:bg-black/40">
 				<button type="button" onClick={closeModal} className="smooth-scale my-shadow my-border absolute top-2 right-2 h-fit w-fit rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
 					<Image className="h-6 w-6" src={remove} alt="remove icon" />
 				</button>
 				<div className="h-fit w-full p-2">
 					<div className="inset-x-0 top-4 mx-auto flex h-fit w-fit gap-2 p-2">
-						<button type="button" onClick={() => setEditActive(true)} className={`${editActive ? 'bg-main text-black' : 'bg-accent'} my-shadow my-border relative h-fit w-fit rounded-md p-3 text-xl font-bold text-stark duration-150 ease-in-out hover:px-6 active:px-4`}>
+						<button type="button" onClick={() => setEditActive(true)} className={`${editActive ? 'bg-main text-invert' : 'bg-accent text-stark'} my-shadow my-border relative h-fit w-fit rounded-md p-3 text-xl font-bold duration-150 ease-in-out hover:px-6 active:px-4`}>
 							Edit
 						</button>
-						<button type="button" onClick={() => setEditActive(false)} className={`${!editActive ? 'bg-main text-black' : 'bg-accent'} my-shadow my-border relative h-fit w-fit rounded-md p-3 text-xl font-bold text-stark duration-150 ease-in-out hover:px-6 active:px-4`}>
+						<button type="button" onClick={() => setEditActive(false)} className={`${!editActive ? 'bg-main text-invert' : 'bg-accent text-stark'} my-shadow my-border relative h-fit w-fit rounded-md p-3 text-xl font-bold duration-150 ease-in-out hover:px-6 active:px-4`}>
 							Add
 						</button>
 					</div>
@@ -82,10 +82,10 @@ const Left = () => {
 			<Title text="Filters" />
 
 			<div className="my-col-3 grid h-fit w-full auto-rows-auto items-center justify-around gap-1">
-				<Filter options={divisions} title="Div" selected={divSelect as string[]} setSelected={setDivSelect as Dispatch<SetStateAction<string[]>>} />
-				<Filter scroll options={schoolNames} title="School" selected={schoolSelect as string[]} setSelected={setSchoolSelect as Dispatch<SetStateAction<string[]>>} />
-				<Filter options={seniorities} title="Sr/Jr" selected={senioritySelect as string[]} setSelected={setSenioritySelect as Dispatch<SetStateAction<string[]>>} />
-				<Filter options={gender} title="Gender" selected={genderSelect as string[]} setSelected={setGenderSelect as Dispatch<SetStateAction<string[]>>} />
+				<Filter options={divisions} title="Div" selected={divSelect} setSelected={setDivSelect} />
+				<Filter scroll options={schoolNames} title="School" selected={schoolSelect} setSelected={setSchoolSelect} />
+				<Filter options={seniorities} title="Sr/Jr" selected={senioritySelect} setSelected={setSenioritySelect} />
+				<Filter options={gender} title="Gender" selected={genderSelect} setSelected={setGenderSelect} />
 			</div>
 
 			<FilterChip selected={divSelect as string[]} />

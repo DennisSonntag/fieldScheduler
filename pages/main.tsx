@@ -6,7 +6,7 @@ import PocketBase from 'pocketbase';
 import App from '@components/App';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
-import { Provider as JotaiProvider, useAtom, atom } from 'jotai';
+import { Provider as JotaiProvider, useAtom, atom, createStore } from 'jotai';
 import { Game } from '@ts/matchUp';
 
 const pb = new PocketBase('https://schedulerdatabase.fly.dev');
@@ -30,6 +30,8 @@ type PropType = {
 	schoolData: SchoolType[];
 	teamInfo: TeamPropType[];
 };
+
+export const store = createStore();
 
 export const SchoolDataAtom = atom<SchoolType[]>([]);
 export const TeamInfoAtom = atom<TeamPropType[]>([]);
@@ -57,13 +59,11 @@ const Main: FC<PropType> = ({ schoolData, teamInfo }) => {
 
 	setActivePageAtom(activePage);
 
+	store.set(SchoolDataAtom, schoolData);
+	store.set(TeamInfoAtom, teamInfo);
+
 	return (
-		<JotaiProvider
-			initialValues={[
-				[SchoolDataAtom, schoolData],
-				[TeamInfoAtom, teamInfo],
-			]}
-		>
+		<JotaiProvider store={store}>
 			<App title="Scheduler">
 				<div className="flex h-screen w-screen flex-col ">
 					<div className="h-16 w-screen shrink-0 ">

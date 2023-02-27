@@ -1,11 +1,12 @@
-import { FC, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 
 import caret from '@svg/caret.svg';
+import { Game } from '@ts/matchUp';
 
 import Image from 'next/image';
 
 import generateSchedule, { AltField, DivType, FieldType, Team, TeamType } from '@ts/matchUp';
-import { ScheduleAtom, startEndDateAtom, TeamInfoAtom } from 'pages/main';
+import { ScheduleAtom, SchoolDataAtom, SchoolType, startEndDateAtom, TeamInfoAtom } from 'pages/main';
 import { useAtom } from 'jotai';
 import Calendar, { getDaysInMonth, monthNames } from './Calendar';
 import Title from './Title';
@@ -20,6 +21,7 @@ type PropType = {
 const Middle: FC<PropType> = ({ title }) => {
 	const startEndDate = useAtom(startEndDateAtom)[0];
 	const setGameData = useAtom(ScheduleAtom)[1];
+	const schoolData: SchoolType[] = useAtom(SchoolDataAtom)[0];
 	const [teamData] = useAtom(TeamInfoAtom);
 	const months = [2, 3, 4, 5];
 
@@ -115,7 +117,22 @@ const Middle: FC<PropType> = ({ title }) => {
 		setGameData(result);
 	};
 
-	const [gameOpen, setGameOpen] = useState(false);
+	const [data, setData] = useState<Game[]>([]);
+
+	const dialogRef = useRef(null);
+
+	const openModal = (data: Game[]) => {
+		setData(data);
+		const dialog = dialogRef.current as unknown as any;
+
+		dialog.showModal();
+	};
+
+	const closeModal = () => {
+		const dialog = dialogRef.current as unknown as any;
+
+		dialog.close();
+	};
 
 	return (
 		<section className="hover-fade relative flex h-full w-full flex-col overflow-hidden">
@@ -128,7 +145,7 @@ const Middle: FC<PropType> = ({ title }) => {
 				{active === 0 ? (
 					<>
 						{months.map(monthParam => (
-							<Calendar setOpen={setGameOpen} month={monthParam} />
+							<Calendar setOpen={openModal} month={monthParam} />
 						))}
 					</>
 				) : null}
@@ -137,7 +154,7 @@ const Middle: FC<PropType> = ({ title }) => {
 						<button type="button" onClick={decrementMonth}>
 							<Image src={caret} alt="" className="smooth inv h-16 w-16 rotate-90 hover:scale-110 active:scale-95" />
 						</button>
-						<Calendar setOpen={setGameOpen} month={month} />
+						<Calendar setOpen={openModal} month={month} />
 						<button type="button" onClick={incrementMonth}>
 							<Image src={caret} alt="" className="smooth inv h-16 w-16 rotate-[270deg] hover:scale-110 active:scale-95" />
 						</button>
@@ -162,17 +179,25 @@ const Middle: FC<PropType> = ({ title }) => {
 				{active === 3 ? <div className="absolute inset-0 m-auto h-fit w-fit text-2xl font-bold text-bug">Day tbd ...</div> : null}
 			</section>
 
-			{gameOpen && (
-				<div className="absolute z-50 h-full w-full bg-black bg-opacity-50">
-					<div className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] rounded-md bg-main">
-						<button type="button" onClick={() => setGameOpen(false)} className="smooth-scale my-shadow my-border absolute top-4 right-4 h-fit w-fit rounded-md bg-accent hover:scale-110 active:scale-90">
-							<svg className="h-10 w-10 fill-stark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-								<path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z" />
-							</svg>
-						</button>
+			<dialog ref={dialogRef} className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] rounded-md bg-main backdrop:bg-black/40 backdrop:backdrop-blur-lg">
+				<button type="button" onClick={closeModal} className="smooth-scale my-shadow my-border absolute top-4 right-4 h-fit w-fit rounded-md bg-accent hover:scale-110 active:scale-90">
+					<svg className="h-10 w-10 fill-stark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+						<path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z" />
+					</svg>
+				</button>
+
+				{data.map(elm => (
+					<div className="my-border m-1 flex-col relative items-center gap-2 rounded-md p-1">
+						<div className="flex gap-2 w-fit">
+							<p className="text-blue-500">{elm.homeTeam.schoolName}</p>
+							<p className="font-bold">VS</p>
+							<p className="text-red-500">{elm.awayTeam.schoolName}</p>
+						</div>
+						<p className="w-fit relative">{elm.date.toString()}</p>
+						<p className="w-fit relative">{elm.time}</p>
 					</div>
-				</div>
-			)}
+				))}
+			</dialog>
 
 			<div className="inset-x-0 mx-auto h-fit w-fit flex-col items-center">
 				<button title="Edit Team Data" onClick={handleClickCalculate} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
