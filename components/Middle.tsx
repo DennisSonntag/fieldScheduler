@@ -1,12 +1,12 @@
 import { FC, useRef, useState } from 'react';
 
 import caret from '@svg/caret.svg';
-import { Game } from '@ts/matchUp';
 
 import Image from 'next/image';
 
-import generateSchedule, { AltField, DivType, FieldType, Team, TeamType } from '@ts/matchUp';
-import { ScheduleAtom, SchoolDataAtom, SchoolType, startEndDateAtom, TeamInfoAtom } from 'pages/main';
+import generateSchedule, { AltField, DivType, FieldType, Team, TeamType, Game } from '@ts/matchUp';
+// import { ScheduleAtom, SchoolDataAtom, SchoolType, startEndDateAtom, TeamInfoAtom } from 'pages/main';
+import { ScheduleAtom, startEndDateAtom, TeamInfoAtom } from 'pages/main';
 import { useAtom } from 'jotai';
 import Calendar, { getDaysInMonth, monthNames } from './Calendar';
 import Title from './Title';
@@ -21,7 +21,7 @@ type PropType = {
 const Middle: FC<PropType> = ({ title }) => {
 	const startEndDate = useAtom(startEndDateAtom)[0];
 	const setGameData = useAtom(ScheduleAtom)[1];
-	const schoolData: SchoolType[] = useAtom(SchoolDataAtom)[0];
+	// const schoolData: SchoolType[] = useAtom(SchoolDataAtom)[0];
 	const [teamData] = useAtom(TeamInfoAtom);
 	const months = [2, 3, 4, 5];
 
@@ -120,8 +120,8 @@ const Middle: FC<PropType> = ({ title }) => {
 
 	const dialogRef = useRef(null);
 
-	const openModal = (data: Game[]) => {
-		setData(data);
+	const openModal = (dataArg: Game[]) => {
+		setData(dataArg);
 		const dialog = dialogRef.current as unknown as any;
 
 		dialog.showModal();
@@ -187,7 +187,7 @@ const Middle: FC<PropType> = ({ title }) => {
 
 				<div className="absolute inset-0 m-auto flex h-fit w-fit flex-col items-center gap-4">
 					{data.map(elm => (
-						<div className="my-border p-y-2 my-shadow flex w-[40rem] flex-col items-center rounded-md text-2xl bg-main">
+						<div className="my-border p-y-2 my-shadow flex w-[40rem] flex-col items-center rounded-md bg-main text-2xl">
 							<div className="flex w-fit gap-2">
 								<p className="text-blue-500">{elm.homeTeam.schoolName}</p>
 								<p className="font-bold">VS</p>

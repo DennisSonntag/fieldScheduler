@@ -1,24 +1,17 @@
-import { useState, useId, Dispatch, SetStateAction, FC } from 'react';
+import { useState, useId, FC } from 'react';
 import Image from 'next/image';
-import { Item } from './CreateData';
 import remove from '@svg/remove.svg';
 import plus from '@svg/add.svg';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import TeamInput from './TeamInput';
 
-type PropType = {
-	setState: Dispatch<SetStateAction<Item[]>>;
-	state: Item[];
-	selfId: number;
-	index: number;
+type PropTypes = {
+	setState: any;
+	state: any;
 };
 
-const SchoolInput: FC<PropType> = ({ setState, state, selfId }) => {
+const SchoolInput: FC<PropTypes> = ({ setState, state }) => {
 	const [teams, setTeams] = useState<number[]>([]);
-
-	const update = (index: number, newElement: Item) => {
-		setState(a => [...a.slice(0, index), newElement, ...a.slice(index + 1, a.length)]);
-	};
 
 	const enlaregeArray = () => {
 		if (teams.length + 1 <= 4) {
@@ -31,14 +24,15 @@ const SchoolInput: FC<PropType> = ({ setState, state, selfId }) => {
 	};
 
 	const removeSelf = () => {
-		// @ts-ignore
-		const index = state.indexOf(selfId);
-		if (index > -1) {
-			// only splice array when item is found
-			state.splice(index, 1); // 2nd parameter means remove one item only
-		}
+		const array = [...state];
+		// const index = array.indexOf(id);
+		// if (index > -1) {
+		// 	// only splice array when item is found
+		// 	array.splice(index, 1); // 2nd parameter means remove one item only
+		// }
+		array.pop();
 
-		setState(state);
+		setState(array);
 	};
 
 	const [altActive, setAltActive] = useState(false);
@@ -55,7 +49,7 @@ const SchoolInput: FC<PropType> = ({ setState, state, selfId }) => {
 			<p className="text-center text-2xl font-bold">School Info</p>
 
 			<div className="flex h-fit w-full justify-center gap-4">
-				<input onChange={e => update(index)} className="my-border my-shadow rounded-md bg-accent p-2 text-center text-stark" type="text" placeholder="Name" />
+				<input className="my-border my-shadow rounded-md bg-accent p-2 text-center text-stark" type="text" placeholder="Name" />
 				<input className="my-border my-shadow rounded-md bg-accent p-2 text-center text-stark" type="text" placeholder="Code" />
 			</div>
 
@@ -120,5 +114,4 @@ const SchoolInput: FC<PropType> = ({ setState, state, selfId }) => {
 		</div>
 	);
 };
-
 export default SchoolInput;

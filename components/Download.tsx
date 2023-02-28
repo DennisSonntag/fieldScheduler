@@ -20,7 +20,7 @@ const Download = () => {
 	zip.file('Schedule2.csv', generateCsv(test2));
 
 	const downloadCsv = () => {
-		zip.generateAsync({ type: 'blob' }).then(function(content) {
+		zip.generateAsync({ type: 'blob' }).then(content => {
 			saveAs(content, 'test.zip');
 		});
 	};

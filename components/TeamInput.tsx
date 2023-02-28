@@ -1,14 +1,14 @@
-import { useState, useId, Dispatch, SetStateAction, FC } from 'react';
-import Image from 'next/image';
+import { useId, Dispatch, SetStateAction, FC } from 'react';
 import remove from '@svg/remove.svg';
+import Image from 'next/image';
 
-type PropType = {
+type PropTypes = {
 	index: number;
 	setState: Dispatch<SetStateAction<number[]>>;
 	state: number[];
 };
 
-const TeamInput: FC<PropType> = ({ index, setState, state }) => {
+const TeamInput: FC<PropTypes> = ({ index, setState, state }) => {
 	const id = useId();
 
 	const removeSelf = () => {
@@ -26,8 +26,8 @@ const TeamInput: FC<PropType> = ({ index, setState, state }) => {
 			<fieldset className="my-shadow rounded-md p-2">
 				<legend className="text-2xl font-bold">Team {index} Info</legend>
 
-				<button type="button" onClick={removeSelf} className="smooth-scale my-border absolute top-2 right-2 h-2 w-2 rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
-					<Image className="w-1 h-1" src={remove} alt="remove icon" />
+				<button type="button" onClick={removeSelf} className="smooth-scale my-border absolute top-2 right-2 h-fit w-fit rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
+					<Image className="h-3 w-3" src={remove} alt="remove icon" />
 				</button>
 
 				<div className="flex gap-2">
