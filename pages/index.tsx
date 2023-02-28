@@ -102,7 +102,7 @@ const Login = () => {
 						Forgot Password
 					</button>
 
-					<dialog className="my-shadow my-border absolute inset-0 m-auto aspect-square h-1/2 rounded-lg bg-main backdrop:bg-black backdrop:opacity-80" ref={dialogRef}>
+					<dialog className="my-shadow my-border absolute inset-0 m-auto aspect-square h-1/2 rounded-lg bg-main backdrop:bg-black/80" ref={dialogRef}>
 						<p className="my-shadow my-border absolute inset-x-0 top-4 mx-auto h-fit w-fit rounded-md bg-accent p-2 text-xl font-bold text-stark">Forgot Password</p>
 						<input type="email" id="email" name="email" className="my-border my-shadow absolute inset-0 m-auto h-10 w-3/4 rounded-md bg-red-500 text-center valid:bg-green-500" />
 						<label htmlFor="email" className="absolute inset-x-0 top-40 mx-auto h-fit w-fit text-2xl font-bold">

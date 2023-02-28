@@ -32,6 +32,7 @@ specifiers:
   jszip: ^3.10.1
   next: 13.2.1
   next-auth: ^4.19.2
+  next-themes: ^0.2.1
   pocketbase: ^0.12.0
   postcss: ^8.4.21
   prettier: ^2.8.4
@@ -60,6 +61,7 @@ dependencies:
   jszip: 3.10.1
   next: 13.2.1_6m24vuloj5ihw4zc5lbsktc4fu
   next-auth: 4.19.2_qgtcjgzkkjtbiyvnx7d32fl5vu
+  next-themes: 0.2.1_qgtcjgzkkjtbiyvnx7d32fl5vu
   pocketbase: 0.12.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -3756,6 +3758,18 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       uuid: 8.3.2
+    dev: false
+
+  /next-themes/0.2.1_qgtcjgzkkjtbiyvnx7d32fl5vu:
+    resolution: {integrity: sha512-B+AKNfYNIzh0vqQQKqQItTS8evEouKD7H5Hj3kmuPERwddR2TxvDSFZuTj6T7Jfn1oyeUyJMydPl1Bkxkh0W7A==}
+    peerDependencies:
+      next: '*'
+      react: '*'
+      react-dom: '*'
+    dependencies:
+      next: 13.2.1_6m24vuloj5ihw4zc5lbsktc4fu
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /next/13.2.1_6m24vuloj5ihw4zc5lbsktc4fu:

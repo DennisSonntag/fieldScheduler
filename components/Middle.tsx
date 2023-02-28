@@ -91,7 +91,6 @@ const Middle: FC<PropType> = ({ title }) => {
 	const weekData = getWeek(week - 1);
 
 	const handleClickCalculate = async () => {
-		// console.log(teamData);
 		const TeamTypes = ['srBoys', 'jrBoys', 'srGirls', 'jrGirls'];
 		const FieldNames = ['none', 'single', 'double'];
 		const AltFieldNames = ['cru', 'irish'];
@@ -186,17 +185,19 @@ const Middle: FC<PropType> = ({ title }) => {
 					</svg>
 				</button>
 
-				{data.map(elm => (
-					<div className="my-border m-1 flex-col relative items-center gap-2 rounded-md p-1">
-						<div className="flex gap-2 w-fit">
-							<p className="text-blue-500">{elm.homeTeam.schoolName}</p>
-							<p className="font-bold">VS</p>
-							<p className="text-red-500">{elm.awayTeam.schoolName}</p>
+				<div className="absolute inset-0 m-auto flex h-fit w-fit flex-col items-center gap-4">
+					{data.map(elm => (
+						<div className="my-border p-y-2 my-shadow flex w-[40rem] flex-col items-center rounded-md text-2xl bg-main">
+							<div className="flex w-fit gap-2">
+								<p className="text-blue-500">{elm.homeTeam.schoolName}</p>
+								<p className="font-bold">VS</p>
+								<p className="text-red-500">{elm.awayTeam.schoolName}</p>
+							</div>
+							<p>Date : {elm.date.toDateString()}</p>
+							<p>Time : {elm.time}</p>
 						</div>
-						<p className="w-fit relative">{elm.date.toString()}</p>
-						<p className="w-fit relative">{elm.time}</p>
-					</div>
-				))}
+					))}
+				</div>
 			</dialog>
 
 			<div className="inset-x-0 mx-auto h-fit w-fit flex-col items-center">

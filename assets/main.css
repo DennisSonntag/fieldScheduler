@@ -7,23 +7,7 @@
 
 	:root {
 		font-family: 'Ubuntu', sans-serif;
-	}
 
-	.dark {
-		--color-main: rgb(255, 255, 255);
-		--color-bg: rgb(255, 255, 255);
-		--color-accent: hsl(0, 45%, 45%);
-		--color-light: hsl(0, 45%, 60%);
-		--color-border: black;
-
-		--color-stark: #ffffff;
-		--color-invert: #000000;
-
-		--color-svg: ;
-		--color-svg-1: invert();
-	}
-
-	.light {
 		--color-main: rgb(107, 107, 107);
 		--color-bg: rgb(36, 35, 46);
 		--color-accent: hsl(0, 45%, 45%);
@@ -37,15 +21,56 @@
 		--color-svg-1: ;
 	}
 
+	[data-theme='dark'] {
+		--color-main: rgb(255, 255, 255);
+		--color-bg: rgb(255, 255, 255);
+		--color-accent: hsl(0, 45%, 45%);
+		--color-light: hsl(0, 45%, 60%);
+		--color-border: black;
+
+		--color-stark: #ffffff;
+		--color-invert: #000000;
+
+		--color-svg: ;
+		--color-svg-1: invert();
+	}
+
+	/* .dark { */
+	/* 	--color-main: rgb(255, 255, 255); */
+	/* 	--color-bg: rgb(255, 255, 255); */
+	/* 	--color-accent: hsl(0, 45%, 45%); */
+	/* 	--color-light: hsl(0, 45%, 60%); */
+	/* 	--color-border: black; */
+	/**/
+	/* 	--color-stark: #ffffff; */
+	/* 	--color-invert: #000000; */
+	/**/
+	/* 	--color-svg: ; */
+	/* 	--color-svg-1: invert(); */
+	/* } */
+	/**/
+	/* .light { */
+	/* 	--color-main: rgb(107, 107, 107); */
+	/* 	--color-bg: rgb(36, 35, 46); */
+	/* 	--color-accent: hsl(0, 45%, 45%); */
+	/* 	--color-light: hsl(0, 45%, 60%); */
+	/* 	--color-border: white; */
+	/**/
+	/* 	--color-stark: #000000; */
+	/* 	--color-invert: #ffffff; */
+	/**/
+	/* 	--color-svg: invert(); */
+	/* 	--color-svg-1: ; */
+	/* } */
+
 	fieldset {
 		border: 0;
-		/* padding: 0 !important; */
 		margin: 0;
 		min-width: 0;
 		border: 2px solid black;
 	}
 	legend {
-		padding:.1rem !important;
+		padding: 0.1rem !important;
 	}
 
 	input[type='radio'] {
@@ -92,7 +117,8 @@
 	}
 
 	.no-move {
-		user-drag: none;
+		-webkit-user-drag: none;
+		/* user-drag: none; */
 		user-select: none;
 	}
 
@@ -102,15 +128,6 @@
 
 	.my-col-3 {
 		grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-	}
-
-	.hover-fade {
-		opacity: 40%;
-		transition: all 150ms ease-in-out;
-	}
-
-	.hover-fade:hover {
-		opacity: 100%;
 	}
 
 	.top-calc {
@@ -179,6 +196,5 @@
 	}
 	.my-grid {
 		grid-template-columns: repeat(4, 1fr);
-		/* grid-template-rows: repeat(4, 1fr); */
 	}
 }
