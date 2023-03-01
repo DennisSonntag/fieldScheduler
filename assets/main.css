@@ -5,6 +5,7 @@
 @layer base {
 	@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital@1&display=swap');
 
+
 	:root {
 		font-family: 'Ubuntu', sans-serif;
 
@@ -35,33 +36,10 @@
 		--color-svg-1: invert();
 	}
 
-	/* .dark { */
-	/* 	--color-main: rgb(255, 255, 255); */
-	/* 	--color-bg: rgb(255, 255, 255); */
-	/* 	--color-accent: hsl(0, 45%, 45%); */
-	/* 	--color-light: hsl(0, 45%, 60%); */
-	/* 	--color-border: black; */
-	/**/
-	/* 	--color-stark: #ffffff; */
-	/* 	--color-invert: #000000; */
-	/**/
-	/* 	--color-svg: ; */
-	/* 	--color-svg-1: invert(); */
-	/* } */
-	/**/
-	/* .light { */
-	/* 	--color-main: rgb(107, 107, 107); */
-	/* 	--color-bg: rgb(36, 35, 46); */
-	/* 	--color-accent: hsl(0, 45%, 45%); */
-	/* 	--color-light: hsl(0, 45%, 60%); */
-	/* 	--color-border: white; */
-	/**/
-	/* 	--color-stark: #000000; */
-	/* 	--color-invert: #ffffff; */
-	/**/
-	/* 	--color-svg: invert(); */
-	/* 	--color-svg-1: ; */
-	/* } */
+	* {
+		color:var(--color--invert);
+	}
+
 
 	fieldset {
 		border: 0;

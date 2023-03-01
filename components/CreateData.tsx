@@ -28,12 +28,9 @@ const CreateData = () => {
 			</div>
 
 			<div ref={animateRef} className="relative h-fit w-full flex-col items-center gap-4">
-				{schools
-					.slice()
-					.reverse()
-					.map(() => (
-						<SchoolInput setState={setSchools} state={schools} />
-					))}
+				{schools.map(() => (
+					<SchoolInput setState={setSchools} state={schools} />
+				))}
 			</div>
 		</div>
 	);

@@ -49,8 +49,8 @@ const SchoolInput: FC<PropTypes> = ({ setState, state }) => {
 			<p className="text-center text-2xl font-bold">School Info</p>
 
 			<div className="flex h-fit w-full justify-center gap-4">
-				<input className="my-border my-shadow rounded-md bg-accent p-2 text-center text-stark" type="text" placeholder="Name" />
-				<input className="my-border my-shadow rounded-md bg-accent p-2 text-center text-stark" type="text" placeholder="Code" />
+				<input className="my-border my-shadow rounded-md bg-accent p-2 text-center" type="text" placeholder="Name" />
+				<input className="my-border my-shadow rounded-md bg-accent p-2 text-center" type="text" placeholder="Code" />
 			</div>
 
 			<p className="text-center text-2xl font-bold">Blackout Dates</p>

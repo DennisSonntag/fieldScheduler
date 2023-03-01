@@ -62,7 +62,7 @@ const Left = () => {
 
 	return (
 		<section className="hover-fade relative flex h-full w-[40%] flex-col gap-2 overflow-hidden rounded-bl-xl">
-			<dialog ref={dialogRef} className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] flex-col rounded-xl bg-back backdrop:bg-black/40 backdrop:backdrop-blur-lg">
+			<dialog ref={dialogRef} className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] flex-col overflow-y-scroll rounded-xl bg-back backdrop:bg-black/40 backdrop:backdrop-blur-lg">
 				<button type="button" onClick={closeModal} className="smooth-scale my-shadow my-border absolute top-2 right-2 h-fit w-fit rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
 					<Image className="h-6 w-6" src={remove} alt="remove icon" />
 				</button>

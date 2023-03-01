@@ -2,6 +2,7 @@ import { Game } from '@ts/matchUp';
 import { useAtom } from 'jotai';
 import { divAtom, genderAtom, ScheduleAtom, schoolAtom, SchoolDataAtom, SchoolType, seniorityAtom } from 'pages/main';
 import { FC, useState } from 'react';
+import { Crypto } from '@peculiar/webcrypto';
 
 type PropType = {
 	month: number;
@@ -10,7 +11,10 @@ type PropType = {
 
 export const getDaysInMonth = (yearArg: number, monthArg: number) => new Date(yearArg, monthArg, 0).getDate();
 
+const crypto = new Crypto();
+
 export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 const Calendar: FC<PropType> = ({ month, setOpen }) => {
 	const gameData: Game[] = useAtom(ScheduleAtom)[0];
 	const schoolData: SchoolType[] = useAtom(SchoolDataAtom)[0];
@@ -118,7 +122,7 @@ const Calendar: FC<PropType> = ({ month, setOpen }) => {
 									{currentDateInfo.map(elm => (
 										<div className="my-border m-1 flex justify-center gap-2 rounded-md p-1">
 											<p className="text-blue-500">{schoolData.filter(elm2 => elm2.school_name === elm.homeTeam.schoolName)[0].code}</p>
-											<p className="font-bold">VS</p>
+											<p className="font-bold text-invert">VS</p>
 											<p className="text-red-500">{schoolData.filter(elm2 => elm2.school_name === elm.awayTeam.schoolName)[0].code}</p>
 										</div>
 									))}

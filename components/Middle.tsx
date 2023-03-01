@@ -190,11 +190,11 @@ const Middle: FC<PropType> = ({ title }) => {
 						<div className="my-border p-y-2 my-shadow flex w-[40rem] flex-col items-center rounded-md bg-main text-2xl">
 							<div className="flex w-fit gap-2">
 								<p className="text-blue-500">{elm.homeTeam.schoolName}</p>
-								<p className="font-bold">VS</p>
+								<p className="font-bold text-invert">VS</p>
 								<p className="text-red-500">{elm.awayTeam.schoolName}</p>
 							</div>
-							<p>Date : {elm.date.toDateString()}</p>
-							<p>Time : {elm.time}</p>
+							<p className="text-invert">Date : {elm.date.toDateString()}</p>
+							<p className="text-invert">Time : {elm.time}</p>
 						</div>
 					))}
 				</div>
