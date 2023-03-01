@@ -1,14 +1,34 @@
-import { useState } from 'react';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import Image from 'next/image';
 import plus from '@svg/add.svg';
-import SchoolInput from './SchoolInput';
+import { useImmer } from 'use-immer';
+import SchoolInput, { TeamInputType } from './SchoolInput';
+
+type AltFieldType = 'cru' | 'irish';
+type FieldType = 'alt' | 'single' | 'double';
+
+export type SchoolInputType = {
+	name?: string;
+	code?: string;
+	blackoutDates?: Date[];
+	fieldType?: FieldType;
+	altField?: AltFieldType;
+	teams?: TeamInputType[];
+	id: number;
+};
 
 const CreateData = () => {
-	const [schools, setSchools] = useState<number[]>([]);
+	const [schools, setSchools] = useImmer<SchoolInputType[]>([]);
 
 	const enlaregeArray = () => {
-		setSchools(prev => [...prev, 1]);
+		setSchools((draft: SchoolInputType[]) => {
+			const last = draft.at(-1);
+			if (last === undefined) {
+				draft.push({ id: 0 });
+			} else {
+				draft.push({ id: last.id + 1 });
+			}
+		});
 	};
 
 	const [animateRef] = useAutoAnimate<HTMLDivElement>();
@@ -28,8 +48,8 @@ const CreateData = () => {
 			</div>
 
 			<div ref={animateRef} className="relative h-fit w-full flex-col items-center gap-4">
-				{schools.map(() => (
-					<SchoolInput setState={setSchools} state={schools} />
+				{schools.map((elm, index) => (
+					<SchoolInput setState={setSchools} currentState={elm} index={index} />
 				))}
 			</div>
 		</div>

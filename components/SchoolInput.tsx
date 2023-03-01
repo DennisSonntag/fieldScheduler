@@ -1,38 +1,51 @@
-import { useState, useId, FC } from 'react';
+import { useState, useEffect, useId, FC } from 'react';
+import { useImmer, Updater } from 'use-immer';
 import Image from 'next/image';
 import remove from '@svg/remove.svg';
 import plus from '@svg/add.svg';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import TeamInput from './TeamInput';
+import { SchoolInputType } from './CreateData';
+import Chip from './Chip';
 
 type PropTypes = {
-	setState: any;
-	state: any;
+	setState: Updater<SchoolInputType[]>;
+	currentState: SchoolInputType;
+	index: number;
 };
 
-const SchoolInput: FC<PropTypes> = ({ setState, state }) => {
-	const [teams, setTeams] = useState<number[]>([]);
+type GenderType = 'boy' | 'girl';
+type SeniorityType = 'sr' | 'jr';
+type DivType = 1 | 2 | 3;
+
+export type TeamInputType = {
+	gender?: GenderType;
+	seniority?: SeniorityType;
+	div?: DivType;
+	id: number;
+};
+
+const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
+	const [teams, setTeams] = useImmer<TeamInputType[]>([]);
 
 	const enlaregeArray = () => {
 		if (teams.length + 1 <= 4) {
-			if (teams.length === 0) {
-				setTeams(prev => [...prev, 0]);
-			} else {
-				setTeams(prev => [...prev, prev[prev.length - 1] + 1]);
-			}
+			setTeams(draft => {
+				const last = draft.at(-1);
+				if (last === undefined) {
+					draft.push({ id: 0 });
+				} else {
+					draft.push({ id: last.id + 1 });
+				}
+			});
 		}
 	};
-
 	const removeSelf = () => {
-		const array = [...state];
-		// const index = array.indexOf(id);
-		// if (index > -1) {
-		// 	// only splice array when item is found
-		// 	array.splice(index, 1); // 2nd parameter means remove one item only
-		// }
-		array.pop();
-
-		setState(array);
+		setState(draft => {
+			if (index > -1) {
+				draft.splice(index, 1);
+			}
+		});
 	};
 
 	const [altActive, setAltActive] = useState(false);
@@ -41,28 +54,90 @@ const SchoolInput: FC<PropTypes> = ({ setState, state }) => {
 
 	const [animateRef] = useAutoAnimate<HTMLDivElement>();
 
+	const [dates, setDates] = useImmer<string[]>([]);
+
+	useEffect(() => {
+		setState(draft => {
+			draft[index].teams = teams;
+			return draft;
+		});
+	}, [teams]);
+
 	return (
 		<div className="my-border my-shadow relative inset-x-0 my-4 mx-auto h-fit w-[90%] rounded-md bg-main p-4">
 			<button type="button" onClick={removeSelf} className="smooth-scale my-border absolute top-2 right-2 h-fit w-fit rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
 				<Image className="h-4 w-4" src={remove} alt="remove icon" />
 			</button>
-			<p className="text-center text-2xl font-bold">School Info</p>
+			<p className="text-center text-2xl font-bold">School {currentState.id} Info</p>
 
 			<div className="flex h-fit w-full justify-center gap-4">
-				<input className="my-border my-shadow rounded-md bg-accent p-2 text-center" type="text" placeholder="Name" />
-				<input className="my-border my-shadow rounded-md bg-accent p-2 text-center" type="text" placeholder="Code" />
+				<input
+					value={currentState.name || ''}
+					onChange={e =>
+						setState(draft => {
+							draft[index].name = e.target.value;
+							return draft;
+						})
+					}
+					className="my-border my-shadow rounded-md bg-accent p-2 text-center"
+					type="text"
+					placeholder="Name"
+				/>
+				<input
+					value={currentState.code || ''}
+					onChange={e =>
+						setState(draft => {
+							draft[index].code = e.target.value;
+							return draft;
+						})
+					}
+					className="my-border my-shadow rounded-md bg-accent p-2 text-center"
+					type="text"
+					placeholder="Code"
+				/>
 			</div>
 
-			<p className="text-center text-2xl font-bold">Blackout Dates</p>
-			<div className="flex h-fit w-full justify-center gap-4">
-				<input type="date" />
+			<p className="my-2 text-center text-2xl font-bold">Blackout Dates</p>
+			<div className="my-2 flex h-fit w-full flex-col justify-center gap-4">
+				<input
+					type="date"
+					className="smooth-scale my-border my-shadow relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-accent p-2 text-center hover:scale-105 active:scale-95"
+					onChange={
+						e => console.log(e.target.value)
+
+						// setDates(draft => {
+						// 	const date = e.target.valueAsDate;
+						// 	if (date !== null) {
+						// 		draft.push((date as Date).toDateString());
+						// 	}
+						// 	return draft;
+						// })
+					}
+				/>
+				<div className="relative h-fit w-full">
+					<Chip setState={setDates} removeable list={dates} />
+				</div>
 			</div>
 
 			<p className="text-center text-2xl font-bold">Field Info</p>
 			<div className="flex h-fit w-full justify-center gap-4">
 				<div ref={animateRef} className="h-full w-fit flex-col justify-center">
 					<div className="my-border h-fit w-fit justify-center rounded-md p-2">
-						<input onChange={e => setAltActive(e.target.value === 'on')} type="radio" id={`af${id}`} name={`field${id}`} className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer" />
+						<input
+							checked={currentState.fieldType === 'alt'}
+							onChange={() => {
+								setAltActive(true);
+								setState(draft => {
+									draft[index].fieldType = 'alt';
+									return draft;
+								});
+							}}
+							type="radio"
+							id={`af${id}`}
+							name={`field${id}`}
+							className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer"
+						/>
+
 						<label htmlFor={`af${id}`} className="mx-2 cursor-pointer">
 							Alternate Field
 						</label>
@@ -71,14 +146,40 @@ const SchoolInput: FC<PropTypes> = ({ setState, state }) => {
 					{altActive && (
 						<div className="my-border relative inset-x-0 m-2 mx-auto flex h-fit w-fit gap-2 rounded-md p-2">
 							<div>
-								<input type="radio" id="cru" name="alt" className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer" />
+								<input
+									checked={currentState.altField === 'cru'}
+									onChange={() => {
+										setAltActive(true);
+										setState(draft => {
+											draft[index].altField = 'cru';
+											return draft;
+										});
+									}}
+									type="radio"
+									id="cru"
+									name="alt"
+									className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer"
+								/>
 								<label htmlFor="cru" className="mx-2 cursor-pointer">
 									Cru
 								</label>
 							</div>
 
 							<div>
-								<input type="radio" id="irish" name="alt" className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer" />
+								<input
+									checked={currentState.altField === 'irish'}
+									onChange={() => {
+										setAltActive(true);
+										setState(draft => {
+											draft[index].altField = 'irish';
+											return draft;
+										});
+									}}
+									type="radio"
+									id="irish"
+									name="alt"
+									className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer"
+								/>
 								<label htmlFor="irish" className="mx-2 cursor-pointer">
 									Irish
 								</label>
@@ -88,14 +189,40 @@ const SchoolInput: FC<PropTypes> = ({ setState, state }) => {
 				</div>
 
 				<div className="my-border h-fit w-fit justify-center rounded-md p-2">
-					<input onChange={e => setAltActive(!(e.target.value === 'on'))} type="radio" id={`sf${id}`} name={`field${id}`} className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer" />
+					<input
+						checked={currentState.fieldType === 'single'}
+						onChange={() => {
+							setAltActive(true);
+							setState(draft => {
+								draft[index].fieldType = 'single';
+								return draft;
+							});
+						}}
+						type="radio"
+						id={`sf${id}`}
+						name={`field${id}`}
+						className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer"
+					/>
 					<label htmlFor={`sf${id}`} className="mx-2 cursor-pointer">
 						Single Field
 					</label>
 				</div>
 
 				<div className="my-border h-fit w-fit justify-center rounded-md p-2">
-					<input onChange={e => setAltActive(!(e.target.value === 'on'))} type="radio" id={`dhf${id}`} name={`field${id}`} className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer" />
+					<input
+						checked={currentState.fieldType === 'double'}
+						onChange={() => {
+							setAltActive(true);
+							setState(draft => {
+								draft[index].fieldType = 'double';
+								return draft;
+							});
+						}}
+						type="radio"
+						id={`dhf${id}`}
+						name={`field${id}`}
+						className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer"
+					/>
 					<label htmlFor={`dhf${id}`} className="mx-2 cursor-pointer">
 						Double Header Field
 					</label>
@@ -107,8 +234,8 @@ const SchoolInput: FC<PropTypes> = ({ setState, state }) => {
 			</button>
 
 			<div ref={animateRef} className="flex justify-center gap-4">
-				{teams.map(elm => (
-					<TeamInput state={teams} setState={setTeams} index={elm} />
+				{teams.map((elm, indexArg) => (
+					<TeamInput currentState={elm} setState={setTeams} index={indexArg} />
 				))}
 			</div>
 		</div>

@@ -7,7 +7,7 @@ import Image from 'next/image';
 import EditData from './EditData';
 import CreateData from './CreateData';
 import Filter from './Filter';
-import FilterChip from './FilterChip';
+import Chip from './Chip';
 import Title from './Title';
 
 const Left = () => {
@@ -88,10 +88,10 @@ const Left = () => {
 				<Filter options={gender} title="Gender" selected={genderSelect} setSelected={setGenderSelect} />
 			</div>
 
-			<FilterChip selected={divSelect as string[]} />
-			<FilterChip selected={schoolSelect as string[]} />
-			<FilterChip selected={senioritySelect as string[]} />
-			<FilterChip selected={genderSelect as string[]} />
+			<Chip list={divSelect as string[]} />
+			<Chip list={schoolSelect as string[]} />
+			<Chip list={senioritySelect as string[]} />
+			<Chip list={genderSelect as string[]} />
 
 			<div className="absolute bottom-0 flex h-fit w-full flex-grow  flex-col items-center gap-2 p-4">
 				<button title="Edit Team Data" onClick={handleClick} type="button" className="my-shadow my-border smooth-scale my-6 h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:px-6 active:px-3">

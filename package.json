@@ -24,6 +24,7 @@
 		"@typescript-eslint/eslint-plugin": "^5.54.0",
 		"@typescript-eslint/parser": "^5.54.0",
 		"file-saver": "^2.0.5",
+		"immer": "^9.0.19",
 		"jotai": "^2.0.2",
 		"jszip": "^3.10.1",
 		"next": "13.2.1",
@@ -35,6 +36,7 @@
 		"react-query": "^3.39.3",
 		"seedrandom": "^3.0.5",
 		"typescript": "4.9.5",
+		"use-immer": "^0.8.1",
 		"zod": "^3.20.6"
 	},
 	"devDependencies": {
