@@ -1,7 +1,9 @@
+import Image from 'next/image';
 import { useId, FC } from 'react';
 import { Updater } from 'use-immer';
+
 import remove from '@svg/remove.svg';
-import Image from 'next/image';
+
 import { TeamInputType } from './SchoolInput';
 
 type PropTypes = {

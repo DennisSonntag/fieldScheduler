@@ -1,16 +1,16 @@
-import { FC, useRef, useState } from 'react';
+import { useAtom } from 'jotai';
+import Image from 'next/image';
+import { ScheduleAtom, startEndDateAtom, TeamInfoAtom } from 'pages/main';
+import { FC, useRef, useState, useReducer, Reducer } from 'react';
+
+import generateSchedule, { AltField, DivType, FieldType, Team, TeamType, Game } from '@ts/matchUp';
 
 import caret from '@svg/caret.svg';
 
-import Image from 'next/image';
-
-import generateSchedule, { AltField, DivType, FieldType, Team, TeamType, Game } from '@ts/matchUp';
-// import { ScheduleAtom, SchoolDataAtom, SchoolType, startEndDateAtom, TeamInfoAtom } from 'pages/main';
-import { ScheduleAtom, startEndDateAtom, TeamInfoAtom } from 'pages/main';
-import { useAtom } from 'jotai';
+import Button from './Button';
 import Calendar, { getDaysInMonth, monthNames } from './Calendar';
-import Title from './Title';
 import Download from './Download';
+import Title from './Title';
 import ViewBtn from './ViewBtn';
 import WeekCaret from './WeekCaret';
 
@@ -21,7 +21,6 @@ type PropType = {
 const Middle: FC<PropType> = ({ title }) => {
 	const startEndDate = useAtom(startEndDateAtom)[0];
 	const setGameData = useAtom(ScheduleAtom)[1];
-	// const schoolData: SchoolType[] = useAtom(SchoolDataAtom)[0];
 	const [teamData] = useAtom(TeamInfoAtom);
 	const months = [2, 3, 4, 5];
 
@@ -45,33 +44,10 @@ const Middle: FC<PropType> = ({ title }) => {
 	};
 
 	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-	const [week, setWeek] = useState(1);
-	const [month, setMonth] = useState(2);
 	// const monthTable = [2, 2, 2, 2, 23, 3, 3, 3, 3, 4, 4, 4, 4, 45];
 
-	const incrementWeek = () => {
-		if (week + 1 <= 18) {
-			setWeek(prev => (prev += 1));
-		}
-	};
-
-	const decrementWeek = () => {
-		if (week - 1 >= 1) {
-			setWeek(prev => (prev -= 1));
-		}
-	};
-
-	const incrementMonth = () => {
-		if (month + 1 <= 5) {
-			setMonth(prev => (prev += 1));
-		}
-	};
-
-	const decrementMonth = () => {
-		if (month - 1 >= 2) {
-			setMonth(prev => (prev -= 1));
-		}
-	};
+	const [week, setWeek] = useReducer<Reducer<number, number>>((prev, next) => (next <= 18 && next >= 1 ? next : prev), 1);
+	const [month, setMonth] = useReducer<Reducer<number, number>>((prev, next) => (next <= 5 && next >= 2 ? next : prev), 2);
 
 	const days: number[] = [];
 	for (let i = 0; i < 6; i++) {
@@ -150,11 +126,11 @@ const Middle: FC<PropType> = ({ title }) => {
 				) : null}
 				{active === 1 ? (
 					<div className="absolute inset-0 m-auto flex h-fit w-[30rem] ">
-						<button type="button" onClick={decrementMonth}>
+						<button type="button" onClick={() => setMonth(month - 1)}>
 							<Image src={caret} alt="" className="smooth inv h-16 w-16 rotate-90 hover:scale-110 active:scale-95" />
 						</button>
 						<Calendar setOpen={openModal} month={month} />
-						<button type="button" onClick={incrementMonth}>
+						<button type="button" onClick={() => setMonth(month + 1)}>
 							<Image src={caret} alt="" className="smooth inv h-16 w-16 rotate-[270deg] hover:scale-110 active:scale-95" />
 						</button>
 					</div>
@@ -163,7 +139,7 @@ const Middle: FC<PropType> = ({ title }) => {
 					<div className="absolute inset-0 m-auto flex h-32 w-full">
 						<h1 className="absolute inset-x-0 top-[-8rem] mx-auto h-fit w-fit text-[2rem] font-bold text-invert">{monthNames[month]}</h1>
 						<h1 className="absolute inset-x-0 top-[-5rem] mx-auto h-fit w-fit text-[2rem] font-bold text-invert">Week {week}</h1>
-						<WeekCaret func={incrementWeek} top />
+						<WeekCaret func={() => setWeek(week + 1)} top />
 						<div className="m-2 flex h-full w-full gap-4">
 							{weekData.map((day, index) => (
 								<div className="my-border bg-base my-shadow relative h-full w-full rounded-md bg-main">
@@ -172,7 +148,7 @@ const Middle: FC<PropType> = ({ title }) => {
 								</div>
 							))}
 						</div>
-						<WeekCaret func={decrementWeek} />
+						<WeekCaret func={() => setWeek(week - 1)} />
 					</div>
 				) : null}
 				{active === 3 ? <div className="absolute inset-0 m-auto h-fit w-fit text-2xl font-bold text-bug">Day tbd ...</div> : null}
@@ -201,9 +177,7 @@ const Middle: FC<PropType> = ({ title }) => {
 			</dialog>
 
 			<div className="inset-x-0 mx-auto h-fit w-fit flex-col items-center">
-				<button title="Edit Team Data" onClick={handleClickCalculate} type="button" className="my-shadow my-border smooth-scale relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:scale-110 active:scale-90">
-					Calculate Schedule
-				</button>
+				<Button onClick={handleClickCalculate} text="Calculate Schedule " />
 				<div className="grid place-content-center ">
 					<Download />
 				</div>

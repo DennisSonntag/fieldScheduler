@@ -1,8 +1,9 @@
 import { useAtom } from 'jotai';
-import { SchoolDataAtom } from 'pages/main';
-import { useState } from 'react';
-import arrow1 from '@svg/arrow1.svg';
 import Image from 'next/image';
+import { SchoolDataAtom, SchoolType } from 'pages/main';
+import { useState } from 'react';
+
+import arrow1 from '@svg/arrow1.svg';
 
 type SelectedDataType = {
 	name: string;
@@ -26,20 +27,22 @@ const DataMenu = () => {
 			{selected ? (
 				<div>
 					<button type="button" onClick={() => setSelected(false)}>
-						<Image src={arrow1} alt="Dark/Light mode toggle button" className="my-border inv my-shadow smooth-scale absolute top-2 left-2 h-10 w-10 rounded-md bg-accent p-2 hover:scale-105 active:scale-95" />
+						<Image src={arrow1} alt="Dark/Light mode toggle button" className="my-border my-shadow smooth-scale absolute top-2 left-2 h-10 w-10 rounded-md bg-accent p-2 hover:scale-105 active:scale-95" />
 					</button>
-					<div className="my-border my-shadow absolute inset-0 m-auto h-fit w-fit rounded-md p-2">
-						<p className="font-bold">{selectedData?.name}</p>
-						<p className={selectedData?.field ? 'text-green-500' : 'text-bug'}>Has field {String(selectedData?.field)}</p>
-					</div>
-					<div className="absolute inset-x-0 bottom-40 mx-auto h-fit w-fit flex-col gap-2">
-						<div>
-							<label htmlFor="field">Has Field</label>
-							<input id="field" type="text" className="my-border my-shadow h-10 w-[5rem] rounded-sm" />
-						</div>
-						<div>
-							<label htmlFor="div">Div</label>
-							<input id="div" type="text" className="my-border my-shadow h-10 w-[5rem] rounded-sm" />
+					<div className="my-border my-shadow absolute inset-0 m-auto h-fit w-fit rounded-md bg-main p-2">
+						<div className="h-fit w-fit flex-col gap-2">
+							<div>
+								<label htmlFor="field">Has Field</label>
+								<input value={String(selectedData?.field)} id="field" type="text" className="my-border my-shadow h-10 w-[5rem] rounded-sm" />
+							</div>
+							<div>
+								<label htmlFor="div">Div</label>
+								<input id="div" type="text" className="my-border my-shadow h-10 w-[5rem] rounded-sm" />
+							</div>
+							<div>
+								<label htmlFor="name">Name</label>
+								<input value={selectedData?.name} id="name" type="text" className="my-border my-shadow h-10 w-[5rem] rounded-sm" />
+							</div>
 						</div>
 					</div>
 					<button type="button" className="my-border my-accent my-shadow smooth-scale absolute inset-x-0 bottom-10 mx-auto h-fit w-fit rounded-md bg-accent p-2 text-2xl font-bold text-stark hover:scale-90 active:scale-110">

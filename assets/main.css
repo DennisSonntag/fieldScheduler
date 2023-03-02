@@ -5,14 +5,15 @@
 @layer base {
 	@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital@1&display=swap');
 
-
 	:root {
 		font-family: 'Ubuntu', sans-serif;
 
-		--color-main: rgb(107, 107, 107);
+		--color-main: hsl(0, 0%, 42%);
+		--color-main-light: hsl(0, 0%, 57%);
 		--color-bg: rgb(36, 35, 46);
 		--color-accent: hsl(0, 45%, 45%);
-		--color-light: hsl(0, 45%, 60%);
+		--color-accent-light: hsl(0, 45%, 60%);
+
 		--color-border: white;
 
 		--color-stark: #000000;
@@ -37,9 +38,8 @@
 	}
 
 	* {
-		color:var(--color--invert);
+		color: var(--color--invert);
 	}
-
 
 	fieldset {
 		border: 0;
@@ -73,6 +73,10 @@
 
 	.my-border {
 		border: solid black 2px;
+	}
+
+	.my-border-light {
+		border: solid gray 2px;
 	}
 
 	* {

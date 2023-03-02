@@ -1,13 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
-import { startEndDateAtom, divAtom, SchoolDataAtom, schoolAtom, seniorityAtom, genderAtom } from 'pages/main';
 import { useAtom } from 'jotai';
-import remove from '@svg/remove.svg';
-import arrow from '@svg/arrow1.svg';
 import Image from 'next/image';
-import EditData from './EditData';
-import CreateData from './CreateData';
-import Filter from './Filter';
+import { startEndDateAtom, divAtom, SchoolDataAtom, schoolAtom, seniorityAtom, genderAtom } from 'pages/main';
+import { useEffect, useRef, useState } from 'react';
+
+import arrow from '@svg/arrow1.svg';
+import remove from '@svg/remove.svg';
+
+import Button from './Button';
 import Chip from './Chip';
+import CreateData from './CreateData';
+import EditData from './EditData';
+import Filter from './Filter';
 import Title from './Title';
 
 const Left = () => {
@@ -93,19 +96,17 @@ const Left = () => {
 			<Chip list={senioritySelect as string[]} />
 			<Chip list={genderSelect as string[]} />
 
-			<div className="absolute bottom-0 flex h-fit w-full flex-grow  flex-col items-center gap-2 p-4">
-				<button title="Edit Team Data" onClick={handleClick} type="button" className="my-shadow my-border smooth-scale my-6 h-fit w-fit rounded-md bg-main p-3 font-bold text-invert hover:px-6 active:px-3">
-					Edit Team data
-				</button>
-				<h1 className="text-md my-shadow my-border rounded-md bg-main py-2 px-8 text-center font-bold text-invert">Season Start/End</h1>
-				<div className="flex items-center gap-2">
-					<input ref={startDateRef} type="date" className="smooth-scale my-border my-shadow  rounded-md bg-accent p-2 text-center hover:scale-105 active:scale-95" onChange={e => setStartDate(e.target.valueAsDate as Date)} />
-					<Image src={arrow} alt="Arrow Icon" className="h-6 w-6 rotate-180" />
-					<input ref={endDateRef} type="date" className="smooth-scale my-border my-shadow  rounded-md bg-accent p-2 text-center hover:scale-105 active:scale-95" onChange={e => setEndDate(e.target.valueAsDate as Date)} />
+			<div className="absolute bottom-0 flex h-fit w-full flex-grow  flex-col items-center gap-2 p-6">
+				<Button onClick={handleClick} text="Edit Team data" />
+				<div className="my-border my-shadow bg-main rounded-md p-2 relative flex flex-col items-center gap-4">
+					<h1 className="text-md py-2 px-8 text-center font-extrabold text-stark">Season Start/End</h1>
+					<div className="flex items-center gap-2">
+						<input ref={startDateRef} type="date" className="smooth-scale my-border my-shadow  rounded-md bg-accent p-2 text-center hover:scale-105 active:scale-95" onChange={e => setStartDate(e.target.valueAsDate as Date)} />
+						<Image src={arrow} alt="Arrow Icon" className="h-6 w-6 rotate-180" />
+						<input ref={endDateRef} type="date" className="smooth-scale my-border my-shadow  rounded-md bg-accent p-2 text-center hover:scale-105 active:scale-95" onChange={e => setEndDate(e.target.valueAsDate as Date)} />
+					</div>
+					<Button onClick={changeDates} text="Confirm" />
 				</div>
-				<button onClick={changeDates} type="button" className="smooth-scale my-border my-shadow rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
-					Confirm
-				</button>
 			</div>
 		</section>
 	);

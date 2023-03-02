@@ -1,8 +1,9 @@
-import { Game } from '@ts/matchUp';
+import { Crypto } from '@peculiar/webcrypto';
 import { useAtom } from 'jotai';
 import { divAtom, genderAtom, ScheduleAtom, schoolAtom, SchoolDataAtom, SchoolType, seniorityAtom } from 'pages/main';
 import { FC, useState } from 'react';
-import { Crypto } from '@peculiar/webcrypto';
+
+import { Game } from '@ts/matchUp';
 
 type PropType = {
 	month: number;

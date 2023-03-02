@@ -1,6 +1,7 @@
-import caret from '@svg/caret.svg';
 import Image from 'next/image';
 import { FC } from 'react';
+
+import caret from '@svg/caret.svg';
 
 type PropType = {
 	func: () => void;

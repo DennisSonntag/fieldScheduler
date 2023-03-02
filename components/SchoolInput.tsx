@@ -1,12 +1,14 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react';
+import Image from 'next/image';
 import { useState, useEffect, useId, FC } from 'react';
 import { useImmer, Updater } from 'use-immer';
-import Image from 'next/image';
-import remove from '@svg/remove.svg';
+
 import plus from '@svg/add.svg';
-import { useAutoAnimate } from '@formkit/auto-animate/react';
-import TeamInput from './TeamInput';
-import { SchoolInputType } from './CreateData';
+import remove from '@svg/remove.svg';
+
 import Chip from './Chip';
+import { SchoolInputType } from './CreateData';
+import TeamInput from './TeamInput';
 
 type PropTypes = {
 	setState: Updater<SchoolInputType[]>;
@@ -101,17 +103,15 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 			<div className="my-2 flex h-fit w-full flex-col justify-center gap-4">
 				<input
 					type="date"
-					className="smooth-scale my-border my-shadow relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-accent p-2 text-center hover:scale-105 active:scale-95"
-					onChange={
-						e => console.log(e.target.value)
-
-						// setDates(draft => {
-						// 	const date = e.target.valueAsDate;
-						// 	if (date !== null) {
-						// 		draft.push((date as Date).toDateString());
-						// 	}
-						// 	return draft;
-						// })
+					className="smooth-scale my-border my-shadow relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-accent p-2 text-center hover:bg-accent-light"
+					onChange={e =>
+						setDates(draft => {
+							const date = e.target.valueAsDate;
+							if (date !== null) {
+								draft.push((date as Date).toDateString());
+							}
+							return draft;
+						})
 					}
 				/>
 				<div className="relative h-fit w-full">
@@ -122,7 +122,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 			<p className="text-center text-2xl font-bold">Field Info</p>
 			<div className="flex h-fit w-full justify-center gap-4">
 				<div ref={animateRef} className="h-full w-fit flex-col justify-center">
-					<div className="my-border h-fit w-fit justify-center rounded-md p-2">
+					<div className="my-border flex h-fit w-fit items-center rounded-md p-2">
 						<input
 							checked={currentState.fieldType === 'alt'}
 							onChange={() => {
@@ -144,8 +144,8 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 					</div>
 
 					{altActive && (
-						<div className="my-border relative inset-x-0 m-2 mx-auto flex h-fit w-fit gap-2 rounded-md p-2">
-							<div>
+						<div className="my-border relative inset-x-0 m-2 mx-auto flex h-fit w-fit items-center gap-2 rounded-md p-2">
+							<div className="flex items-center">
 								<input
 									checked={currentState.altField === 'cru'}
 									onChange={() => {
@@ -165,7 +165,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 								</label>
 							</div>
 
-							<div>
+							<div className="flex items-center">
 								<input
 									checked={currentState.altField === 'irish'}
 									onChange={() => {
@@ -188,7 +188,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 					)}
 				</div>
 
-				<div className="my-border h-fit w-fit justify-center rounded-md p-2">
+				<div className="my-border flex h-fit w-fit items-center rounded-md p-2">
 					<input
 						checked={currentState.fieldType === 'single'}
 						onChange={() => {
@@ -208,7 +208,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 					</label>
 				</div>
 
-				<div className="my-border h-fit w-fit justify-center rounded-md p-2">
+				<div className="my-border my-shadow flex h-fit w-fit items-center rounded-md p-2">
 					<input
 						checked={currentState.fieldType === 'double'}
 						onChange={() => {

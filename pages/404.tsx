@@ -1,8 +1,9 @@
 import gif from '@img/404.gif';
 import Image from 'next/image';
-import App from '@components/App';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+
+import App from '@components/App';
 
 const NotFound = () => {
 	const router = useRouter();

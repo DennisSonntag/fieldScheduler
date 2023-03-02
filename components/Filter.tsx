@@ -1,7 +1,7 @@
+import Image from 'next/image';
 import { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import caret from '@svg/caret.svg';
-import Image from 'next/image';
 
 type PropType = {
 	title: string;
@@ -71,7 +71,7 @@ const Filter: FC<PropType> = ({ title, setSelected, options, selected, scroll = 
 	}, [isOpen, highlightedIndex, options, selectOption]);
 
 	return (
-		<button title="Click to select filters" type="button" onBlur={() => setIsOpen(false)} onClick={() => setIsOpen(prev => !prev)} tabIndex={0} className="my-shadow my-border my-shadow relative z-[999] m-auto flex w-fit shrink-0  select-none items-center gap-[0.5em] rounded-md bg-main p-[0.5em] text-invert outline-none duration-75 ease-in-out hover:z-[99999] hover:scale-110 focus:border-gray-800">
+		<button title="Click to select filters" type="button" onBlur={() => setIsOpen(false)} onClick={() => setIsOpen(prev => !prev)} tabIndex={0} className="my-shadow my-border my-shadow relative z-[999] m-auto flex w-fit shrink-0  select-none items-center gap-[0.5em] rounded-md bg-main p-[0.5em] text-invert outline-none duration-75 ease-in-out hover:z-[99999] hover:bg-main-light focus:border-gray-800">
 			<p className="whitespace-nowrap">{title}</p>
 			<svg
 				onClick={e => {
@@ -97,7 +97,7 @@ const Filter: FC<PropType> = ({ title, setSelected, options, selected, scroll = 
 						}}
 						onMouseEnter={() => setHighlightedIndex(index)}
 						key={option}
-						className={`my-border m-2 h-fit cursor-pointer truncate rounded-md  text-center ${isOptionSelected(option) ? 'bg-accent' : 'bg-main'} ${index === highlightedIndex ? 'bg-light text-invert' : null} `}
+						className={`my-border m-2 h-fit cursor-pointer truncate rounded-md  text-center ${isOptionSelected(option) ? 'bg-accent' : 'bg-main'} ${index === highlightedIndex ? 'bg-accent-light text-invert' : null} `}
 					>
 						{option}
 					</option>

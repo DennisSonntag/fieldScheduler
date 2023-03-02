@@ -1,7 +1,9 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import Image from 'next/image';
-import plus from '@svg/add.svg';
 import { useImmer } from 'use-immer';
+
+import plus from '@svg/add.svg';
+
 import SchoolInput, { TeamInputType } from './SchoolInput';
 
 type AltFieldType = 'cru' | 'irish';

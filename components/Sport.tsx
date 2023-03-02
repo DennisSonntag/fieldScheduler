@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
-import Middle from './Middle';
 import Left from './Left';
+import Middle from './Middle';
 
 const Sport: FC<{ activePage: number }> = ({ activePage }) => (
 	<main className="flex h-full w-full flex-row overflow-hidden">

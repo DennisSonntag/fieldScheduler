@@ -1,7 +1,8 @@
 /* eslint-disable no-restricted-syntax */
-/* eslint-disable no-continue */
-/* eslint-disable no-constant-condition */
 
+/* eslint-disable no-continue */
+
+/* eslint-disable no-constant-condition */
 import seedrandom from 'seedrandom';
 
 export type TeamType = 'srBoys' | 'jrBoys' | 'srGirls' | 'jrGirls';

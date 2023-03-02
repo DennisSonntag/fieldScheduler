@@ -1,4 +1,4 @@
-# Welcome to🏉📚[Rugby/Soccer Field Booker](https://fieldbooker.netlify.app)
+# Welcome to🏉📚[Rugby/Soccer Field Booker](https://fieldbooker.vercel.app)
 
 ![basics](./assets/images/screenshot.png)
 ![basics](./assets/images/screenshot1.png)
@@ -11,18 +11,21 @@
 
 ### Important
 
--   Separate events for rugby/Soccer
--   List view in compare view
--   Finish day view
--   Black out days function
+-   Migrate to next.js 13 app directory
+-   Finish add data feature
+
+-   Add List view
+-   Fix compare view
+-   Finish day/week view
 -   Games already happened
--   Export schedule to csv(client or server side)
+-   Format final schedule in csv format
 
 ### Less Important
 
--   Fix dark mode
+-   Fix Auth
 -   Team colors
 -   Forgot password template email
+-   Separate events for rugby/Soccer
 
 ### Morante's stuff
 
@@ -31,15 +34,11 @@
 -   Edit teams bulk edit
 -   Black out days
 -   Min 4 teams per div
-
-### Morante's new stuff
-
--   Change Start End Date
--   Rainout rerender
+-   Rainout re-render
 -   Reschedule all games after rainout week but not any before
 -   Manual override
 
-## Team Names
+## Team Names/Codes
 
 -   CEN : Centennial
 -   ND : Notre Dame

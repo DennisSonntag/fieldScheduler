@@ -1,8 +1,9 @@
-import { FC } from 'react';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import remove from '@svg/remove.svg';
-import { Updater } from 'use-immer';
 import Image from 'next/image';
+import { FC } from 'react';
+import { Updater } from 'use-immer';
+
+import remove from '@svg/remove.svg';
 
 type PropType = {
 	list: string[];

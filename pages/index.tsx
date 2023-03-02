@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
-
-import App from '@components/App';
-import eyeOpen from '@svg/eyeOpen.svg';
-import eyeClosed from '@svg/eyeClosed.svg';
 import { getSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-// import { useMutation } from 'react-query';
+import { useEffect, useRef, useState } from 'react';
 import { z } from 'zod';
+
+import App from '@components/App';
+import Button from '@components/Button';
+
+import eyeClosed from '@svg/eyeClosed.svg';
+import eyeOpen from '@svg/eyeOpen.svg';
 
 const Login = () => {
 	const dialogRef = useRef(null);
@@ -119,10 +120,7 @@ const Login = () => {
 					</dialog>
 
 					<p className={`h-fit w-fit text-center font-bold text-bug duration-300 ${hasError ? 'opacity-100' : 'opacity-0'}`}>Invalid Info!</p>
-					<button onClick={handleSubmit} type="button" className={`${hasError ? 'bg-bug' : 'bg-accent'}  my-shadow my-border w-fit rounded-md p-2 duration-75 hover:scale-110 active:scale-90`}>
-						{/* {isLoading ? 'Loading...' : 'Login'} */}
-						Login
-					</button>
+					<Button onClick={handleSubmit} text="Login" className={`${hasError ? 'bg-bug' : 'bg-accent'}`} />
 				</div>
 			</div>
 		</App>

@@ -1,10 +1,12 @@
-import { FC, ReactNode } from 'react';
 import { useTheme } from 'next-themes';
-
-import sun from '@svg/sun.svg';
-import moon from '@svg/moon.svg';
 import Head from 'next/head';
 import Image from 'next/image';
+import { FC, ReactNode, useEffect, useState } from 'react';
+
+import moon from '@svg/moon.svg';
+import sun from '@svg/sun.svg';
+
+import Button from './Button';
 
 type PropType = {
 	children: ReactNode;
@@ -13,13 +15,16 @@ type PropType = {
 
 const App: FC<PropType> = ({ children, title }) => {
 	const { theme, setTheme } = useTheme();
+	const [themeBool, setThemeBool] = useState<boolean>(theme === 'dark');
+
+	useEffect(() => {
+		setThemeBool(theme === 'dark');
+	}, [theme]);
 
 	const toggleTheme = () => {
 		const nextTheme = theme === 'dark' ? 'light' : 'dark';
 		setTheme(nextTheme);
 	};
-
-	const themeBool = theme === 'dark';
 
 	return (
 		<>
@@ -29,9 +34,9 @@ const App: FC<PropType> = ({ children, title }) => {
 				<title> {title} </title>
 			</Head>
 			<div className={`smooth-bg absolute m-0 box-border h-screen w-screen bg-back  ${themeBool ? 'light' : 'dark'} `}>
-				<button title={`Change to ${themeBool ? 'dark' : 'light'} mode`} type="button" onClick={toggleTheme} className="smooth-scale my-border my-shadow absolute top-2 left-2 h-fit w-fit rounded-md bg-accent hover:scale-110 active:scale-90">
-					<Image src={themeBool ? sun : moon} alt="Dark/Light mode toggle button" className={`m-2 h-6 w-6 ${themeBool ? 'invert' : null}`} />
-				</button>
+				<Button className="absolute top-2 left-2 h-fit w-fit p-1" title={`Change to ${themeBool ? 'dark' : 'light'} mode`} onClick={toggleTheme}>
+					<Image src={themeBool ? moon : sun} alt="Dark/Light mode toggle button" className={`m-2 h-6 w-6 ${!themeBool ? 'invert' : null}`} />
+				</Button>
 				{children}
 			</div>
 			;
