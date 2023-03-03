@@ -1,27 +1,42 @@
+/* eslint-disable no-restricted-syntax */
 import saveAs from 'file-saver';
+import { useAtom } from 'jotai';
 import JSZip from 'jszip';
+import { ScheduleAtom, SchoolDataAtom, SchoolType } from 'pages/main';
+
+import { Game, TeamTypes, DivTypes } from '@ts/matchUp';
 
 const generateCsv = (input: string[][]): string => `${['Home Team', 'Visitor Team', 'Start Date (MM/DD/YYYY)', 'Start Time (HH:MM AA)', 'Duration (minutes)', 'Details', 'Show Details', 'League Name', 'Practice Type (Shared or Full)', 'Schedule Name', 'Venue'].join(',')}\n${input.map(row => row.join(',')).join('\n')}\n`;
 
 const Download = () => {
-	const test = [
-		['this', 'is', 'a', 'test'],
-		['i', 'hope', 'this', 'works'],
-	];
-
-	const test2 = [
-		['this', 'is', 'another', 'test'],
-		['im', 'beep', 'boop', 'works'],
-	];
+	const scheduleData: Game[] = useAtom(ScheduleAtom)[0];
+	const schoolData: SchoolType[] = useAtom(SchoolDataAtom)[0];
 
 	const zip = new JSZip();
 
-	zip.file('Schedule1.csv', generateCsv(test));
-	zip.file('Schedule2.csv', generateCsv(test2));
+	// 12 sub divs div(1,2,3) * jrboy srboy jr girl sr girl
 
 	const downloadCsv = () => {
+		let index = 0;
+		for (const div of DivTypes) {
+			for (const type of TeamTypes) {
+				const gamesRaw = scheduleData.filter(elm => elm.homeTeam.teamType === type && elm.homeTeam.skillDivision === div);
+				const gamesClean = gamesRaw.map(elm => {
+					const homeCode = schoolData.filter(elm2 => elm2.school_name === elm.homeTeam.schoolName)[0].code;
+					const awayCode = schoolData.filter(elm2 => elm2.school_name === elm.awayTeam.schoolName)[0].code;
+					const date = `${elm.date.getMonth() + 1}/${elm.date.getDate()}/${elm.date.getFullYear()}`;
+
+					return [homeCode, awayCode, date, elm.time, '60'];
+				});
+
+				zip.file(`Schedule${index}.csv`, generateCsv(gamesClean));
+
+				index++;
+			}
+		}
+
 		zip.generateAsync({ type: 'blob' }).then(content => {
-			saveAs(content, 'test.zip');
+			saveAs(content, 'Schedules.zip');
 		});
 	};
 

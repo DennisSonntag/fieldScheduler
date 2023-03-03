@@ -2,14 +2,19 @@
 
 /* eslint-disable no-continue */
 
+/* eslint-disable @typescript-eslint/no-loop-func */
+
 /* eslint-disable no-constant-condition */
 import seedrandom from 'seedrandom';
 
-export type TeamType = 'srBoys' | 'jrBoys' | 'srGirls' | 'jrGirls';
+export const TeamTypes = ['srBoys', 'jrBoys', 'srGirls', 'jrGirls'] as const;
+export type TeamType = (typeof TeamTypes)[number];
 
-export type DivType = 1 | 2 | 3;
+export const DivTypes = [1, 2, 3] as const;
+export type DivType = (typeof DivTypes)[number];
 
 export type FieldType = 'none' | 'single' | 'double';
+
 export type AltField = 'cru' | 'irish';
 
 export type Team = {
@@ -22,7 +27,7 @@ export type Team = {
 	opponents: string[];
 };
 
-type TimeType = '4:45pm' | '6:00pm';
+type TimeType = '04:45 PM' | '06:00 PM';
 
 export type Game = {
 	date: Date;
@@ -158,16 +163,16 @@ const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableD
 					if (week.includes(date.getDay())) {
 						continue;
 					}
-					schedule.push(scheduleGame(team, opponent, date, '4:45pm'));
+					schedule.push(scheduleGame(team, opponent, date, '04:45 PM'));
 				} else if (team.field === 'double' || team.field === 'none') {
 					while (true) {
 						const currentGames = schedule.filter(game => game.homeTeam.schoolName === team.schoolName && game.date.toISOString().split('T')[0] === date.toISOString().split('T')[0]);
 
 						if (currentGames.length === 0) {
-							schedule.push(scheduleGame(team, opponent as Team, date, '4:45pm'));
+							schedule.push(scheduleGame(team, opponent as Team, date, '04:45 PM'));
 							break;
 						} else if (currentGames.length === 1) {
-							schedule.push(scheduleGame(team, opponent as Team, date, '6:00pm'));
+							schedule.push(scheduleGame(team, opponent as Team, date, '06:00 PM'));
 							break;
 						} else {
 							date = createDate(unavailableDates, startDate, endDate);

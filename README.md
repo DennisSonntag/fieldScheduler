@@ -11,8 +11,26 @@
 
 ### Important
 
--   Migrate to next.js 13 app directory
+-   output schedule to csv
+
 -   Finish add data feature
+
+
+
+
+
+
+-   Add Remove Button for teams and global clear db 
+-   Finish edit feature
+
+
+
+
+
+
+
+
+-   Migrate to next.js 13 app directory
 
 -   Add List view
 -   Fix compare view
