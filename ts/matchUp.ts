@@ -13,9 +13,11 @@ export type TeamType = (typeof TeamTypes)[number];
 export const DivTypes = [1, 2, 3] as const;
 export type DivType = (typeof DivTypes)[number];
 
-export type FieldType = 'none' | 'single' | 'double';
+export const FieldTypes = ['none', 'single', 'double'] as const;
+export type FieldType = (typeof FieldTypes)[number];
 
-export type AltField = 'cru' | 'irish';
+export const AltFields = ['cru', 'irish'] as const;
+export type AltField = (typeof AltFields)[number];
 
 export type Team = {
 	schoolName: string;
@@ -89,9 +91,7 @@ const seedRandom = (input: string) => {
 };
 
 // Helper function to get a random number in a range
-const getRandom = (min: number, max: number) => {
-	return rng() * (max - min) + min;
-};
+const getRandom = (min: number, max: number) => rng() * (max - min) + min;
 
 // Helper function to get a random index from an array
 const getRandomIndex = (array: any[]) => Math.floor(getRandom(0, array.length));
@@ -104,10 +104,7 @@ const getRandomDate = (startDate: Date, endDate: Date) => {
 	return new Date(randomTimestamp);
 };
 
-const getRandomTeam = (teams: Team[]) => {
-	const index = getRandomIndex(teams);
-	return teams[index];
-};
+const getRandomTeam = (teams: Team[]) => teams[getRandomIndex(teams)];
 
 // Helper function to schedule a game between two teams
 const scheduleGame = (homeTeam: Team, awayTeam: Team, date: Date, time: TimeType): Game => {
@@ -145,14 +142,10 @@ const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableD
 				// const eligibleAlternateFields = getEligibleAlternateFields(team, teams);
 				const opponent = getRandomTeam(eligibleTeams);
 
-				if (opponent.gamesPlayed >= 6) {
-					continue;
-				}
+				if (opponent.gamesPlayed >= 6) continue;
 
-				if (!opponent) {
-					// if no opponent is found, skip to the next team
-					continue;
-				}
+				// if no opponent is found, skip to the next team
+				if (!opponent) continue;
 
 				// Get a random date that is not a weekend or unavailable
 				let date = createDate(unavailableDates, startDate, endDate);
@@ -160,9 +153,8 @@ const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableD
 				// Schedule the game and add it to the schedules array
 				if (team.field === 'single') {
 					const week = getWeek(date);
-					if (week.includes(date.getDay())) {
-						continue;
-					}
+					if (week.includes(date.getDay())) continue;
+
 					schedule.push(scheduleGame(team, opponent, date, '04:45 PM'));
 				} else if (team.field === 'double' || team.field === 'none') {
 					while (true) {
@@ -182,15 +174,11 @@ const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableD
 				}
 
 				// Check if the number of games scheduled for that day has reached the maximum
-				if (schedule.filter(game => game.date.getTime() === date.getTime()).length === maxGamesPerDay) {
-					break;
-				}
+				if (schedule.filter(game => game.date.getTime() === date.getTime()).length === maxGamesPerDay) break;
 			}
 		}
 		const end = teams.filter(team => team.gamesPlayed !== 6);
-		if (end.length === 0) {
-			break;
-		}
+		if (end.length === 0) break;
 	}
 
 	return schedule;

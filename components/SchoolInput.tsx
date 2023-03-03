@@ -3,9 +3,12 @@ import Image from 'next/image';
 import { useState, useEffect, useId, FC } from 'react';
 import { useImmer, Updater } from 'use-immer';
 
+import { DivType } from '@ts/matchUp';
+
 import plus from '@svg/add.svg';
 import remove from '@svg/remove.svg';
 
+import Button from './Button';
 import Chip from './Chip';
 import { SchoolInputType } from './CreateData';
 import TeamInput from './TeamInput';
@@ -18,7 +21,6 @@ type PropTypes = {
 
 type GenderType = 'boy' | 'girl';
 type SeniorityType = 'sr' | 'jr';
-type DivType = 1 | 2 | 3;
 
 export type TeamInputType = {
 	gender?: GenderType;
@@ -67,9 +69,9 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 
 	return (
 		<div className="my-border my-shadow relative inset-x-0 my-4 mx-auto h-fit w-[90%] rounded-md bg-main p-4">
-			<button type="button" onClick={removeSelf} className="smooth-scale my-border absolute top-2 right-2 h-fit w-fit rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
+			<Button onClick={removeSelf} className="absolute top-2 right-2">
 				<Image className="h-4 w-4" src={remove} alt="remove icon" />
-			</button>
+			</Button>
 			<p className="text-center text-2xl font-bold">School {currentState.id} Info</p>
 
 			<div className="flex h-fit w-full justify-center gap-4">
@@ -120,13 +122,13 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 			<p className="text-center text-2xl font-bold">Field Info</p>
 			<div className="flex h-fit w-full justify-center gap-4">
 				<div ref={animateRef} className="h-full w-fit flex-col justify-center">
-					<div className="my-border flex h-fit w-fit items-center rounded-md p-2">
+					<div className="my-border flex h-fit w-fit items-center rounded-md p-2 my-shadow">
 						<input
-							checked={currentState.fieldType === 'alt'}
+							checked={currentState.fieldType === 'none'}
 							onChange={() => {
 								setAltActive(true);
 								setState(draft => {
-									draft[index].fieldType = 'alt';
+									draft[index].fieldType = 'none';
 									return draft;
 								});
 							}}
@@ -142,7 +144,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 					</div>
 
 					{altActive && (
-						<div className="my-border relative inset-x-0 m-2 mx-auto flex h-fit w-fit items-center gap-2 rounded-md p-2">
+						<div className="my-border relative inset-x-0 m-2 mx-auto flex h-fit w-fit items-center gap-2 rounded-md p-2 my-shadow">
 							<div className="flex items-center">
 								<input
 									checked={currentState.altField === 'cru'}
@@ -186,7 +188,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 					)}
 				</div>
 
-				<div className="my-border flex h-fit w-fit items-center rounded-md p-2">
+				<div className="my-border flex h-fit w-fit items-center rounded-md p-2 my-shadow">
 					<input
 						checked={currentState.fieldType === 'single'}
 						onChange={() => {
@@ -226,10 +228,9 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 					</label>
 				</div>
 			</div>
-			<button onClick={enlaregeArray} type="button" className="no-move my-border my-shadow smooth-scale my-4 mx-auto flex gap-2 rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
-				<p>Add Team</p>
+			<Button text="Add Team" onClick={enlaregeArray} className="my-4 mx-auto flex gap-2">
 				<Image className="h-6 w-6" src={plus} alt="add icon" />
-			</button>
+			</Button>
 
 			<div ref={animateRef} className="flex justify-center gap-4">
 				{teams.map((elm, indexArg) => (

@@ -4,6 +4,7 @@ import { Updater } from 'use-immer';
 
 import remove from '@svg/remove.svg';
 
+import Button from './Button';
 import { TeamInputType } from './SchoolInput';
 
 type PropTypes = {
@@ -28,9 +29,9 @@ const TeamInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 			<fieldset className="my-shadow rounded-md p-2">
 				<legend className="text-2xl font-bold">Team {currentState.id} Info</legend>
 
-				<button type="button" onClick={removeSelf} className="smooth-scale my-border absolute top-2 right-2 h-fit w-fit rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
+				<Button onClick={removeSelf} className="absolute top-2 right-2 shadow-none">
 					<Image className="h-3 w-3" src={remove} alt="remove icon" />
-				</button>
+				</Button>
 
 				<div className="flex gap-2">
 					<fieldset className="my-border flex-col items-center justify-center rounded-md p-2">

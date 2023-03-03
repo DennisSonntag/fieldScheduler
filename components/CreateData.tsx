@@ -2,19 +2,19 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 import Image from 'next/image';
 import { useImmer } from 'use-immer';
 
+import { AltField, FieldType } from '@ts/matchUp';
+
 import plus from '@svg/add.svg';
 
+import Button from './Button';
 import SchoolInput, { TeamInputType } from './SchoolInput';
-
-type AltFieldType = 'cru' | 'irish';
-type FieldType = 'alt' | 'single' | 'double';
 
 export type SchoolInputType = {
 	name?: string;
 	code?: string;
 	blackoutDates?: Date[];
 	fieldType?: FieldType;
-	altField?: AltFieldType;
+	altField?: AltField;
 	teams?: TeamInputType[];
 	id: number;
 };
@@ -38,15 +38,10 @@ const CreateData = () => {
 	return (
 		<div>
 			<div className="flex justify-center gap-2 p-2">
-				<button onClick={enlaregeArray} type="button" className="my-border my-shadow smooth-scale flex gap-2 rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
-					<p>Add School</p>
+				<Button text="Add School" onClick={enlaregeArray} className="flex gap-2">
 					<Image className="h-6 w-6" src={plus} alt="add icon" />
-				</button>
-				{schools.length !== 0 && (
-					<button type="button" className="my-border my-shadow h-fit w-fit rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
-						Upload Data
-					</button>
-				)}
+				</Button>
+				{schools.length !== 0 && <Button text="Upload Data" />}
 			</div>
 
 			<div ref={animateRef} className="relative h-fit w-full flex-col items-center gap-4">

@@ -11,7 +11,7 @@ interface PropTypes extends React.HTMLAttributes<HTMLButtonElement> {
 
 const Button: FC<PropTypes> = ({ className, text, children, ...props }) => {
 	return (
-		<button {...props} type="button" className={cn('smooth-scale my-border my-shadow rounded-md bg-accent p-2 hover:bg-accent-light active:scale-90', className)}>
+		<button {...props} type="button" className={cn('smooth-scale my-border my-shadow rounded-md bg-accent p-2 hover:bg-accent-light active:scale-90 no-move', className)}>
 			<p>{text}</p>
 			{children}
 		</button>

@@ -81,11 +81,11 @@ const Main: FC<PropType> = ({ schoolData, teamInfo }) => {
 							</Link>
 							<nav className="absolute inset-x-0 top-0 z-50 m-2 mx-auto box-border flex h-fit w-fit gap-2">
 								<SportSelect sport="Rugby" activePage={rugbyActive} setActivePage={() => setActivePage(0)} />
-								<button title="Compare Schedules" onClick={() => setActivePage(2)} type="button" className={`${compareActive ? 'bg-main' : 'bg-accent'} smooth my-border   my-shadow relative mx-auto h-10 w-10 select-none rounded-md duration-100 ease-in-out hover:scale-110 active:scale-90`}>
+								<Button title="Compare Schedules" onClick={() => setActivePage(2)} className={`${compareActive ? 'bg-main hover:bg-main-light' : 'bg-accent'} relative mx-auto h-10 w-10`}>
 									<svg className={`inset-0 m-auto h-4 w-4 ${compareActive ? 'fill-invert' : 'fill-stark'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
 										<path d="M422.6 278.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L434.7 176H64c-17.7 0-32-14.3-32-32s14.3-32 32-32H434.7L377.4 54.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l112 112c12.5 12.5 12.5 32.8 0 45.3l-112 112zm-269.3 224l-112-112c-12.5-12.5-12.5-32.8 0-45.3l112-112c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3L141.3 336H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H141.3l57.4 57.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0z" />
 									</svg>
-								</button>
+								</Button>
 								<SportSelect sport="Soccer" activePage={soccerActive} setActivePage={() => setActivePage(1)} />
 							</nav>
 						</div>

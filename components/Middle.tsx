@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { ScheduleAtom, startEndDateAtom, TeamInfoAtom } from 'pages/main';
 import { FC, useRef, useState, useReducer, Reducer } from 'react';
 
-import generateSchedule, { AltField, DivType, FieldType, Team, TeamType, Game } from '@ts/matchUp';
+import generateSchedule, { AltField, DivType, FieldType, Team, TeamType, Game, TeamTypes, FieldTypes, AltFields } from '@ts/matchUp';
 
 import caret from '@svg/caret.svg';
 
@@ -19,32 +19,25 @@ type PropType = {
 };
 
 const Middle: FC<PropType> = ({ title }) => {
-	const startEndDate = useAtom(startEndDateAtom)[0];
+	const [startEndDate] = useAtom(startEndDateAtom);
 	const setGameData = useAtom(ScheduleAtom)[1];
 	const [teamData] = useAtom(TeamInfoAtom);
 	const months = [2, 3, 4, 5];
 
-	const [active, setActive] = useState(0);
-
-	const setNextView = () => {
-		if (active === 2) {
-			setActive(0);
-			return;
-		}
-		setActive(prev => (prev += 1));
-	};
-
-	const setPrevious = (e: { preventDefault: () => void }) => {
-		e.preventDefault();
-		if (active === 0) {
-			setActive(3);
-			return;
-		}
-		setActive(prev => (prev -= 1));
-	};
-
 	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 	// const monthTable = [2, 2, 2, 2, 23, 3, 3, 3, 3, 4, 4, 4, 4, 45];
+
+	const [active, setActive] = useReducer<Reducer<number, number>>((_prev, next) => {
+		if (next === 3) return 0;
+		if (next < 0) return 2;
+		return next;
+	}, 0);
+
+	const setNextView = () => setActive(active + 1);
+	const setPrevious = (e: { preventDefault: () => void }) => {
+		e.preventDefault();
+		setActive(active - 1);
+	};
 
 	const [week, setWeek] = useReducer<Reducer<number, number>>((prev, next) => (next <= 18 && next >= 1 ? next : prev), 1);
 	const [month, setMonth] = useReducer<Reducer<number, number>>((prev, next) => (next <= 5 && next >= 2 ? next : prev), 2);
@@ -67,17 +60,13 @@ const Middle: FC<PropType> = ({ title }) => {
 	const weekData = getWeek(week - 1);
 
 	const handleClickCalculate = async () => {
-		const TeamTypes = ['srBoys', 'jrBoys', 'srGirls', 'jrGirls'];
-		const FieldNames = ['none', 'single', 'double'];
-		const AltFieldNames = ['cru', 'irish'];
-
 		const teams: Team[] = teamData.map((elm, index) => ({
 			schoolName: elm.school as string,
 			teamType: TeamTypes[elm.type - 1] as TeamType,
 			skillDivision: elm.div as DivType,
-			field: FieldNames[Math.floor((index * 3) / teamData.length)] as FieldType,
+			field: FieldTypes[Math.floor((index * 3) / teamData.length)] as FieldType,
 			// field: 'single',
-			alternateFields: AltFieldNames[Math.floor((index * 2) / teamData.length)] as AltField,
+			alternateFields: AltFields[Math.floor((index * 2) / teamData.length)] as AltField,
 			gamesPlayed: 0,
 			opponents: [],
 		}));

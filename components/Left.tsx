@@ -9,6 +9,7 @@ import remove from '@svg/remove.svg';
 import Button from './Button';
 import Chip from './Chip';
 import CreateData from './CreateData';
+import DatePicker from './DatePicker';
 import EditData from './EditData';
 import Filter from './Filter';
 import Title from './Title';
@@ -66,17 +67,17 @@ const Left = () => {
 	return (
 		<section className="hover-fade relative flex h-full w-[40%] flex-col gap-2 overflow-hidden rounded-bl-xl">
 			<dialog ref={dialogRef} className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] flex-col overflow-y-scroll rounded-xl bg-back backdrop:bg-black/40 backdrop:backdrop-blur-lg">
-				<button type="button" onClick={closeModal} className="smooth-scale my-shadow my-border absolute top-2 right-2 h-fit w-fit rounded-md bg-accent p-2 hover:scale-110 active:scale-90">
+				<Button onClick={closeModal} className="absolute top-2 right-2">
 					<Image className="h-6 w-6" src={remove} alt="remove icon" />
-				</button>
+				</Button>
 				<div className="h-fit w-full p-2">
 					<div className="inset-x-0 top-4 mx-auto flex h-fit w-fit gap-2 p-2">
-						<button type="button" onClick={() => setEditActive(true)} className={`${editActive ? 'bg-main text-invert' : 'bg-accent text-stark'} my-shadow my-border relative h-fit w-fit rounded-md p-3 text-xl font-bold duration-150 ease-in-out hover:px-6 active:px-4`}>
+						<Button onClick={() => setEditActive(true)} className={`${editActive ? 'bg-main text-invert hover:bg-main-light' : 'text-stark'} text-2xl font-bold`}>
 							Edit
-						</button>
-						<button type="button" onClick={() => setEditActive(false)} className={`${!editActive ? 'bg-main text-invert' : 'bg-accent text-stark'} my-shadow my-border relative h-fit w-fit rounded-md p-3 text-xl font-bold duration-150 ease-in-out hover:px-6 active:px-4`}>
+						</Button>
+						<Button onClick={() => setEditActive(false)} className={`${!editActive ? 'bg-main text-invert hover:bg-main-light' : 'text-stark'} text-2xl font-bold`}>
 							Add
-						</button>
+						</Button>
 					</div>
 				</div>
 				<div className="h-fit w-full">{editActive ? <EditData /> : <CreateData />}</div>
@@ -97,13 +98,21 @@ const Left = () => {
 			<Chip list={genderSelect as string[]} />
 
 			<div className="absolute bottom-0 flex h-fit w-full flex-grow  flex-col items-center gap-2 p-6">
-				<Button onClick={handleClick} text="Edit Team data" />
+				<div className="flex gap-2 items-center">
+					<Button onClick={handleClick} text="Edit Team data" />
+
+					{/*
+					 <Button text="Remove all teams!" onClick={handleRemoveAll}>
+						<Image className="h-4 w-4" src={remove} alt="remove icon" />
+					</Button>
+					*/}
+				</div>
 				<div className="my-border my-shadow bg-main rounded-md p-2 relative flex flex-col items-center gap-4">
 					<h1 className="text-md py-2 px-8 text-center font-extrabold text-stark">Season Start/End</h1>
 					<div className="flex items-center gap-2">
-						<input ref={startDateRef} type="date" className="smooth-scale my-border my-shadow  rounded-md bg-accent p-2 text-center hover:scale-105 active:scale-95" onChange={e => setStartDate(e.target.valueAsDate as Date)} />
+						<DatePicker ref={startDateRef} onChange={e => setStartDate(e.currentTarget.valueAsDate as Date)} />
 						<Image src={arrow} alt="Arrow Icon" className="h-6 w-6 rotate-180" />
-						<input ref={endDateRef} type="date" className="smooth-scale my-border my-shadow  rounded-md bg-accent p-2 text-center hover:scale-105 active:scale-95" onChange={e => setEndDate(e.target.valueAsDate as Date)} />
+						<DatePicker ref={endDateRef} onChange={e => setEndDate(e.currentTarget.valueAsDate as Date)} />
 					</div>
 					<Button onClick={changeDates} text="Confirm" />
 				</div>

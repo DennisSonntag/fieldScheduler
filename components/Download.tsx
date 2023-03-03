@@ -14,8 +14,6 @@ const Download = () => {
 
 	const zip = new JSZip();
 
-	// 12 sub divs div(1,2,3) * jrboy srboy jr girl sr girl
-
 	const downloadCsv = () => {
 		let index = 0;
 		for (const div of DivTypes) {

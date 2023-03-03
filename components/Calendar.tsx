@@ -1,6 +1,6 @@
 import { Crypto } from '@peculiar/webcrypto';
 import { useAtom } from 'jotai';
-import { divAtom, genderAtom, ScheduleAtom, schoolAtom, SchoolDataAtom, SchoolType, seniorityAtom } from 'pages/main';
+import { divAtom, genderAtom, ScheduleAtom, schoolAtom, SchoolDataAtom, seniorityAtom } from 'pages/main';
 import { FC, useState } from 'react';
 
 import { Game } from '@ts/matchUp';
@@ -17,10 +17,10 @@ const crypto = new Crypto();
 export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 const Calendar: FC<PropType> = ({ month, setOpen }) => {
-	const gameData: Game[] = useAtom(ScheduleAtom)[0];
-	const schoolData: SchoolType[] = useAtom(SchoolDataAtom)[0];
+	const [gameData] = useAtom(ScheduleAtom);
+	const [schoolData] = useAtom(SchoolDataAtom);
 	const seniority: string[] = useAtom(seniorityAtom)[0].map(elm => elm.toLowerCase());
-	const school: string[] = useAtom(schoolAtom)[0];
+	const [school] = useAtom(schoolAtom);
 	const div: number[] = useAtom(divAtom)[0].map(elm => Number(elm.slice(-1)));
 	const gender: string[] = useAtom(genderAtom)[0].map(elm => elm.toLowerCase());
 
@@ -70,7 +70,7 @@ const Calendar: FC<PropType> = ({ month, setOpen }) => {
 	};
 
 	return (
-		<div className="my-border my-shadow relative m-auto aspect-square h-fit w-full rounded-lg bg-main p-2 duration-150 ease-in-out hover:scale-110">
+		<div className="my-border my-shadow relative m-auto aspect-square h-fit w-full rounded-lg bg-main p-2 duration-150 ease-in-out hover:bg-main-light">
 			<h1 className="inset-0 mx-auto my-2 h-fit w-fit text-center text-2xl font-bold text-invert">{monthNames[month]}</h1>
 			<div className="grid-rows-7 text-md grid h-full grid-cols-7 text-center">
 				{weekDays.map(day => (

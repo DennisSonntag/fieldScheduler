@@ -1,17 +1,19 @@
 import { useAtom } from 'jotai';
 import Image from 'next/image';
-import { SchoolDataAtom, SchoolType } from 'pages/main';
+import { SchoolDataAtom } from 'pages/main';
 import { useState } from 'react';
 
 import arrow1 from '@svg/arrow1.svg';
+
+import Button from './Button';
 
 type SelectedDataType = {
 	name: string;
 	field: number;
 };
 
-const DataMenu = () => {
-	const schoolData = useAtom(SchoolDataAtom)[0];
+const EditData = () => {
+	const [schoolData] = useAtom(SchoolDataAtom);
 	const [selectedData, setSelectedData] = useState<SelectedDataType>();
 	const [selected, setSelected] = useState(false);
 
@@ -26,9 +28,9 @@ const DataMenu = () => {
 		<div>
 			{selected ? (
 				<div>
-					<button type="button" onClick={() => setSelected(false)}>
-						<Image src={arrow1} alt="Dark/Light mode toggle button" className="my-border my-shadow smooth-scale absolute top-2 left-2 h-10 w-10 rounded-md bg-accent p-2 hover:scale-105 active:scale-95" />
-					</button>
+					<Button onClick={() => setSelected(false)} className="absolute top-2 left-2">
+						<Image src={arrow1} alt="Dark/Light mode toggle button" className="h-8 w-8" />
+					</Button>
 					<div className="my-border my-shadow absolute inset-0 m-auto h-fit w-fit rounded-md bg-main p-2">
 						<div className="h-fit w-fit flex-col gap-2">
 							<div>
@@ -45,17 +47,15 @@ const DataMenu = () => {
 							</div>
 						</div>
 					</div>
-					<button type="button" className="my-border my-accent my-shadow smooth-scale absolute inset-x-0 bottom-10 mx-auto h-fit w-fit rounded-md bg-accent p-2 text-2xl font-bold text-stark hover:scale-90 active:scale-110">
-						Upload
-					</button>
+					<Button text="Upload" className="absolute inset-x-0 mx-auto bottom-10 w-fit font-bold text-xl" />
 				</div>
 			) : (
 				<div className="my-grid grid h-fit w-full gap-10 p-4">
 					{schoolData.map(school => (
-						<button key={school.school_name} type="button" onClick={() => handleSelect(school.school_name, school.field)} className="my-border my-shadow smooth-scale relative m-auto h-fit w-full w-fit rounded-md bg-main p-2 text-center hover:scale-110 active:scale-90">
+						<Button key={school.school_name} onClick={() => handleSelect(school.school_name, school.field)} className="w-full bg-main hover:bg-main-light">
 							<p className="font-bold">{school.school_name}</p>
 							<p className={school.field ? 'text-green-500' : 'text-bug'}>Has field {String(school.field)}</p>
-						</button>
+						</Button>
 					))}
 				</div>
 			)}
@@ -63,4 +63,4 @@ const DataMenu = () => {
 	);
 };
 
-export default DataMenu;
+export default EditData;
