@@ -107,9 +107,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 					onChange={e =>
 						setDates(draft => {
 							const date = e.target.valueAsDate;
-							if (date !== null) {
-								draft.push((date as Date).toDateString());
-							}
+							if (date !== null) draft.push((date as Date).toDateString());
 							return draft;
 						})
 					}
@@ -192,7 +190,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 					<input
 						checked={currentState.fieldType === 'single'}
 						onChange={() => {
-							setAltActive(true);
+							setAltActive(false);
 							setState(draft => {
 								draft[index].fieldType = 'single';
 								return draft;
@@ -212,7 +210,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 					<input
 						checked={currentState.fieldType === 'double'}
 						onChange={() => {
-							setAltActive(true);
+							setAltActive(false);
 							setState(draft => {
 								draft[index].fieldType = 'double';
 								return draft;
