@@ -11,9 +11,6 @@
 
 ### Important
 
--   Finish add data feature
-
--   Add Remove Button for teams and global clear db
 -   Finish edit feature
 
 -   Migrate to next.js 13 app directory
@@ -22,11 +19,9 @@
 -   Fix compare view
 -   Finish day/week view
 -   Games already happened
--   Format final schedule in csv format
 
 ### Less Important
 
--   Fix Auth
 -   Team colors
 -   Forgot password template email
 -   Separate events for rugby/Soccer
