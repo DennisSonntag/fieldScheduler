@@ -1,5 +1,5 @@
 import { Provider as JotaiProvider, useAtom, atom, createStore } from 'jotai';
-import { signOut } from 'next-auth/react';
+import { getSession, signOut } from 'next-auth/react';
 import { ThemeProvider } from 'next-themes';
 import Link from 'next/link';
 import PocketBase from 'pocketbase';
@@ -102,17 +102,17 @@ const Main: FC<PropType> = ({ schoolData, teamInfo }) => {
 };
 export default Main;
 
-// export const getServerSideProps = async (context: any) => {
-export const getServerSideProps = async () => {
-	// const session = await getSession(context);
-	// if (!session) {
-	// 	return {
-	// 		redirect: {
-	// 			destination: '/',
-	// 			permanent: false,
-	// 		},
-	// 	};
-	// }
+export const getServerSideProps = async (context: any) => {
+	// export const getServerSideProps = async () => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
+	}
 
 	const records = await pb.collection('schools').getFullList(200 /* batch size */, {
 		sort: '-created',

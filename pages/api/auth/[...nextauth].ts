@@ -17,7 +17,12 @@ const authOptions: NextAuthOptions = {
 				};
 
 				const user = await pb.collection('users').authWithPassword(email, password);
+
 				const id = pb.authStore.model?.id;
+
+				if (!pb.authStore.isValid) {
+					return null;
+				}
 
 				const record = await pb.collection('users').getOne(id as string, {
 					expand: 'relField1,relField2.subRelField',

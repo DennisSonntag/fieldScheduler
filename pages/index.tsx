@@ -1,4 +1,4 @@
-import { getSession } from 'next-auth/react';
+import { getSession, signIn } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
@@ -39,32 +39,27 @@ const Login = () => {
 
 	type UserPasswordType = z.infer<typeof userPasswordValid>;
 
+	const [isLoading, setIsLoading] = useState(false);
+
 	const [userPassword, setUserPassword] = useState<UserPasswordType>('');
 
-	// const {
-	// 	data,
-	// 	isLoading,
-	// 	mutate: loginUser,
-	// } = useMutation({
-	// 	mutationFn: () =>
-	// 		signIn('credentials', {
-	// 			email: userEmail,
-	// 			password: userPassword,
-	// 			redirect: false,
-	// 		}),
-	// });
-
-	const handleSubmit = (e: { preventDefault: () => void }) => {
+	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
 
-		// loginUser();
+		setIsLoading(true);
+		const user = await signIn('credentials', {
+			email: userEmail,
+			password: userPassword,
+			redirect: false,
+		});
+		setIsLoading(false);
 
-		router.push('/main');
-		// if (data?.ok) {
-		// 	setHasError(false);
-		// } else {
-		// 	setHasError(true);
-		// }
+		if (user?.ok) {
+			router.push('/main');
+			setHasError(false);
+		} else {
+			setHasError(true);
+		}
 	};
 
 	const toggleVisible = () => {
@@ -121,6 +116,7 @@ const Login = () => {
 
 					<p className={`h-fit w-fit text-center font-bold text-bug duration-300 ${hasError ? 'opacity-100' : 'opacity-0'}`}>Invalid Info!</p>
 					<Button onClick={handleSubmit} text="Login" className={`${hasError ? 'bg-bug' : 'bg-accent'}`} />
+					{isLoading ? <p>loading</p> : null}
 				</div>
 			</div>
 		</App>
@@ -130,14 +126,14 @@ export default Login;
 
 export const getServerSideProps = async (context: any) => {
 	const session = await getSession(context);
-	// if (session) {
-	// 	return {
-	// 		redirect: {
-	// 			destination: '/main',
-	// 			permanent: false,
-	// 		},
-	// 	};
-	// }
+	if (session) {
+		return {
+			redirect: {
+				destination: '/main',
+				permanent: false,
+			},
+		};
+	}
 
 	return {
 		props: {
