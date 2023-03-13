@@ -1,5 +1,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { Crypto } from '@peculiar/webcrypto';
 import Image from 'next/image';
+import PocketBase from 'pocketbase';
 import { useState, useEffect, useId, FC } from 'react';
 import { useImmer, Updater } from 'use-immer';
 
@@ -11,7 +13,10 @@ import remove from '@svg/remove.svg';
 import Button from './Button';
 import Chip from './Chip';
 import { SchoolInputType } from './CreateData';
+import DatePicker from './DatePicker';
 import TeamInput from './TeamInput';
+
+const crypto = new Crypto();
 
 type PropTypes = {
 	setState: Updater<SchoolInputType[]>;
@@ -28,6 +33,8 @@ export type TeamInputType = {
 	div?: DivType;
 	id: number;
 };
+
+const pb = new PocketBase('https://schedulerdatabase.fly.dev');
 
 const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 	const [teams, setTeams] = useImmer<TeamInputType[]>([]);
@@ -46,9 +53,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 	};
 	const removeSelf = () => {
 		setState(draft => {
-			if (index > -1) {
-				draft.splice(index, 1);
-			}
+			if (index > -1) draft.splice(index, 1);
 		});
 	};
 
@@ -58,14 +63,20 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 
 	const [animateRef] = useAutoAnimate<HTMLDivElement>();
 
-	const [dates, setDates] = useImmer<string[]>([]);
-
 	useEffect(() => {
 		setState(draft => {
 			draft[index].teams = teams;
 			return draft;
 		});
 	}, [teams]);
+
+	const [dates, setDates] = useImmer<string[]>([]);
+
+	useEffect(() => {
+		setState(draft => {
+			draft[index].blackoutDates = dates.map(elm => new Date(elm));
+		});
+	}, [dates]);
 
 	return (
 		<div className="my-border my-shadow relative inset-x-0 my-4 mx-auto h-fit w-[90%] rounded-md bg-main p-4">
@@ -74,7 +85,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 			</Button>
 			<p className="text-center text-2xl font-bold">School {currentState.id} Info</p>
 
-			<div className="flex h-fit w-full justify-center gap-4">
+			<div className="flex h-fit w-full justify-center gap-4 ">
 				<input
 					value={currentState.name || ''}
 					onChange={e =>
@@ -83,7 +94,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 							return draft;
 						})
 					}
-					className="my-border my-shadow rounded-md bg-accent p-2 text-center"
+					className="my-border my-shadow rounded-md bg-accent p-2 text-center hover:bg-accent-light"
 					type="text"
 					placeholder="Name"
 				/>
@@ -95,7 +106,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 							return draft;
 						})
 					}
-					className="my-border my-shadow rounded-md bg-accent p-2 text-center"
+					className="my-border my-shadow rounded-md bg-accent p-2 text-center hover:bg-accent-light"
 					type="text"
 					placeholder="Code"
 				/>
@@ -103,26 +114,30 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 
 			<p className="my-2 text-center text-2xl font-bold">Blackout Dates</p>
 			<div className="my-2 flex h-fit w-full flex-col justify-center gap-4">
-				<input
-					type="date"
-					className="smooth-scale my-border my-shadow relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-accent p-2 text-center hover:bg-accent-light"
-					onChange={e =>
-						setDates(draft => {
-							const date = e.target.valueAsDate;
-							if (date !== null) draft.push((date as Date).toDateString());
-							return draft;
-						})
-					}
+				<DatePicker
+					onChange={e => {
+						if (e.currentTarget !== null) {
+							const dateInner = new Date(e.currentTarget.value);
+							dateInner.setTime(dateInner.getTime() + 1 * 86400000);
+							console.log(dateInner);
+							setState(draft => {
+								// draft[index].blackoutDates = [new Date('jan 2, 2023'), new Date('jan 20, 2023')];
+								draft[index].blackoutDates?.push(dateInner);
+								setDates(draft[index].blackoutDates?.map(elm => elm.toDateString()) || []);
+								return draft;
+							});
+						}
+					}}
 				/>
 				<div className="relative h-fit w-full">
-					<Chip setState={setDates} removeable list={dates} />
+					<Chip setState={setDates} removeable list={currentState.blackoutDates?.map(elm => elm.toDateString()) || []} />
 				</div>
 			</div>
 
 			<p className="text-center text-2xl font-bold">Field Info</p>
 			<div className="flex h-fit w-full justify-center gap-4">
 				<div ref={animateRef} className="h-full w-fit flex-col justify-center">
-					<div className="my-border flex h-fit w-fit items-center rounded-md p-2 my-shadow">
+					<div className="my-border flex h-fit w-fit items-center rounded-md p-2 my-shadow bg-main hover:bg-main-light active:scale-95 smooth-scale no-move">
 						<input
 							checked={currentState.fieldType === 'none'}
 							onChange={() => {
@@ -135,7 +150,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 							type="radio"
 							id={`af${id}`}
 							name={`field${id}`}
-							className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer"
+							className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer "
 						/>
 
 						<label htmlFor={`af${id}`} className="mx-2 cursor-pointer">
@@ -144,8 +159,8 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 					</div>
 
 					{altActive && (
-						<div className="my-border relative inset-x-0 m-2 mx-auto flex h-fit w-fit items-center gap-2 rounded-md p-2 my-shadow">
-							<div className="flex items-center">
+						<div className="my-border relative inset-x-0 m-2 mx-auto flex h-fit w-fit items-center gap-2 rounded-md p-2 my-shadow bg-main hover:bg-main-light no-move">
+							<div className="flex items-center ">
 								<input
 									checked={currentState.altField === 'cru'}
 									onChange={() => {
@@ -160,7 +175,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 									name="alt"
 									className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer"
 								/>
-								<label htmlFor="cru" className="mx-2 cursor-pointer">
+								<label htmlFor="cru" className="mx-2 cursor-pointer hover:text-invert smooth-scale">
 									Cru
 								</label>
 							</div>
@@ -180,7 +195,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 									name="alt"
 									className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer"
 								/>
-								<label htmlFor="irish" className="mx-2 cursor-pointer">
+								<label htmlFor="irish" className="mx-2 cursor-pointer hover:text-invert smooth-scale">
 									Irish
 								</label>
 							</div>
@@ -188,7 +203,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 					)}
 				</div>
 
-				<div className="my-border flex h-fit w-fit items-center rounded-md p-2 my-shadow">
+				<div className="my-border flex h-fit w-fit items-center rounded-md p-2 my-shadow bg-main hover:bg-main-light no-move">
 					<input
 						checked={currentState.fieldType === 'single'}
 						onChange={() => {
@@ -208,7 +223,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 					</label>
 				</div>
 
-				<div className="my-border my-shadow flex h-fit w-fit items-center rounded-md p-2">
+				<div className="my-border my-shadow flex h-fit w-fit items-center rounded-md p-2 bg-main hover:bg-main-light no-move">
 					<input
 						checked={currentState.fieldType === 'double'}
 						onChange={() => {
@@ -234,7 +249,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 
 			<div ref={animateRef} className="flex justify-center gap-4">
 				{teams.map((elm, indexArg) => (
-					<TeamInput currentState={elm} setState={setTeams} index={indexArg} />
+					<TeamInput key={crypto.randomUUID()} currentState={elm} setState={setTeams} index={indexArg} />
 				))}
 			</div>
 		</div>

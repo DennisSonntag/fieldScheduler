@@ -35,21 +35,25 @@ const CreateData = () => {
 
 	const [animateRef] = useAutoAnimate<HTMLDivElement>();
 
+	const handleUpload = () => {
+		console.log(schools);
+	};
+
 	return (
-		<div>
+		<>
 			<div className="flex justify-center gap-2 p-2">
 				<Button text="Add School" onClick={enlaregeArray} className="flex gap-2">
 					<Image className="h-6 w-6" src={plus} alt="add icon" />
 				</Button>
-				{schools.length !== 0 && <Button text="Upload Data" />}
+				{schools.length !== 0 && <Button onClick={handleUpload} text="Upload Data" />}
 			</div>
 
 			<div ref={animateRef} className="relative h-fit w-full flex-col items-center gap-4">
 				{schools.map((elm, index) => (
-					<SchoolInput setState={setSchools} currentState={elm} index={index} />
+					<SchoolInput key={elm.id} setState={setSchools} currentState={elm} index={index} />
 				))}
 			</div>
-		</div>
+		</>
 	);
 };
 

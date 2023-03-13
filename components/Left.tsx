@@ -60,8 +60,8 @@ const Left = () => {
 	const endDateRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
-		startDateRef.current!.value = dateToInputValue(startDate);
-		endDateRef.current!.value = dateToInputValue(endDate);
+		// startDateRef.current!.value = dateToInputValue(startDate);
+		// endDateRef.current!.value = dateToInputValue(endDate);
 	}, []);
 
 	return (
@@ -92,27 +92,21 @@ const Left = () => {
 				<Filter options={gender} title="Gender" selected={genderSelect} setSelected={setGenderSelect} />
 			</div>
 
-			<Chip list={divSelect as string[]} />
-			<Chip list={schoolSelect as string[]} />
-			<Chip list={senioritySelect as string[]} />
-			<Chip list={genderSelect as string[]} />
+			<Chip list={divSelect} />
+			<Chip list={schoolSelect} />
+			<Chip list={senioritySelect} />
+			<Chip list={genderSelect} />
 
 			<div className="absolute bottom-0 flex h-fit w-full flex-grow  flex-col items-center gap-2 p-6">
 				<div className="flex gap-2 items-center">
 					<Button onClick={handleClick} text="Edit Team data" />
-
-					{/*
-					 <Button text="Remove all teams!" onClick={handleRemoveAll}>
-						<Image className="h-4 w-4" src={remove} alt="remove icon" />
-					</Button>
-					*/}
 				</div>
 				<div className="my-border my-shadow bg-main rounded-md p-2 relative flex flex-col items-center gap-4">
 					<h1 className="text-md py-2 px-8 text-center font-extrabold text-stark">Season Start/End</h1>
 					<div className="flex items-center gap-2">
-						<DatePicker ref={startDateRef} onChange={e => setStartDate(e.currentTarget.valueAsDate as Date)} />
+						<DatePicker onChange={e => setStartDate(e.currentTarget.valueAsDate as Date)} />
 						<Image src={arrow} alt="Arrow Icon" className="h-6 w-6 rotate-180" />
-						<DatePicker ref={endDateRef} onChange={e => setEndDate(e.currentTarget.valueAsDate as Date)} />
+						<DatePicker onChange={e => setEndDate(e.currentTarget.valueAsDate as Date)} />
 					</div>
 					<Button onClick={changeDates} text="Confirm" />
 				</div>

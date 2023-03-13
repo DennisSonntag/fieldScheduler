@@ -109,7 +109,7 @@ const Middle: FC<PropType> = ({ title }) => {
 				{active === 0 ? (
 					<>
 						{months.map(monthParam => (
-							<Calendar setOpen={openModal} month={monthParam} />
+							<Calendar key={monthParam} setOpen={openModal} month={monthParam} />
 						))}
 					</>
 				) : null}
@@ -131,7 +131,7 @@ const Middle: FC<PropType> = ({ title }) => {
 						<WeekCaret func={() => setWeek(week + 1)} top />
 						<div className="m-2 flex h-full w-full gap-4">
 							{weekData.map((day, index) => (
-								<div className="my-border bg-base my-shadow relative h-full w-full rounded-md bg-main">
+								<div key={day} className="my-border bg-base my-shadow relative h-full w-full rounded-md bg-main">
 									<p className="absolute inset-x-0 mx-auto h-fit w-fit px-2 font-bold">{weekDays[index]}</p>
 									<div>{day}</div>
 								</div>
@@ -152,7 +152,7 @@ const Middle: FC<PropType> = ({ title }) => {
 
 				<div className="absolute inset-0 m-auto flex h-fit w-fit flex-col items-center gap-4">
 					{data.map(elm => (
-						<div className="my-border p-y-2 my-shadow flex w-[40rem] flex-col items-center rounded-md bg-main text-2xl">
+						<div key={elm.homeTeam.schoolName} className="my-border p-y-2 my-shadow flex w-[40rem] flex-col items-center rounded-md bg-main text-2xl">
 							<div className="flex w-fit gap-2">
 								<p className="text-blue-500">{elm.homeTeam.schoolName}</p>
 								<p className="font-bold text-invert">VS</p>

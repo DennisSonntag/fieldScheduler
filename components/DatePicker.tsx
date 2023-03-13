@@ -1,16 +1,15 @@
 import { clsx, type ClassValue } from 'clsx';
-import { FC, LegacyRef, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
 interface PropTypes extends React.HTMLAttributes<HTMLInputElement> {
 	children?: ReactNode;
-	ref?: LegacyRef<HTMLInputElement>;
 }
 
-const DatePicker: FC<PropTypes> = ({ className, ref, children, ...props }) => {
-	return <input ref={ref} {...props} type="date" className={cn('smooth-scale my-border my-shadow  rounded-md bg-accent p-2 text-center hover:scale-105 active:scale-95', className)} />;
+const DatePicker: FC<PropTypes> = ({ className, children, ...props }) => {
+	return <input {...props} type="date" className={cn('smooth-scale my-border my-shadow relative inset-x-0 mx-auto h-fit w-fit rounded-md bg-accent p-2 text-center hover:bg-accent-light', className)} />;
 };
 
 export default DatePicker;
