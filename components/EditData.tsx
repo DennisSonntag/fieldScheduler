@@ -1,11 +1,22 @@
+/* eslint-disable no-restricted-globals */
+
+/* eslint-disable no-alert */
+
+/* eslint-disable no-await-in-loop */
+
+/* eslint-disable no-restricted-syntax */
 import { useAtom } from 'jotai';
 import Image from 'next/image';
-import { SchoolDataAtom } from 'pages/main';
+import { SchoolDataAtom, SchoolType } from 'pages/main';
+import PocketBase from 'pocketbase';
 import { useState } from 'react';
 
 import arrow1 from '@svg/arrow1.svg';
+import remove from '@svg/remove.svg';
 
 import Button from './Button';
+
+const pb = new PocketBase('https://schedulerdatabase.fly.dev');
 
 type SelectedDataType = {
 	name: string;
@@ -13,7 +24,7 @@ type SelectedDataType = {
 };
 
 const EditData = () => {
-	const [schoolData] = useAtom(SchoolDataAtom);
+	const [schoolData, setSchoolData] = useAtom(SchoolDataAtom);
 	const [selectedData, setSelectedData] = useState<SelectedDataType>();
 	const [selected, setSelected] = useState(false);
 
@@ -24,6 +35,26 @@ const EditData = () => {
 			field,
 		});
 	};
+
+	const removeSchool = async (school: SchoolType) => {
+		if (confirm(`are you sure you want to remove ${school.code}`)) {
+			const teamRecord = await pb.collection('teams').getFullList(200, {
+				sort: '-created',
+				filter: `school="${school.id}"`,
+			});
+			for (const team of teamRecord) {
+				await pb.collection('teams').delete(team.id);
+			}
+			await pb.collection('schools').delete(school.id);
+
+			const index = schoolData.indexOf(school);
+			setSchoolData(prev =>
+				// Filter out the item with the matching index
+				prev.filter((_value, i) => i !== index)
+			);
+		}
+	};
+
 	return (
 		<div>
 			{selected ? (
@@ -52,10 +83,15 @@ const EditData = () => {
 			) : (
 				<div className="my-grid grid h-fit w-full gap-10 p-4">
 					{schoolData.map(school => (
-						<Button key={school.school_name} onClick={() => handleSelect(school.school_name, school.field)} className="w-full bg-main hover:bg-main-light">
-							<p className="font-bold">{school.school_name}</p>
-							<p className={school.field ? 'text-green-500' : 'text-bug'}>Has field {String(school.field)}</p>
-						</Button>
+						<div className="w-full relative flex">
+							<Button onClick={() => removeSchool(school)} className="w-fit h-fit">
+								<Image className="h-3 w-3" src={remove} alt="remove icon" />
+							</Button>
+							<Button key={school.school_name} onClick={() => handleSelect(school.school_name, school.field)} className="w-full bg-main hover:bg-main-light relative">
+								<p className="font-bold">{school.school_name}</p>
+								<p className={school.field ? 'text-green-500' : 'text-bug'}>Has field {String(school.field)}</p>
+							</Button>
+						</div>
 					))}
 				</div>
 			)}

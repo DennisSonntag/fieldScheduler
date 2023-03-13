@@ -1,7 +1,6 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { Crypto } from '@peculiar/webcrypto';
 import Image from 'next/image';
-import PocketBase from 'pocketbase';
 import { useState, useEffect, useId, FC } from 'react';
 import { useImmer, Updater } from 'use-immer';
 
@@ -33,8 +32,6 @@ export type TeamInputType = {
 	div?: DivType;
 	id: number;
 };
-
-const pb = new PocketBase('https://schedulerdatabase.fly.dev');
 
 const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 	const [teams, setTeams] = useImmer<TeamInputType[]>([]);
@@ -78,6 +75,38 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 		});
 	}, [dates]);
 
+	const possibleData = {
+		CEN: 'Centennial',
+		ND: 'Notre Dame',
+		SF: 'St.Francis',
+		WC: 'Western Canada',
+		EM: 'Ernest Manning',
+		AS: 'All Saints',
+		BOW: 'Bowness',
+		CH: 'Crescent Heights',
+		HWW: 'Henry Wise Wood',
+		OLR: 'Our Lady Of The Rockies',
+		JC: 'Joane Cardinal Schubert- TBD',
+		JGD: 'John G.Diefenbaker',
+		SWC: 'Sir Winston Churchill',
+		WA: 'William Aberhart',
+		BC: 'Bishop Carroll',
+		BM: 'Bishop McNally',
+		CM: 'Central Memorial',
+		FL: 'Forest Lawn',
+		LBP: 'Lester B.Pearson',
+		NM: 'Nelson Mandela',
+		RT: 'Robert Thirsk',
+		SM: 'St.Mary’s',
+		LB: 'Lord Beaverbrook',
+		BOB: 'Bishop O’Byrne',
+		EPS: 'Dr.E.P.Scarlett',
+		QE: 'Queen Elizabeth',
+	};
+
+	const possibleSchools = Object.values(possibleData);
+	const getKeyByValue = (object: any, value: any) => Object.keys(object).find(key => object[key] === value);
+
 	return (
 		<div className="my-border my-shadow relative inset-x-0 my-4 mx-auto h-fit w-[90%] rounded-md bg-main p-4">
 			<Button onClick={removeSelf} className="absolute top-2 right-2">
@@ -86,6 +115,11 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 			<p className="text-center text-2xl font-bold">School {currentState.id} Info</p>
 
 			<div className="flex h-fit w-full justify-center gap-4 ">
+				<datalist id="school-list">
+					{possibleSchools.map(school => (
+						<option aria-label="school-entry" value={school} />
+					))}
+				</datalist>
 				<input
 					value={currentState.name || ''}
 					onChange={e =>
@@ -95,11 +129,12 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 						})
 					}
 					className="my-border my-shadow rounded-md bg-accent p-2 text-center hover:bg-accent-light"
-					type="text"
+					type="search"
+					list="school-list"
 					placeholder="Name"
 				/>
 				<input
-					value={currentState.code || ''}
+					value={getKeyByValue(possibleData, currentState.name) || currentState.code || ''}
 					onChange={e =>
 						setState(draft => {
 							draft[index].code = e.target.value;
@@ -119,9 +154,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 						if (e.currentTarget !== null) {
 							const dateInner = new Date(e.currentTarget.value);
 							dateInner.setTime(dateInner.getTime() + 1 * 86400000);
-							console.log(dateInner);
 							setState(draft => {
-								// draft[index].blackoutDates = [new Date('jan 2, 2023'), new Date('jan 20, 2023')];
 								draft[index].blackoutDates?.push(dateInner);
 								setDates(draft[index].blackoutDates?.map(elm => elm.toDateString()) || []);
 								return draft;

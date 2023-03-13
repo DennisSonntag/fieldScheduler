@@ -22,7 +22,7 @@ export type SchoolType = {
 	field: number;
 };
 
-type TeamPropType = {
+export type TeamPropType = {
 	school: string;
 	type: number;
 	field: number;

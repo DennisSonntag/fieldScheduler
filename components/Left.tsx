@@ -1,7 +1,7 @@
 import { useAtom } from 'jotai';
 import Image from 'next/image';
 import { startEndDateAtom, divAtom, SchoolDataAtom, schoolAtom, seniorityAtom, genderAtom } from 'pages/main';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import arrow from '@svg/arrow1.svg';
 import remove from '@svg/remove.svg';
@@ -42,8 +42,8 @@ const Left = () => {
 	};
 	const [editActive, setEditActive] = useState(true);
 
-	const [startDate, setStartDate] = useState(new Date(2023, 2, 0));
-	const [endDate, setEndDate] = useState(new Date(2023, 5, 31));
+	const [startDate, setStartDate] = useState(new Date(2023, 2, 1));
+	const [endDate, setEndDate] = useState(new Date(2023, 5, 30));
 	const setStartEndDate = useAtom(startEndDateAtom)[1];
 
 	const changeDates = () => {
@@ -55,14 +55,6 @@ const Left = () => {
 		local.setMinutes(date.getMinutes() - date.getTimezoneOffset());
 		return local.toJSON().slice(0, 10);
 	};
-
-	const startDateRef = useRef<HTMLInputElement>(null);
-	const endDateRef = useRef<HTMLInputElement>(null);
-
-	useEffect(() => {
-		// startDateRef.current!.value = dateToInputValue(startDate);
-		// endDateRef.current!.value = dateToInputValue(endDate);
-	}, []);
 
 	return (
 		<section className="hover-fade relative flex h-full w-[40%] flex-col gap-2 overflow-hidden rounded-bl-xl">
@@ -104,9 +96,9 @@ const Left = () => {
 				<div className="my-border my-shadow bg-main rounded-md p-2 relative flex flex-col items-center gap-4">
 					<h1 className="text-md py-2 px-8 text-center font-extrabold text-stark">Season Start/End</h1>
 					<div className="flex items-center gap-2">
-						<DatePicker onChange={e => setStartDate(e.currentTarget.valueAsDate as Date)} />
+						<DatePicker defaultValue={dateToInputValue(startDate)} onChange={e => setStartDate(e.currentTarget.valueAsDate as Date)} />
 						<Image src={arrow} alt="Arrow Icon" className="h-6 w-6 rotate-180" />
-						<DatePicker onChange={e => setEndDate(e.currentTarget.valueAsDate as Date)} />
+						<DatePicker defaultValue={dateToInputValue(endDate)} onChange={e => setEndDate(e.currentTarget.valueAsDate as Date)} />
 					</div>
 					<Button onClick={changeDates} text="Confirm" />
 				</div>
