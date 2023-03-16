@@ -9,24 +9,37 @@
 
 # ToDo list
 
-### Important
+## Important
 
+-   Move calculations for servers side
+-   Reschedule n dates prior eg. last 3 weeks
+-   Expose number of refs input to user
+-   Add option for a school to have no field
+    -   If a school has no field and no alt field they can only play on other teams fieldsaka away games only
+-   Enter school as CSSD or CBE
+    -   They can play each other but they have different spring breaks
+-   Calculate separate schedule for Rugby and soccer and save them both in the database
+    -   Soccer teams are boys only (Sr,Jr div 1,2 and 3)
+-   Add accounts soccer and rugby board members
+-   Optimistic updates for adding and editing school
 -   Finish edit feature
-
--   Migrate to next.js 13 app directory
-
+-   Rugby/Soccer
+    -   Separate schedules
+    -   Separate teams same menu for entering schools
+-   More Field info
+    -   Time and date available for div 1 and all other divs
 -   Add List view
 -   Fix compare view
 -   Finish day/week view
 -   Games already happened
+-   Manual override for everything
 
 ### Less Important
 
--   Team colors
+-   Migrate to next.js 13 app directory
 -   Forgot password template email
--   Separate events for rugby/Soccer
 
-### Morante's stuff
+#### Extra Info
 
 -   Season start/end per school
 -   Breaks cbe catholic or both
@@ -35,33 +48,3 @@
 -   Min 4 teams per div
 -   Rainout re-render
 -   Reschedule all games after rainout week but not any before
--   Manual override
-
-## Team Names/Codes
-
--   CEN : Centennial
--   ND : Notre Dame
--   SF : St. Francis
--   WC : Western Canada
--   EM : Ernest Manning
--   AS : All Saints
--   BOW : Bowness
--   CH : Crescent Heights
--   HWW : Henry Wise Wood
--   OLR : Our Lady Of The Rockies
--   JC : Joane Cardinal Schubert-TBD
--   JGD : John G. Diefenbaker
--   SWC : Sir Winston Churchill
--   WA : William Aberhart
--   BC : Bishop Carroll
--   BM : Bishop McNally
--   CM : Central Memorial
--   FL : Forest Lawn
--   LBP : Lester B. Pearson
--   NM : Nelson Mandela
--   RT : Robert Thirsk
--   SM : St. Mary’s
--   LB : Lord Beaverbrook
--   BOB :Bishop O’Byrne
--   EPS: Dr. E.P. Scarlett
--   QE : Queen Elizabeth
