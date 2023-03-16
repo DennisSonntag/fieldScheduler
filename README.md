@@ -11,6 +11,36 @@
 
 ## Important
 
+-   Better responsiveness on small screens (not phones)
+-   Filter by field 
+    -   Double
+    -   Single
+    -   None
+    -   Alt (If alt is selected show the below)
+        -   Cru
+        -   Irish
+
+-   Better loading state in login menu
+-   Add status bottom right with info about the calculation
+    -   Did ever team play 6 games (Green/Red)
+    -   Number of games calculated / Theoretical max for everyone playing 6 games
+
+-   Input for information for cru and irish
+    -   Cru
+        -   Monday - Friday
+        -   Fields 1 - 5
+        -   User inputs time per field/day
+    -   Irish
+        -   Monday - Friday
+        -   Fields 1 - 2
+        -   User inputs time per field/day
+
+-   Add more info to click dialog
+    -   Seniority
+    -   Div
+
+
+
 -   Move calculations for servers side
 -   Reschedule n dates prior eg. last 3 weeks
 -   Expose number of refs input to user
@@ -33,6 +63,9 @@
 -   Finish day/week view
 -   Games already happened
 -   Manual override for everything
+
+### Needs clarification
+-   Input for alt field but not cru or irish?
 
 ### Less Important
 
