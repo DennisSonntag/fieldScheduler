@@ -1,11 +1,10 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { Crypto } from '@peculiar/webcrypto';
 import Image from 'next/image';
+import { DivType } from 'pages/api/calculate';
 import { possibleData } from 'pages/main';
 import { useState, useEffect, useId, FC } from 'react';
 import { useImmer, Updater } from 'use-immer';
-
-import { DivType } from '@ts/matchUp';
 
 import plus from '@svg/add.svg';
 import remove from '@svg/remove.svg';

@@ -11,7 +11,6 @@ type PropType = {
 	setState?: Updater<string[]>;
 };
 
-
 const Chip: FC<PropType> = ({ list, removeable, setState }) => {
 	const [animateRef] = useAutoAnimate<HTMLDivElement>();
 	const removeSelf = (elm: string) => {

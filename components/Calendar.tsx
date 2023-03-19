@@ -1,9 +1,8 @@
 import { Crypto } from '@peculiar/webcrypto';
 import { useAtom } from 'jotai';
+import { Game } from 'pages/api/calculate';
 import { divAtom, genderAtom, RugbyScheduleAtom, SoccerScheduleAtom, schoolAtom, SchoolDataAtom, seniorityAtom, SportType } from 'pages/main';
 import { FC, useState } from 'react';
-
-import { Game } from '@ts/matchUp';
 
 type PropType = {
 	month: number;
@@ -113,7 +112,7 @@ const Calendar: FC<PropType> = ({ month, setOpen, sportType }) => {
 
 					const gameDays = filteredData.map(elm => elm.date);
 
-					const currentData: Date[] = gameDays.filter(elm => elm.toISOString().split('T')[0] === currentDate.toISOString().split('T')[0]);
+					const currentData: Date[] = gameDays.filter(elm => new Date(elm).toISOString().split('T')[0] === currentDate.toISOString().split('T')[0]);
 
 					if (currentData.length !== 0) {
 						const teamsData = filteredData.filter(elm => currentData.includes(elm.date));

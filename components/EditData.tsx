@@ -8,11 +8,10 @@
 import { Crypto } from '@peculiar/webcrypto';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
+import { TeamTypes } from 'pages/api/calculate';
 import { SchoolDataAtom, SchoolType, TeamInfoAtom } from 'pages/main';
 import PocketBase from 'pocketbase';
 import { useState } from 'react';
-
-import { TeamTypes } from '@ts/matchUp';
 
 import arrow1 from '@svg/arrow1.svg';
 import remove from '@svg/remove.svg';

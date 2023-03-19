@@ -3,11 +3,10 @@
 /* eslint-disable no-restricted-syntax */
 import { Crypto } from '@peculiar/webcrypto';
 import Image from 'next/image';
+import { Game } from 'pages/api/calculate';
 import { SportType, possibleData } from 'pages/main';
 import PocketBase from 'pocketbase';
 import { FC, useRef, useState, useReducer, Reducer } from 'react';
-
-import { Game } from '@ts/matchUp';
 
 import caret from '@svg/caret.svg';
 

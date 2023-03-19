@@ -2,6 +2,7 @@ import { Provider as JotaiProvider, atom, createStore } from 'jotai';
 import { getSession, signOut } from 'next-auth/react';
 import { ThemeProvider } from 'next-themes';
 import Link from 'next/link';
+import { Game } from 'pages/api/calculate';
 import PocketBase from 'pocketbase';
 import { FC, useState } from 'react';
 
@@ -10,8 +11,6 @@ import Button from '@components/Button';
 import Compare from '@components/Compare';
 import Sport from '@components/Sport';
 import SportSelect from '@components/SportSelect';
-
-import { Game } from '@ts/matchUp';
 
 type PossibleDataType = { [key: string]: string };
 export const possibleData: PossibleDataType = {
@@ -127,14 +126,14 @@ export default Main;
 
 export const getServerSideProps = async (context: any) => {
 	const session = await getSession(context);
-	// if (!session) {
-	// 	return {
-	// 		redirect: {
-	// 			destination: '/',
-	// 			permanent: false,
-	// 		},
-	// 	};
-	// }
+	if (!session) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
+	}
 
 	const records = await pb.collection('schools').getFullList(200 /* batch size */, {
 		sort: '-created',
