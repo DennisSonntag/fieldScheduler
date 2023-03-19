@@ -46,7 +46,7 @@ const Calculate: FC<PropTypes> = ({ sportType }) => {
 		}
 	};
 
-	return <Button onClick={handleClickCalculate} text={loading ? 'loading...' : 'Calculate Schedule '} />;
+	return <Button onClick={handleClickCalculate} text={loading ? 'loading...' : 'Calculate Schedule '} className="font-bold text-lg" />;
 };
 
 export default Calculate;

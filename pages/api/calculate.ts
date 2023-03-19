@@ -16,7 +16,7 @@ export type TeamType = (typeof TeamTypes)[number];
 export const DivTypes = [1, 2, 3] as const;
 export type DivType = (typeof DivTypes)[number];
 
-export const FieldTypes = ['none', 'single', 'double'] as const;
+export const FieldTypes = ['none', 'alt', 'single', 'double'] as const;
 export type FieldType = (typeof FieldTypes)[number];
 
 export const AltFields = ['cru', 'irish'] as const;

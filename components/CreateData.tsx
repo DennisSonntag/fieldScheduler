@@ -87,6 +87,7 @@ const CreateData = () => {
 
 		const teamRaw = records2.map(elm => ({
 			school: schoolDataRaw.filter(elm2 => elm2.id === elm.school)[0].school_name,
+			relationId: schoolDataRaw.filter(elm2 => elm2.id === elm.school)[0].id,
 			type: elm.team_type,
 			field: schoolDataRaw.filter(elm2 => elm2.id === elm.school)[0].field,
 			id: elm.id,

@@ -10,6 +10,8 @@
 
 # ToDo list
 
+-   Finish edit feature
+
 -   Filter by field 
     -   Double
     -   Single
@@ -44,10 +46,10 @@
     -   Soccer teams are boys only (Sr,Jr div 1,2 and 3)
 -   Optimistic updates for adding and editing school
 
--   Finish edit feature
 
 -   Rugby/Soccer
     -   Separate teams same menu for entering schools
+
 -   More Field info
     -   Time and date available for div 1 and all other divs
 

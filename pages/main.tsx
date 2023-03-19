@@ -54,6 +54,7 @@ export type SchoolType = {
 
 export type TeamPropType = {
 	school: string;
+	relationId: string;
 	type: number;
 	field: number;
 	id: string;
@@ -148,6 +149,7 @@ export const getServerSideProps = async (context: any) => {
 
 	const teamRaw = records2.map(elm => ({
 		school: schoolData.filter(elm2 => elm2.id === elm.school)[0].school_name,
+		relationId: schoolData.filter(elm2 => elm2.id === elm.school)[0].id,
 		type: elm.team_type,
 		field: schoolData.filter(elm2 => elm2.id === elm.school)[0].field,
 		id: elm.id,
