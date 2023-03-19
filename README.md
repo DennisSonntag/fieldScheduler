@@ -7,11 +7,9 @@
 ![basics](./assets/images/screenshot4.png)
 ![basics](./assets/images/screenshot5.png)
 
+
 # ToDo list
 
-## Important
-
--   Better responsiveness on small screens (not phones)
 -   Filter by field 
     -   Double
     -   Single
@@ -39,8 +37,6 @@
     -   Seniority
     -   Div
 
-
-
 -   Move calculations for servers side
 -   Reschedule n dates prior eg. last 3 weeks
 -   Expose number of refs input to user
@@ -50,7 +46,6 @@
     -   They can play each other but they have different spring breaks
 -   Calculate separate schedule for Rugby and soccer and save them both in the database
     -   Soccer teams are boys only (Sr,Jr div 1,2 and 3)
--   Add accounts soccer and rugby board members
 -   Optimistic updates for adding and editing school
 -   Finish edit feature
 -   Rugby/Soccer
@@ -63,6 +58,10 @@
 -   Finish day/week view
 -   Games already happened
 -   Manual override for everything
+
+# Finished Todos
+-   Add accounts soccer and rugby board members
+-   Better responsiveness on small screens (not phones)
 
 ### Needs clarification
 -   Input for alt field but not cru or irish?

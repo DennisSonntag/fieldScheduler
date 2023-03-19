@@ -18,7 +18,8 @@ import remove from '@svg/remove.svg';
 
 import Button from './Button';
 
-const pb = new PocketBase('https://schedulerdatabase.fly.dev');
+// const pb = new PocketBase('https://schedulerdatabase.fly.dev');
+const pb = new PocketBase('http://127.0.0.1:8090');
 
 type SelectedDataType = {
 	name: string;

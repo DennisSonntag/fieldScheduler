@@ -1,6 +1,6 @@
 import { Crypto } from '@peculiar/webcrypto';
 import { useAtom } from 'jotai';
-import { divAtom, genderAtom, ScheduleAtom, schoolAtom, SchoolDataAtom, seniorityAtom } from 'pages/main';
+import { divAtom, genderAtom, RugbyScheduleAtom, SoccerScheduleAtom, schoolAtom, SchoolDataAtom, seniorityAtom, SportTypeAtom } from 'pages/main';
 import { FC, useState } from 'react';
 
 import { Game } from '@ts/matchUp';
@@ -17,7 +17,10 @@ const crypto = new Crypto();
 export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 const Calendar: FC<PropType> = ({ month, setOpen }) => {
-	const [gameData] = useAtom(ScheduleAtom);
+	const [sportType] = useAtom(SportTypeAtom);
+
+	const [gameData] = useAtom(sportType === 'rugby' ? RugbyScheduleAtom : SoccerScheduleAtom);
+
 	const [schoolData] = useAtom(SchoolDataAtom);
 	const seniority: string[] = useAtom(seniorityAtom)[0].map(elm => elm.toLowerCase());
 	const [school] = useAtom(schoolAtom);

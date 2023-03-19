@@ -1,13 +1,18 @@
+/* eslint-disable no-await-in-loop */
+
+/* eslint-disable no-restricted-syntax */
 import { useAtom } from 'jotai';
 import Image from 'next/image';
-import { ScheduleAtom, startEndDateAtom, TeamInfoAtom } from 'pages/main';
+import { SportTypeAtom, possibleData } from 'pages/main';
+import PocketBase from 'pocketbase';
 import { FC, useRef, useState, useReducer, Reducer } from 'react';
 
-import generateSchedule, { AltField, DivType, FieldType, Team, TeamType, Game, TeamTypes, FieldTypes, AltFields } from '@ts/matchUp';
+import { Game, TeamTypes } from '@ts/matchUp';
 
 import caret from '@svg/caret.svg';
 
 import Button from './Button';
+import Calculate from './Calculate';
 import Calendar, { getDaysInMonth, monthNames } from './Calendar';
 import Download from './Download';
 import Title from './Title';
@@ -18,10 +23,9 @@ type PropType = {
 	title: string;
 };
 
+const pb = new PocketBase('http://127.0.0.1:8090');
+
 const Middle: FC<PropType> = ({ title }) => {
-	const [startEndDate] = useAtom(startEndDateAtom);
-	const setGameData = useAtom(ScheduleAtom)[1];
-	const [teamData] = useAtom(TeamInfoAtom);
 	const months = [2, 3, 4, 5];
 
 	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
@@ -59,28 +63,6 @@ const Middle: FC<PropType> = ({ title }) => {
 
 	const weekData = getWeek(week - 1);
 
-	const handleClickCalculate = async () => {
-		const teams: Team[] = teamData.map((elm, index) => ({
-			schoolName: elm.school as string,
-			teamType: TeamTypes[elm.type - 1] as TeamType,
-			skillDivision: elm.div as DivType,
-			field: FieldTypes[Math.floor((index * 3) / teamData.length)] as FieldType,
-			// field: 'single',
-			alternateFields: AltFields[Math.floor((index * 2) / teamData.length)] as AltField,
-			gamesPlayed: 0,
-			opponents: [],
-		}));
-		const unavailableDates: Date[] = [
-			/* array of dates */
-		];
-		// Number of referees
-		const maxGamesPerDay: number = 10;
-		const [startDate, endDate] = startEndDate;
-		const result = generateSchedule(teams, maxGamesPerDay, unavailableDates, startDate, endDate);
-
-		setGameData(result);
-	};
-
 	const [data, setData] = useState<Game[]>([]);
 
 	const dialogRef = useRef(null);
@@ -98,14 +80,62 @@ const Middle: FC<PropType> = ({ title }) => {
 		dialog.close();
 	};
 
+	const [sportType] = useAtom(SportTypeAtom);
+
+	const uploadDummydata = async () => {
+		// -------------------------------Create dummy schools--------------------------
+		// let i = 0;
+		// const n = Object.keys(possibleData).length;
+		// for (const code of Object.keys(possibleData)) {
+		// 	const hasField = (Math.floor(i / (n / 4)) + 1) % 5;
+		// 	const schoool = possibleData[code];
+		// 	// 1 None
+		// 	// 2 Alt
+		// 	// 3 Single
+		// 	// 4 Double
+		//
+		// 	const loopData = {
+		// 		school_name: schoool,
+		// 		school_code: code,
+		// 		has_field: hasField,
+		// 	};
+		//
+		// 	await pb.collection('schools').create(loopData);
+		// 	i++;
+		// }
+		// console.log(`it ran : ${i} times`);
+		//
+		// -------------------------------Create dummy teams--------------------------
+		const records = await pb.collection('schools').getFullList({
+			sort: '-created',
+		});
+		const n = Object.keys(possibleData).length;
+		for (let i = 0; i < n; i++) {
+			// const school = possibleData[code];
+			const div = (Math.floor(i / (n / 3)) + 1) % 4;
+			for (let j = 0; j < 4; j++) {
+				// console.log(`school : ${school}, code : ${code} type : ${TeamTypes[j]},div: ${div}`);
+				// console.log(records[i].id);
+
+				const loopData = {
+					school: records[i].id,
+					team_type: j + 1,
+					div,
+				};
+
+				await pb.collection('teams').create(loopData);
+			}
+		}
+	};
+
 	return (
-		<section className="hover-fade relative flex h-full w-full flex-col overflow-hidden">
+		<section className="hover-fade relative flex h-full w-full flex-col overflow-hidden ">
 			<Title text={title} />
 			<div className="relative h-12 w-full shrink-0 p-2">
 				<ViewBtn setNextState={setNextView} setPrevState={setPrevious} iconNum={active} />
 			</div>
 
-			<section className="my-col-2 relative grid  h-auto w-full grow auto-rows-auto gap-4 p-8 duration-300 ease-in-out ">
+			<section className="my-col-2 relative grid  h-[10rem] overflow-y-scroll w-full grow auto-rows-auto gap-4 p-8 duration-300 ease-in-out">
 				{active === 0 ? (
 					<>
 						{months.map(monthParam => (
@@ -166,7 +196,8 @@ const Middle: FC<PropType> = ({ title }) => {
 			</dialog>
 
 			<div className="inset-x-0 mx-auto h-fit w-fit flex-col items-center">
-				<Button onClick={handleClickCalculate} text="Calculate Schedule " />
+				<Calculate sportType={sportType} />
+				<Button text="testUplaod" onClick={uploadDummydata} />
 				<div className="grid place-content-center ">
 					<Download />
 				</div>

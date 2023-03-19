@@ -40,7 +40,7 @@ specifiers:
   pocketbase: ^0.12.1
   postcss: ^8.4.21
   prettier: ^2.8.4
-  prettier-plugin-tailwindcss: ^0.2.4
+  prettier-plugin-tailwindcss: ^0.2.5
   react: 18.2.0
   react-dom: 18.2.0
   seedrandom: ^3.0.5
@@ -99,7 +99,7 @@ devDependencies:
   eslint-plugin-react-hooks: 4.6.0_eslint@8.36.0
   postcss: 8.4.21
   prettier: 2.8.4
-  prettier-plugin-tailwindcss: 0.2.4_zmkqdpv3ldc45e6wei6qtrbrca
+  prettier-plugin-tailwindcss: 0.2.5_zmkqdpv3ldc45e6wei6qtrbrca
   tailwindcss: 3.2.7_postcss@8.4.21
 
 packages:
@@ -1451,8 +1451,8 @@ packages:
       '@babel/helper-validator-identifier': 7.19.1
       to-fast-properties: 2.0.0
 
-  /@eslint-community/eslint-utils/4.2.0_eslint@8.36.0:
-    resolution: {integrity: sha512-gB8T4H4DEfX2IV9zGDJPOBgP1e/DbfCPDTtEqUMckpvzS1OYtva8JdFYBqMwYk7xAQ429WGF/UPqn8uQ//h2vQ==}
+  /@eslint-community/eslint-utils/4.3.0_eslint@8.36.0:
+    resolution: {integrity: sha512-v3oplH6FYCULtFuCeqyuTd9D2WKO937Dxdq+GmHOLL72TTRriLxz2VLlNfkZRsvj6PKnOPAtuT6dwrs/pA5DvA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
@@ -1923,7 +1923,7 @@ packages:
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
     dependencies:
-      '@eslint-community/eslint-utils': 4.2.0_eslint@8.36.0
+      '@eslint-community/eslint-utils': 4.3.0_eslint@8.36.0
       '@types/json-schema': 7.0.11
       '@types/semver': 7.3.13
       '@typescript-eslint/scope-manager': 5.55.0
@@ -2092,7 +2092,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.21.5
-      caniuse-lite: 1.0.30001466
+      caniuse-lite: 1.0.30001467
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -2214,8 +2214,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001466
-      electron-to-chromium: 1.4.332
+      caniuse-lite: 1.0.30001467
+      electron-to-chromium: 1.4.333
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
 
@@ -2241,8 +2241,8 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
-  /caniuse-lite/1.0.30001466:
-    resolution: {integrity: sha512-ewtFBSfWjEmxUgNBSZItFSmVtvk9zkwkl1OfRZlKA8slltRN+/C/tuGVrF9styXkN36Yu3+SeJ1qkXxDEyNZ5w==}
+  /caniuse-lite/1.0.30001467:
+    resolution: {integrity: sha512-cEdN/5e+RPikvl9AHm4uuLXxeCNq8rFsQ+lPHTfe/OtypP3WwnVVbjn+6uBV7PaFL6xUFzTh+sSCOz1rKhcO+Q==}
 
   /chalk/2.4.2:
     resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}
@@ -2459,8 +2459,8 @@ packages:
     dependencies:
       esutils: 2.0.3
 
-  /electron-to-chromium/1.4.332:
-    resolution: {integrity: sha512-c1Vbv5tuUlBFp0mb3mCIjw+REEsgthRgNE8BlbEDKmvzb8rxjcVki6OkQP83vLN34s0XCxpSkq7AZNep1a6xhw==}
+  /electron-to-chromium/1.4.333:
+    resolution: {integrity: sha512-YyE8+GKyGtPEP1/kpvqsdhD6rA/TP1DUFDN4uiU/YI52NzDxmwHkEb3qjId8hLBa5siJvG0sfC3O66501jMruQ==}
 
   /emoji-regex/9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
@@ -3091,7 +3091,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     hasBin: true
     dependencies:
-      '@eslint-community/eslint-utils': 4.2.0_eslint@8.36.0
+      '@eslint-community/eslint-utils': 4.3.0_eslint@8.36.0
       '@eslint-community/regexpp': 4.4.0
       '@eslint/eslintrc': 2.0.1
       '@eslint/js': 8.36.0
@@ -3888,7 +3888,7 @@ packages:
     dependencies:
       '@next/env': 13.2.4
       '@swc/helpers': 0.4.14
-      caniuse-lite: 1.0.30001466
+      caniuse-lite: 1.0.30001467
       postcss: 8.4.14
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -4215,8 +4215,8 @@ packages:
       fast-diff: 1.2.0
     dev: true
 
-  /prettier-plugin-tailwindcss/0.2.4_zmkqdpv3ldc45e6wei6qtrbrca:
-    resolution: {integrity: sha512-wMyugRI2yD8gqmMpZSS8kTA0gGeKozX/R+w8iWE+yiCZL09zY0SvfiHfHabNhjGhzxlQ2S2VuTxPE3T72vppCQ==}
+  /prettier-plugin-tailwindcss/0.2.5_zmkqdpv3ldc45e6wei6qtrbrca:
+    resolution: {integrity: sha512-vZ/iKieyCx0WTxHbkf5E1rBlv/ybFk8WTT4hL5W2jlVxum2Zbe0jMUpuQdDrpa4z2vnPiJ5KIWCqL/kd16fKYg==}
     engines: {node: '>=12.17.0'}
     peerDependencies:
       '@ianvs/prettier-plugin-sort-imports': '*'

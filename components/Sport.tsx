@@ -3,7 +3,11 @@ import { FC } from 'react';
 import Left from './Left';
 import Middle from './Middle';
 
-const Sport: FC<{ activePage: number }> = ({ activePage }) => (
+type PropTypes = {
+	activePage: number;
+};
+
+const Sport: FC<PropTypes> = ({ activePage }) => (
 	<main className="flex h-full w-full flex-row overflow-hidden">
 		<Left />
 

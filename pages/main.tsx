@@ -3,7 +3,7 @@ import { getSession, signOut } from 'next-auth/react';
 import { ThemeProvider } from 'next-themes';
 import Link from 'next/link';
 import PocketBase from 'pocketbase';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import App from '@components/App';
 import Button from '@components/Button';
@@ -13,7 +13,38 @@ import SportSelect from '@components/SportSelect';
 
 import { Game } from '@ts/matchUp';
 
-const pb = new PocketBase('https://schedulerdatabase.fly.dev');
+type PossibleDataType = { [key: string]: string };
+export const possibleData: PossibleDataType = {
+	CEN: 'Centennial',
+	ND: 'Notre Dame',
+	SF: 'St.Francis',
+	WC: 'Western Canada',
+	EM: 'Ernest Manning',
+	AS: 'All Saints',
+	BOW: 'Bowness',
+	CH: 'Crescent Heights',
+	HWW: 'Henry Wise Wood',
+	OLR: 'Our Lady Of The Rockies',
+	JC: 'Joane Cardinal Schubert- TBD',
+	JGD: 'John G.Diefenbaker',
+	SWC: 'Sir Winston Churchill',
+	WA: 'William Aberhart',
+	BC: 'Bishop Carroll',
+	BM: 'Bishop McNally',
+	CM: 'Central Memorial',
+	FL: 'Forest Lawn',
+	LBP: 'Lester B.Pearson',
+	NM: 'Nelson Mandela',
+	RT: 'Robert Thirsk',
+	SM: 'St.Mary’s',
+	LB: 'Lord Beaverbrook',
+	BOB: 'Bishop O’Byrne',
+	EPS: 'Dr.E.P.Scarlett',
+	QE: 'Queen Elizabeth',
+};
+
+// const pb = new PocketBase('https://schedulerdatabase.fly.dev');
+const pb = new PocketBase('http://127.0.0.1:8090');
 
 export type SchoolType = {
 	school_name: string;
@@ -35,12 +66,16 @@ type PropType = {
 	teamInfo: TeamPropType[];
 };
 
+export type SportType = 'rugby' | 'soccer';
+
 export const store = createStore();
 
 export const SchoolDataAtom = atom<SchoolType[]>([]);
 export const TeamInfoAtom = atom<TeamPropType[]>([]);
 export const ActivePageAtom = atom<number>(0);
-export const ScheduleAtom = atom<Game[]>([]);
+export const RugbyScheduleAtom = atom<Game[]>([]);
+export const SoccerScheduleAtom = atom<Game[]>([]);
+export const SportTypeAtom = atom<SportType>('rugby');
 
 export const seniorityAtom = atom<string[]>([]);
 export const schoolAtom = atom<string[]>([]);
@@ -50,6 +85,7 @@ export const startEndDateAtom = atom<Date[]>([new Date(2023, 2, 0), new Date(202
 
 const Main: FC<PropType> = ({ schoolData, teamInfo }) => {
 	const [activePage, setActivePage] = useState(0);
+	const setSportType = useAtom(SportTypeAtom)[1];
 	const compareActive = activePage === 2;
 	const soccerActive = activePage === 1;
 	const rugbyActive = activePage === 0;
@@ -58,6 +94,10 @@ const Main: FC<PropType> = ({ schoolData, teamInfo }) => {
 		signOut();
 		pb.authStore.clear();
 	};
+
+	useEffect(() => {
+		setSportType(activePage === 0 ? 'rugby' : 'soccer');
+	}, [activePage]);
 
 	const setActivePageAtom = useAtom(ActivePageAtom)[1];
 
@@ -70,7 +110,7 @@ const Main: FC<PropType> = ({ schoolData, teamInfo }) => {
 		<ThemeProvider>
 			<JotaiProvider store={store}>
 				<App title="Scheduler">
-					<div className="flex h-screen w-screen flex-col ">
+					<div className="flex h-screen w-screen flex-col">
 						<div className="h-16 w-screen shrink-0 ">
 							<Link href="/">
 								<Button onClick={logout} className="absolute top-2 right-2 w-fit h-fit">

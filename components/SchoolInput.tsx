@@ -14,6 +14,7 @@ import Chip from './Chip';
 import { SchoolInputType } from './CreateData';
 import DatePicker from './DatePicker';
 import TeamInput from './TeamInput';
+import { possibleData } from 'pages/main';
 
 const crypto = new Crypto();
 
@@ -74,35 +75,6 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 			draft[index].blackoutDates = dates.map(elm => new Date(elm));
 		});
 	}, [dates]);
-
-	const possibleData = {
-		CEN: 'Centennial',
-		ND: 'Notre Dame',
-		SF: 'St.Francis',
-		WC: 'Western Canada',
-		EM: 'Ernest Manning',
-		AS: 'All Saints',
-		BOW: 'Bowness',
-		CH: 'Crescent Heights',
-		HWW: 'Henry Wise Wood',
-		OLR: 'Our Lady Of The Rockies',
-		JC: 'Joane Cardinal Schubert- TBD',
-		JGD: 'John G.Diefenbaker',
-		SWC: 'Sir Winston Churchill',
-		WA: 'William Aberhart',
-		BC: 'Bishop Carroll',
-		BM: 'Bishop McNally',
-		CM: 'Central Memorial',
-		FL: 'Forest Lawn',
-		LBP: 'Lester B.Pearson',
-		NM: 'Nelson Mandela',
-		RT: 'Robert Thirsk',
-		SM: 'St.Mary’s',
-		LB: 'Lord Beaverbrook',
-		BOB: 'Bishop O’Byrne',
-		EPS: 'Dr.E.P.Scarlett',
-		QE: 'Queen Elizabeth',
-	};
 
 	const possibleSchools = Object.values(possibleData);
 	const getKeyByValue = (object: any, value: any) => Object.keys(object).find(key => object[key] === value);
