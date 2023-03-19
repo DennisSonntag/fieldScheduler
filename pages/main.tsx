@@ -70,16 +70,17 @@ export type SportType = (typeof SportTypes)[number];
 
 export const store = createStore();
 
+export const RefNumAtom = atom<number>(10);
 export const SchoolDataAtom = atom<SchoolType[]>([]);
 export const TeamInfoAtom = atom<TeamPropType[]>([]);
 export const RugbyScheduleAtom = atom<Game[]>([]);
 export const SoccerScheduleAtom = atom<Game[]>([]);
 
-export const seniorityAtom = atom<string[]>([]);
-export const schoolAtom = atom<string[]>([]);
-export const divAtom = atom<string[]>([]);
-export const genderAtom = atom<string[]>([]);
-export const startEndDateAtom = atom<Date[]>([new Date(2023, 2, 0), new Date(2023, 5, 31)]);
+export const SeniorityAtom = atom<string[]>([]);
+export const SchoolAtom = atom<string[]>([]);
+export const DivAtom = atom<string[]>([]);
+export const GenderAtom = atom<string[]>([]);
+export const StartEndDateAtom = atom<Date[]>([new Date(2023, 2, 0), new Date(2023, 5, 31)]);
 
 const Main: FC<PropType> = ({ schoolData, teamInfo }) => {
 	const [sportType, setSportType] = useState<SportType>('rugby');
@@ -126,14 +127,14 @@ export default Main;
 
 export const getServerSideProps = async (context: any) => {
 	const session = await getSession(context);
-	if (!session) {
-		return {
-			redirect: {
-				destination: '/',
-				permanent: false,
-			},
-		};
-	}
+	// if (!session) {
+	// 	return {
+	// 		redirect: {
+	// 			destination: '/',
+	// 			permanent: false,
+	// 		},
+	// 	};
+	// }
 
 	const records = await pb.collection('schools').getFullList(200 /* batch size */, {
 		sort: '-created',

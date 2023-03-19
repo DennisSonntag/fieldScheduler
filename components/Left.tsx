@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai';
 import Image from 'next/image';
-import { startEndDateAtom, divAtom, SchoolDataAtom, schoolAtom, seniorityAtom, genderAtom } from 'pages/main';
+import { StartEndDateAtom, DivAtom, SchoolDataAtom, SchoolAtom, SeniorityAtom, GenderAtom, RefNumAtom } from 'pages/main';
 import { useRef, useState } from 'react';
 
 import arrow from '@svg/arrow1.svg';
@@ -18,10 +18,10 @@ const Left = () => {
 	const [schoolData] = useAtom(SchoolDataAtom);
 	const schoolNames = schoolData.map(elm => elm.school_name.trim());
 
-	const [divSelect, setDivSelect] = useAtom(divAtom);
-	const [schoolSelect, setSchoolSelect] = useAtom(schoolAtom);
-	const [senioritySelect, setSenioritySelect] = useAtom(seniorityAtom);
-	const [genderSelect, setGenderSelect] = useAtom(genderAtom);
+	const [divSelect, setDivSelect] = useAtom(DivAtom);
+	const [schoolSelect, setSchoolSelect] = useAtom(SchoolAtom);
+	const [senioritySelect, setSenioritySelect] = useAtom(SeniorityAtom);
+	const [genderSelect, setGenderSelect] = useAtom(GenderAtom);
 
 	const divisions = ['Div 1', 'Div 2', 'Div 3'];
 	const seniorities = ['Sr', 'Jr'];
@@ -44,10 +44,13 @@ const Left = () => {
 
 	const [startDate, setStartDate] = useState(new Date(2023, 2, 1));
 	const [endDate, setEndDate] = useState(new Date(2023, 5, 30));
-	const setStartEndDate = useAtom(startEndDateAtom)[1];
+	const setStartEndDate = useAtom(StartEndDateAtom)[1];
+	const setRefNum = useAtom(RefNumAtom)[1];
+	const [numberOfRefs, setNumberOfRefs] = useState<number | string>(10);
 
-	const changeDates = () => {
+	const handleConfirm = () => {
 		setStartEndDate([startDate, endDate]);
+		setRefNum(numberOfRefs as number);
 	};
 
 	const dateToInputValue = (date: Date) => {
@@ -55,6 +58,8 @@ const Left = () => {
 		local.setMinutes(date.getMinutes() - date.getTimezoneOffset());
 		return local.toJSON().slice(0, 10);
 	};
+
+	const isNumeric = (value: string) => /^-?\d+$/.test(value);
 
 	return (
 		<section className="hover-fade relative flex h-full w-[40%] flex-col gap-2 overflow-hidden rounded-bl-xl">
@@ -94,13 +99,25 @@ const Left = () => {
 					<Button onClick={handleClick} text="Edit Team data" />
 				</div>
 				<div className="my-border my-shadow bg-main rounded-md p-2 relative flex flex-col items-center gap-4">
-					<h1 className="text-md py-2 px-8 text-center font-extrabold text-stark">Season Start/End</h1>
+					<h1 className="text-lg text-center font-extrabold text-stark underline">Data Input</h1>
+					<h2 className="text-md text-center font-bold text-stark">Number of refs</h2>
+					<input
+						value={numberOfRefs}
+						onChange={e => {
+							if (isNumeric(e.target.value) || e.target.value.length === 0) {
+								setNumberOfRefs(e.target.value);
+							}
+						}}
+						className="my-border my-shadow rounded-md bg-accent p-2 text-center hover:bg-accent-light"
+					/>
+
+					<h2 className="text-md text-center font-bold text-stark">Season Start/End</h2>
 					<div className="flex items-center gap-2">
 						<DatePicker defaultValue={dateToInputValue(startDate)} onChange={e => setStartDate(e.currentTarget.valueAsDate as Date)} />
 						<Image src={arrow} alt="Arrow Icon" className="h-6 w-6 rotate-180" />
 						<DatePicker defaultValue={dateToInputValue(endDate)} onChange={e => setEndDate(e.currentTarget.valueAsDate as Date)} />
 					</div>
-					<Button onClick={changeDates} text="Confirm" />
+					<Button onClick={handleConfirm} text="Confirm" />
 				</div>
 			</div>
 		</section>

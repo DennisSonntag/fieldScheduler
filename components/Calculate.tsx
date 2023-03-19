@@ -1,7 +1,8 @@
+/* eslint-disable no-restricted-syntax */
 import { useAtom } from 'jotai';
 import { Game } from 'pages/api/calculate';
-import { RugbyScheduleAtom, SoccerScheduleAtom, SportType, startEndDateAtom, TeamInfoAtom } from 'pages/main';
-import { FC } from 'react';
+import { RefNumAtom, RugbyScheduleAtom, SoccerScheduleAtom, SportType, StartEndDateAtom, TeamInfoAtom } from 'pages/main';
+import { FC, useState } from 'react';
 
 import Button from './Button';
 
@@ -10,12 +11,15 @@ type PropTypes = {
 };
 
 const Calculate: FC<PropTypes> = ({ sportType }) => {
-	const [startEndDate] = useAtom(startEndDateAtom);
+	const [startEndDate] = useAtom(StartEndDateAtom);
+	const [refNum] = useAtom(RefNumAtom);
 	const setRugbyGameData = useAtom(RugbyScheduleAtom)[1];
 	const setSoccerGameData = useAtom(SoccerScheduleAtom)[1];
 	const [teamData] = useAtom(TeamInfoAtom);
+	const [loading, setLoading] = useState(false);
 
 	const handleClickCalculate = async () => {
+		setLoading(true);
 		const resultRaw = await fetch('/api/calculate', {
 			method: 'post',
 			headers: {
@@ -26,6 +30,7 @@ const Calculate: FC<PropTypes> = ({ sportType }) => {
 			// make sure to serialize your JSON body
 			body: JSON.stringify({
 				team_data: teamData,
+				ref_num: refNum,
 				start_end_date: startEndDate,
 			}),
 		});
@@ -34,12 +39,14 @@ const Calculate: FC<PropTypes> = ({ sportType }) => {
 
 		if (sportType === 'rugby') {
 			setRugbyGameData(result.schedule);
+			setLoading(false);
 		} else if (sportType === 'soccer') {
 			setSoccerGameData(result.schedule);
+			setLoading(false);
 		}
 	};
 
-	return <Button onClick={handleClickCalculate} text="Calculate Schedule " />;
+	return <Button onClick={handleClickCalculate} text={loading ? 'loading...' : 'Calculate Schedule '} />;
 };
 
 export default Calculate;

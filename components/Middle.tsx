@@ -184,7 +184,7 @@ const Middle: FC<PropType> = ({ title, sportType }) => {
 								<p className="font-bold text-invert">VS</p>
 								<p className="text-red-500">{elm.awayTeam.schoolName}</p>
 							</div>
-							<p>Date : {elm.date.toDateString()}</p>
+							<p>Date : {new Date(elm.date).toDateString()}</p>
 							<p>Div : {elm.homeTeam.skillDivision}</p>
 							<p>{elm.homeTeam.teamType}</p>
 							<p>Time : {elm.time}</p>

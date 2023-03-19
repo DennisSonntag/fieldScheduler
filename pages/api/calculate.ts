@@ -134,6 +134,7 @@ const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableD
 		seedRandom(JSON.stringify(teams) + String(j));
 
 		schedule = [];
+		const gamesPerDate = new Map<string, number>(); // Map to track number of games per date
 
 		// Main scheduling loop
 		for (let i = 0; i < 20000; i++) {
@@ -155,6 +156,13 @@ const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableD
 				let date = createDate(unavailableDates, startDate, endDate);
 
 				// Schedule the game and add it to the schedules array
+
+				const isoDate = date.toISOString().split('T')[0];
+				const gamesScheduled = gamesPerDate.get(isoDate) ?? 0;
+				if (gamesScheduled >= maxGamesPerDay) {
+					continue;
+				}
+
 				if (team.field === 'single') {
 					const week = getWeek(date);
 					if (week.includes(date.getDay())) continue;
@@ -176,9 +184,7 @@ const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableD
 						}
 					}
 				}
-
-				// Check if the number of games scheduled for that day has reached the maximum
-				if (schedule.filter(game => game.date.getTime() === date.getTime()).length === maxGamesPerDay) break;
+				gamesPerDate.set(isoDate, gamesScheduled + 1);
 			}
 		}
 		const end = teams.filter(team => team.gamesPlayed !== 6);
@@ -192,6 +198,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	const { body } = req;
 	const teamData = body.team_data as TeamPropType[];
 	const startEndDate = body.start_end_date as Date[];
+	const refNum = body.ref_num as number;
 	const teams: Team[] = teamData.map((elm, index) => ({
 		schoolName: elm.school as string,
 		teamType: TeamTypes[elm.type - 1] as TeamType,
@@ -206,8 +213,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 		/* array of dates */
 	];
 	// Number of referees
-	const maxGamesPerDay: number = 10;
 	const [startDate, endDate] = startEndDate;
-	const result = generateSchedule(teams, maxGamesPerDay, unavailableDates, startDate, endDate);
+	console.log(refNum);
+	const result = generateSchedule(teams, refNum, unavailableDates, startDate, endDate);
 	res.status(200).json({ schedule: result });
 }

@@ -1,7 +1,7 @@
 import { Crypto } from '@peculiar/webcrypto';
 import { useAtom } from 'jotai';
 import { Game } from 'pages/api/calculate';
-import { divAtom, genderAtom, RugbyScheduleAtom, SoccerScheduleAtom, schoolAtom, SchoolDataAtom, seniorityAtom, SportType } from 'pages/main';
+import { DivAtom, GenderAtom, RugbyScheduleAtom, SoccerScheduleAtom, SchoolAtom, SchoolDataAtom, SeniorityAtom, SportType } from 'pages/main';
 import { FC, useState } from 'react';
 
 type PropType = {
@@ -20,10 +20,10 @@ const Calendar: FC<PropType> = ({ month, setOpen, sportType }) => {
 	const [gameData] = useAtom(sportType === 'rugby' ? RugbyScheduleAtom : SoccerScheduleAtom);
 
 	const [schoolData] = useAtom(SchoolDataAtom);
-	const seniority: string[] = useAtom(seniorityAtom)[0].map(elm => elm.toLowerCase());
-	const [school] = useAtom(schoolAtom);
-	const div: number[] = useAtom(divAtom)[0].map(elm => Number(elm.slice(-1)));
-	const gender: string[] = useAtom(genderAtom)[0].map(elm => elm.toLowerCase());
+	const seniority: string[] = useAtom(SeniorityAtom)[0].map(elm => elm.toLowerCase());
+	const [school] = useAtom(SchoolAtom);
+	const div: number[] = useAtom(DivAtom)[0].map(elm => Number(elm.slice(-1)));
+	const gender: string[] = useAtom(GenderAtom)[0].map(elm => elm.toLowerCase());
 
 	const year = 2023;
 	const date = new Date(year, month);

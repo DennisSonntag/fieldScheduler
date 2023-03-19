@@ -35,9 +35,7 @@
 
 -   Manual override for everything
 
--   Move calculations for servers side
 -   Reschedule n dates prior eg. last 3 weeks
--   Expose number of refs input to user
 -   Add option for a school to have no field
     -   If a school has no field and no alt field they can only play on other teams fieldsaka away games only
 -   Enter school as CSSD or CBE
@@ -82,6 +80,8 @@
     -   Div
 -   Rugby/Soccer
     -   Separate schedules
+-   Move calculations for servers side
+-   Expose number of refs input to user
 
 ### Needs clarification
 -   Input for alt field but not cru or irish?
