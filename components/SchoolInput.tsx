@@ -1,6 +1,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { Crypto } from '@peculiar/webcrypto';
 import Image from 'next/image';
+import { possibleData } from 'pages/main';
 import { useState, useEffect, useId, FC } from 'react';
 import { useImmer, Updater } from 'use-immer';
 
@@ -14,7 +15,6 @@ import Chip from './Chip';
 import { SchoolInputType } from './CreateData';
 import DatePicker from './DatePicker';
 import TeamInput from './TeamInput';
-import { possibleData } from 'pages/main';
 
 const crypto = new Crypto();
 
@@ -89,7 +89,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 			<div className="flex h-fit w-full justify-center gap-4 ">
 				<datalist id="school-list">
 					{possibleSchools.map(school => (
-						<option aria-label="school-entry" value={school} />
+						<option key={crypto.randomUUID()} aria-label="school-entry" value={school} />
 					))}
 				</datalist>
 				<input
@@ -141,7 +141,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 
 			<p className="text-center text-2xl font-bold">Field Info</p>
 			<div className="flex h-fit w-full justify-center gap-4">
-				<div ref={animateRef} className="h-full w-fit flex-col justify-center">
+				<div className="h-full w-fit flex-col justify-center">
 					<div className="my-border flex h-fit w-fit items-center rounded-md p-2 my-shadow bg-main hover:bg-main-light active:scale-95 smooth-scale no-move">
 						<input
 							checked={currentState.fieldType === 'none'}
@@ -254,7 +254,7 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 
 			<div ref={animateRef} className="flex justify-center gap-4">
 				{teams.map((elm, indexArg) => (
-					<TeamInput key={crypto.randomUUID()} currentState={elm} setState={setTeams} index={indexArg} />
+					<TeamInput key={elm.id} currentState={elm} setState={setTeams} index={indexArg} />
 				))}
 			</div>
 		</div>

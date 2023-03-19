@@ -2,10 +2,12 @@
 
 /* eslint-disable no-restricted-syntax */
 import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { Crypto } from '@peculiar/webcrypto';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
 import { SchoolDataAtom, TeamInfoAtom } from 'pages/main';
 import PocketBase from 'pocketbase';
+import { useEffect } from 'react';
 import { useImmer } from 'use-immer';
 
 import { AltField, FieldType, FieldTypes, TeamType, TeamTypes } from '@ts/matchUp';
@@ -14,6 +16,8 @@ import plus from '@svg/add.svg';
 
 import Button from './Button';
 import SchoolInput, { TeamInputType } from './SchoolInput';
+
+const crypto = new Crypto();
 
 export type SchoolInputType = {
 	name?: string;
@@ -97,6 +101,10 @@ const CreateData = () => {
 		setSchoolData(schoolDataRaw);
 		setTeamInfo(teamRaw);
 	};
+
+	useEffect(() => {
+		console.log(schools.length);
+	}, [schools]);
 
 	return (
 		<>

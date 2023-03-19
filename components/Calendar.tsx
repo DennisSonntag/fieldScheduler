@@ -1,6 +1,6 @@
 import { Crypto } from '@peculiar/webcrypto';
 import { useAtom } from 'jotai';
-import { divAtom, genderAtom, RugbyScheduleAtom, SoccerScheduleAtom, schoolAtom, SchoolDataAtom, seniorityAtom, SportTypeAtom } from 'pages/main';
+import { divAtom, genderAtom, RugbyScheduleAtom, SoccerScheduleAtom, schoolAtom, SchoolDataAtom, seniorityAtom, SportType } from 'pages/main';
 import { FC, useState } from 'react';
 
 import { Game } from '@ts/matchUp';
@@ -8,6 +8,7 @@ import { Game } from '@ts/matchUp';
 type PropType = {
 	month: number;
 	setOpen: (data: Game[]) => void;
+	sportType: SportType;
 };
 
 export const getDaysInMonth = (yearArg: number, monthArg: number) => new Date(yearArg, monthArg, 0).getDate();
@@ -16,9 +17,7 @@ const crypto = new Crypto();
 
 export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-const Calendar: FC<PropType> = ({ month, setOpen }) => {
-	const [sportType] = useAtom(SportTypeAtom);
-
+const Calendar: FC<PropType> = ({ month, setOpen, sportType }) => {
 	const [gameData] = useAtom(sportType === 'rugby' ? RugbyScheduleAtom : SoccerScheduleAtom);
 
 	const [schoolData] = useAtom(SchoolDataAtom);
@@ -124,7 +123,7 @@ const Calendar: FC<PropType> = ({ month, setOpen }) => {
 								<p className="absolute inset-0 m-auto h-fit w-fit font-bold text-stark">{day}</p>
 								<div className="my-border my-shadow absolute left-1/2 top-[-.5rem] hidden h-fit w-fit translate-x-[-50%] translate-y-[-100%] flex-col rounded-md bg-main group-hover:block">
 									{currentDateInfo.map(elm => (
-										<div className="my-border m-1 flex justify-center gap-2 rounded-md p-1">
+										<div key={crypto.randomUUID()} className="my-border m-1 flex justify-center gap-2 rounded-md p-1">
 											<p className="text-blue-500">{schoolData.filter(elm2 => elm2.school_name === elm.homeTeam.schoolName)[0].code}</p>
 											<p className="font-bold text-invert">VS</p>
 											<p className="text-red-500">{schoolData.filter(elm2 => elm2.school_name === elm.awayTeam.schoolName)[0].code}</p>

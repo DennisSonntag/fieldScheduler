@@ -2,14 +2,18 @@
 import saveAs from 'file-saver';
 import { useAtom } from 'jotai';
 import JSZip from 'jszip';
-import { SportTypeAtom, RugbyScheduleAtom, SoccerScheduleAtom, SchoolDataAtom } from 'pages/main';
+import { SportType, RugbyScheduleAtom, SoccerScheduleAtom, SchoolDataAtom } from 'pages/main';
+import { FC } from 'react';
 
 import { TeamTypes, DivTypes } from '@ts/matchUp';
 
 const generateCsv = (input: string[][]): string => `${['Home Team', 'Visitor Team', 'Start Date (MM/DD/YYYY)', 'Start Time (HH:MM AA)', 'Duration (minutes)', 'Details', 'Show Details', 'League Name', 'Practice Type (Shared or Full)', 'Schedule Name', 'Venue'].join(',')}\n${input.map(row => row.join(',')).join('\n')}\n`;
 
-const Download = () => {
-	const [sportType] = useAtom(SportTypeAtom);
+type PropTypes = {
+	sportType: SportType;
+};
+
+const Download: FC<PropTypes> = ({ sportType }) => {
 	const [scheduleData] = useAtom(sportType === 'rugby' ? RugbyScheduleAtom : SoccerScheduleAtom);
 	const [schoolData] = useAtom(SchoolDataAtom);
 

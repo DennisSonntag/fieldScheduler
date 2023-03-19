@@ -1,9 +1,9 @@
-import { Provider as JotaiProvider, useAtom, atom, createStore } from 'jotai';
+import { Provider as JotaiProvider, atom, createStore } from 'jotai';
 import { getSession, signOut } from 'next-auth/react';
 import { ThemeProvider } from 'next-themes';
 import Link from 'next/link';
 import PocketBase from 'pocketbase';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 
 import App from '@components/App';
 import Button from '@components/Button';
@@ -66,16 +66,15 @@ type PropType = {
 	teamInfo: TeamPropType[];
 };
 
-export type SportType = 'rugby' | 'soccer';
+export const SportTypes = ['rugby', 'compare', 'soccer'] as const;
+export type SportType = (typeof SportTypes)[number];
 
 export const store = createStore();
 
 export const SchoolDataAtom = atom<SchoolType[]>([]);
 export const TeamInfoAtom = atom<TeamPropType[]>([]);
-export const ActivePageAtom = atom<number>(0);
 export const RugbyScheduleAtom = atom<Game[]>([]);
 export const SoccerScheduleAtom = atom<Game[]>([]);
-export const SportTypeAtom = atom<SportType>('rugby');
 
 export const seniorityAtom = atom<string[]>([]);
 export const schoolAtom = atom<string[]>([]);
@@ -84,24 +83,12 @@ export const genderAtom = atom<string[]>([]);
 export const startEndDateAtom = atom<Date[]>([new Date(2023, 2, 0), new Date(2023, 5, 31)]);
 
 const Main: FC<PropType> = ({ schoolData, teamInfo }) => {
-	const [activePage, setActivePage] = useState(0);
-	const setSportType = useAtom(SportTypeAtom)[1];
-	const compareActive = activePage === 2;
-	const soccerActive = activePage === 1;
-	const rugbyActive = activePage === 0;
+	const [sportType, setSportType] = useState<SportType>('rugby');
 
 	const logout = () => {
 		signOut();
 		pb.authStore.clear();
 	};
-
-	useEffect(() => {
-		setSportType(activePage === 0 ? 'rugby' : 'soccer');
-	}, [activePage]);
-
-	const setActivePageAtom = useAtom(ActivePageAtom)[1];
-
-	setActivePageAtom(activePage);
 
 	store.set(SchoolDataAtom, schoolData);
 	store.set(TeamInfoAtom, teamInfo);
@@ -120,20 +107,16 @@ const Main: FC<PropType> = ({ schoolData, teamInfo }) => {
 								</Button>
 							</Link>
 							<nav className="absolute inset-x-0 top-0 z-50 m-2 mx-auto box-border flex h-fit w-fit gap-2">
-								<SportSelect sport="Rugby" activePage={rugbyActive} setActivePage={() => setActivePage(0)} />
-								<Button title="Compare Schedules" onClick={() => setActivePage(2)} className={`${compareActive ? 'bg-main hover:bg-main-light' : 'bg-accent'} relative mx-auto h-10 w-10`}>
-									<svg className={`inset-0 m-auto h-4 w-4 ${compareActive ? 'fill-invert' : 'fill-stark'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+								<SportSelect sport="Rugby" activePage={sportType === 'rugby'} setActive={() => setSportType('rugby')} />
+								<Button title="Compare Schedules" onClick={() => setSportType('compare')} className={`${sportType === 'compare' ? 'bg-main hover:bg-main-light' : 'bg-accent'} relative mx-auto h-10 w-10`}>
+									<svg className={`inset-0 m-auto h-4 w-4 ${sportType === 'compare' ? 'fill-invert' : 'fill-stark'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
 										<path d="M422.6 278.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L434.7 176H64c-17.7 0-32-14.3-32-32s14.3-32 32-32H434.7L377.4 54.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l112 112c12.5 12.5 12.5 32.8 0 45.3l-112 112zm-269.3 224l-112-112c-12.5-12.5-12.5-32.8 0-45.3l112-112c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3L141.3 336H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H141.3l57.4 57.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0z" />
 									</svg>
 								</Button>
-								<SportSelect sport="Soccer" activePage={soccerActive} setActivePage={() => setActivePage(1)} />
+								<SportSelect sport="Soccer" activePage={sportType === 'soccer'} setActive={() => setSportType('soccer')} />
 							</nav>
 						</div>
-						<div className="h-auto w-screen grow">
-							{rugbyActive ? <Sport activePage={activePage} /> : null}
-							{soccerActive ? <Sport activePage={activePage} /> : null}
-							{compareActive ? <Compare /> : null}
-						</div>
+						<div className="h-auto w-screen grow">{sportType === 'compare' ? <Compare /> : <Sport title={sportType} sportType={sportType} />}</div>
 					</div>
 				</App>
 			</JotaiProvider>
@@ -143,16 +126,15 @@ const Main: FC<PropType> = ({ schoolData, teamInfo }) => {
 export default Main;
 
 export const getServerSideProps = async (context: any) => {
-	// export const getServerSideProps = async () => {
 	const session = await getSession(context);
-	if (!session) {
-		return {
-			redirect: {
-				destination: '/',
-				permanent: false,
-			},
-		};
-	}
+	// if (!session) {
+	// 	return {
+	// 		redirect: {
+	// 			destination: '/',
+	// 			permanent: false,
+	// 		},
+	// 	};
+	// }
 
 	const records = await pb.collection('schools').getFullList(200 /* batch size */, {
 		sort: '-created',

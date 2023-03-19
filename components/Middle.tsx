@@ -1,13 +1,13 @@
 /* eslint-disable no-await-in-loop */
 
 /* eslint-disable no-restricted-syntax */
-import { useAtom } from 'jotai';
+import { Crypto } from '@peculiar/webcrypto';
 import Image from 'next/image';
-import { SportTypeAtom, possibleData } from 'pages/main';
+import { SportType, possibleData } from 'pages/main';
 import PocketBase from 'pocketbase';
 import { FC, useRef, useState, useReducer, Reducer } from 'react';
 
-import { Game, TeamTypes } from '@ts/matchUp';
+import { Game } from '@ts/matchUp';
 
 import caret from '@svg/caret.svg';
 
@@ -21,11 +21,14 @@ import WeekCaret from './WeekCaret';
 
 type PropType = {
 	title: string;
+	sportType: SportType;
 };
+
+const crypto = new Crypto();
 
 const pb = new PocketBase('http://127.0.0.1:8090');
 
-const Middle: FC<PropType> = ({ title }) => {
+const Middle: FC<PropType> = ({ title, sportType }) => {
 	const months = [2, 3, 4, 5];
 
 	const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
@@ -80,8 +83,6 @@ const Middle: FC<PropType> = ({ title }) => {
 		dialog.close();
 	};
 
-	const [sportType] = useAtom(SportTypeAtom);
-
 	const uploadDummydata = async () => {
 		// -------------------------------Create dummy schools--------------------------
 		// let i = 0;
@@ -103,7 +104,6 @@ const Middle: FC<PropType> = ({ title }) => {
 		// 	await pb.collection('schools').create(loopData);
 		// 	i++;
 		// }
-		// console.log(`it ran : ${i} times`);
 		//
 		// -------------------------------Create dummy teams--------------------------
 		const records = await pb.collection('schools').getFullList({
@@ -114,9 +114,6 @@ const Middle: FC<PropType> = ({ title }) => {
 			// const school = possibleData[code];
 			const div = (Math.floor(i / (n / 3)) + 1) % 4;
 			for (let j = 0; j < 4; j++) {
-				// console.log(`school : ${school}, code : ${code} type : ${TeamTypes[j]},div: ${div}`);
-				// console.log(records[i].id);
-
 				const loopData = {
 					school: records[i].id,
 					team_type: j + 1,
@@ -139,7 +136,7 @@ const Middle: FC<PropType> = ({ title }) => {
 				{active === 0 ? (
 					<>
 						{months.map(monthParam => (
-							<Calendar key={monthParam} setOpen={openModal} month={monthParam} />
+							<Calendar key={crypto.randomUUID()} setOpen={openModal} month={monthParam} sportType={sportType} />
 						))}
 					</>
 				) : null}
@@ -148,7 +145,7 @@ const Middle: FC<PropType> = ({ title }) => {
 						<button type="button" onClick={() => setMonth(month - 1)}>
 							<Image src={caret} alt="" className="smooth inv h-16 w-16 rotate-90 hover:scale-110 active:scale-95" />
 						</button>
-						<Calendar setOpen={openModal} month={month} />
+						<Calendar setOpen={openModal} month={month} sportType={sportType} />
 						<button type="button" onClick={() => setMonth(month + 1)}>
 							<Image src={caret} alt="" className="smooth inv h-16 w-16 rotate-[270deg] hover:scale-110 active:scale-95" />
 						</button>
@@ -161,7 +158,7 @@ const Middle: FC<PropType> = ({ title }) => {
 						<WeekCaret func={() => setWeek(week + 1)} top />
 						<div className="m-2 flex h-full w-full gap-4">
 							{weekData.map((day, index) => (
-								<div key={day} className="my-border bg-base my-shadow relative h-full w-full rounded-md bg-main">
+								<div key={crypto.randomUUID()} className="my-border bg-base my-shadow relative h-full w-full rounded-md bg-main">
 									<p className="absolute inset-x-0 mx-auto h-fit w-fit px-2 font-bold">{weekDays[index]}</p>
 									<div>{day}</div>
 								</div>
@@ -180,16 +177,18 @@ const Middle: FC<PropType> = ({ title }) => {
 					</svg>
 				</button>
 
-				<div className="absolute inset-0 m-auto flex h-fit w-fit flex-col items-center gap-4">
+				<div className="absolute inset-0 m-auto flex h-full top-16 w-fit flex-col items-center gap-4">
 					{data.map(elm => (
-						<div key={elm.homeTeam.schoolName} className="my-border p-y-2 my-shadow flex w-[40rem] flex-col items-center rounded-md bg-main text-2xl">
+						<div key={crypto.randomUUID()} className="my-border p-y-2 my-shadow flex w-[40rem] flex-col items-center rounded-md bg-main text-2xl text-invert">
 							<div className="flex w-fit gap-2">
 								<p className="text-blue-500">{elm.homeTeam.schoolName}</p>
 								<p className="font-bold text-invert">VS</p>
 								<p className="text-red-500">{elm.awayTeam.schoolName}</p>
 							</div>
-							<p className="text-invert">Date : {elm.date.toDateString()}</p>
-							<p className="text-invert">Time : {elm.time}</p>
+							<p>Date : {elm.date.toDateString()}</p>
+							<p>Div : {elm.homeTeam.skillDivision}</p>
+							<p>{elm.homeTeam.teamType}</p>
+							<p>Time : {elm.time}</p>
 						</div>
 					))}
 				</div>
@@ -199,7 +198,7 @@ const Middle: FC<PropType> = ({ title }) => {
 				<Calculate sportType={sportType} />
 				<Button text="testUplaod" onClick={uploadDummydata} />
 				<div className="grid place-content-center ">
-					<Download />
+					<Download sportType={sportType} />
 				</div>
 			</div>
 		</section>

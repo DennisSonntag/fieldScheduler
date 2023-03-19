@@ -1,3 +1,4 @@
+import { Crypto } from '@peculiar/webcrypto';
 import Image from 'next/image';
 import { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from 'react';
 
@@ -10,6 +11,8 @@ type PropType = {
 	scroll?: boolean;
 	setSelected: Dispatch<SetStateAction<string[]>>;
 };
+
+const crypto = new Crypto();
 
 const Filter: FC<PropType> = ({ title, setSelected, options, selected, scroll = false }) => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -96,7 +99,7 @@ const Filter: FC<PropType> = ({ title, setSelected, options, selected, scroll = 
 							setIsOpen(false);
 						}}
 						onMouseEnter={() => setHighlightedIndex(index)}
-						key={option}
+						key={crypto.randomUUID()}
 						className={`my-border m-2 h-fit cursor-pointer truncate rounded-md  text-center ${isOptionSelected(option) ? 'bg-accent' : 'bg-main'} ${index === highlightedIndex ? 'bg-accent-light text-invert' : null} `}
 					>
 						{option}

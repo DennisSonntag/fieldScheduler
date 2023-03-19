@@ -18,7 +18,6 @@
         -   Cru
         -   Irish
 
--   Better loading state in login menu
 -   Add status bottom right with info about the calculation
     -   Did ever team play 6 games (Green/Red)
     -   Number of games calculated / Theoretical max for everyone playing 6 games
@@ -33,9 +32,8 @@
         -   Fields 1 - 2
         -   User inputs time per field/day
 
--   Add more info to click dialog
-    -   Seniority
-    -   Div
+
+-   Manual override for everything
 
 -   Move calculations for servers side
 -   Reschedule n dates prior eg. last 3 weeks
@@ -47,21 +45,43 @@
 -   Calculate separate schedule for Rugby and soccer and save them both in the database
     -   Soccer teams are boys only (Sr,Jr div 1,2 and 3)
 -   Optimistic updates for adding and editing school
+
 -   Finish edit feature
+
 -   Rugby/Soccer
-    -   Separate schedules
     -   Separate teams same menu for entering schools
 -   More Field info
     -   Time and date available for div 1 and all other divs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -   Add List view
 -   Fix compare view
 -   Finish day/week view
 -   Games already happened
--   Manual override for everything
+-   Better loading state in login menu
 
 # Finished Todos
 -   Add accounts soccer and rugby board members
 -   Better responsiveness on small screens (not phones)
+-   Add more info to click dialog
+    -   Seniority
+    -   Div
+-   Rugby/Soccer
+    -   Separate schedules
 
 ### Needs clarification
 -   Input for alt field but not cru or irish?

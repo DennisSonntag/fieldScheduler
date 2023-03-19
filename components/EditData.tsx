@@ -5,6 +5,7 @@
 /* eslint-disable no-await-in-loop */
 
 /* eslint-disable no-restricted-syntax */
+import { Crypto } from '@peculiar/webcrypto';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
 import { SchoolDataAtom, SchoolType, TeamInfoAtom } from 'pages/main';
@@ -25,6 +26,8 @@ type SelectedDataType = {
 	name: string;
 	field: number;
 };
+
+const crypto = new Crypto();
 
 const EditData = () => {
 	const [schoolData, setSchoolData] = useAtom(SchoolDataAtom);
@@ -71,7 +74,7 @@ const EditData = () => {
 							<div className="h-fit w-fit flex flex-col gap-6">
 								<div className="flex gap-4 items-center">
 									<label htmlFor="field">Has Field</label>
-									<input value={String(selectedData?.field)} id="field" type="text" className="my-border my-shadow h-10 w-fit rounded-sm" />
+									<input defaultValue={String(selectedData?.field)} id="field" type="text" className="my-border my-shadow h-10 w-fit rounded-sm" />
 								</div>
 								<div className="flex gap-4 items-center">
 									<label htmlFor="div">Div</label>
@@ -79,14 +82,14 @@ const EditData = () => {
 								</div>
 								<div className="flex gap-4 items-center">
 									<label htmlFor="name">Name</label>
-									<input value={selectedData?.name} id="name" type="text" className="my-border my-shadow h-10 w-fit rounded-sm" />
+									<input defaultValue={selectedData?.name} id="name" type="text" className="my-border my-shadow h-10 w-fit rounded-sm" />
 								</div>
 							</div>
 						</div>
 						<h2 className="font-extrabold text-2xl text-invert text-center">Teams</h2>
 						<div className="flex gap-2">
 							{teams.map(team => (
-								<div className="w-fit h-fit bg-main rounded-md my-border my-shadow p-2">
+								<div key={crypto.randomUUID()} className="w-fit h-fit bg-main rounded-md my-border my-shadow p-2">
 									<p>Div: {team.div}</p>
 									<p>{TeamTypes[team.type - 1]}</p>
 								</div>
@@ -98,11 +101,11 @@ const EditData = () => {
 			) : (
 				<div className="my-grid grid h-fit w-full gap-10 p-4">
 					{schoolData.map(school => (
-						<div className="w-full relative flex">
+						<div key={crypto.randomUUID()} className="w-full relative flex">
 							<Button onClick={() => removeSchool(school)} className="w-fit h-fit">
 								<Image className="h-3 w-3" src={remove} alt="remove icon" />
 							</Button>
-							<Button key={school.school_name} onClick={() => handleSelect(school.school_name, school.field)} className="w-full bg-main hover:bg-main-light relative">
+							<Button onClick={() => handleSelect(school.school_name, school.field)} className="w-full bg-main hover:bg-main-light relative">
 								<p className="font-bold">{school.school_name}</p>
 								<p className={school.field ? 'text-green-500' : 'text-bug'}>Has field {String(school.field)}</p>
 							</Button>
