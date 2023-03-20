@@ -40,6 +40,13 @@ const Calculate: FC<PropTypes> = ({ sportType }) => {
 		if (sportType === 'rugby') {
 			setRugbyGameData(result.schedule);
 			setLoading(false);
+			for (const game of result.schedule) {
+				// if (game.homeTeam.field === 'none' || game.awayTeam.field === 'none') {
+				// if (game.homeTeam.field === 'none') {
+				if (game.awayTeam.field === 'none') {
+					console.log(game);
+				}
+			}
 		} else if (sportType === 'soccer') {
 			setSoccerGameData(result.schedule);
 			setLoading(false);

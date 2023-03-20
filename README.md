@@ -23,11 +23,9 @@
 # ToDo list
 
 
--   If a school has no field and no alt field they can only play on other teams fields aka away games only
 
 
 -   Input for information for cru and irish
-
     -   Cru
         -   Monday - Friday
         -   Fields 1 - 5
@@ -40,12 +38,12 @@
 
 
 # Finished Todos
+-   If a school has no field and no alt field they can only play on other teams fields aka away games only
 
 -   Filter by field
     -   Double
     -   Single
     -   None
-
     -   Alt (If alt is selected show the below)
         -   Cru
         -   Irish

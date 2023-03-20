@@ -143,7 +143,13 @@ const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableD
 					continue;
 				}
 
-				const eligibleTeams = getEligibleTeams(team, teams);
+				let eligibleTeams = getEligibleTeams(team, teams);
+
+				// Only allow away games for teams with a fieldType of "none"
+				if (team.field === 'none') {
+					eligibleTeams = eligibleTeams.filter(opponent => opponent.field === 'none');
+				}
+
 				// const eligibleAlternateFields = getEligibleAlternateFields(team, teams);
 				const opponent = getRandomTeam(eligibleTeams);
 
@@ -168,7 +174,7 @@ const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableD
 					if (week.includes(date.getDay())) continue;
 
 					schedule.push(scheduleGame(team, opponent, date, '04:45 PM'));
-				} else if (team.field === 'double' || team.field === 'none') {
+				} else if (team.field === 'double' || team.field === 'alt') {
 					while (true) {
 						const currentGames = schedule.filter(game => game.homeTeam.schoolName === team.schoolName && game.date.toISOString().split('T')[0] === date.toISOString().split('T')[0]);
 
