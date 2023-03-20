@@ -24,8 +24,7 @@ export type SchoolInputType = {
 	id: number;
 };
 
-// const pb = new PocketBase('https://schedulerdatabase.fly.dev');
-const pb = new PocketBase('http://127.0.0.1:8090');
+const pb = new PocketBase('https://schedulerdatabase.fly.dev');
 
 const CreateData = () => {
 	const [schools, setSchools] = useImmer<SchoolInputType[]>([]);

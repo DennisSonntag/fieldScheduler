@@ -2,8 +2,7 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import PocketBase from 'pocketbase';
 
-// const pb = new PocketBase('https://schedulerdatabase.fly.dev');
-const pb = new PocketBase('http://127.0.0.1:8090');
+const pb = new PocketBase('https://schedulerdatabase.fly.dev');
 
 const authOptions: NextAuthOptions = {
 	providers: [
