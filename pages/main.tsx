@@ -133,15 +133,14 @@ export default Main;
 
 export const getServerSideProps = async (context: any) => {
 	const session = await getSession(context);
-	console.log(session);
-	// if (!session) {
-	// 	return {
-	// 		redirect: {
-	// 			destination: '/',
-	// 			permanent: false,
-	// 		},
-	// 	};
-	// }
+	if (!session) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
+	}
 
 	const records = await pb.collection('schools').getFullList(200 /* batch size */, {
 		sort: '-created',

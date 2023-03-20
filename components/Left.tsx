@@ -1,8 +1,10 @@
+// @ts-nocheck
 import { useAtom } from 'jotai';
 import Image from 'next/image';
-import { AltFieldTypes, FieldTypes, WeekDayTypes } from 'pages/api/calculate';
+import { AltFieldAvailability, AltFieldTypes, FieldTypes, WeekDayTypes } from 'pages/api/calculate';
 import { StartEndDateAtom, DivAtom, SchoolDataAtom, SchoolAtom, SeniorityAtom, GenderAtom, RefNumAtom, FieldAtom, AltAtom } from 'pages/main';
 import { useRef, useState } from 'react';
+import { useImmer } from 'use-immer';
 
 import arrow from '@svg/arrow1.svg';
 import remove from '@svg/remove.svg';
@@ -18,6 +20,7 @@ import Title from './Title';
 const Left = () => {
 	const [schoolData] = useAtom(SchoolDataAtom);
 	const schoolNames = schoolData.map(elm => elm.school_name.trim());
+	const setAltAvailabilityAtom = useAtom(AltFieldAvailabilityAtom)[1];
 
 	const [divSelect, setDivSelect] = useAtom(DivAtom);
 	const [schoolSelect, setSchoolSelect] = useAtom(SchoolAtom);
@@ -78,6 +81,74 @@ const Left = () => {
 
 	const isNumeric = (value: string) => /^-?\d+$/.test(value);
 
+	const [altAvailability, setAltAvailability] = useImmer<AltFieldAvailability>({
+		cru: {
+			monday: {
+				1: [],
+				2: [],
+				3: [],
+				4: [],
+				5: [],
+			},
+			tuesday: {
+				1: [],
+				2: [],
+				3: [],
+				4: [],
+				5: [],
+			},
+			wednesday: {
+				1: [],
+				2: [],
+				3: [],
+				4: [],
+				5: [],
+			},
+			thursday: {
+				1: [],
+				2: [],
+				3: [],
+				4: [],
+				5: [],
+			},
+			friday: {
+				1: [],
+				2: [],
+				3: [],
+				4: [],
+				5: [],
+			},
+		},
+		irish: {
+			monday: {
+				1: [],
+				2: [],
+			},
+			tuesday: {
+				1: [],
+				2: [],
+			},
+			wednesday: {
+				1: [],
+				2: [],
+			},
+			thursday: {
+				1: [],
+				2: [],
+			},
+			friday: {
+				1: [],
+				2: [],
+			},
+		},
+	});
+
+	const inputHeader = ['fields', ...WeekDayTypes];
+
+	const handleSubmit = () => {
+		setAltAvailabilityAtom(altAvailability);
+	};
+
 	return (
 		<section className="hover-fade relative flex h-full w-[40%] flex-col gap-2 overflow-hidden rounded-bl-xl">
 			<dialog ref={dialogEditRef} className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] flex-col overflow-y-scroll rounded-xl bg-back backdrop:bg-black/40 backdrop:backdrop-blur-lg">
@@ -105,19 +176,101 @@ const Left = () => {
 					<div className="w-full h-full bg-main flex-grow relative flex flex-col items-center">
 						<h1 className="text-xl font-bold text-center">cru</h1>
 						<div className="flex justify-around flex-wrap w-full">
-							{['fields', ...WeekDayTypes].map(day => (
-								<div className="flex flex-col gap-2">
+							{inputHeader.map((day, index) => (
+								<div key={day} className="flex flex-col gap-2">
 									<h2>{day}</h2>
 									{day === 'fields' && [1, 2, 3, 4, 5].map(field => <div>{field}</div>)}
-									{day !== 'fields' && [1, 2, 3, 4, 5].map(field => <input type="time" className='my-border'/>)}
+
+									{day !== 'fields' &&
+										[1, 2, 3, 4, 5].map(field => (
+											<div>
+												<input
+													onChange={e => {
+														const input = e.target.valueAsDate;
+														setAltAvailability((draft: AltFieldAvailability) => {
+															draft.cru[inputHeader[index]][field].push(input);
+															return draft;
+														});
+													}}
+													type="time"
+													className="my-border"
+												/>
+												{altAvailability.cru[inputHeader[index]][field].map((elm: Date) => (
+													<div key={elm.toString()} className="flex gap-1">
+														<div>{elm.toLocaleTimeString()}</div>
+														<button
+															type="button"
+															className="hover:text-red-500"
+															onClick={() => {
+																setAltAvailability((draft: AltFieldAvailability) => {
+																	const current = draft.cru[inputHeader[index]][field] as any[];
+																	const indexInner = current.indexOf(elm);
+																	if (indexInner > -1) current.splice(indexInner, 1);
+
+																	return draft;
+																});
+															}}
+														>
+															x
+														</button>
+													</div>
+												))}
+											</div>
+										))}
 								</div>
 							))}
 						</div>
 					</div>
-					<div className="w-full h-full bg-main flex-grow relative">
-						<h1>irish</h1>
+					<div className="w-full h-full bg-main flex-grow relative flex flex-col items-center">
+						<h1 className="text-xl font-bold text-center">Irish</h1>
+						<div className="flex justify-around flex-wrap w-full">
+							{inputHeader.map((day, index) => (
+								<div key={day} className="flex flex-col gap-2">
+									<h2>{day}</h2>
+									{day === 'fields' && [1, 2].map(field => <div>{field}</div>)}
+
+									{day !== 'fields' &&
+										[1, 2].map(field => (
+											<div>
+												<input
+													onChange={e => {
+														const input = e.target.valueAsDate;
+														setAltAvailability((draft: AltFieldAvailability) => {
+															draft.irish[inputHeader[index]][field].push(input);
+															return draft;
+														});
+													}}
+													type="time"
+													className="my-border"
+												/>
+												{altAvailability.irish[inputHeader[index]][field].map((elm: Date) => (
+													<div key={elm.toString()} className="flex gap-1">
+														<div>{elm.toLocaleTimeString()}</div>
+														<button
+															type="button"
+															className="hover:text-red-500"
+															onClick={() => {
+																setAltAvailability((draft: AltFieldAvailability) => {
+																	const current = draft.irish[inputHeader[index]][field] as any[];
+																	const indexInner = current.indexOf(elm);
+																	if (indexInner > -1) current.splice(indexInner, 1);
+
+																	return draft;
+																});
+															}}
+														>
+															x
+														</button>
+													</div>
+												))}
+											</div>
+										))}
+								</div>
+							))}
+						</div>
 					</div>
 				</div>
+				<Button onClick={handleSubmit} text="submit" className="absolute inset-x-0 mx-auto bottom-2 text-lg font-bold" />
 			</dialog>
 
 			<Title text="Filters" />

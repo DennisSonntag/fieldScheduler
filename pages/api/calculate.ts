@@ -133,8 +133,16 @@ export type WeekDayType = (typeof WeekDayTypes)[number];
 // Define the availability of each field for the given date and time
 export type AltFieldAvailability = {
 	[field in AltFieldType]: {
-		[weekday in WeekDayType]: Date[];
+		[weekday in WeekDayType]: {
+			[key: number]: Date[];
+		};
 	};
+};
+
+const getRandomInt = (min: number, max: number): number => {
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
 const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableDates: Date[], startDate: Date, endDate: Date, alternateFieldAvailability: AltFieldAvailability): Game[] => {
@@ -185,7 +193,8 @@ const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableD
 
 					schedule.push(scheduleGame(team, opponent, date, '04:45 PM'));
 				} else if (team.field === 'alt') {
-					const altAvailability = alternateFieldAvailability[team.field as AltFieldType][WeekDayTypes[date.getDay()]];
+					const randomField = team.alternateFields === 'cru' ? getRandomInt(1, 5) : getRandomInt(1, 2);
+					const altAvailability = alternateFieldAvailability[team.field as AltFieldType][WeekDayTypes[date.getDay()]][randomField];
 					const altAvailableTimes = Array.isArray(altAvailability) ? altAvailability : [];
 
 					if (altAvailableTimes.length > 0) {
