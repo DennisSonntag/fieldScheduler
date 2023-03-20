@@ -7,20 +7,24 @@
 ![basics](./assets/images/screenshot4.png)
 ![basics](./assets/images/screenshot5.png)
 
+# Cant do it in time
+-   Remove teams in edit feature
+-   Global Spring Breaks
+
+    -   Enter school as CSSD or CBE
+        -   They can play each other but they have different spring breaks
+-   Put Rugby and soccer schedules in the database
+
+    -   Soccer teams are boys only (Sr,Jr div 1,2 and 3)
+
+-   Rugby/Soccer
+    -   Separate teams same menu for entering schools
+
 # ToDo list
 
--   Remove teams in edit feature
 
-    -   If a school has no field and no alt field they can only play on other teams fields aka away games only
+-   If a school has no field and no alt field they can only play on other teams fields aka away games only
 
--   Filter by field
-
-    -   Double
-    -   Single
-    -   None
-    -   Alt (If alt is selected show the below)
-        -   Cru
-        -   Irish
 
 -   Input for information for cru and irish
 
@@ -33,19 +37,18 @@
         -   Fields 1 - 2
         -   User inputs time per field/day
 
--   Global Spring Breaks
 
-    -   Enter school as CSSD or CBE
-        -   They can play each other but they have different spring breaks
-
--   Put Rugby and soccer schedules in the database
-
-    -   Soccer teams are boys only (Sr,Jr div 1,2 and 3)
-
--   Rugby/Soccer
-    -   Separate teams same menu for entering schools
 
 # Finished Todos
+
+-   Filter by field
+    -   Double
+    -   Single
+    -   None
+
+    -   Alt (If alt is selected show the below)
+        -   Cru
+        -   Irish
 
 -   Add accounts soccer and rugby board members
 -   Add validation to edit feature

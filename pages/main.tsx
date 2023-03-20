@@ -73,7 +73,7 @@ export type SportType = (typeof SportTypes)[number];
 
 export const store = createStore();
 
-export const RefNumAtom = atom<number>(10);
+export const RefNumAtom = atom<number>(8);
 export const SchoolDataAtom = atom<SchoolType[]>([]);
 export const TeamInfoAtom = atom<TeamPropType[]>([]);
 export const RugbyScheduleAtom = atom<Game[]>([]);
@@ -83,6 +83,8 @@ export const SeniorityAtom = atom<string[]>([]);
 export const SchoolAtom = atom<string[]>([]);
 export const DivAtom = atom<string[]>([]);
 export const GenderAtom = atom<string[]>([]);
+export const FieldAtom = atom<string[]>([]);
+export const AltAtom = atom<string[]>([]);
 export const StartEndDateAtom = atom<Date[]>([new Date(2023, 2, 0), new Date(2023, 5, 31)]);
 
 const Main: FC<PropType> = ({ schoolData, teamInfo }) => {

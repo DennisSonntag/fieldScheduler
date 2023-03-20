@@ -1,6 +1,7 @@
 import { useAtom } from 'jotai';
 import Image from 'next/image';
-import { StartEndDateAtom, DivAtom, SchoolDataAtom, SchoolAtom, SeniorityAtom, GenderAtom, RefNumAtom } from 'pages/main';
+import { AltFieldTypes, FieldTypes } from 'pages/api/calculate';
+import { StartEndDateAtom, DivAtom, SchoolDataAtom, SchoolAtom, SeniorityAtom, GenderAtom, RefNumAtom, FieldAtom, AltAtom } from 'pages/main';
 import { useRef, useState } from 'react';
 
 import arrow from '@svg/arrow1.svg';
@@ -22,6 +23,8 @@ const Left = () => {
 	const [schoolSelect, setSchoolSelect] = useAtom(SchoolAtom);
 	const [senioritySelect, setSenioritySelect] = useAtom(SeniorityAtom);
 	const [genderSelect, setGenderSelect] = useAtom(GenderAtom);
+	const [fieldSelect, setFieldSelect] = useAtom(FieldAtom);
+	const [altSelect, setAltSelect] = useAtom(AltAtom);
 
 	const divisions = ['Div 1', 'Div 2', 'Div 3'];
 	const seniorities = ['Sr', 'Jr'];
@@ -46,7 +49,7 @@ const Left = () => {
 	const [endDate, setEndDate] = useState(new Date(2023, 5, 30));
 	const setStartEndDate = useAtom(StartEndDateAtom)[1];
 	const setRefNum = useAtom(RefNumAtom)[1];
-	const [numberOfRefs, setNumberOfRefs] = useState<number | string>(10);
+	const [numberOfRefs, setNumberOfRefs] = useState<number | string>(8);
 
 	const handleConfirm = () => {
 		setStartEndDate([startDate, endDate]);
@@ -87,12 +90,17 @@ const Left = () => {
 				<Filter scroll options={schoolNames} title="School" selected={schoolSelect} setSelected={setSchoolSelect} />
 				<Filter options={seniorities} title="Sr/Jr" selected={senioritySelect} setSelected={setSenioritySelect} />
 				<Filter options={gender} title="Gender" selected={genderSelect} setSelected={setGenderSelect} />
+
+				<Filter options={FieldTypes as unknown as string[]} title="Field" selected={fieldSelect} setSelected={setFieldSelect} />
+				{fieldSelect.includes('alt') ? <Filter options={AltFieldTypes as unknown as string[]} title="Alt" selected={altSelect} setSelected={setAltSelect} /> : null}
 			</div>
 
 			<Chip list={divSelect} />
 			<Chip list={schoolSelect} />
 			<Chip list={senioritySelect} />
 			<Chip list={genderSelect} />
+			<Chip list={fieldSelect} />
+			<Chip list={altSelect} />
 
 			<div className="absolute bottom-0 flex h-fit w-full flex-grow  flex-col items-center gap-2 p-6">
 				<div className="flex gap-2 items-center">

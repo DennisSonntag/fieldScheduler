@@ -5,7 +5,6 @@ import { Crypto } from '@peculiar/webcrypto';
 import Image from 'next/image';
 import { Game } from 'pages/api/calculate';
 import { SportType } from 'pages/main';
-// import PocketBase from 'pocketbase';
 import { FC, useRef, useState, useReducer, Reducer } from 'react';
 
 import caret from '@svg/caret.svg';
@@ -16,6 +15,8 @@ import Download from './Download';
 import Title from './Title';
 import ViewBtn from './ViewBtn';
 import WeekCaret from './WeekCaret';
+import Button from './Button';
+import { removeAllData, uploadDummyData, uploadTestData } from '@ts/utils';
 
 type PropType = {
 	title: string;
@@ -23,8 +24,6 @@ type PropType = {
 };
 
 const crypto = new Crypto();
-
-// const pb = new PocketBase('http://127.0.0.1:8090');
 
 const Middle: FC<PropType> = ({ title, sportType }) => {
 	const months = [2, 3, 4, 5];
@@ -80,48 +79,6 @@ const Middle: FC<PropType> = ({ title, sportType }) => {
 
 		dialog.close();
 	};
-
-	// const uploadDummydata = async () => {
-	// -------------------------------Create dummy schools--------------------------
-	// let i = 0;
-	// const n = Object.keys(possibleData).length;
-	//
-	// for (const code of Object.keys(possibleData)) {
-	// 	const hasField = FieldTypes[((Math.floor(i / (n / 4)) + 1) % 5) - 1];
-	// 	const altField = AltFieldTypes[Math.random() > 0.5 ? 1 : 0];
-	//
-	// 	const school = possibleData[code];
-	//
-	// 	const loopData = {
-	// 		school_name: school,
-	// 		school_code: code,
-	// 		alt_field: altField,
-	// 		has_field: hasField,
-	// 	};
-	//
-	// 	await pb.collection('schools').create(loopData);
-	// 	i++;
-	// }
-	//
-	// -------------------------------Create dummy teams--------------------------
-	// const records = await pb.collection('schools').getFullList({
-	// 	sort: '-created',
-	// });
-	// const n = Object.keys(possibleData).length;
-	// for (let i = 0; i < n; i++) {
-	// 	// const school = possibleData[code];
-	// 	const div = (Math.floor(i / (n / 3)) + 1) % 4;
-	// 	for (let j = 0; j < 4; j++) {
-	// 		const loopData = {
-	// 			school: records[i].id,
-	// 			team_type: TeamTypes[j],
-	// 			div,
-	// 		};
-	//
-	// 		await pb.collection('teams').create(loopData);
-	// 	}
-	// }
-	// };
 
 	return (
 		<section className="hover-fade relative flex h-full w-full flex-col overflow-hidden ">
@@ -194,10 +151,12 @@ const Middle: FC<PropType> = ({ title, sportType }) => {
 
 			<div className="inset-x-0 mx-auto h-fit w-fit flex-col items-center">
 				<Calculate sportType={sportType} />
-				{/* <Button text="testUplaod" onClick={uploadDummydata} /> */}
-				<div className="grid place-content-center ">
-					<Download sportType={sportType} />
-				</div>
+				<Button text="remove all" onClick={removeAllData} />
+				<Button text="upload dummy" onClick={uploadDummyData} />
+				<Button text="upload test" onClick={uploadTestData} />
+				{/* <div className="grid place-content-center "> */}
+				{/* 	<Download sportType={sportType} /> */}
+				{/* </div> */}
 			</div>
 		</section>
 	);

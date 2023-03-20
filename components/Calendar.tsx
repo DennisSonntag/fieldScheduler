@@ -1,7 +1,7 @@
 import { Crypto } from '@peculiar/webcrypto';
 import { useAtom } from 'jotai';
 import { Game } from 'pages/api/calculate';
-import { DivAtom, GenderAtom, RugbyScheduleAtom, SoccerScheduleAtom, SchoolAtom, SchoolDataAtom, SeniorityAtom, SportType } from 'pages/main';
+import { DivAtom, GenderAtom, FieldAtom, AltAtom, RugbyScheduleAtom, SoccerScheduleAtom, SchoolAtom, SchoolDataAtom, SeniorityAtom, SportType } from 'pages/main';
 import { FC, useState } from 'react';
 
 type PropType = {
@@ -21,6 +21,8 @@ const Calendar: FC<PropType> = ({ month, setOpen, sportType }) => {
 
 	const [schoolData] = useAtom(SchoolDataAtom);
 	const seniority: string[] = useAtom(SeniorityAtom)[0].map(elm => elm.toLowerCase());
+	const fieldFilter: string[] = useAtom(FieldAtom)[0].map(elm => elm.toLowerCase());
+	const altFilter: string[] = useAtom(AltAtom)[0].map(elm => elm.toLowerCase());
 	const [school] = useAtom(SchoolAtom);
 	const div: number[] = useAtom(DivAtom)[0].map(elm => Number(elm.slice(-1)));
 	const gender: string[] = useAtom(GenderAtom)[0].map(elm => elm.toLowerCase());
@@ -102,12 +104,14 @@ const Calendar: FC<PropType> = ({ month, setOpen, sportType }) => {
 						const divBool = div.length === 0 ? true : div.includes(elm.homeTeam.skillDivision);
 						const seniorityBool = seniority.length === 0 ? true : seniority.includes(elm.homeTeam.teamType.substring(0, 2));
 						const schoolBool = school.length === 0 ? true : school.includes(elm.homeTeam.schoolName) || school.includes(elm.awayTeam.schoolName);
+						const fieldBool = fieldFilter.length === 0 ? true : fieldFilter.includes(elm.awayTeam.field);
+						const altBool = altFilter.length === 0 ? true : altFilter.includes(elm.awayTeam.alternateFields!);
 
-						if (gender.length === 0 && div.length === 0 && seniority.length === 0 && school.length === 0) {
+						if (gender.length === 0 && div.length === 0 && seniority.length === 0 && school.length === 0 && fieldFilter.length === 0 && altFilter.length === 0) {
 							return true;
 						}
 
-						return genderBool && divBool && seniorityBool && schoolBool;
+						return genderBool && divBool && seniorityBool && schoolBool && fieldBool && altBool;
 					});
 
 					const gameDays = filteredData.map(elm => elm.date);

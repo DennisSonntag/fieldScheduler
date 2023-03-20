@@ -115,6 +115,7 @@ const EditData = () => {
 			setIsError(true);
 			return;
 		}
+
 		setLoading(true);
 		// update school info
 		const schoolId = schoolData.filter(elm => elm.school_name === selectedData?.name)[0].id;
