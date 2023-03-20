@@ -19,15 +19,15 @@ export type DivType = (typeof DivTypes)[number];
 export const FieldTypes = ['none', 'alt', 'single', 'double'] as const;
 export type FieldType = (typeof FieldTypes)[number];
 
-export const AltFields = ['cru', 'irish'] as const;
-export type AltField = (typeof AltFields)[number];
+export const AltFieldTypes = ['cru', 'irish'] as const;
+export type AltFieldType = (typeof AltFieldTypes)[number];
 
 export type Team = {
 	schoolName: string;
 	teamType: TeamType;
 	skillDivision: DivType;
 	field: FieldType;
-	alternateFields?: AltField;
+	alternateFields?: AltFieldType;
 	gamesPlayed: number;
 	opponents: string[];
 };
@@ -199,13 +199,12 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	const teamData = body.team_data as TeamPropType[];
 	const startEndDate = body.start_end_date as Date[];
 	const refNum = body.ref_num as number;
-	const teams: Team[] = teamData.map((elm, index) => ({
-		schoolName: elm.school as string,
-		teamType: TeamTypes[elm.type - 1] as TeamType,
-		skillDivision: elm.div as DivType,
-		field: FieldTypes[Math.floor((index * 3) / teamData.length)] as FieldType,
-		// field: 'single',
-		alternateFields: AltFields[Math.floor((index * 2) / teamData.length)] as AltField,
+	const teams: Team[] = teamData.map(team => ({
+		schoolName: team.school as string,
+		teamType: team.type as TeamType,
+		skillDivision: team.div as DivType,
+		field: team.field as FieldType,
+		alternateFields: team.alt_field as AltFieldType,
 		gamesPlayed: 0,
 		opponents: [],
 	}));
@@ -214,7 +213,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	];
 	// Number of referees
 	const [startDate, endDate] = startEndDate;
-	console.log(refNum);
 	const result = generateSchedule(teams, refNum, unavailableDates, startDate, endDate);
 	res.status(200).json({ schedule: result });
 }

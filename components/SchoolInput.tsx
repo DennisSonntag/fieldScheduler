@@ -23,8 +23,8 @@ type PropTypes = {
 	index: number;
 };
 
-type GenderType = 'boy' | 'girl';
-type SeniorityType = 'sr' | 'jr';
+export type GenderType = 'boy' | 'girl';
+export type SeniorityType = 'sr' | 'jr';
 
 export type TeamInputType = {
 	gender?: GenderType;
@@ -143,11 +143,11 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 				<div className="h-full w-fit flex-col justify-center">
 					<div className="my-border flex h-fit w-fit items-center rounded-md p-2 my-shadow bg-main hover:bg-main-light active:scale-95 smooth-scale no-move">
 						<input
-							checked={currentState.fieldType === 'none'}
+							checked={currentState.fieldType === 'alt'}
 							onChange={() => {
 								setAltActive(true);
 								setState(draft => {
-									draft[index].fieldType = 'none';
+									draft[index].fieldType = 'alt';
 									return draft;
 								});
 							}}
@@ -207,6 +207,25 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 					)}
 				</div>
 
+				<div className="my-border my-shadow flex h-fit w-fit items-center rounded-md p-2 bg-main hover:bg-main-light no-move">
+					<input
+						checked={currentState.fieldType === 'none'}
+						onChange={() => {
+							setAltActive(false);
+							setState(draft => {
+								draft[index].fieldType = 'none';
+								return draft;
+							});
+						}}
+						type="radio"
+						id={`nof${id}`}
+						name={`field${id}`}
+						className="my-border relative inset-x-0 mx-auto inline-block h-fit w-fit cursor-pointer"
+					/>
+					<label htmlFor={`nof${id}`} className="mx-2 cursor-pointer">
+						No Field
+					</label>
+				</div>
 				<div className="my-border flex h-fit w-fit items-center rounded-md p-2 my-shadow bg-main hover:bg-main-light no-move">
 					<input
 						checked={currentState.fieldType === 'single'}
@@ -226,7 +245,6 @@ const SchoolInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 						Single Field
 					</label>
 				</div>
-
 				<div className="my-border my-shadow flex h-fit w-fit items-center rounded-md p-2 bg-main hover:bg-main-light no-move">
 					<input
 						checked={currentState.fieldType === 'double'}

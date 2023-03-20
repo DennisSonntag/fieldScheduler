@@ -82,45 +82,45 @@ const Middle: FC<PropType> = ({ title, sportType }) => {
 	};
 
 	// const uploadDummydata = async () => {
-	// 	// -------------------------------Create dummy schools--------------------------
-	// 	// let i = 0;
-	// 	// const n = Object.keys(possibleData).length;
-	// 	// for (const code of Object.keys(possibleData)) {
-	// 	// 	const hasField = (Math.floor(i / (n / 4)) + 1) % 5;
-	// 	// 	const schoool = possibleData[code];
-	// 	// 	// 1 None
-	// 	// 	// 2 Alt
-	// 	// 	// 3 Single
-	// 	// 	// 4 Double
-	// 	//
-	// 	// 	const loopData = {
-	// 	// 		school_name: schoool,
-	// 	// 		school_code: code,
-	// 	// 		has_field: hasField,
-	// 	// 	};
-	// 	//
-	// 	// 	await pb.collection('schools').create(loopData);
-	// 	// 	i++;
-	// 	// }
-	// 	//
-	// 	// -------------------------------Create dummy teams--------------------------
-	// 	const records = await pb.collection('schools').getFullList({
-	// 		sort: '-created',
-	// 	});
-	// 	const n = Object.keys(possibleData).length;
-	// 	for (let i = 0; i < n; i++) {
-	// 		// const school = possibleData[code];
-	// 		const div = (Math.floor(i / (n / 3)) + 1) % 4;
-	// 		for (let j = 0; j < 4; j++) {
-	// 			const loopData = {
-	// 				school: records[i].id,
-	// 				team_type: j + 1,
-	// 				div,
-	// 			};
+	// -------------------------------Create dummy schools--------------------------
+	// let i = 0;
+	// const n = Object.keys(possibleData).length;
 	//
-	// 			await pb.collection('teams').create(loopData);
-	// 		}
+	// for (const code of Object.keys(possibleData)) {
+	// 	const hasField = FieldTypes[((Math.floor(i / (n / 4)) + 1) % 5) - 1];
+	// 	const altField = AltFieldTypes[Math.random() > 0.5 ? 1 : 0];
+	//
+	// 	const school = possibleData[code];
+	//
+	// 	const loopData = {
+	// 		school_name: school,
+	// 		school_code: code,
+	// 		alt_field: altField,
+	// 		has_field: hasField,
+	// 	};
+	//
+	// 	await pb.collection('schools').create(loopData);
+	// 	i++;
+	// }
+	//
+	// -------------------------------Create dummy teams--------------------------
+	// const records = await pb.collection('schools').getFullList({
+	// 	sort: '-created',
+	// });
+	// const n = Object.keys(possibleData).length;
+	// for (let i = 0; i < n; i++) {
+	// 	// const school = possibleData[code];
+	// 	const div = (Math.floor(i / (n / 3)) + 1) % 4;
+	// 	for (let j = 0; j < 4; j++) {
+	// 		const loopData = {
+	// 			school: records[i].id,
+	// 			team_type: TeamTypes[j],
+	// 			div,
+	// 		};
+	//
+	// 		await pb.collection('teams').create(loopData);
 	// 	}
+	// }
 	// };
 
 	return (

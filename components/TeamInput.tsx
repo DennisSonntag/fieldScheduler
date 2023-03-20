@@ -11,9 +11,10 @@ type PropTypes = {
 	setState: Updater<TeamInputType[]>;
 	currentState: TeamInputType;
 	index: number;
+	inEdit?: boolean;
 };
 
-const TeamInput: FC<PropTypes> = ({ setState, currentState, index }) => {
+const TeamInput: FC<PropTypes> = ({ setState, currentState, index, inEdit }) => {
 	const id = useId();
 
 	const removeSelf = () => {
@@ -27,7 +28,7 @@ const TeamInput: FC<PropTypes> = ({ setState, currentState, index }) => {
 	return (
 		<form className="relative flex h-fit w-fit bg-main">
 			<fieldset className="my-shadow rounded-md p-2">
-				<legend className="text-2xl font-bold">Team {currentState.id} Info</legend>
+				<legend className="text-2xl font-bold">Team {inEdit ? index : currentState.id} Info</legend>
 
 				<Button onClick={removeSelf} className="absolute top-2 right-2 shadow-none">
 					<Image className="h-3 w-3" src={remove} alt="remove icon" />

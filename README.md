@@ -7,12 +7,14 @@
 ![basics](./assets/images/screenshot4.png)
 ![basics](./assets/images/screenshot5.png)
 
-
 # ToDo list
 
--   Finish edit feature
+-   Remove teams in edit feature
 
--   Filter by field 
+    -   If a school has no field and no alt field they can only play on other teams fields aka away games only
+
+-   Filter by field
+
     -   Double
     -   Single
     -   None
@@ -20,11 +22,8 @@
         -   Cru
         -   Irish
 
--   Add status bottom right with info about the calculation
-    -   Did ever team play 6 games (Green/Red)
-    -   Number of games calculated / Theoretical max for everyone playing 6 games
-
 -   Input for information for cru and irish
+
     -   Cru
         -   Monday - Friday
         -   Fields 1 - 5
@@ -34,48 +33,23 @@
         -   Fields 1 - 2
         -   User inputs time per field/day
 
+-   Global Spring Breaks
 
--   Manual override for everything
+    -   Enter school as CSSD or CBE
+        -   They can play each other but they have different spring breaks
 
--   Reschedule n dates prior eg. last 3 weeks
--   Add option for a school to have no field
-    -   If a school has no field and no alt field they can only play on other teams fieldsaka away games only
--   Enter school as CSSD or CBE
-    -   They can play each other but they have different spring breaks
--   Calculate separate schedule for Rugby and soccer and save them both in the database
+-   Put Rugby and soccer schedules in the database
+
     -   Soccer teams are boys only (Sr,Jr div 1,2 and 3)
--   Optimistic updates for adding and editing school
-
 
 -   Rugby/Soccer
     -   Separate teams same menu for entering schools
 
--   More Field info
-    -   Time and date available for div 1 and all other divs
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--   Add List view
--   Fix compare view
--   Finish day/week view
--   Games already happened
--   Better loading state in login menu
-
 # Finished Todos
+
 -   Add accounts soccer and rugby board members
+-   Add validation to edit feature
+-   Add option for a school to have no field
 -   Better responsiveness on small screens (not phones)
 -   Add more info to click dialog
     -   Seniority
@@ -84,11 +58,30 @@
     -   Separate schedules
 -   Move calculations for servers side
 -   Expose number of refs input to user
+-   Finish edit feature
+-   Optimistic updates for adding and editing school
 
 ### Needs clarification
+
 -   Input for alt field but not cru or irish?
 
 ### Less Important
+
+-   More Field info
+    -   Time and date available for div 1 and all other divs
+-   Reschedule n dates prior eg. last 3 weeks
+-   Add status bottom right with info about the calculation
+
+    -   Did ever team play 6 games (Green/Red)
+    -   Number of games calculated / Theoretical max for everyone playing 6 games
+
+-   Add List view
+-   Fix compare view
+-   Finish day/week view
+-   Games already happened
+-   Better loading state in login menu
+
+#### Even Less Important
 
 -   Migrate to next.js 13 app directory
 -   Forgot password template email

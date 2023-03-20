@@ -8,7 +8,7 @@
 import { Crypto } from '@peculiar/webcrypto';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
-import { DivType, FieldType, FieldTypes, TeamType, TeamTypes } from 'pages/api/calculate';
+import { DivType, FieldType, FieldTypes } from 'pages/api/calculate';
 import { SchoolDataAtom, SchoolType, TeamInfoAtom } from 'pages/main';
 import PocketBase from 'pocketbase';
 import { useEffect, useState } from 'react';
@@ -18,20 +18,16 @@ import arrow1 from '@svg/arrow1.svg';
 import remove from '@svg/remove.svg';
 
 import Button from './Button';
+import { GenderType, SeniorityType, TeamInputType } from './SchoolInput';
+import TeamInput from './TeamInput';
 
 // const pb = new PocketBase('https://schedulerdatabase.fly.dev');
 const pb = new PocketBase('http://127.0.0.1:8090');
 
 type SelectedDataType = {
 	name: string;
-	field: number;
+	field: FieldType;
 	code: string;
-};
-
-type TeamEditType = {
-	id: string;
-	div: DivType;
-	teamType: TeamType;
 };
 
 const crypto = new Crypto();
@@ -43,9 +39,9 @@ const EditData = () => {
 	const [selectedData, setSelectedData] = useState<SelectedDataType>();
 	const [selected, setSelected] = useState(false);
 
-	const [teams, setTeams] = useImmer<TeamEditType[]>([]);
+	const [teams, setTeams] = useImmer<TeamInputType[]>([]);
 
-	const handleSelect = (name: string, field: number, code: string) => {
+	const handleSelect = (name: string, field: FieldType, code: string) => {
 		setSelected(true);
 		setSelectedData({
 			name,
@@ -70,33 +66,62 @@ const EditData = () => {
 	};
 
 	type SchoolEditDataType = {
-		field: string;
+		field: FieldType;
 		name: string;
 		code: string;
 	};
 	const [schoolEditData, setSchoolEditData] = useImmer<SchoolEditDataType>({
 		name: '',
-		field: '',
+		field: '' as FieldType,
 		code: '',
 	});
 
 	useEffect(() => {
 		setSchoolEditData((draft: SchoolEditDataType) => {
-			draft.field = FieldTypes[Number(selectedData?.field) - 1];
+			draft.field = selectedData?.field!;
 			draft.name = selectedData?.name as string;
 			draft.code = selectedData?.code as string;
 		});
 
-		setTeams(teamInfo.filter(elm => elm.school === selectedData?.name).map(elm => ({ div: elm.div as DivType, teamType: TeamTypes[elm.type - 1], id: elm.id })));
+		setTeams(
+			teamInfo
+				.filter(elm => elm.school === selectedData?.name)
+				.map(elm => ({
+					div: elm.div as DivType,
+					seniority: elm.type.split(/(?=[A-Z])/)[0] as SeniorityType,
+					gender: elm.type
+						.split(/(?=[A-Z])/)[1]
+						.toLowerCase()
+						.slice(0, -1) as GenderType,
+					id: Number(elm.id.replace(/\D/g, '')),
+				}))
+		);
 	}, [selectedData]);
 
+	const [isError, setIsError] = useState(false);
+
+	useEffect(() => {
+		if (isError) {
+			setTimeout(() => {
+				setIsError(false);
+			}, 1000);
+		}
+	}, [isError]);
+
+	const [loading, setLoading] = useState(false);
+
 	const handleUpload = async () => {
+		if (!FieldTypes.includes(schoolEditData.field)) {
+			setIsError(true);
+			return;
+		}
+		setLoading(true);
 		// update school info
 		const schoolId = schoolData.filter(elm => elm.school_name === selectedData?.name)[0].id;
 		const schoolUploadData = {
 			school_name: schoolEditData.name,
 			school_code: schoolEditData.code,
-			has_field: FieldTypes.indexOf(schoolEditData.field as FieldType) + 1,
+			has_field: schoolEditData.field,
 		};
 
 		await pb.collection('schools').update(schoolId, schoolUploadData);
@@ -108,13 +133,14 @@ const EditData = () => {
 		for (const team of teams) {
 			const teamUploadData = {
 				school: schoolId,
-				team_type: TeamTypes.indexOf(team.teamType) + 1,
+				team_type: `${team.seniority}${team.gender}`,
 				div: team.div,
 			};
 
 			await pb.collection('teams').update(teamIds[index], teamUploadData);
 			index++;
 		}
+		setLoading(false);
 	};
 
 	return (
@@ -136,14 +162,14 @@ const EditData = () => {
 								<div className="flex gap-4 items-center">
 									<label htmlFor="field">Has Field</label>
 									<input
-										defaultValue={FieldTypes[Number(selectedData?.field) - 1]}
+										defaultValue={selectedData?.field}
 										id="field"
 										type="search"
 										list="field-list"
 										className="text-center my-border my-shadow h-10 w-full rounded-sm"
 										onChange={e =>
 											setSchoolEditData((draft: SchoolEditDataType) => {
-												draft.field = e.target.value;
+												draft.field = e.target.value as FieldType;
 
 												return draft;
 											})
@@ -184,46 +210,13 @@ const EditData = () => {
 						</div>
 						<h2 className="font-extrabold text-2xl text-invert text-center">Teams</h2>
 						<div className="flex gap-2">
-							{teams.map((team, index) => (
-								<div key={team.id} className="w-fit h-fit bg-main rounded-md my-border my-shadow p-2">
-									<h2 className="text-center font-bold text-lg">Team {index + 1}</h2>
-									<div className="flex gap-4 items-center">
-										<label htmlFor="code">Div</label>
-										<input
-											onChange={e => {
-												if (!isNaN(Number(e.target.value)) && Number(e.target.value) >= 1 && Number(e.target.value) <= 3) {
-													setTeams((draft: TeamEditType[]) => {
-														draft[index].div = Number(e.target.value) as DivType;
-														return draft;
-													});
-												}
-											}}
-											value={team.div}
-											id="code"
-											type="text"
-											className="my-border my-shadow h-10 w-fit rounded-sm text-center"
-										/>
-									</div>
-									<div className="flex gap-4 items-center">
-										<label htmlFor="team-type">Team Type </label>
-										<input
-											onChange={e => {
-												setTeams((draft: TeamEditType[]) => {
-													draft[index].teamType = e.target.value as TeamType;
-													return draft;
-												});
-											}}
-											value={team.teamType}
-											id="team-type"
-											type="text"
-											className="my-border my-shadow h-10 w-full rounded-sm text-center"
-										/>
-									</div>
-								</div>
+							{teams.map((elm, indexArg) => (
+								<TeamInput inEdit key={elm.id} currentState={elm} setState={setTeams} index={indexArg} />
 							))}
 						</div>
 					</div>
-					<Button onClick={handleUpload} text="Upload" className="absolute inset-x-0 mx-auto bottom-10 w-fit font-bold text-xl" />
+					<p className={`${isError ? 'opacity-100' : 'opacity-0'} smooth-scale text-center bottom-2 w-fit h-fit text-red-500 font-bold text-xl absolute inset-x-0 mx-auto`}>Invalid field type</p>
+					<Button onClick={handleUpload} text={loading ? 'loading....' : ' Upload'} className="absolute inset-x-0 mx-auto bottom-10 w-fit font-bold text-xl" />
 				</div>
 			) : (
 				<div className="my-grid grid h-fit w-full gap-10 p-4">
@@ -234,7 +227,7 @@ const EditData = () => {
 							</Button>
 							<Button onClick={() => handleSelect(school.school_name, school.field, school.code)} className="w-full bg-main hover:bg-main-light relative">
 								<p className="font-bold underline">{school.school_name}</p>
-								<p>{`${String(teamInfo.filter(elm => elm.relationId === schoolData[25].id).map(elm => elm.div).length)} teams`}</p>
+								<p>{`${String(teamInfo.filter(elm => elm.relationId === school.id).map(elm => elm.div).length)} teams`}</p>
 							</Button>
 						</div>
 					))}

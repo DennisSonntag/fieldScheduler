@@ -4,7 +4,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
-import { AltField, FieldType, FieldTypes, TeamType, TeamTypes } from 'pages/api/calculate';
+import { AltFieldType, FieldType, TeamType } from 'pages/api/calculate';
 import { SchoolDataAtom, TeamInfoAtom } from 'pages/main';
 import PocketBase from 'pocketbase';
 import { useImmer } from 'use-immer';
@@ -19,7 +19,7 @@ export type SchoolInputType = {
 	code?: string;
 	blackoutDates?: Date[];
 	fieldType?: FieldType;
-	altField?: AltField;
+	altField?: AltFieldType;
 	teams?: TeamInputType[];
 	id: number;
 };
@@ -50,7 +50,7 @@ const CreateData = () => {
 	const handleUpload = async () => {
 		for (const school of schools) {
 			if (school.teams !== undefined && school.fieldType !== undefined && school.name !== undefined && school.code !== undefined) {
-				const hasFieldNum = FieldTypes.indexOf(school.fieldType) + 1;
+				const hasFieldNum = school.fieldType;
 				const schoolData = {
 					school_name: school.name,
 					school_code: school.code,
@@ -62,10 +62,9 @@ const CreateData = () => {
 				for (const team of school.teams) {
 					if (team.div !== undefined && team.seniority !== undefined && team.gender !== undefined) {
 						const teamTypeString = `${team.seniority}${firstLetterCaps(team.gender)}s` as TeamType;
-						const teamType = TeamTypes.indexOf(teamTypeString) + 1;
 						const teamData = {
 							school: record.id,
-							team_type: teamType,
+							team_type: teamTypeString,
 							div: team.div,
 						};
 
@@ -79,7 +78,7 @@ const CreateData = () => {
 			sort: '-created',
 		});
 
-		const schoolDataRaw = records.map(elm => ({ school_name: elm.school_name, code: elm.school_code, id: elm.id, field: elm.has_field }));
+		const schoolDataRaw = records.map(elm => ({ school_name: elm.school_name, code: elm.school_code, id: elm.id, field: elm.has_field, alt_field: elm.alt_field }));
 
 		const records2 = await pb.collection('teams').getFullList(200 /* batch size */, {
 			sort: '-created',
@@ -90,6 +89,7 @@ const CreateData = () => {
 			relationId: schoolDataRaw.filter(elm2 => elm2.id === elm.school)[0].id,
 			type: elm.team_type,
 			field: schoolDataRaw.filter(elm2 => elm2.id === elm.school)[0].field,
+			alt_field: schoolDataRaw.filter(elm2 => elm2.id === elm.school)[0].alt_field,
 			id: elm.id,
 			div: elm.div,
 		}));

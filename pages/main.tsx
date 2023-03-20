@@ -2,7 +2,7 @@ import { Provider as JotaiProvider, atom, createStore } from 'jotai';
 import { getSession, signOut } from 'next-auth/react';
 import { ThemeProvider } from 'next-themes';
 import Link from 'next/link';
-import { Game } from 'pages/api/calculate';
+import { AltFieldType, DivType, FieldType, Game, TeamType } from 'pages/api/calculate';
 import PocketBase from 'pocketbase';
 import { FC, useState } from 'react';
 
@@ -49,16 +49,18 @@ export type SchoolType = {
 	school_name: string;
 	id: string;
 	code: string;
-	field: number;
+	field: FieldType;
+	alt_field: AltFieldType;
 };
 
 export type TeamPropType = {
 	school: string;
 	relationId: string;
-	type: number;
-	field: number;
+	type: TeamType;
+	field: FieldType;
+	alt_field: AltFieldType;
 	id: string;
-	div: number;
+	div: DivType;
 };
 
 type PropType = {
@@ -128,6 +130,7 @@ export default Main;
 
 export const getServerSideProps = async (context: any) => {
 	const session = await getSession(context);
+	console.log(session);
 	// if (!session) {
 	// 	return {
 	// 		redirect: {
@@ -141,7 +144,7 @@ export const getServerSideProps = async (context: any) => {
 		sort: '-created',
 	});
 
-	const schoolData = records.map(elm => ({ school_name: elm.school_name, code: elm.school_code, id: elm.id, field: elm.has_field }));
+	const schoolData = records.map(elm => ({ school_name: elm.school_name, code: elm.school_code, id: elm.id, field: elm.has_field, alt_field: elm.alt_field }));
 
 	const records2 = await pb.collection('teams').getFullList(200 /* batch size */, {
 		sort: '-created',
@@ -152,6 +155,7 @@ export const getServerSideProps = async (context: any) => {
 		relationId: schoolData.filter(elm2 => elm2.id === elm.school)[0].id,
 		type: elm.team_type,
 		field: schoolData.filter(elm2 => elm2.id === elm.school)[0].field,
+		alt_field: schoolData.filter(elm2 => elm2.id === elm.school)[0].alt_field,
 		id: elm.id,
 		div: elm.div,
 	}));
