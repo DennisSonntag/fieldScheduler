@@ -2,7 +2,7 @@ import { Provider as JotaiProvider, atom, createStore } from 'jotai';
 import { getSession, signOut } from 'next-auth/react';
 import { ThemeProvider } from 'next-themes';
 import Link from 'next/link';
-import { AltFieldType, DivType, FieldType, Game, TeamType } from 'pages/api/calculate';
+import { AltFieldAvailability, AltFieldType, DivType, FieldType, Game, TeamType } from 'pages/api/calculate';
 import PocketBase from 'pocketbase';
 import { FC, useState } from 'react';
 
@@ -74,6 +74,7 @@ export type SportType = (typeof SportTypes)[number];
 export const store = createStore();
 
 export const RefNumAtom = atom<number>(8);
+export const AltFieldAvailabilityAtom = atom<AltFieldAvailability>({} as AltFieldAvailability);
 export const SchoolDataAtom = atom<SchoolType[]>([]);
 export const TeamInfoAtom = atom<TeamPropType[]>([]);
 export const RugbyScheduleAtom = atom<Game[]>([]);

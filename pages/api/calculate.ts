@@ -127,7 +127,17 @@ const createDate = (unavailableDates: Date[], startDate: Date, endDate: Date): D
 	return date;
 };
 
-const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableDates: Date[], startDate: Date, endDate: Date): Game[] => {
+export const WeekDayTypes = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'] as const;
+export type WeekDayType = (typeof WeekDayTypes)[number];
+
+// Define the availability of each field for the given date and time
+export type AltFieldAvailability = {
+	[field in AltFieldType]: {
+		[weekday in WeekDayType]: Date[];
+	};
+};
+
+const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableDates: Date[], startDate: Date, endDate: Date, alternateFieldAvailability: AltFieldAvailability): Game[] => {
 	let schedule: Game[] = [];
 	for (let j = 0; j < 10; j++) {
 		const teams: Team[] = JSON.parse(JSON.stringify(teamsArg));
@@ -174,7 +184,17 @@ const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableD
 					if (week.includes(date.getDay())) continue;
 
 					schedule.push(scheduleGame(team, opponent, date, '04:45 PM'));
-				} else if (team.field === 'double' || team.field === 'alt') {
+				} else if (team.field === 'alt') {
+					const altAvailability = alternateFieldAvailability[team.field as AltFieldType][WeekDayTypes[date.getDay()]];
+					const altAvailableTimes = Array.isArray(altAvailability) ? altAvailability : [];
+
+					if (altAvailableTimes.length > 0) {
+						const availableTime = altAvailableTimes[Math.floor(Math.random() * altAvailableTimes.length)];
+						schedule.push(scheduleGame(team, opponent as Team, date, availableTime as unknown as TimeType));
+					} else {
+						continue;
+					}
+				} else if (team.field === 'double') {
 					while (true) {
 						const currentGames = schedule.filter(game => game.homeTeam.schoolName === team.schoolName && game.date.toISOString().split('T')[0] === date.toISOString().split('T')[0]);
 
@@ -205,6 +225,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	const teamData = body.team_data as TeamPropType[];
 	const startEndDate = body.start_end_date as Date[];
 	const refNum = body.ref_num as number;
+	const altFieldAvailability = body.alt_field_availability as AltFieldAvailability;
 	const teams: Team[] = teamData.map(team => ({
 		schoolName: team.school as string,
 		teamType: team.type as TeamType,
@@ -219,6 +240,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	];
 	// Number of referees
 	const [startDate, endDate] = startEndDate;
-	const result = generateSchedule(teams, refNum, unavailableDates, startDate, endDate);
+	const result = generateSchedule(teams, refNum, unavailableDates, startDate, endDate, altFieldAvailability);
 	res.status(200).json({ schedule: result });
 }

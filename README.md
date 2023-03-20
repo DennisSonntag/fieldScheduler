@@ -22,9 +22,6 @@
 
 # ToDo list
 
-
-
-
 -   Input for information for cru and irish
     -   Cru
         -   Monday - Friday

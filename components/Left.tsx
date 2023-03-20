@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai';
 import Image from 'next/image';
-import { AltFieldTypes, FieldTypes } from 'pages/api/calculate';
+import { AltFieldTypes, FieldTypes, WeekDayTypes } from 'pages/api/calculate';
 import { StartEndDateAtom, DivAtom, SchoolDataAtom, SchoolAtom, SeniorityAtom, GenderAtom, RefNumAtom, FieldAtom, AltAtom } from 'pages/main';
 import { useRef, useState } from 'react';
 
@@ -30,19 +30,33 @@ const Left = () => {
 	const seniorities = ['Sr', 'Jr'];
 	const gender = ['Girls', 'Boys'];
 
-	const dialogRef = useRef(null);
+	const dialogEditRef = useRef(null);
+	const dialogAltRef = useRef(null);
 
-	const handleClick = () => {
-		const dialog = dialogRef.current as unknown as any;
+	const openEditMenu = () => {
+		const dialog = dialogEditRef.current as unknown as any;
 
 		dialog.showModal();
 	};
 
-	const closeModal = () => {
-		const dialog = dialogRef.current as unknown as any;
+	const closeEditMenu = () => {
+		const dialog = dialogEditRef.current as unknown as any;
 
 		dialog.close();
 	};
+
+	const openAltMenu = () => {
+		const dialog = dialogAltRef.current as unknown as any;
+
+		dialog.showModal();
+	};
+
+	const closeAltMenu = () => {
+		const dialog = dialogAltRef.current as unknown as any;
+
+		dialog.close();
+	};
+
 	const [editActive, setEditActive] = useState(true);
 
 	const [startDate, setStartDate] = useState(new Date(2023, 2, 1));
@@ -66,8 +80,8 @@ const Left = () => {
 
 	return (
 		<section className="hover-fade relative flex h-full w-[40%] flex-col gap-2 overflow-hidden rounded-bl-xl">
-			<dialog ref={dialogRef} className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] flex-col overflow-y-scroll rounded-xl bg-back backdrop:bg-black/40 backdrop:backdrop-blur-lg">
-				<Button onClick={closeModal} className="absolute top-2 right-2">
+			<dialog ref={dialogEditRef} className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] flex-col overflow-y-scroll rounded-xl bg-back backdrop:bg-black/40 backdrop:backdrop-blur-lg">
+				<Button onClick={closeEditMenu} className="absolute top-2 right-2">
 					<Image className="h-6 w-6" src={remove} alt="remove icon" />
 				</Button>
 				<div className="h-fit w-full p-2">
@@ -81,6 +95,29 @@ const Left = () => {
 					</div>
 				</div>
 				<div className="h-fit w-full">{editActive ? <EditData /> : <CreateData />}</div>
+			</dialog>
+
+			<dialog ref={dialogAltRef} className="my-border my-shadow absolute inset-0 m-auto h-[80%] w-[80%] flex-col overflow-y-scroll rounded-xl bg-back backdrop:bg-black/40 backdrop:backdrop-blur-lg">
+				<Button onClick={closeAltMenu} className="absolute top-2 right-2">
+					<Image className="h-6 w-6" src={remove} alt="remove icon" />
+				</Button>
+				<div className="h-fit w-[90%] flex flex-col m-4 gap-4 items-center">
+					<div className="w-full h-full bg-main flex-grow relative flex flex-col items-center">
+						<h1 className="text-xl font-bold text-center">cru</h1>
+						<div className="flex justify-around flex-wrap w-full">
+							{['fields', ...WeekDayTypes].map(day => (
+								<div className="flex flex-col gap-2">
+									<h2>{day}</h2>
+									{day === 'fields' && [1, 2, 3, 4, 5].map(field => <div>{field}</div>)}
+									{day !== 'fields' && [1, 2, 3, 4, 5].map(field => <input type="time" className='my-border'/>)}
+								</div>
+							))}
+						</div>
+					</div>
+					<div className="w-full h-full bg-main flex-grow relative">
+						<h1>irish</h1>
+					</div>
+				</div>
 			</dialog>
 
 			<Title text="Filters" />
@@ -103,8 +140,9 @@ const Left = () => {
 			<Chip list={altSelect} />
 
 			<div className="absolute bottom-0 flex h-fit w-full flex-grow  flex-col items-center gap-2 p-6">
-				<div className="flex gap-2 items-center">
-					<Button onClick={handleClick} text="Edit Team data" />
+				<div className="flex gap-2 items-center flex-col">
+					<Button onClick={openEditMenu} text="Edit Team data" />
+					<Button onClick={openAltMenu} text="Edit Cru and irish availibility" />
 				</div>
 				<div className="my-border my-shadow bg-main rounded-md p-2 relative flex flex-col items-center gap-4">
 					<h1 className="text-lg text-center font-extrabold text-stark underline">Data Input</h1>

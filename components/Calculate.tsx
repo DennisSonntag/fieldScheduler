@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import { useAtom } from 'jotai';
 import { Game } from 'pages/api/calculate';
-import { RefNumAtom, RugbyScheduleAtom, SoccerScheduleAtom, SportType, StartEndDateAtom, TeamInfoAtom } from 'pages/main';
+import { AltFieldAvailabilityAtom, RefNumAtom, RugbyScheduleAtom, SoccerScheduleAtom, SportType, StartEndDateAtom, TeamInfoAtom } from 'pages/main';
 import { FC, useState } from 'react';
 
 import Button from './Button';
@@ -13,6 +13,7 @@ type PropTypes = {
 const Calculate: FC<PropTypes> = ({ sportType }) => {
 	const [startEndDate] = useAtom(StartEndDateAtom);
 	const [refNum] = useAtom(RefNumAtom);
+	const [altFieldAvailability] = useAtom(AltFieldAvailabilityAtom);
 	const setRugbyGameData = useAtom(RugbyScheduleAtom)[1];
 	const setSoccerGameData = useAtom(SoccerScheduleAtom)[1];
 	const [teamData] = useAtom(TeamInfoAtom);
@@ -32,21 +33,14 @@ const Calculate: FC<PropTypes> = ({ sportType }) => {
 				team_data: teamData,
 				ref_num: refNum,
 				start_end_date: startEndDate,
+				alt_field_availability: altFieldAvailability,
 			}),
 		});
-
 		const result = (await resultRaw.json()) as { schedule: Game[] };
 
 		if (sportType === 'rugby') {
 			setRugbyGameData(result.schedule);
 			setLoading(false);
-			for (const game of result.schedule) {
-				// if (game.homeTeam.field === 'none' || game.awayTeam.field === 'none') {
-				// if (game.homeTeam.field === 'none') {
-				if (game.awayTeam.field === 'none') {
-					console.log(game);
-				}
-			}
 		} else if (sportType === 'soccer') {
 			setSoccerGameData(result.schedule);
 			setLoading(false);
