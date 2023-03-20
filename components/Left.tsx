@@ -2,7 +2,7 @@
 import { useAtom } from 'jotai';
 import Image from 'next/image';
 import { AltFieldAvailability, AltFieldTypes, FieldTypes, WeekDayTypes } from 'pages/api/calculate';
-import { StartEndDateAtom, DivAtom, SchoolDataAtom, SchoolAtom, SeniorityAtom, GenderAtom, RefNumAtom, FieldAtom, AltAtom } from 'pages/main';
+import { StartEndDateAtom, DivAtom, SchoolDataAtom, SchoolAtom, SeniorityAtom, GenderAtom, RefNumAtom, FieldAtom, AltAtom, AltFieldAvailabilityAtom } from 'pages/main';
 import { useRef, useState } from 'react';
 import { useImmer } from 'use-immer';
 

@@ -73,7 +73,67 @@ export type SportType = (typeof SportTypes)[number];
 export const store = createStore();
 
 export const RefNumAtom = atom<number>(8);
-export const AltFieldAvailabilityAtom = atom<AltFieldAvailability>({} as AltFieldAvailability);
+export const AltFieldAvailabilityAtom = atom<AltFieldAvailability>({
+	cru: {
+		monday: {
+			1: [],
+			2: [],
+			3: [],
+			4: [],
+			5: [],
+		},
+		tuesday: {
+			1: [],
+			2: [],
+			3: [],
+			4: [],
+			5: [],
+		},
+		wednesday: {
+			1: [],
+			2: [],
+			3: [],
+			4: [],
+			5: [],
+		},
+		thursday: {
+			1: [],
+			2: [],
+			3: [],
+			4: [],
+			5: [],
+		},
+		friday: {
+			1: [],
+			2: [],
+			3: [],
+			4: [],
+			5: [],
+		},
+	},
+	irish: {
+		monday: {
+			1: [],
+			2: [],
+		},
+		tuesday: {
+			1: [],
+			2: [],
+		},
+		wednesday: {
+			1: [],
+			2: [],
+		},
+		thursday: {
+			1: [],
+			2: [],
+		},
+		friday: {
+			1: [],
+			2: [],
+		},
+	},
+} as AltFieldAvailability);
 export const SchoolDataAtom = atom<SchoolType[]>([]);
 export const TeamInfoAtom = atom<TeamPropType[]>([]);
 export const RugbyScheduleAtom = atom<Game[]>([]);
