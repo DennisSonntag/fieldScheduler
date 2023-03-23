@@ -36,14 +36,19 @@ const Calculate: FC<PropTypes> = ({ sportType }) => {
 				alt_field_availability: altFieldAvailability,
 			}),
 		});
-		const result = (await resultRaw.json()) as { schedule: Game[] };
+		try {
+			const result = (await resultRaw.json()) as { schedule: Game[] };
+			console.log(result);
 
-		if (sportType === 'rugby') {
-			setRugbyGameData(result.schedule);
-			setLoading(false);
-		} else if (sportType === 'soccer') {
-			setSoccerGameData(result.schedule);
-			setLoading(false);
+			if (sportType === 'rugby') {
+				setRugbyGameData(result.schedule);
+				setLoading(false);
+			} else if (sportType === 'soccer') {
+				setSoccerGameData(result.schedule);
+				setLoading(false);
+			}
+		} catch (err) {
+			console.log(err);
 		}
 	};
 

@@ -8,9 +8,9 @@
 ![basics](./assets/images/screenshot5.png)
 
 # Cant do it in time
+
 -   Remove teams in edit feature
 -   Global Spring Breaks
-
     -   Enter school as CSSD or CBE
         -   They can play each other but they have different spring breaks
 -   Put Rugby and soccer schedules in the database
@@ -22,6 +22,8 @@
 
 # ToDo list
 
+# Finished Todos
+
 -   Input for information for cru and irish
     -   Cru
         -   Monday - Friday
@@ -31,13 +33,10 @@
         -   Monday - Friday
         -   Fields 1 - 2
         -   User inputs time per field/day
-
-
-
-# Finished Todos
 -   If a school has no field and no alt field they can only play on other teams fields aka away games only
 
 -   Filter by field
+
     -   Double
     -   Single
     -   None

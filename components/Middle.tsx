@@ -7,10 +7,11 @@ import { Game } from 'pages/api/calculate';
 import { SportType } from 'pages/main';
 import { FC, useRef, useState, useReducer, Reducer } from 'react';
 
-// import { removeAllData, uploadDummyData, uploadTestData, removeAllData, uploadDummyData, uploadTestData } from '@ts/utils';
+import { removeAllData, uploadDummyData, uploadTestData } from '@ts/utils';
+
 import caret from '@svg/caret.svg';
 
-// import Button from './Button';
+import Button from './Button';
 import Calculate from './Calculate';
 import Calendar, { getDaysInMonth, monthNames } from './Calendar';
 import Download from './Download';
@@ -151,9 +152,9 @@ const Middle: FC<PropType> = ({ title, sportType }) => {
 
 			<div className="inset-x-0 mx-auto h-fit w-fit flex-col items-center">
 				<Calculate sportType={sportType} />
-				{/* <Button text="remove all" onClick={removeAllData} /> */}
-				{/* <Button text="upload dummy" onClick={uploadDummyData} /> */}
-				{/* <Button text="upload test" onClick={uploadTestData} /> */}
+				<Button text="remove all" onClick={removeAllData} />
+				<Button text="upload dummy" onClick={uploadDummyData} />
+				<Button text="upload test" onClick={uploadTestData} />
 				<div className="grid place-content-center ">
 					<Download sportType={sportType} />
 				</div>

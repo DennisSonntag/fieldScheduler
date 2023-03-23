@@ -42,7 +42,8 @@ export const possibleData: PossibleDataType = {
 	QE: 'Queen Elizabeth',
 };
 
-const pb = new PocketBase('https://schedulerdatabase.fly.dev');
+// export const pb = new PocketBase('https://schedulerdatabase.fly.dev');
+export const pb = new PocketBase('http://127.0.0.1:8090');
 
 export type SchoolType = {
 	school_name: string;

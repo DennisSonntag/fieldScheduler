@@ -4,10 +4,7 @@
 
 /* eslint-disable import/prefer-default-export */
 import { AltFieldTypes, FieldTypes, TeamType, TeamTypes } from 'pages/api/calculate';
-import { possibleData } from 'pages/main';
-import PocketBase from 'pocketbase';
-
-const pb = new PocketBase('https://schedulerdatabase.fly.dev');
+import { pb, possibleData } from 'pages/main';
 
 export const uploadDummyData = async () => {
 	// ------------------------------- Create dummy schools--------------------------

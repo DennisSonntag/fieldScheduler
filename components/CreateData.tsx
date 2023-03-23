@@ -5,8 +5,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
 import { AltFieldType, FieldType, TeamType } from 'pages/api/calculate';
-import { SchoolDataAtom, TeamInfoAtom } from 'pages/main';
-import PocketBase from 'pocketbase';
+import { SchoolDataAtom, TeamInfoAtom, pb } from 'pages/main';
 import { useImmer } from 'use-immer';
 
 import plus from '@svg/add.svg';
@@ -23,8 +22,6 @@ export type SchoolInputType = {
 	teams?: TeamInputType[];
 	id: number;
 };
-
-const pb = new PocketBase('https://schedulerdatabase.fly.dev');
 
 const CreateData = () => {
 	const [schools, setSchools] = useImmer<SchoolInputType[]>([]);

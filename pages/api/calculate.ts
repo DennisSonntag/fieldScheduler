@@ -134,7 +134,7 @@ export type WeekDayType = (typeof WeekDayTypes)[number];
 export type AltFieldAvailability = {
 	[field in AltFieldType]: {
 		[weekday in WeekDayType]: {
-			[key: number]: Date[];
+			[key: string]: Date[];
 		};
 	};
 };
@@ -194,8 +194,8 @@ const generateSchedule = (teamsArg: Team[], maxGamesPerDay: number, unavailableD
 					schedule.push(scheduleGame(team, opponent, date, '04:45 PM'));
 				} else if (team.field === 'alt') {
 					const randomField = team.alternateFields === 'cru' ? getRandomInt(1, 5) : getRandomInt(1, 2);
-					const altAvailability = alternateFieldAvailability[team.field as AltFieldType][WeekDayTypes[date.getDay()]][randomField];
-					const altAvailableTimes = Array.isArray(altAvailability) ? altAvailability : [];
+
+					const altAvailableTimes = alternateFieldAvailability[team.alternateFields!][WeekDayTypes[date.getDay() - 1]][randomField];
 
 					if (altAvailableTimes.length > 0) {
 						const availableTime = altAvailableTimes[Math.floor(Math.random() * altAvailableTimes.length)];
@@ -235,6 +235,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	const startEndDate = body.start_end_date as Date[];
 	const refNum = body.ref_num as number;
 	const altFieldAvailability = body.alt_field_availability as AltFieldAvailability;
+	// const altFieldAvailability = {} as AltFieldAvailability;
 	const teams: Team[] = teamData.map(team => ({
 		schoolName: team.school as string,
 		teamType: team.type as TeamType,

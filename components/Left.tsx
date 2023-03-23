@@ -1,7 +1,6 @@
-// @ts-nocheck
 import { useAtom } from 'jotai';
 import Image from 'next/image';
-import { AltFieldAvailability, AltFieldTypes, FieldTypes, WeekDayTypes } from 'pages/api/calculate';
+import { AltFieldAvailability, AltFieldTypes, FieldTypes, WeekDayType, WeekDayTypes } from 'pages/api/calculate';
 import { StartEndDateAtom, DivAtom, SchoolDataAtom, SchoolAtom, SeniorityAtom, GenderAtom, RefNumAtom, FieldAtom, AltAtom, AltFieldAvailabilityAtom } from 'pages/main';
 import { useRef, useState } from 'react';
 import { useImmer } from 'use-immer';
@@ -146,6 +145,7 @@ const Left = () => {
 	const inputHeader = ['fields', ...WeekDayTypes];
 
 	const handleSubmit = () => {
+		console.log(altAvailability);
 		setAltAvailabilityAtom(altAvailability);
 	};
 
@@ -179,23 +179,23 @@ const Left = () => {
 							{inputHeader.map((day, index) => (
 								<div key={day} className="flex flex-col gap-2">
 									<h2>{day}</h2>
-									{day === 'fields' && [1, 2, 3, 4, 5].map(field => <div>{field}</div>)}
+									{day === 'fields' && [1, 2, 3, 4, 5].map(field => <div key={field}>{field}</div>)}
 
 									{day !== 'fields' &&
 										[1, 2, 3, 4, 5].map(field => (
-											<div>
+											<div key={field}>
 												<input
 													onChange={e => {
 														const input = e.target.valueAsDate;
 														setAltAvailability((draft: AltFieldAvailability) => {
-															draft.cru[inputHeader[index]][field].push(input);
+															draft.cru[inputHeader[index] as WeekDayType][field].push(input!);
 															return draft;
 														});
 													}}
 													type="time"
 													className="my-border"
 												/>
-												{altAvailability.cru[inputHeader[index]][field].map((elm: Date) => (
+												{altAvailability.cru[inputHeader[index] as WeekDayType][field].map((elm: Date) => (
 													<div key={elm.toString()} className="flex gap-1">
 														<div>{elm.toLocaleTimeString()}</div>
 														<button
@@ -203,7 +203,7 @@ const Left = () => {
 															className="hover:text-red-500"
 															onClick={() => {
 																setAltAvailability((draft: AltFieldAvailability) => {
-																	const current = draft.cru[inputHeader[index]][field] as any[];
+																	const current = draft.cru[inputHeader[index] as WeekDayType][field] as any[];
 																	const indexInner = current.indexOf(elm);
 																	if (indexInner > -1) current.splice(indexInner, 1);
 
@@ -227,7 +227,7 @@ const Left = () => {
 							{inputHeader.map((day, index) => (
 								<div key={day} className="flex flex-col gap-2">
 									<h2>{day}</h2>
-									{day === 'fields' && [1, 2].map(field => <div>{field}</div>)}
+									{day === 'fields' && [1, 2].map(field => <div key={field}>{field}</div>)}
 
 									{day !== 'fields' &&
 										[1, 2].map(field => (
@@ -236,14 +236,14 @@ const Left = () => {
 													onChange={e => {
 														const input = e.target.valueAsDate;
 														setAltAvailability((draft: AltFieldAvailability) => {
-															draft.irish[inputHeader[index]][field].push(input);
+															draft.irish[inputHeader[index] as WeekDayType][field].push(input!);
 															return draft;
 														});
 													}}
 													type="time"
 													className="my-border"
 												/>
-												{altAvailability.irish[inputHeader[index]][field].map((elm: Date) => (
+												{altAvailability.irish[inputHeader[index] as WeekDayType][field].map((elm: Date) => (
 													<div key={elm.toString()} className="flex gap-1">
 														<div>{elm.toLocaleTimeString()}</div>
 														<button
@@ -251,7 +251,7 @@ const Left = () => {
 															className="hover:text-red-500"
 															onClick={() => {
 																setAltAvailability((draft: AltFieldAvailability) => {
-																	const current = draft.irish[inputHeader[index]][field] as any[];
+																	const current = draft.irish[inputHeader[index] as WeekDayType][field] as any[];
 																	const indexInner = current.indexOf(elm);
 																	if (indexInner > -1) current.splice(indexInner, 1);
 

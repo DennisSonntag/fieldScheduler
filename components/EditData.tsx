@@ -9,8 +9,7 @@ import { Crypto } from '@peculiar/webcrypto';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
 import { DivType, FieldType, FieldTypes } from 'pages/api/calculate';
-import { SchoolDataAtom, SchoolType, TeamInfoAtom } from 'pages/main';
-import PocketBase from 'pocketbase';
+import { SchoolDataAtom, SchoolType, TeamInfoAtom, pb } from 'pages/main';
 import { useEffect, useState } from 'react';
 import { useImmer } from 'use-immer';
 
@@ -20,8 +19,6 @@ import remove from '@svg/remove.svg';
 import Button from './Button';
 import { GenderType, SeniorityType, TeamInputType } from './SchoolInput';
 import TeamInput from './TeamInput';
-
-const pb = new PocketBase('https://schedulerdatabase.fly.dev');
 
 type SelectedDataType = {
 	name: string;
