@@ -3,24 +3,36 @@
 		"browser": true,
 		"es2021": true
 	},
-	"extends": ["next/core-web-vitals", "react-app", "airbnb", "airbnb-typescript", "plugin:import/typescript", "plugin:react/jsx-runtime", "plugin:prettier/recommended"],
+	"extends": [
+		"next/core-web-vitals",
+		"eslint:recommended",
+		"plugin:react/recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:prettier/recommended"
+	],
 	"overrides": [],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
-		"ecmaFeatures": { "jsx": true },
+		"ecmaFeatures": {
+			"jsx": true
+		},
 		"ecmaVersion": "latest",
-		"sourceType": "module",
-
-		"project": "./tsconfig.json"
+		"sourceType": "module"
 	},
-	"plugins": ["react", "@typescript-eslint", "prettier"],
+	"plugins": [
+		"react",
+		"@typescript-eslint"
+	],
 	"rules": {
 		"jsx-a11y/label-has-associated-control": "off",
 		"jsx-a11y/mouse-events-have-key-events": "off",
 		"react/function-component-definition": "off",
 		"react/jsx-one-expression-per-line": "off",
 		"react/jsx-props-no-spreading": "off",
-		"linebreak-style": ["off", "windows"],
+		"linebreak-style": [
+			"off",
+			"windows"
+		],
 		"react-hooks/exhaustive-deps": "off",
 		"react/require-default-props": "off",
 		"@typescript-eslint/indent": "off",
@@ -40,3 +52,4 @@
 		"indent": "off"
 	}
 }
+
